@@ -1,0 +1,35 @@
+<div class="doctor-room">         
+   
+    <iframe
+    src="https://tokbox.com/embed/embed/ot-embed.js?embedId=bebdaddc-562f-42bb-ad96-8a913b175188&room=DEFAULT_ROOM&iframe=true"
+    width=800
+    height=640
+    scrolling="auto"
+    allow="microphone; camera"
+  ></iframe>
+
+    <div class="patient-info">
+        <div class="info-heading">
+            <img src="assets/img/logo-cap.png" height="50px"> 
+            <!-- <input *ngIf="(this.global.IsDoctor)" type="button" (click)="RefreshPatients()" name="name" value="Refresh Patients" /> -->
+             <button *ngIf="(this.global.IsDoctor)" type="button" (click)="RefreshPatients()" name="name"><span>&#9850;</span>&nbsp;Refresh Patients</button>
+        </div>
+        <div class="info-listing" *ngIf="(this.global.IsDoctor)">
+            <div *ngFor="let temp of patients">
+                <label><span>Patient Name:</span>&nbsp;{{temp.PatientName}}</label><br>
+                <a (click)="CallPatient(temp)" [routerLink]="['/DoctorRoom']" class="text-link" style="margin-left: 0">Call Patient</a>
+                <a (click)="PatientAttended(temp)" [routerLink]="['/DoctorRoom']" class="text-link">Patient Completed</a><br>
+                <span class="badge-no">Status:{{temp.Status}}</span>
+            </div>
+        </div>
+        <div class="p-all">
+            <label for=""> <span>&#10148;</span>&nbsp;&nbsp;Patient Name :- <span>{{global.patientObj?.PatientName}}</span></label>
+            <label for=""> <span>&#10148;</span>&nbsp;&nbsp;Fever :- <span  [ngClass]="global.patientObj?.Fever == true ? 'badge-yes': 'badge-no'">{{global.patientObj?.Fever | yesNoPipe}}</span></label>
+            <label for=""> <span>&#10148;</span>&nbsp;&nbsp;Cough :- <span [ngClass]="global.patientObj?.Cough == true ? 'badge-yes': 'badge-no'">{{global.patientObj?.Cough | yesNoPipe}}</span></label>
+            <label for=""> <span>&#10148;</span>&nbsp;&nbsp;Tiredness :- <span [ngClass]="global.patientObj?.TiredNess == true ? 'badge-yes': 'badge-no'">{{global.patientObj?.TiredNess | yesNoPipe}}</span></label>
+            <label for=""> <span>&#10148;</span>&nbsp;&nbsp;Breathing issues :- <span [ngClass]="global.patientObj?.Breathing == true ? 'badge-yes': 'badge-no'">{{global.patientObj?.Breathing| yesNoPipe}}</span></label>
+            <label for="">  <span>&#10148;</span>&nbsp;&nbsp;Details :- <span>{{global.patientObj?.Problem}}</span></label>
+            <span *ngIf="(this.global.IsDoctor)" style="margin-bottom: 15px; display: block">Treatment Advice :</span> <textarea *ngIf="(this.global.IsDoctor)" [(ngModel)]="global.patientObj.Medication"></textarea>
+        </div>
+    </div>
+</div>

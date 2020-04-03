@@ -1,0 +1,21 @@
+<div class="wait-section">
+    <div class="report-title">
+    	<img src="assets/img/logo-cap.png" height="50">
+    	<h1>
+         This is Doctor Report for <span class="user-title">{{global.patientObj?.PatientName}}</span>.
+        </h1>
+        <div class="waiting-icon">
+			<ul class="inline">
+				<li><span>&#10148;</span>&nbsp;&nbsp;Fever :- {{global.patientObj?.Fever| yesNoPipe}} </li>
+				<li><span>&#10148;</span>&nbsp;&nbsp;Cough :- {{global.patientObj?.Cough| yesNoPipe}} </li>
+				<li><span>&#10148;</span>&nbsp;&nbsp;Tiredness :- {{global.patientObj?.TiredNess| yesNoPipe}}</li>
+				<li><span>&#10148;</span>&nbsp;&nbsp;Breathing issues :- {{global.patientObj?.Breathing| yesNoPipe}}</li>
+				<li><span>&#10148;</span>&nbsp;&nbsp;Details<br>{{global.patientObj?.Problem}}</li>
+				<li><span>&#10148;</span>&nbsp;&nbsp;Medication given by doctor<br>{{global.patientObj?.Medication}}</li>
+			</ul>
+			
+		</div>
+        
+    </div>
+   
+</div>
