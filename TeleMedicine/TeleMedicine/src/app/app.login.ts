@@ -55,7 +55,7 @@ export class LoginComponent {
     this.routing.navigate(['/DoctorRoom']);
   }
   SuccessPatient(res) {
-    this.global.patientObj = this.patientObj;
+    this.global.patientObj = res.Value;
     this.routing.navigate(['/WaitingRoom']);
   }
   Error(res) {

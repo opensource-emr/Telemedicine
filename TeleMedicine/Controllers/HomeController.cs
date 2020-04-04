@@ -18,8 +18,8 @@ namespace TestTele.Controllers
         {
             return View();
         }
-            public HomeController(ILogger<HomeController> logger,
-            DoctorCabin doctorcabin, WaitingRoom waitingroom)
+        public HomeController(ILogger<HomeController> logger,
+        DoctorCabin doctorcabin, WaitingRoom waitingroom)
         {
             _logger = logger;
             _doctorcabin = doctorcabin;
@@ -52,15 +52,15 @@ namespace TestTele.Controllers
         {
             foreach (var t in _waitingroom.Patients)
             {
-                if ((obj.PatientName == t.PatientName)&&(t.Status==1))
+                if ((obj.PatientName == t.PatientName) && (t.Status == 1))
                 {
 
                     return Ok(true);
                 }
             }
-            
-                return Ok(false);
-            
+
+            return Ok(false);
+
         }
         public IActionResult WaitingRoom()
         {
@@ -69,12 +69,20 @@ namespace TestTele.Controllers
         public IActionResult LoginPatient([FromBody] Patient obj)
         {
             _waitingroom.Patients.Add(obj);
-            obj.PatientId = _waitingroom.Patients.Count+1;
+            if (_waitingroom.Patients != null)
+            {
+                 if (_waitingroom.Patients.Count > 0)
+                {
+                    obj.PatientId = _waitingroom.Patients.Count;
+                }
+            }
+            //obj.PatientId = _waitingroom.Patients.Count+1;
             return Ok(Json(obj));
         }
-        public IActionResult LoginDoctor([FromBody] Doctor obj , [FromBody] string Password)
+        public IActionResult LoginDoctor([FromBody] Doctor obj, [FromBody] string Password)
         {
-            if (obj.Password == "test123") {
+            if (obj.Password == "test123")
+            {
                 _doctorcabin.Doctor = obj;
                 return Ok(Json(obj));
             }
@@ -82,14 +90,14 @@ namespace TestTele.Controllers
             {
                 return StatusCode(401);
             }
-           
+
         }
 
         private Patient getPatientbyName(string PatName)
         {
-            foreach(var t in _waitingroom.Patients)
+            foreach (var t in _waitingroom.Patients)
             {
-                if(PatName == t.PatientName)
+                if (PatName == t.PatientName)
                 {
                     return t;
                 }
@@ -112,13 +120,14 @@ namespace TestTele.Controllers
         public IActionResult TakeFinalReport([FromBody]Patient p1)
         {
             Patient p = getPatientbyName(p1.PatientName);
-            if(p is null) { return Ok(null); }
+            if (p is null) { return Ok(null); }
             if (p.Status == -1)
             {
                 _waitingroom.Patients.Remove(p);
                 return Ok(p);
-                
-            }else
+
+            }
+            else
             {
                 return Ok(null);
             }
@@ -143,7 +152,7 @@ namespace TestTele.Controllers
             Patient p = getPatientbyName(obj.PatientName);
             if (p is null)
             {
-               return StatusCode(500);
+                return StatusCode(500);
             }
             else
             {
@@ -152,7 +161,7 @@ namespace TestTele.Controllers
                 return Ok(p);
             }
         }
-       
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

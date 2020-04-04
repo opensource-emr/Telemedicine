@@ -12,10 +12,10 @@ import { Global } from './app.global';
   })
 export class WaitingRoom{
     timer1:any = timer(5000,8000);
-  
   constructor(public httpClient:HttpClient , 
     public routing:Router ,
     public global:Global){
+      console.log(this.global);
       this.timer1.subscribe(
         ()=>{this.httpClient.post(global.ApiUrl+
           "CanIComeIn", this.global.patientObj)
