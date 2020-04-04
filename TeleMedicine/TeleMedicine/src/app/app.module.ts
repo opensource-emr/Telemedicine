@@ -5,7 +5,7 @@ import { LoginComponent } from './app.login';
 import { Global } from './app.global';
 import { DoctorRoomComponent } from './app.doctorroomcomponent';
 import { WaitingRoom } from './app.waitingroomcomponent';
-import {FormsModule} from "@angular/forms"
+import {FormsModule, ReactiveFormsModule} from "@angular/forms"
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { HomeRoutes } from './app.routing';
@@ -19,8 +19,9 @@ import { YesNoPipe } from 'src/common/YesNo.pipe';
     YesNoPipe
   ],
   imports: [
-    BrowserModule , 
-    FormsModule , 
+    BrowserModule,
+    FormsModule ,
+    ReactiveFormsModule,
     HttpClientModule,
     RouterModule.forRoot(HomeRoutes)
   ],

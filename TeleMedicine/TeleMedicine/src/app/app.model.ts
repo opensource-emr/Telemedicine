@@ -1,3 +1,5 @@
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+
 export class Patient{
     PatientName:string="";
     Status:number=0;
@@ -11,5 +13,4 @@ export class Patient{
 export class Doctor{
     DoctorName:string ="";
     Password:string = "test123";
-    
 }
