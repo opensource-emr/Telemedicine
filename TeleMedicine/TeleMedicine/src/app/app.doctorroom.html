@@ -7,7 +7,6 @@
     scrolling="auto"
     allow="microphone; camera"
   ></iframe>
-
     <div class="patient-info">
         <div class="info-heading">
             <img src="assets/img/logo-cap.png" height="50px"> 
@@ -15,12 +14,13 @@
              <button *ngIf="(this.global.IsDoctor)" type="button" (click)="RefreshPatients()" name="name"><span>&#9850;</span>&nbsp;Refresh Patients</button>
         </div>
         <div class="info-listing" *ngIf="(this.global.IsDoctor)">
-            <div *ngFor="let temp of patients">
-                <label><span>Patient Id:</span>&nbsp;{{temp.PatientId}}</label><br>
-                <a (click)="CallPatient(temp)" [routerLink]="['/DoctorRoom']" class="text-link" style="margin-left: 0">Call Patient</a>
-                <a (click)="PatientAttended(temp)" [routerLink]="['/DoctorRoom']" class="text-link">Patient Completed</a><br>
-                <span class="badge-no">Status:{{temp.Status}}</span>
-            </div>
+            <table border="0">
+                <tr><td cellpadding="0" cellspacing="0" colspan="2">Patients in Queue</td></tr>
+                <tr *ngFor="let temp of patients">
+                    <td cellpadding="0" cellspacing="0">&nbsp;{{temp.PatientId}}.)&nbsp;&nbsp;{{temp.PatientName}}</td>
+                    <td cellpadding="0" cellspacing="0"><a  (click)="CallPatient(temp)" [routerLink]="['/DoctorRoom']" class="text-link">Call</a></td>
+                </tr>
+            </table>
         </div>
         <div class="p-all">
             <label for=""> <span>&#10148;</span>&nbsp;&nbsp;Patient Id :- <span>{{global.patientObj?.PatientId}}</span></label>
@@ -31,6 +31,7 @@
             <label for=""> <span>&#10148;</span>&nbsp;&nbsp;Breathing issues :- <span [ngClass]="global.patientObj?.Breathing == true ? 'badge-yes': 'badge-no'">{{global.patientObj?.Breathing| yesNoPipe}}</span></label>
             <label for="">  <span>&#10148;</span>&nbsp;&nbsp;Details :- <span>{{global.patientObj?.Problem}}</span></label>
             <span *ngIf="(this.global.IsDoctor)" style="margin-bottom: 15px; display: block">Treatment Advice :</span> <textarea *ngIf="(this.global.IsDoctor)" [(ngModel)]="global.patientObj.Medication"></textarea>
+            <input *ngIf="(this.global.IsDoctor)" type="button" value="Complete Visit" (click)="PatientAttended(global.patientObj)">
         </div>
     </div>
 </div>

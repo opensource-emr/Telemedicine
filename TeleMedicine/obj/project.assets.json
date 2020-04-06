@@ -6167,11 +6167,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Dell\\source\\repos\\testazuredevops\\TeleMedicine\\TeleMedicine\\TestTele.csproj",
+      "projectUniqueName": "E:\\telemedicine\\TeleMedicine\\TestTele.csproj",
       "projectName": "TestTele",
-      "projectPath": "C:\\Users\\Dell\\source\\repos\\testazuredevops\\TeleMedicine\\TeleMedicine\\TestTele.csproj",
+      "projectPath": "E:\\telemedicine\\TeleMedicine\\TestTele.csproj",
       "packagesPath": "C:\\Users\\Dell\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Dell\\source\\repos\\testazuredevops\\TeleMedicine\\TeleMedicine\\obj\\",
+      "outputPath": "E:\\telemedicine\\TeleMedicine\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
