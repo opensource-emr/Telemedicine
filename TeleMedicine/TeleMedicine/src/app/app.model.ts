@@ -1,5 +1,6 @@
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 
+
 export class Patient{
     PatientName:string="";
     Status:number=0;
@@ -9,8 +10,9 @@ export class Patient{
     TiredNess:boolean=false;
     Problem:string="";
     Medication:string = "";
+    LastUpdatedTime:Date
 }
 export class Doctor{
     DoctorName:string ="";
-    Password:string = "test123";
+    Password:string = "";
 }

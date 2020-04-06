@@ -17,7 +17,8 @@ export class LoginComponent {
   constructor(public httpClient: HttpClient,
     public routing: Router,
     public global: Global,
-    private formBuilder: FormBuilder) {
+    private formBuilder: FormBuilder ) {
+      
     this.initForm();
   }
 

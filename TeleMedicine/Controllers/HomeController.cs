@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using TestTele.Models;
 
@@ -14,13 +15,17 @@ namespace TestTele.Controllers
         private readonly ILogger<HomeController> _logger;
         DoctorCabin _doctorcabin = null;
         WaitingRoom _waitingroom = null;
+        
+        public IConfiguration Configuration { get; }
         public IActionResult Index()
         {
+            ViewData["HospitalName"] = Configuration["HospitalName"];
             return View();
         }
         public HomeController(ILogger<HomeController> logger,
-        DoctorCabin doctorcabin, WaitingRoom waitingroom)
+        DoctorCabin doctorcabin, WaitingRoom waitingroom , IConfiguration configuration)
         {
+            Configuration = configuration;
             _logger = logger;
             _doctorcabin = doctorcabin;
             _waitingroom = waitingroom;

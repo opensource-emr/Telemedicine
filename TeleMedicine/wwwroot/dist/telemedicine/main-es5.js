@@ -65,7 +65,7 @@
     /* harmony default export */
 
 
-    __webpack_exports__["default"] = "<div class=\"doctor-room\">         \r\n   \r\n    <iframe\r\n    src=\"https://tokbox.com/embed/embed/ot-embed.js?embedId=bebdaddc-562f-42bb-ad96-8a913b175188&room=DEFAULT_ROOM&iframe=true\"\r\n    width=800\r\n    height=640\r\n    scrolling=\"auto\"\r\n    allow=\"microphone; camera\"\r\n  ></iframe>\r\n\r\n    <div class=\"patient-info\">\r\n        <div class=\"info-heading\">\r\n            <img src=\"assets/img/logo-cap.png\" height=\"50px\"> \r\n            <!-- <input *ngIf=\"(this.global.IsDoctor)\" type=\"button\" (click)=\"RefreshPatients()\" name=\"name\" value=\"Refresh Patients\" /> -->\r\n             <button *ngIf=\"(this.global.IsDoctor)\" type=\"button\" (click)=\"RefreshPatients()\" name=\"name\"><span>&#9850;</span>&nbsp;Refresh Patients</button>\r\n        </div>\r\n        <div class=\"info-listing\" *ngIf=\"(this.global.IsDoctor)\">\r\n            <table border=\"0\">\r\n                <tr><td colspan=\"2\">Patients in Queue</td></tr>\r\n                <tr *ngFor=\"let temp of patients\">\r\n                    <td cellpadding=\"0\" cellspacing=\"0\">&nbsp;{{temp.PatientId}}.)&nbsp;&nbsp;{{temp.PatientName}}</td>\r\n                    <td cellpadding=\"0\" cellspacing=\"0\"><a  (click)=\"CallPatient(temp)\" [routerLink]=\"['/DoctorRoom']\" class=\"text-link\">Call</a></td>\r\n                </tr>\r\n            </table>\r\n        </div>\r\n        <div class=\"p-all\">\r\n            <label for=\"\"> <span>&#10148;</span>&nbsp;&nbsp;Patient Id :- <span>{{global.patientObj?.PatientId}}</span></label>\r\n            <label for=\"\"> <span>&#10148;</span>&nbsp;&nbsp;Patient Name :- <span>{{global.patientObj?.PatientName}}</span></label>\r\n            <label for=\"\"> <span>&#10148;</span>&nbsp;&nbsp;Fever :- <span  [ngClass]=\"global.patientObj?.Fever == true ? 'badge-yes': 'badge-no'\">{{global.patientObj?.Fever | yesNoPipe}}</span></label>\r\n            <label for=\"\"> <span>&#10148;</span>&nbsp;&nbsp;Cough :- <span [ngClass]=\"global.patientObj?.Cough == true ? 'badge-yes': 'badge-no'\">{{global.patientObj?.Cough | yesNoPipe}}</span></label>\r\n            <label for=\"\"> <span>&#10148;</span>&nbsp;&nbsp;Tiredness :- <span [ngClass]=\"global.patientObj?.TiredNess == true ? 'badge-yes': 'badge-no'\">{{global.patientObj?.TiredNess | yesNoPipe}}</span></label>\r\n            <label for=\"\"> <span>&#10148;</span>&nbsp;&nbsp;Breathing issues :- <span [ngClass]=\"global.patientObj?.Breathing == true ? 'badge-yes': 'badge-no'\">{{global.patientObj?.Breathing| yesNoPipe}}</span></label>\r\n            <label for=\"\">  <span>&#10148;</span>&nbsp;&nbsp;Details :- <span>{{global.patientObj?.Problem}}</span></label>\r\n            <span *ngIf=\"(this.global.IsDoctor)\" style=\"margin-bottom: 15px; display: block\">Treatment Advice :</span> <textarea *ngIf=\"(this.global.IsDoctor)\" [(ngModel)]=\"global.patientObj.Medication\"></textarea>\r\n            <input *ngIf=\"(this.global.IsDoctor)\" type=\"button\" value=\"Complete Visit\" (click)=\"PatientAttended(global.patientObj)\">\r\n        </div>\r\n    </div>\r\n</div>\r\n";
+    __webpack_exports__["default"] = "<div class=\"doctor-room\">         \r\n   \r\n    <iframe\r\n    [src]=\"global.config.videourl | safe\"\r\n    width=800\r\n    height=640\r\n    scrolling=\"auto\"\r\n    allow=\"microphone; camera\"\r\n  ></iframe>\r\n    <div class=\"patient-info\">\r\n        <div class=\"info-heading\">\r\n            <img src=\"assets/img/logo-cap.png\" height=\"50px\"> \r\n            <!-- <input *ngIf=\"(this.global.IsDoctor)\" type=\"button\" (click)=\"RefreshPatients()\" name=\"name\" value=\"Refresh Patients\" /> -->\r\n             <button *ngIf=\"(this.global.IsDoctor)\" type=\"button\" (click)=\"RefreshPatients()\" name=\"name\"><span>&#9850;</span>&nbsp;Refresh Patients</button>\r\n        </div>\r\n        <div class=\"info-listing\" *ngIf=\"(this.global.IsDoctor)\">\r\n            <table border=\"0\">\r\n                <tr><td cellpadding=\"0\" cellspacing=\"0\" colspan=\"2\">Patients in Queue</td></tr>\r\n                <tr *ngFor=\"let temp of patients\">\r\n                    <td cellpadding=\"0\" cellspacing=\"0\">&nbsp;{{temp.PatientId}}.)&nbsp;&nbsp;{{temp.PatientName}}</td>\r\n                    <td cellpadding=\"0\" cellspacing=\"0\"><a  (click)=\"CallPatient(temp)\" [routerLink]=\"['/DoctorRoom']\" class=\"text-link\">Call</a></td>\r\n                </tr>\r\n            </table>\r\n        </div>\r\n        <div class=\"p-all\">\r\n            <label for=\"\"> <span>&#10148;</span>&nbsp;&nbsp;Patient Id :- <span>{{global.patientObj?.PatientId}}</span></label>\r\n            <label for=\"\"> <span>&#10148;</span>&nbsp;&nbsp;Patient Name :- <span>{{global.patientObj?.PatientName}}</span></label>\r\n            <label for=\"\"> <span>&#10148;</span>&nbsp;&nbsp;Fever :- <span  [ngClass]=\"global.patientObj?.Fever == true ? 'badge-yes': 'badge-no'\">{{global.patientObj?.Fever | yesNoPipe}}</span></label>\r\n            <label for=\"\"> <span>&#10148;</span>&nbsp;&nbsp;Cough :- <span [ngClass]=\"global.patientObj?.Cough == true ? 'badge-yes': 'badge-no'\">{{global.patientObj?.Cough | yesNoPipe}}</span></label>\r\n            <label for=\"\"> <span>&#10148;</span>&nbsp;&nbsp;Tiredness :- <span [ngClass]=\"global.patientObj?.TiredNess == true ? 'badge-yes': 'badge-no'\">{{global.patientObj?.TiredNess | yesNoPipe}}</span></label>\r\n            <label for=\"\"> <span>&#10148;</span>&nbsp;&nbsp;Breathing issues :- <span [ngClass]=\"global.patientObj?.Breathing == true ? 'badge-yes': 'badge-no'\">{{global.patientObj?.Breathing| yesNoPipe}}</span></label>\r\n            <label for=\"\">  <span>&#10148;</span>&nbsp;&nbsp;Details :- <span>{{global.patientObj?.Problem}}</span></label>\r\n            <span *ngIf=\"(this.global.IsDoctor)\" style=\"margin-bottom: 15px; display: block\">Treatment Advice :</span> <textarea *ngIf=\"(this.global.IsDoctor)\" [(ngModel)]=\"global.patientObj.Medication\"></textarea>\r\n            <input *ngIf=\"(this.global.IsDoctor)\" type=\"button\" value=\"Complete Visit\" (click)=\"PatientAttended(global.patientObj)\">\r\n        </div>\r\n    </div>\r\n</div>\r\n";
     /***/
   },
 
@@ -105,7 +105,7 @@
     /* harmony default export */
 
 
-    __webpack_exports__["default"] = "<div class=\"full-section\">\r\n    <div class=\"brand-title\">\r\n        <img src=\"assets/img/logo-cap.png\" class=\"brand-img\">\r\n        <h1>\r\n            <!--  DANPHE TELEHEALTH -->\r\n            Connect with your doctor from your home\r\n            <!-- <span>Connect with your doctor from  your home</span> -->\r\n        </h1>\r\n    </div>\r\n    <div class=\"patient-login\">\r\n        <h5 class=\"form-header\">Patients<span>Login from here.</span></h5>\r\n        <form [formGroup]=\"patientFrm\">\r\n            <table>\r\n                <tr>\r\n                    <!--  <td>\r\n                        User Name :-\r\n                    </td> -->\r\n                    <td>\r\n                        <label> User Name :</label>\r\n                        <input [(ngModel)]=\"patientObj.PatientName\" type=\"text\" name=\"UserName\" value=\"\" formControlName=\"patUsrName\" />\r\n                        <div *ngIf=\"hasError('required','patUsrName')\" style=\"color: red;\">User Name is required</div>\r\n                         <input type=\"hidden\" name=\"UserType\" value=\"Patient\" />\r\n                    </td>\r\n                </tr>\r\n                <tr>\r\n                    <!-- <td valign=\"top\">\r\n                    Covid signs :-\r\n                    </td> -->\r\n                    <td>\r\n                        <label>Covid signs :</label>\r\n                        <div class=\"form-group text-left\">\r\n                            <p class=\"fever-checkbox\">\r\n                                <input [(ngModel)]=\"patientObj.Fever\" type=\"checkbox\" name=\"\" id=\"fever\"\r\n                                    [ngModelOptions]=\"{standalone: true}\">\r\n                                <label for=\"fever\">Fever</label>\r\n                            </p>\r\n                            <p class=\"fever-checkbox\">\r\n                                <input [(ngModel)]=\"patientObj.Cough\" type=\"checkbox\" name=\"\" id=\"cough\"\r\n                                    [ngModelOptions]=\"{standalone: true}\">\r\n                                <label for=\"cough\">Cough</label>\r\n                            </p>\r\n                            <p class=\"fever-checkbox\">\r\n                                <input [(ngModel)]=\"patientObj.Breathing\" type=\"checkbox\" name=\"\" id=\"breath\"\r\n                                    [ngModelOptions]=\"{standalone: true}\">\r\n                                <label for=\"breath\">Breathing</label>\r\n                            </p>\r\n                            <p class=\"fever-checkbox\">\r\n                                <input [(ngModel)]=\"patientObj.TiredNess\" type=\"checkbox\" name=\"\" id=\"tiredness\"\r\n                                    [ngModelOptions]=\"{standalone: true}\">\r\n                                <label for=\"tiredness\">Tiredness</label>\r\n                            </p>\r\n                        </div>\r\n                        <!--  Fever :- <input [(ngModel)]=\"patientObj.Fever\" type=\"checkbox\" name=\"\" id=\"\"><br>\r\n                        Cough:- <input [(ngModel)]=\"patientObj.Cough\" type=\"checkbox\" name=\"\" id=\"\"><br>\r\n                        Breathing:- <input [(ngModel)]=\"patientObj.Breathing\" type=\"checkbox\" name=\"\" id=\"\"><br>\r\n                    TiredNess <input [(ngModel)]=\"patientObj.TiredNess\" type=\"checkbox\" name=\"\" id=\"\"><br> -->\r\n                    </td>\r\n                </tr>\r\n                <tr>\r\n                    <!--  <td valign=\"top\">\r\n                        Any specific problems :-\r\n                    </td> -->\r\n                    <td>\r\n                        <label>Any specific problems :</label>\r\n                        <textarea [(ngModel)]=\"patientObj.Problem\" cols=\"50\" rows=\"5\" name=\"Problem\"\r\n                            [ngModelOptions]=\"{standalone: true}\"></textarea>\r\n                    </td>\r\n                </tr>\r\n                <tr>\r\n\r\n                    <td>\r\n                        <input type=\"button\" (click)=\"LoginPatient()\" name=\"name\" value=\"Login\" />\r\n                    </td>\r\n                </tr>\r\n            </table>\r\n        </form>\r\n    </div>\r\n    <div class=\"doctor-login\">\r\n        <h5 class=\"form-header\">Doctor<span>Login from here.</span></h5>\r\n        <form [formGroup]=\"doctorFrm\">\r\n            <table>\r\n                <tr>\r\n\r\n                    <td>\r\n                        <label>User Name :</label>\r\n                        <input [(ngModel)]=\"doctorObj.DoctorName\" type=\"text\" name=\"UserName\" value=\"\" formControlName=\"docUsrName\" />\r\n                        <div *ngIf=\"hasError('required','docUsrName')\" style=\"color: red;\">User Name is required</div>\r\n                    </td>\r\n                </tr>\r\n                <tr>\r\n                    <td valign=\"top\">\r\n                        <label>Password:</label>\r\n                        <input [(ngModel)]=\"doctorObj.Password\" type=\"text\" name=\"Password\" value=\"\" formControlName=\"docPassword\"/>\r\n                        <div *ngIf=\"hasError('required','docPassword')\" style=\"color: red;\">Password is required</div>\r\n                        <input type=\"hidden\" name=\"UserType\" value=\"Doctor\" />\r\n                    </td>\r\n                </tr>\r\n                <tr>\r\n\r\n                    <td colspan=\"2\">\r\n                        <input type=\"button\" (click)=\"LoginDoctor()\" name=\"name\" value=\"Login\" />\r\n                    </td>\r\n                </tr>\r\n            </table>\r\n        </form>\r\n    </div>\r\n</div>";
+    __webpack_exports__["default"] = "<div class=\"full-section\">\r\n    <div class=\"brand-title\">\r\n        <img src=\"assets/img/logo-cap.png\" class=\"brand-img\">\r\n        <h1>\r\n            <!--  DANPHE TELEHEALTH -->\r\n            Connect with your doctor from your home\r\n            <!-- <span>Connect with your doctor from  your home</span> -->\r\n        </h1>\r\n    </div>\r\n    <div class=\"patient-login\">\r\n        <h5 class=\"form-header\">Patients<span>Login from here.</span></h5>\r\n        <form [formGroup]=\"patientFrm\">\r\n            <table>\r\n                <tr>\r\n                    <!--  <td>\r\n                        User Name :-\r\n                    </td> -->\r\n                    <td>\r\n                        <label> User Name :</label>\r\n                        <input [(ngModel)]=\"patientObj.PatientName\" type=\"text\" name=\"UserName\" value=\"\" formControlName=\"patUsrName\" />\r\n                        <div *ngIf=\"hasError('required','patUsrName')\" style=\"color: red;\">User Name is required</div>\r\n                         <input type=\"hidden\" name=\"UserType\" value=\"Patient\" />\r\n                    </td>\r\n                </tr>\r\n                <tr>\r\n                    <!-- <td valign=\"top\">\r\n                    Covid signs :-\r\n                    </td> -->\r\n                    <td>\r\n                        <label>Covid signs :</label>\r\n                        <div class=\"form-group text-left\">\r\n                            <p class=\"fever-checkbox\">\r\n                                <input [(ngModel)]=\"patientObj.Fever\" type=\"checkbox\" name=\"\" id=\"fever\"\r\n                                    [ngModelOptions]=\"{standalone: true}\">\r\n                                <label for=\"fever\">Fever</label>\r\n                            </p>\r\n                            <p class=\"fever-checkbox\">\r\n                                <input [(ngModel)]=\"patientObj.Cough\" type=\"checkbox\" name=\"\" id=\"cough\"\r\n                                    [ngModelOptions]=\"{standalone: true}\">\r\n                                <label for=\"cough\">Cough</label>\r\n                            </p>\r\n                            <p class=\"fever-checkbox\">\r\n                                <input [(ngModel)]=\"patientObj.Breathing\" type=\"checkbox\" name=\"\" id=\"breath\"\r\n                                    [ngModelOptions]=\"{standalone: true}\">\r\n                                <label for=\"breath\">Breathing</label>\r\n                            </p>\r\n                            <p class=\"fever-checkbox\">\r\n                                <input [(ngModel)]=\"patientObj.TiredNess\" type=\"checkbox\" name=\"\" id=\"tiredness\"\r\n                                    [ngModelOptions]=\"{standalone: true}\">\r\n                                <label for=\"tiredness\">Tiredness</label>\r\n                            </p>\r\n                        </div>\r\n                        <!--  Fever :- <input [(ngModel)]=\"patientObj.Fever\" type=\"checkbox\" name=\"\" id=\"\"><br>\r\n                        Cough:- <input [(ngModel)]=\"patientObj.Cough\" type=\"checkbox\" name=\"\" id=\"\"><br>\r\n                        Breathing:- <input [(ngModel)]=\"patientObj.Breathing\" type=\"checkbox\" name=\"\" id=\"\"><br>\r\n                    TiredNess <input [(ngModel)]=\"patientObj.TiredNess\" type=\"checkbox\" name=\"\" id=\"\"><br> -->\r\n                    </td>\r\n                </tr>\r\n                <tr>\r\n                    <!--  <td valign=\"top\">\r\n                        Any specific problems :-\r\n                    </td> -->\r\n                    <td>\r\n                        <label>Any specific problems :</label>\r\n                        <textarea [(ngModel)]=\"patientObj.Problem\" cols=\"50\" rows=\"5\" name=\"Problem\"\r\n                            [ngModelOptions]=\"{standalone: true}\"></textarea>\r\n                    </td>\r\n                </tr>\r\n                <tr>\r\n\r\n                    <td>\r\n                        <input type=\"button\" (click)=\"LoginPatient()\" name=\"name\" value=\"Login\" />\r\n                    </td>\r\n                </tr>\r\n            </table>\r\n        </form>\r\n    </div>\r\n    <div class=\"doctor-login\">\r\n        <h5 class=\"form-header\">Doctor<span>Login from here.</span></h5>\r\n        <form [formGroup]=\"doctorFrm\">\r\n            <table>\r\n                <tr>\r\n\r\n                    <td>\r\n                        <label>User Name :</label>\r\n                        <input [(ngModel)]=\"doctorObj.DoctorName\" type=\"text\" name=\"UserName\" value=\"\" formControlName=\"docUsrName\" />\r\n                        <div *ngIf=\"hasError('required','docUsrName')\" style=\"color: red;\">User Name is required</div>\r\n                    </td>\r\n                </tr>\r\n                <tr>\r\n                    <td valign=\"top\">\r\n                        <label>Password:</label>\r\n                        <input [(ngModel)]=\"doctorObj.Password\" type=\"password\" name=\"Password\" value=\"\" formControlName=\"docPassword\"/>\r\n                        <div *ngIf=\"hasError('required','docPassword')\" style=\"color: red;\">Password is required</div>\r\n                        <input type=\"hidden\" name=\"UserType\" value=\"Doctor\" />\r\n                    </td>\r\n                </tr>\r\n                <tr>\r\n\r\n                    <td colspan=\"2\">\r\n                        <input type=\"button\" (click)=\"LoginDoctor()\" name=\"name\" value=\"Login\" />\r\n                    </td>\r\n                </tr>\r\n            </table>\r\n        </form>\r\n    </div>\r\n</div>";
     /***/
   },
 
@@ -882,7 +882,7 @@
       template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(
       /*! raw-loader!./app.doctorroom.html */
       "./node_modules/raw-loader/dist/cjs.js!./src/app/app.doctorroom.html")).default
-    })], DoctorRoomComponent);
+    }), tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"], _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"], _app_global__WEBPACK_IMPORTED_MODULE_4__["Global"]])], DoctorRoomComponent);
     /***/
   },
 
@@ -961,7 +961,7 @@
       template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(
       /*! raw-loader!./app.finalreport.html */
       "./node_modules/raw-loader/dist/cjs.js!./src/app/app.finalreport.html")).default
-    })], FinalReportComponent);
+    }), tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"], _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"], _app_global__WEBPACK_IMPORTED_MODULE_3__["Global"]])], FinalReportComponent);
     /***/
   },
 
@@ -1002,7 +1002,8 @@
         this.patientObj = null;
         this.doctorObj = null;
         this.IsDoctor = false;
-        this.ApiUrl = "/Home/";
+        this.ApiUrl = "Home/";
+        this.config = null;
         this.TimerValue = 10000;
         this.patientObj = new _app_model__WEBPACK_IMPORTED_MODULE_1__["Patient"]();
         this.doctorObj = new _app_model__WEBPACK_IMPORTED_MODULE_1__["Doctor"]();
@@ -1157,7 +1158,7 @@
       template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(
       /*! raw-loader!./app.login.html */
       "./node_modules/raw-loader/dist/cjs.js!./src/app/app.login.html")).default
-    })], LoginComponent);
+    }), tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpClient"], _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"], _app_global__WEBPACK_IMPORTED_MODULE_5__["Global"], _angular_forms__WEBPACK_IMPORTED_MODULE_6__["FormBuilder"]])], LoginComponent);
     /***/
   },
 
@@ -1210,7 +1211,7 @@
     class Doctor {
       constructor() {
         this.DoctorName = "";
-        this.Password = "test123";
+        this.Password = "";
       }
 
     }
@@ -1258,77 +1259,119 @@
     /* harmony import */
 
 
-    var _app_login__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
+    var _angular_common__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
+    /*! @angular/common */
+    "./node_modules/@angular/common/fesm2015/common.js");
+    /* harmony import */
+
+
+    var _app_login__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
     /*! ./app.login */
     "./src/app/app.login.ts");
     /* harmony import */
 
 
-    var _app_global__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
+    var _app_global__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
     /*! ./app.global */
     "./src/app/app.global.ts");
     /* harmony import */
 
 
-    var _app_doctorroomcomponent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
+    var _app_doctorroomcomponent__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(
     /*! ./app.doctorroomcomponent */
     "./src/app/app.doctorroomcomponent.ts");
     /* harmony import */
 
 
-    var _app_waitingroomcomponent__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(
+    var _app_waitingroomcomponent__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(
     /*! ./app.waitingroomcomponent */
     "./src/app/app.waitingroomcomponent.ts");
     /* harmony import */
 
 
-    var _angular_forms__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(
+    var _angular_forms__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(
     /*! @angular/forms */
     "./node_modules/@angular/forms/fesm2015/forms.js");
     /* harmony import */
 
 
-    var _angular_common_http__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(
+    var _angular_common_http__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(
     /*! @angular/common/http */
     "./node_modules/@angular/common/fesm2015/http.js");
     /* harmony import */
 
 
-    var _angular_router__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(
+    var _angular_router__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(
     /*! @angular/router */
     "./node_modules/@angular/router/fesm2015/router.js");
     /* harmony import */
 
 
-    var _app_routing__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(
+    var _app_routing__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(
     /*! ./app.routing */
     "./src/app/app.routing.ts");
     /* harmony import */
 
 
-    var _app_cliniccomponent__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(
+    var _app_cliniccomponent__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(
     /*! ./app.cliniccomponent */
     "./src/app/app.cliniccomponent.ts");
     /* harmony import */
 
 
-    var _app_finalreportcomponent__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(
+    var _app_finalreportcomponent__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(
     /*! ./app.finalreportcomponent */
     "./src/app/app.finalreportcomponent.ts");
     /* harmony import */
 
 
-    var src_common_YesNo_pipe__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(
+    var src_common_YesNo_pipe__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(
     /*! src/common/YesNo.pipe */
     "./src/common/YesNo.pipe.ts");
+    /* harmony import */
 
-    let AppModule = class AppModule {};
+
+    var src_common_common_appconfig__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(
+    /*! src/common/common.appconfig */
+    "./src/common/common.appconfig.ts");
+    /* harmony import */
+
+
+    var src_common_common_safe__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(
+    /*! src/common/common.safe */
+    "./src/common/common.safe.ts");
+
+    const initializerConfigFn = config => {
+      return () => {
+        var ret = config.loadAppConfig();
+        return ret;
+      };
+    };
+
+    let AppModule = class AppModule {
+      constructor(g) {// alert(g.config.videoUrl);
+      }
+
+    };
+
+    AppModule.ctorParameters = () => [{
+      type: _app_global__WEBPACK_IMPORTED_MODULE_5__["Global"]
+    }];
+
     AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["NgModule"])({
-      declarations: [_app_login__WEBPACK_IMPORTED_MODULE_3__["LoginComponent"], _app_doctorroomcomponent__WEBPACK_IMPORTED_MODULE_5__["DoctorRoomComponent"], _app_waitingroomcomponent__WEBPACK_IMPORTED_MODULE_6__["WaitingRoom"], _app_cliniccomponent__WEBPACK_IMPORTED_MODULE_11__["ClinicComponent"], _app_finalreportcomponent__WEBPACK_IMPORTED_MODULE_12__["FinalReportComponent"], src_common_YesNo_pipe__WEBPACK_IMPORTED_MODULE_13__["YesNoPipe"]],
-      imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_7__["FormsModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_7__["ReactiveFormsModule"], _angular_common_http__WEBPACK_IMPORTED_MODULE_8__["HttpClientModule"], _angular_router__WEBPACK_IMPORTED_MODULE_9__["RouterModule"].forRoot(_app_routing__WEBPACK_IMPORTED_MODULE_10__["HomeRoutes"])],
-      providers: [_app_global__WEBPACK_IMPORTED_MODULE_4__["Global"]],
-      bootstrap: [_app_cliniccomponent__WEBPACK_IMPORTED_MODULE_11__["ClinicComponent"]]
-    })], AppModule);
+      declarations: [_app_login__WEBPACK_IMPORTED_MODULE_4__["LoginComponent"], _app_doctorroomcomponent__WEBPACK_IMPORTED_MODULE_6__["DoctorRoomComponent"], _app_waitingroomcomponent__WEBPACK_IMPORTED_MODULE_7__["WaitingRoom"], _app_cliniccomponent__WEBPACK_IMPORTED_MODULE_12__["ClinicComponent"], _app_finalreportcomponent__WEBPACK_IMPORTED_MODULE_13__["FinalReportComponent"], src_common_YesNo_pipe__WEBPACK_IMPORTED_MODULE_14__["YesNoPipe"], src_common_common_safe__WEBPACK_IMPORTED_MODULE_16__["SafePipe"]],
+      imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_8__["FormsModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_8__["ReactiveFormsModule"], _angular_common_http__WEBPACK_IMPORTED_MODULE_9__["HttpClientModule"], _angular_router__WEBPACK_IMPORTED_MODULE_10__["RouterModule"].forRoot(_app_routing__WEBPACK_IMPORTED_MODULE_11__["HomeRoutes"])],
+      providers: [{
+        provide: _angular_common__WEBPACK_IMPORTED_MODULE_3__["APP_BASE_HREF"],
+        useValue: '/' + (window.location.pathname.split('/')[1] || '')
+      }, {
+        provide: _angular_core__WEBPACK_IMPORTED_MODULE_2__["APP_INITIALIZER"],
+        useFactory: initializerConfigFn,
+        multi: true,
+        deps: [src_common_common_appconfig__WEBPACK_IMPORTED_MODULE_15__["ConfigService"]]
+      }, _app_global__WEBPACK_IMPORTED_MODULE_5__["Global"]],
+      bootstrap: [_app_cliniccomponent__WEBPACK_IMPORTED_MODULE_12__["ClinicComponent"]]
+    }), tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_app_global__WEBPACK_IMPORTED_MODULE_5__["Global"]])], AppModule);
     /***/
   },
 
@@ -1491,7 +1534,7 @@
       template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(
       /*! raw-loader!./app.waitingroom.html */
       "./node_modules/raw-loader/dist/cjs.js!./src/app/app.waitingroom.html")).default
-    })], WaitingRoom);
+    }), tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpClient"], _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"], _app_global__WEBPACK_IMPORTED_MODULE_5__["Global"]])], WaitingRoom);
     /***/
   },
 
@@ -1536,6 +1579,135 @@
     YesNoPipe = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Pipe"])({
       name: "yesNoPipe"
     })], YesNoPipe);
+    /***/
+  },
+
+  /***/
+  "./src/common/common.appconfig.ts":
+  /*!****************************************!*\
+    !*** ./src/common/common.appconfig.ts ***!
+    \****************************************/
+
+  /*! exports provided: ConfigService */
+
+  /***/
+  function srcCommonCommonAppconfigTs(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
+
+    __webpack_require__.r(__webpack_exports__);
+    /* harmony export (binding) */
+
+
+    __webpack_require__.d(__webpack_exports__, "ConfigService", function () {
+      return ConfigService;
+    });
+    /* harmony import */
+
+
+    var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
+    /*! tslib */
+    "./node_modules/tslib/tslib.es6.js");
+    /* harmony import */
+
+
+    var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
+    /*! @angular/core */
+    "./node_modules/@angular/core/fesm2015/core.js");
+    /* harmony import */
+
+
+    var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
+    /*! @angular/common/http */
+    "./node_modules/@angular/common/fesm2015/http.js");
+    /* harmony import */
+
+
+    var src_app_app_global__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
+    /*! src/app/app.global */
+    "./src/app/app.global.ts");
+
+    let ConfigService = class ConfigService {
+      constructor(http, global) {
+        this.http = http;
+        this.global = global;
+      }
+
+      loadAppConfig() {
+        return this.http.get('assets/appconfig.json').toPromise().then(data => {
+          this.global.config = data;
+        });
+      }
+
+    };
+
+    ConfigService.ctorParameters = () => [{
+      type: _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"]
+    }, {
+      type: src_app_app_global__WEBPACK_IMPORTED_MODULE_3__["Global"]
+    }];
+
+    ConfigService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
+      providedIn: 'root'
+    }), tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"], src_app_app_global__WEBPACK_IMPORTED_MODULE_3__["Global"]])], ConfigService);
+    /***/
+  },
+
+  /***/
+  "./src/common/common.safe.ts":
+  /*!***********************************!*\
+    !*** ./src/common/common.safe.ts ***!
+    \***********************************/
+
+  /*! exports provided: SafePipe */
+
+  /***/
+  function srcCommonCommonSafeTs(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
+
+    __webpack_require__.r(__webpack_exports__);
+    /* harmony export (binding) */
+
+
+    __webpack_require__.d(__webpack_exports__, "SafePipe", function () {
+      return SafePipe;
+    });
+    /* harmony import */
+
+
+    var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
+    /*! tslib */
+    "./node_modules/tslib/tslib.es6.js");
+    /* harmony import */
+
+
+    var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
+    /*! @angular/core */
+    "./node_modules/@angular/core/fesm2015/core.js");
+    /* harmony import */
+
+
+    var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
+    /*! @angular/platform-browser */
+    "./node_modules/@angular/platform-browser/fesm2015/platform-browser.js");
+
+    let SafePipe = class SafePipe {
+      constructor(sanitizer) {
+        this.sanitizer = sanitizer;
+      }
+
+      transform(value) {
+        return this.sanitizer.bypassSecurityTrustResourceUrl(value);
+      }
+
+    };
+
+    SafePipe.ctorParameters = () => [{
+      type: _angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__["DomSanitizer"]
+    }];
+
+    SafePipe = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Pipe"])({
+      name: 'safe'
+    }), tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__["DomSanitizer"]])], SafePipe);
     /***/
   },
 

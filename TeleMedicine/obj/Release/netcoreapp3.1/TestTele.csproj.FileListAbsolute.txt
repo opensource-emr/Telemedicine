@@ -196,7 +196,6 @@ E:\telemedicine\TeleMedicine\bin\Release\netcoreapp3.1\ru\Microsoft.CodeAnalysis
 E:\telemedicine\TeleMedicine\bin\Release\netcoreapp3.1\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
 E:\telemedicine\TeleMedicine\bin\Release\netcoreapp3.1\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
 E:\telemedicine\TeleMedicine\bin\Release\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
-E:\telemedicine\TeleMedicine\obj\Release\netcoreapp3.1\TestTele.csprojAssemblyReference.cache
 E:\telemedicine\TeleMedicine\obj\Release\netcoreapp3.1\staticwebassets\TestTele.StaticWebAssets.Manifest.cache
 E:\telemedicine\TeleMedicine\obj\Release\netcoreapp3.1\staticwebassets\TestTele.StaticWebAssets.xml
 E:\telemedicine\TeleMedicine\obj\Release\netcoreapp3.1\TestTele.MvcApplicationPartsAssemblyInfo.cache
@@ -220,3 +219,4 @@ E:\telemedicine\TeleMedicine\obj\Release\netcoreapp3.1\TestTele.Views.pdb
 E:\telemedicine\TeleMedicine\obj\Release\netcoreapp3.1\TestTele.csproj.CopyComplete
 E:\telemedicine\TeleMedicine\obj\Release\netcoreapp3.1\TestTele.dll
 E:\telemedicine\TeleMedicine\obj\Release\netcoreapp3.1\TestTele.pdb
+E:\telemedicine\TeleMedicine\obj\Release\netcoreapp3.1\TestTele.csprojAssemblyReference.cache

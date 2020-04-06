@@ -5,6 +5,7 @@ import { Global } from './app.global';
 import { Patient } from './app.model';
 import { timer  } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-root',
@@ -28,6 +29,7 @@ export class DoctorRoomComponent{
         );    
       }
   }
+  
   RefreshPatients(){
     this.httpClient.get(this.global.ApiUrl +  "CurrentPatients")
     .subscribe(res=>this.Success(res),

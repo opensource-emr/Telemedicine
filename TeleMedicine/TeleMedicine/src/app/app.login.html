@@ -90,7 +90,7 @@
                 <tr>
                     <td valign="top">
                         <label>Password:</label>
-                        <input [(ngModel)]="doctorObj.Password" type="text" name="Password" value="" formControlName="docPassword"/>
+                        <input [(ngModel)]="doctorObj.Password" type="password" name="Password" value="" formControlName="docPassword"/>
                         <div *ngIf="hasError('required','docPassword')" style="color: red;">Password is required</div>
                         <input type="hidden" name="UserType" value="Doctor" />
                     </td>
