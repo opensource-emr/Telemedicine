@@ -12,7 +12,8 @@ import { DomSanitizer } from '@angular/platform-browser';
     templateUrl: './app.doctorroom.html'
   })
 export class DoctorRoomComponent{
-  timer1:any = timer(this.global.TimerValue,this.global.TimerValue);
+  timerpat:any = timer(this.global.TimerValue,this.global.TimerValue);
+  timerdoc:any = timer(this.global.TimerValue,this.global.TimerValue);
 
   patients:Array<Patient> = new Array<Patient>();
   constructor(public httpClient:HttpClient , 
@@ -20,14 +21,23 @@ export class DoctorRoomComponent{
     public global:Global){
       this.RefreshPatients();
       if(this.global.IsDoctor==false){
-        this.timer1.subscribe(
-          ()=>{this.httpClient.post(global.ApiUrl+
+        this.timerpat.subscribe(
+          ()=>{
+            this.httpClient.post(global.ApiUrl+
             "TakeFinalReport", this.global.patientObj)
             .subscribe(res=>this.SuccessTestDone(res))
             ;
           }
         );    
       }
+      else{
+        this.timerdoc.subscribe(
+          ()=>{
+            this.RefreshPatients();
+          }
+        );    
+      }
+     
   }
   
   RefreshPatients(){

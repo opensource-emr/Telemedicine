@@ -10,8 +10,6 @@
     <div class="patient-info">
         <div class="info-heading">
             <img src="assets/img/logo-cap.png" height="50px"> 
-            <!-- <input *ngIf="(this.global.IsDoctor)" type="button" (click)="RefreshPatients()" name="name" value="Refresh Patients" /> -->
-             <button *ngIf="(this.global.IsDoctor)" type="button" (click)="RefreshPatients()" name="name"><span>&#9850;</span>&nbsp;Refresh Patients</button>
         </div>
         <div class="info-listing" *ngIf="(this.global.IsDoctor)">
             <table border="0">

@@ -16,11 +16,15 @@ namespace TestTele.Models
         public bool TiredNess { get; set; }
         public string Medication { get; set; }
         public int Status { get; set; }
+
+        public DateTime LastUpdated { get; set; }
     }
     
     public class Doctor
     {
         public string DoctorName { get; set; }
         public string Password { get; set; }
+
+        public DateTime LastUpdated { get; set; }
     }
 }

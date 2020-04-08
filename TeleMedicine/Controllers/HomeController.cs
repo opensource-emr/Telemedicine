@@ -15,7 +15,7 @@ namespace TestTele.Controllers
         private readonly ILogger<HomeController> _logger;
         DoctorCabin _doctorcabin = null;
         WaitingRoom _waitingroom = null;
-        
+        private int idletime = 0;
         public IConfiguration Configuration { get; }
         public IActionResult Index()
         {
@@ -29,24 +29,48 @@ namespace TestTele.Controllers
             _logger = logger;
             _doctorcabin = doctorcabin;
             _waitingroom = waitingroom;
+            idletime = Convert.ToInt32(configuration["IdleTime"]);
 
         }
+        
         public IActionResult GetDoctor()
         {
             return Json(_doctorcabin.Doctor);
         }
         public IActionResult CurrentPatients()
         {
+            this.RemoveIdle();
             return Json(_waitingroom.Patients);
         }
+        private void RemoveIdle()
+        {
+            var removepats = new List<Patient>();
+
+            foreach (var t in _waitingroom.Patients)
+            {
+                var diffInSeconds = DateTime.Now.Subtract(t.LastUpdated).TotalSeconds;
+                if (diffInSeconds > idletime)
+                {
+                    removepats.Add(t);
+                }
+            }
+            foreach(var t in removepats)
+            {
+                _waitingroom.Patients.Remove(t);
+            }
+        }
+        
         public IActionResult ShouldIGoOut([FromBody]Patient obj)
         {
             foreach (var t in _waitingroom.Patients)
             {
-                if ((obj.PatientName == t.PatientName) && (t.Status == -1))
+                if ((obj.PatientName == t.PatientName))
                 {
-
-                    return Ok(true);
+                    t.LastUpdated = DateTime.Now;
+                    if ((t.Status == -1))
+                    {
+                        return Ok(true);
+                    }
                 }
             }
 
@@ -57,10 +81,13 @@ namespace TestTele.Controllers
         {
             foreach (var t in _waitingroom.Patients)
             {
-                if ((obj.PatientName == t.PatientName) && (t.Status == 1))
+                if ((obj.PatientName == t.PatientName))
                 {
-
-                    return Ok(true);
+                    t.LastUpdated = DateTime.Now;
+                    if ((t.Status == 1))
+                    {
+                        return Ok(true);
+                    }
                 }
             }
 
@@ -73,7 +100,13 @@ namespace TestTele.Controllers
         }
         public IActionResult LoginPatient([FromBody] Patient obj)
         {
+            if (!(getPatientbyName(obj.PatientName) is  null))
+            {
+               return StatusCode(500,"Patient already logged in");
+            }
+            obj.LastUpdated =  DateTime.Now;
             _waitingroom.Patients.Add(obj);
+            
             if (_waitingroom.Patients != null)
             {
                  if (_waitingroom.Patients.Count > 0)
@@ -162,6 +195,7 @@ namespace TestTele.Controllers
             else
             {
                 p.Status = 1;
+                p.LastUpdated = DateTime.Now;
                 _doctorcabin.Patient = p;
                 return Ok(p);
             }

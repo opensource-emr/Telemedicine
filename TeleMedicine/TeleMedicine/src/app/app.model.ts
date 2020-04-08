@@ -10,7 +10,6 @@ export class Patient{
     TiredNess:boolean=false;
     Problem:string="";
     Medication:string = "";
-    LastUpdatedTime:Date
 }
 export class Doctor{
     DoctorName:string ="";

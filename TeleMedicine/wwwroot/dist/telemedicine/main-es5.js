@@ -65,7 +65,7 @@
     /* harmony default export */
 
 
-    __webpack_exports__["default"] = "<div class=\"doctor-room\">         \r\n   \r\n    <iframe\r\n    [src]=\"global.config.videourl | safe\"\r\n    width=800\r\n    height=640\r\n    scrolling=\"auto\"\r\n    allow=\"microphone; camera\"\r\n  ></iframe>\r\n    <div class=\"patient-info\">\r\n        <div class=\"info-heading\">\r\n            <img src=\"assets/img/logo-cap.png\" height=\"50px\"> \r\n            <!-- <input *ngIf=\"(this.global.IsDoctor)\" type=\"button\" (click)=\"RefreshPatients()\" name=\"name\" value=\"Refresh Patients\" /> -->\r\n             <button *ngIf=\"(this.global.IsDoctor)\" type=\"button\" (click)=\"RefreshPatients()\" name=\"name\"><span>&#9850;</span>&nbsp;Refresh Patients</button>\r\n        </div>\r\n        <div class=\"info-listing\" *ngIf=\"(this.global.IsDoctor)\">\r\n            <table border=\"0\">\r\n                <tr><td cellpadding=\"0\" cellspacing=\"0\" colspan=\"2\">Patients in Queue</td></tr>\r\n                <tr *ngFor=\"let temp of patients\">\r\n                    <td cellpadding=\"0\" cellspacing=\"0\">&nbsp;{{temp.PatientId}}.)&nbsp;&nbsp;{{temp.PatientName}}</td>\r\n                    <td cellpadding=\"0\" cellspacing=\"0\"><a  (click)=\"CallPatient(temp)\" [routerLink]=\"['/DoctorRoom']\" class=\"text-link\">Call</a></td>\r\n                </tr>\r\n            </table>\r\n        </div>\r\n        <div class=\"p-all\">\r\n            <label for=\"\"> <span>&#10148;</span>&nbsp;&nbsp;Patient Id :- <span>{{global.patientObj?.PatientId}}</span></label>\r\n            <label for=\"\"> <span>&#10148;</span>&nbsp;&nbsp;Patient Name :- <span>{{global.patientObj?.PatientName}}</span></label>\r\n            <label for=\"\"> <span>&#10148;</span>&nbsp;&nbsp;Fever :- <span  [ngClass]=\"global.patientObj?.Fever == true ? 'badge-yes': 'badge-no'\">{{global.patientObj?.Fever | yesNoPipe}}</span></label>\r\n            <label for=\"\"> <span>&#10148;</span>&nbsp;&nbsp;Cough :- <span [ngClass]=\"global.patientObj?.Cough == true ? 'badge-yes': 'badge-no'\">{{global.patientObj?.Cough | yesNoPipe}}</span></label>\r\n            <label for=\"\"> <span>&#10148;</span>&nbsp;&nbsp;Tiredness :- <span [ngClass]=\"global.patientObj?.TiredNess == true ? 'badge-yes': 'badge-no'\">{{global.patientObj?.TiredNess | yesNoPipe}}</span></label>\r\n            <label for=\"\"> <span>&#10148;</span>&nbsp;&nbsp;Breathing issues :- <span [ngClass]=\"global.patientObj?.Breathing == true ? 'badge-yes': 'badge-no'\">{{global.patientObj?.Breathing| yesNoPipe}}</span></label>\r\n            <label for=\"\">  <span>&#10148;</span>&nbsp;&nbsp;Details :- <span>{{global.patientObj?.Problem}}</span></label>\r\n            <span *ngIf=\"(this.global.IsDoctor)\" style=\"margin-bottom: 15px; display: block\">Treatment Advice :</span> <textarea *ngIf=\"(this.global.IsDoctor)\" [(ngModel)]=\"global.patientObj.Medication\"></textarea>\r\n            <input *ngIf=\"(this.global.IsDoctor)\" type=\"button\" value=\"Complete Visit\" (click)=\"PatientAttended(global.patientObj)\">\r\n        </div>\r\n    </div>\r\n</div>\r\n";
+    __webpack_exports__["default"] = "<div class=\"doctor-room\">         \r\n   \r\n    <iframe\r\n    [src]=\"global.config.videourl | safe\"\r\n    width=800\r\n    height=640\r\n    scrolling=\"auto\"\r\n    allow=\"microphone; camera\"\r\n  ></iframe>\r\n    <div class=\"patient-info\">\r\n        <div class=\"info-heading\">\r\n            <img src=\"assets/img/logo-cap.png\" height=\"50px\"> \r\n        </div>\r\n        <div class=\"info-listing\" *ngIf=\"(this.global.IsDoctor)\">\r\n            <table border=\"0\">\r\n                <tr><td cellpadding=\"0\" cellspacing=\"0\" colspan=\"2\">Patients in Queue</td></tr>\r\n                <tr *ngFor=\"let temp of patients\">\r\n                    <td cellpadding=\"0\" cellspacing=\"0\">&nbsp;{{temp.PatientId}}.)&nbsp;&nbsp;{{temp.PatientName}}</td>\r\n                    <td cellpadding=\"0\" cellspacing=\"0\"><a  (click)=\"CallPatient(temp)\" [routerLink]=\"['/DoctorRoom']\" class=\"text-link\">Call</a></td>\r\n                </tr>\r\n            </table>\r\n        </div>\r\n        <div class=\"p-all\">\r\n            <label for=\"\"> <span>&#10148;</span>&nbsp;&nbsp;Patient Id :- <span>{{global.patientObj?.PatientId}}</span></label>\r\n            <label for=\"\"> <span>&#10148;</span>&nbsp;&nbsp;Patient Name :- <span>{{global.patientObj?.PatientName}}</span></label>\r\n            <label for=\"\"> <span>&#10148;</span>&nbsp;&nbsp;Fever :- <span  [ngClass]=\"global.patientObj?.Fever == true ? 'badge-yes': 'badge-no'\">{{global.patientObj?.Fever | yesNoPipe}}</span></label>\r\n            <label for=\"\"> <span>&#10148;</span>&nbsp;&nbsp;Cough :- <span [ngClass]=\"global.patientObj?.Cough == true ? 'badge-yes': 'badge-no'\">{{global.patientObj?.Cough | yesNoPipe}}</span></label>\r\n            <label for=\"\"> <span>&#10148;</span>&nbsp;&nbsp;Tiredness :- <span [ngClass]=\"global.patientObj?.TiredNess == true ? 'badge-yes': 'badge-no'\">{{global.patientObj?.TiredNess | yesNoPipe}}</span></label>\r\n            <label for=\"\"> <span>&#10148;</span>&nbsp;&nbsp;Breathing issues :- <span [ngClass]=\"global.patientObj?.Breathing == true ? 'badge-yes': 'badge-no'\">{{global.patientObj?.Breathing| yesNoPipe}}</span></label>\r\n            <label for=\"\">  <span>&#10148;</span>&nbsp;&nbsp;Details :- <span>{{global.patientObj?.Problem}}</span></label>\r\n            <span *ngIf=\"(this.global.IsDoctor)\" style=\"margin-bottom: 15px; display: block\">Treatment Advice :</span> <textarea *ngIf=\"(this.global.IsDoctor)\" [(ngModel)]=\"global.patientObj.Medication\"></textarea>\r\n            <input *ngIf=\"(this.global.IsDoctor)\" type=\"button\" value=\"Complete Visit\" (click)=\"PatientAttended(global.patientObj)\">\r\n        </div>\r\n    </div>\r\n</div>\r\n";
     /***/
   },
 
@@ -809,13 +809,18 @@
         this.httpClient = httpClient;
         this.routing = routing;
         this.global = global;
-        this.timer1 = Object(rxjs__WEBPACK_IMPORTED_MODULE_6__["timer"])(this.global.TimerValue, this.global.TimerValue);
+        this.timerpat = Object(rxjs__WEBPACK_IMPORTED_MODULE_6__["timer"])(this.global.TimerValue, this.global.TimerValue);
+        this.timerdoc = Object(rxjs__WEBPACK_IMPORTED_MODULE_6__["timer"])(this.global.TimerValue, this.global.TimerValue);
         this.patients = new Array();
         this.RefreshPatients();
 
         if (this.global.IsDoctor == false) {
-          this.timer1.subscribe(() => {
+          this.timerpat.subscribe(() => {
             this.httpClient.post(global.ApiUrl + "TakeFinalReport", this.global.patientObj).subscribe(res => this.SuccessTestDone(res));
+          });
+        } else {
+          this.timerdoc.subscribe(() => {
+            this.RefreshPatients();
           });
         }
       }
@@ -1818,7 +1823,7 @@
   /***/
   function _(module, exports, __webpack_require__) {
     module.exports = __webpack_require__(
-    /*! E:\telemedicine\TeleMedicine\TeleMedicine\src\main.ts */
+    /*! E:\Telemedicine\Telemedicine\TeleMedicine\TeleMedicine\src\main.ts */
     "./src/main.ts");
     /***/
   }
