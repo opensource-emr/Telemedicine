@@ -13,6 +13,7 @@ import { HomeRoutes } from './app.routing';
 import { ClinicComponent } from './app.cliniccomponent';
 import { FinalReportComponent } from './app.finalreportcomponent';
 import { YesNoPipe } from 'src/common/YesNo.pipe';
+import 'zone.js/dist/zone';
 import { ConfigService } from 'src/common/common.appconfig';
 import { SafePipe } from 'src/common/common.safe';
 const initializerConfigFn = (config: ConfigService ) => {

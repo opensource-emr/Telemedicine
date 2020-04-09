@@ -42,7 +42,7 @@ export class LoginComponent {
   LoginDoctor() {
     if(this.doctorFrm.invalid)
     {
-      alert("Doctor form is invalid");
+      //alert("Doctor form is invalid");
       return;
     }
     this.global.doctorObj = this.doctorObj;
@@ -64,7 +64,6 @@ export class LoginComponent {
   }
   LoginPatient() {
     if(this.patientFrm.invalid){
-      alert("Patient form invalid");
       return;
     }
     this.httpClient.

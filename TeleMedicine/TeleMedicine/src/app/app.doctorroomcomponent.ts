@@ -40,6 +40,7 @@ export class DoctorRoomComponent{
      
   }
   
+
   RefreshPatients(){
     this.httpClient.get(this.global.ApiUrl +  "CurrentPatients")
     .subscribe(res=>this.Success(res),

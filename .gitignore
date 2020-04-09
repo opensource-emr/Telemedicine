@@ -3,3 +3,8 @@
 ################################################################################
 
 /TeleMedicine/bin/Debug/netcoreapp3.1
+####node modules
+TeleMedicine/TeleMedicine/node_modules/
+##obj folder
+TeleMedicine/obj
+

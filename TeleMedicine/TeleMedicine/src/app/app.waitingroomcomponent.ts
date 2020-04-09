@@ -15,7 +15,6 @@ export class WaitingRoom{
   constructor(public httpClient:HttpClient , 
     public routing:Router ,
     public global:Global){
-      console.log(this.global);
       this.timer1.subscribe(
         ()=>{this.httpClient.post(global.ApiUrl+
           "CanIComeIn", this.global.patientObj)

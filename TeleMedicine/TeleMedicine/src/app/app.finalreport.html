@@ -1,21 +1,49 @@
-<div class="wait-section">
-    <div class="report-title">
-    	<img src="assets/img/logo-cap.png" height="50">
+<div class="wait-section" style="height: auto;">
+    <div class="report-title" id="Report">
+		<div>
+    	<img src="assets/img/logo-cap1.png" height="50">
     	<h1>
          This is Doctor Report for <span class="user-title">{{global.patientObj?.PatientName}}</span>.
-        </h1>
+        </h1></div>
         <div class="waiting-icon">
 			<ul class="inline">
+				<li><span>&#10148;</span>&nbsp;&nbsp;Patient Name :- {{global.patientObj?.PatientName}} </li>
+				<li><span>&#10148;</span>&nbsp;&nbsp;Age :- {{global.patientObj?.Age}} </li>
+				<li><span>&#10148;</span>&nbsp;&nbsp;Sex :- {{global.patientObj?.Sex}} </li>
+				<li><span>&#10148;</span>&nbsp;&nbsp;Email :- {{global.patientObj?.Email}} </li>
+				<li><span>&#10148;</span>&nbsp;&nbsp;Mobile Number :- {{global.patientObj?.MobileNumber}} </li>
+				<li><span>&#10148;</span>&nbsp;&nbsp;Address :- {{global.patientObj?.Address}} </li>
+
 				<li><span>&#10148;</span>&nbsp;&nbsp;Fever :- {{global.patientObj?.Fever| yesNoPipe}} </li>
 				<li><span>&#10148;</span>&nbsp;&nbsp;Cough :- {{global.patientObj?.Cough| yesNoPipe}} </li>
+				<li><span>&#10148;</span>&nbsp;&nbsp;BreathingDifficulty :- {{global.patientObj?.BreathingDifficulty| yesNoPipe}}</li>
+				
 				<li><span>&#10148;</span>&nbsp;&nbsp;Tiredness :- {{global.patientObj?.TiredNess| yesNoPipe}}</li>
-				<li><span>&#10148;</span>&nbsp;&nbsp;Breathing issues :- {{global.patientObj?.Breathing| yesNoPipe}}</li>
-				<li><span>&#10148;</span>&nbsp;&nbsp;Details<br>{{global.patientObj?.Problem}}</li>
+				<li><span>&#10148;</span>&nbsp;&nbsp;Sore Throat :- {{global.patientObj?.SoreThroat| yesNoPipe}} </li>
+				<li><span>&#10148;</span>&nbsp;&nbsp;Bodyache :- {{global.patientObj?.Bodyache| yesNoPipe}} </li>
+
+				<li><span>&#10148;</span>&nbsp;&nbsp;ChestPain :- {{global.patientObj?.ChestPain| yesNoPipe}} </li>
+				<li><span>&#10148;</span>&nbsp;&nbsp;Diarrhea :- {{global.patientObj?.Diarrhea| yesNoPipe}} </li>
+				<li><span>&#10148;</span>&nbsp;&nbsp;Any Other Symptoms :- {{global.patientObj?.AnyOtherSymptoms}} </li>
+
+				<li><span>&#10148;</span>&nbsp;&nbsp;Heart Disease :- {{global.patientObj?.HeartDisease| yesNoPipe}} </li>
+				<li><span>&#10148;</span>&nbsp;&nbsp;High Blood Pressure :- {{global.patientObj?.HighBloodPressure| yesNoPipe}} </li>
+				<li><span>&#10148;</span>&nbsp;&nbsp;Diabetes :- {{global.patientObj?.Diabetes| yesNoPipe}} </li>
+
+				<li><span>&#10148;</span>&nbsp;&nbsp;Copd/Asthma :- {{global.patientObj?.Copd| yesNoPipe}} </li>
+				<li><span>&#10148;</span>&nbsp;&nbsp;Transplant :- {{global.patientObj?.Transplant| yesNoPipe}} </li>
+				<li><span>&#10148;</span>&nbsp;&nbsp;Recent Travel :- {{global.patientObj?.RecentTravel| yesNoPipe}} </li>
+
+				<li><span>&#10148;</span>&nbsp;&nbsp;Cancer :- {{global.patientObj?.Cancer| yesNoPipe}} </li>
+				<li><span>&#10148;</span>&nbsp;&nbsp;Exposure to Covid patients :- {{global.patientObj?.Exposure| yesNoPipe}} </li>
+				
+				<li><span>&#10148;</span>&nbsp;&nbsp;Patient Medical Symptomps<br>{{global.patientObj?.PatientMedicalSymptomps}}</li>
+				<li><span>&#10148;</span>&nbsp;&nbsp;Other Patient Information<br>{{global.patientObj?.OtherPatientInformation}}</li>
 				<li><span>&#10148;</span>&nbsp;&nbsp;Medication given by doctor<br>{{global.patientObj?.Medication}}</li>
 			</ul>
-			
 		</div>
-        
+		<div class="print-action">
+            <input type="button" value="Print Report" (click)="Print()">
+        </div>
     </div>
-   
-</div>
+ </div>

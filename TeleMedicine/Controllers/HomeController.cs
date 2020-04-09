@@ -16,12 +16,14 @@ namespace TestTele.Controllers
         DoctorCabin _doctorcabin = null;
         WaitingRoom _waitingroom = null;
         private int idletime = 0;
+
         public IConfiguration Configuration { get; }
         public IActionResult Index()
         {
             ViewData["HospitalName"] = Configuration["HospitalName"];
             return View();
         }
+
         public HomeController(ILogger<HomeController> logger,
         DoctorCabin doctorcabin, WaitingRoom waitingroom , IConfiguration configuration)
         {
@@ -30,9 +32,7 @@ namespace TestTele.Controllers
             _doctorcabin = doctorcabin;
             _waitingroom = waitingroom;
             idletime = Convert.ToInt32(configuration["IdleTime"]);
-
         }
-        
         public IActionResult GetDoctor()
         {
             return Json(_doctorcabin.Doctor);
@@ -54,12 +54,12 @@ namespace TestTele.Controllers
                     removepats.Add(t);
                 }
             }
-            foreach(var t in removepats)
+            foreach (var t in removepats)
             {
                 _waitingroom.Patients.Remove(t);
             }
         }
-        
+
         public IActionResult ShouldIGoOut([FromBody]Patient obj)
         {
             foreach (var t in _waitingroom.Patients)
@@ -100,16 +100,16 @@ namespace TestTele.Controllers
         }
         public IActionResult LoginPatient([FromBody] Patient obj)
         {
-            if (!(getPatientbyName(obj.PatientName) is  null))
+            if (!(getPatientbyName(obj.PatientName) is null))
             {
-               return StatusCode(500,"Patient already logged in");
+                return StatusCode(500, "Patient already logged in");
             }
-            obj.LastUpdated =  DateTime.Now;
+            obj.LastUpdated = DateTime.Now;
             _waitingroom.Patients.Add(obj);
-            
+
             if (_waitingroom.Patients != null)
             {
-                 if (_waitingroom.Patients.Count > 0)
+                if (_waitingroom.Patients.Count > 0)
                 {
                     obj.PatientId = _waitingroom.Patients.Count;
                 }
