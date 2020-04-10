@@ -5,6 +5,23 @@
 /TeleMedicine/bin/Debug/netcoreapp3.1
 ####node modules
 TeleMedicine/TeleMedicine/node_modules/
+
+TeleMedicine/wwwroot/dist/
+
 ##obj folder
 TeleMedicine/obj
+
+*.lock
+*.log
+bin
+obj
+.vs
+package-lock.json
+$tf/
+
+
+.tfignore
+*.txt
+*.xlsx
+
 
