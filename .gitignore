@@ -19,9 +19,6 @@ obj
 package-lock.json
 $tf/
 
-
-.tfignore
-*.txt
 *.xlsx
 
 
