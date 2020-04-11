@@ -6,7 +6,7 @@
 ####node modules
 TeleMedicine/TeleMedicine/node_modules/
 
-## TeleMedicine/wwwroot/dist/
+TeleMedicine/wwwroot/dist/
 
 ##obj folder
 TeleMedicine/obj
