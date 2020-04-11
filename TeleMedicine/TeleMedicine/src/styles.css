@@ -7,16 +7,16 @@ html, body {
 }
 
 body {
-  background: #eeedf6;
+  background: #fff;
   font-family: 'Poppins', sans-serif;
   font-weight: 500;
   margin: auto;
-  font-size: 13px;
+  font-size: 12px;
   width: 100%;
 }
 
 table td {
-  font-size: 13px;
+  font-size: 12px;
   padding: 7px;
 }
 
@@ -43,7 +43,7 @@ table td {
     margin: auto;
     text-align: left;
     line-height: 75px;
-    font-size: 13px;
+    font-size: 12px;
     padding: 0px;
     border-radius: 5px;
     height: 100%;
@@ -63,11 +63,11 @@ table td {
   }
 
 input[type="text"], input[type="password"], input[type="email"] {
-  height: 40px;
+  height: 30px;
   width: 100%;
   border-radius: 5px;
   border: 1px solid #bbb;
-  background: #f5f6fa;
+  background: #fff;
   font-family: 'Poppins', sans-serif;
   margin-bottom: 7px;
   display: block;
@@ -76,11 +76,11 @@ input[type="text"], input[type="password"], input[type="email"] {
 }
 
 textarea {
-  min-height: 60px;
+  min-height: 40px;
   width: 100%;
   border-radius: 5px;
   border: 1px solid #bbb;
-  background: #f5f6fa;
+  background: #fff;
   font-family: 'Poppins', sans-serif;
   padding: 0 2px;
   margin-bottom: 7px;
@@ -125,7 +125,7 @@ input[type="button"], button {
 
 .patient-info .info-listing, .patient-info .p-all {
   line-height: initial;
-  font-size: 13px;
+  font-size: 12px;
   padding: 10px;
   border-radius: 4px;
   display: block;
@@ -162,7 +162,7 @@ input[type="button"], button {
     height: 550px;
     font-weight: 300;
     color: #444;
-    font-size: 13px;
+    font-size: 12px;
   }
 
     .patient-info .p-all label {
@@ -356,7 +356,7 @@ p.fever-checkbox {
   font-weight: 500;
   margin-right: 7px;
   text-transform: capitalize;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
   color: #333;
   margin-top: auto;
   min-width: 130px;
@@ -374,7 +374,7 @@ p.fever-checkbox {
   -webkit-flex-flow: row;
   flex-flow: row;
   height: 100%;
-  align-items: center;
+  align-items: top;
   position: relative;
 }
 
@@ -392,11 +392,15 @@ p.fever-checkbox {
 
   .full-section .patient-login, .full-section .doctor-login, .full-section .brand-title {
     margin: 15px;
-    padding: 15px;
     z-index: 999;
-    background: #fff;
     min-height: 550px;
   }
+
+    .full-section .patient-login form, .full-section .doctor-login form {
+      background: #fff;
+      padding: 10px;
+      border-radius: 5px;
+    }
 
 .brand-title {
   background-color: transparent !important;
@@ -440,17 +444,22 @@ table td label {
   }
 
 h5.form-header {
-  color: #009688;
+  color: #fff;
   line-height: initial;
   font-size: 25px;
   margin-top: auto;
-  margin-bottom: 25px;
+  margin-bottom: 5px;
 }
 
   h5.form-header span {
-    display: block;
-    color: #555;
-    font-size: 15px;
+    display: inline-block;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 300;
+    margin-left: 10px;
+    padding-left: 10px;
+    border-left: 1px solid;
+    line-height: 12px;
   }
 
 .full-section:before {
@@ -458,13 +467,13 @@ h5.form-header {
   position: fixed;
   top: 0px;
   right: 0px;
-  width: 50%;
+  width: 73%;
   background: #3f51b5;
   height: 100%;
 }
 
 img.brand-img {
-  height: 150px;
+  height: 65px;
 }
 
 .waiting-icon ul {
@@ -472,19 +481,24 @@ img.brand-img {
 }
 
   .waiting-icon ul.inline {
-    margin: 30px auto;
+    margin: 30px;
     text-align: left;
+    padding-left: 0px;
+  }
+
+  .waiting-icon ul li:nth-of-type(even) {
+    background: #f3f6f8;
   }
 
   .waiting-icon ul li {
     display: block;
-    padding: 15px;
+    padding: 15px 5px;
     border: none;
     border-radius: 5px;
     box-shadow: none;
     text-align: left;
     margin: auto;
-    font-size: 14px;
+    font-size: 12px;
     position: relative;
   }
 
@@ -616,6 +630,10 @@ img.brand-img {
     overflow: auto;
   }
 
+  h5.form-header, h5.form-header span {
+    color: #333;
+  }
+
   .brand-title {
     text-align: center;
   }
@@ -645,11 +663,15 @@ img.brand-img {
   }
 
     .full-section .patient-login, .full-section .doctor-login, .full-section .brand-title {
-      max-width: 90%;
+      max-width: 100%;
       height: auto;
       flex: 100%;
       width: 100%;
     }
+
+  .patient-login table tr td {
+    display: block;
+  }
 
   .brand-title h1 {
     font-size: 1.5rem;
@@ -671,13 +693,13 @@ img.brand-img {
 
 .p-que {
   color: #009688;
-  font-size: 14px;
+  font-size: 12px;
   background: #f9f9f9;
   padding: 9px 15px;
 }
 
   .p-que i {
-    font-size: 14px;
+    font-size: 12px;
     margin-right: 7px;
   }
 /*Loader*/
@@ -686,7 +708,7 @@ img.brand-img {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  min-height: 100%;
 }
 
   .loading-container img {
@@ -719,7 +741,7 @@ img.brand-img {
     .animated-item .waiting-info .for-info {
       margin-top: 5px;
       color: #5d5d5d;
-      font-size: 14px;
+      font-size: 12px;
       font-weight: 600;
       width: 90%;
       text-align: center;
@@ -780,10 +802,27 @@ i.fa {
   }
 }
 
-@media all and (max-width: 640px) {
-  .hide-sm {
-        display: none
+@media all and (max-width: 768px) {
+  h5.form-header span, h5.form-header {
+    display: inline-block;
+    color: #333;
   }
+
+  .brand-title h1 span {
+    margin-bottom: 2px;
+  }
+}
+
+@media all and (max-width: 640px) {
+  h5.form-header span, h5.form-header {
+    display: inline-block;
+    color: #333;
+  }
+
+  .hide-sm {
+    display: none
+  }
+
   .full-section {
     -webkit-flex-flow: column;
     flex-flow: column;
@@ -799,27 +838,23 @@ i.fa {
   font-weight: 600;
   margin: 10px auto;
   display: block;
-  font-size: 13px;
+  font-size: 12px;
 }
-.patient-login table{
+
+.patient-login table {
   table-layout: fixed;
   width: 100%;
 }
-.patient-login table tr.3-cols td{
-  width: 33.33%
-}
-.patient-login table tr.2-cols td{
-  width: 50%
-}
-.patient-login table tr td{padding-top: 0px; padding-bottom: 0px;}
-.wait-section .p-all{
-  width: 70%;
-  text-align: center;
-  background: #fff;
-  margin: 25px auto;
-  padding-top: 50px;
-  padding-bottom: 50px;
-  height: auto;
-  
-}
 
+  .patient-login table tr.3-cols td {
+    width: 33.33%
+  }
+
+  .patient-login table tr.2-cols td {
+    width: 50%
+  }
+
+  .patient-login table tr td {
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }

@@ -1,49 +1,50 @@
 <div class="wait-section" style="height: auto;">
-    <div class="report-title" id="Report">
+	<div class="report-title" id="Report">
 		<div>
-    	<img src="assets/img/logo-cap1.png" height="50">
-    	<h1>
-         This is Doctor Report for <span class="user-title">{{global.patientObj?.PatientName}}</span>.
-        </h1></div>
-        <div class="waiting-icon">
+			<img src="assets/img/logo-cap1.png" height="50">
+			<h1>
+				This is Doctor Report for <span class="user-title">{{global.patientObj?.PatientName}}</span>.
+			</h1>
+		</div>
+		<div class="waiting-icon">
 			<ul class="inline">
-				<li><span>&#10148;</span>&nbsp;&nbsp;Patient Name :- {{global.patientObj?.PatientName}} </li>
-				<li><span>&#10148;</span>&nbsp;&nbsp;Age :- {{global.patientObj?.Age}} </li>
-				<li><span>&#10148;</span>&nbsp;&nbsp;Sex :- {{global.patientObj?.Sex}} </li>
-				<li><span>&#10148;</span>&nbsp;&nbsp;Email :- {{global.patientObj?.Email}} </li>
-				<li><span>&#10148;</span>&nbsp;&nbsp;Mobile Number :- {{global.patientObj?.MobileNumber}} </li>
-				<li><span>&#10148;</span>&nbsp;&nbsp;Address :- {{global.patientObj?.Address}} </li>
+				<li><i class="fa fa-info-circle"></i>Patient Name : {{global.patientObj?.PatientName}} </li>
+				<li><i class="fa fa-info-circle"></i>Age : {{global.patientObj?.Age}} </li>
+				<li><i class="fa fa-info-circle"></i>Sex : {{global.patientObj?.Sex}} </li>
+				<li><i class="fa fa-info-circle"></i>Email : {{global.patientObj?.Email}} </li>
+				<li><i class="fa fa-info-circle"></i>Mobile Number : {{global.patientObj?.MobileNumber}} </li>
+				<li><i class="fa fa-info-circle"></i>Address : {{global.patientObj?.Address}} </li>
 
-				<li><span>&#10148;</span>&nbsp;&nbsp;Fever :- {{global.patientObj?.Fever| yesNoPipe}} </li>
-				<li><span>&#10148;</span>&nbsp;&nbsp;Cough :- {{global.patientObj?.Cough| yesNoPipe}} </li>
-				<li><span>&#10148;</span>&nbsp;&nbsp;BreathingDifficulty :- {{global.patientObj?.BreathingDifficulty| yesNoPipe}}</li>
-				
-				<li><span>&#10148;</span>&nbsp;&nbsp;Tiredness :- {{global.patientObj?.TiredNess| yesNoPipe}}</li>
-				<li><span>&#10148;</span>&nbsp;&nbsp;Sore Throat :- {{global.patientObj?.SoreThroat| yesNoPipe}} </li>
-				<li><span>&#10148;</span>&nbsp;&nbsp;Bodyache :- {{global.patientObj?.Bodyache| yesNoPipe}} </li>
+				<li><i class="fa fa-info-circle"></i>Fever : {{global.patientObj?.Fever| yesNoPipe}} </li>
+				<li><i class="fa fa-info-circle"></i>Cough : {{global.patientObj?.Cough| yesNoPipe}} </li>
+				<li><i class="fa fa-info-circle"></i>BreathingDifficulty : {{global.patientObj?.BreathingDifficulty| yesNoPipe}}</li>
 
-				<li><span>&#10148;</span>&nbsp;&nbsp;ChestPain :- {{global.patientObj?.ChestPain| yesNoPipe}} </li>
-				<li><span>&#10148;</span>&nbsp;&nbsp;Diarrhea :- {{global.patientObj?.Diarrhea| yesNoPipe}} </li>
-				<li><span>&#10148;</span>&nbsp;&nbsp;Any Other Symptoms :- {{global.patientObj?.AnyOtherSymptoms}} </li>
+				<li><i class="fa fa-info-circle"></i>Tiredness : {{global.patientObj?.Tiredness| yesNoPipe}}</li>
+				<li><i class="fa fa-info-circle"></i>Sore Throat : {{global.patientObj?.SoreThroat| yesNoPipe}} </li>
+				<li><i class="fa fa-info-circle"></i>Bodyache : {{global.patientObj?.Bodyache| yesNoPipe}} </li>
 
-				<li><span>&#10148;</span>&nbsp;&nbsp;Heart Disease :- {{global.patientObj?.HeartDisease| yesNoPipe}} </li>
-				<li><span>&#10148;</span>&nbsp;&nbsp;High Blood Pressure :- {{global.patientObj?.HighBloodPressure| yesNoPipe}} </li>
-				<li><span>&#10148;</span>&nbsp;&nbsp;Diabetes :- {{global.patientObj?.Diabetes| yesNoPipe}} </li>
+				<li><i class="fa fa-info-circle"></i>ChestPain : {{global.patientObj?.ChestPain| yesNoPipe}} </li>
+				<li><i class="fa fa-info-circle"></i>Diarrhea : {{global.patientObj?.Diarrhea| yesNoPipe}} </li>
+				<li><i class="fa fa-info-circle"></i>Any Other Symptoms : {{global.patientObj?.AnyOtherSymptoms}} </li>
 
-				<li><span>&#10148;</span>&nbsp;&nbsp;Copd/Asthma :- {{global.patientObj?.Copd| yesNoPipe}} </li>
-				<li><span>&#10148;</span>&nbsp;&nbsp;Transplant :- {{global.patientObj?.Transplant| yesNoPipe}} </li>
-				<li><span>&#10148;</span>&nbsp;&nbsp;Recent Travel :- {{global.patientObj?.RecentTravel| yesNoPipe}} </li>
+				<li><i class="fa fa-info-circle"></i>Heart Disease : {{global.patientObj?.HeartDisease| yesNoPipe}} </li>
+				<li><i class="fa fa-info-circle"></i>High Blood Pressure : {{global.patientObj?.HighBloodPressure| yesNoPipe}} </li>
+				<li><i class="fa fa-info-circle"></i>Diabetes : {{global.patientObj?.Diabetes| yesNoPipe}} </li>
 
-				<li><span>&#10148;</span>&nbsp;&nbsp;Cancer :- {{global.patientObj?.Cancer| yesNoPipe}} </li>
-				<li><span>&#10148;</span>&nbsp;&nbsp;Exposure to Covid patients :- {{global.patientObj?.Exposure| yesNoPipe}} </li>
-				
-				<li><span>&#10148;</span>&nbsp;&nbsp;Patient Medical Symptomps<br>{{global.patientObj?.PatientMedicalSymptomps}}</li>
-				<li><span>&#10148;</span>&nbsp;&nbsp;Other Patient Information<br>{{global.patientObj?.OtherPatientInformation}}</li>
-				<li><span>&#10148;</span>&nbsp;&nbsp;Medication given by doctor<br>{{global.patientObj?.Medication}}</li>
+				<li><i class="fa fa-info-circle"></i>Copd/Asthma : {{global.patientObj?.Copd| yesNoPipe}} </li>
+				<li><i class="fa fa-info-circle"></i>Transplant : {{global.patientObj?.Transplant| yesNoPipe}} </li>
+				<li><i class="fa fa-info-circle"></i>Recent Travel : {{global.patientObj?.RecentTravel| yesNoPipe}} </li>
+
+				<li><i class="fa fa-info-circle"></i>Cancer : {{global.patientObj?.Cancer| yesNoPipe}} </li>
+				<li><i class="fa fa-info-circle"></i>Exposure to Covid patients : {{global.patientObj?.Exposure| yesNoPipe}} </li>
+
+				<li class="full-width"><i class="fa fa-info-circle"></i>Pertinent Medical Symptoms<br>{{global.patientObj?.PatientMedicalSymptoms}}</li>
+				<li class="full-width"><i class="fa fa-info-circle"></i>Other Patient Information<br>{{global.patientObj?.OtherPatientInformation}}</li>
+				<li class="full-width"><i class="fa fa-info-circle"></i>Medication given by doctor<br>{{global.patientObj?.Medication}}</li>
 			</ul>
 		</div>
 		<div class="print-action">
-            <input type="button" value="Print Report" (click)="Print()">
-        </div>
-    </div>
- </div>
+			<input type="button" value="Print Report" (click)="Print()">
+		</div>
+	</div>
+</div>
