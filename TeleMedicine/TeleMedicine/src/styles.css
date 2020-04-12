@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Exo:wght@600&display=swap|Poppins:wght@500;600&display=swap');
 
 html, body {
-  height: auto;
+  height: 100%;
   width: 100%;
   min-height: 100%;
 }
@@ -88,14 +88,15 @@ textarea {
 
 input[type="button"], button {
   background: #009688;
-  padding: 10px 30px;
+  padding: 5px 25px;
   font-family: 'Poppins';
   color: #fff;
   text-transform: uppercase;
-  font-weight: bold;
+  font-weight: 500;
   border: 1px solid;
-  margin-top: 15px;
+  margin-top: 5px;
   cursor: pointer;
+  border-radius: 5px;
 }
 
 .info-heading button {
@@ -394,6 +395,7 @@ p.fever-checkbox {
     margin: 15px;
     z-index: 999;
     min-height: 550px;
+    padding-left: 31px;
   }
 
     .full-section .patient-login form, .full-section .doctor-login form {
@@ -429,10 +431,11 @@ table td label {
 .brand-title h1 {
   line-height: normal;
   color: #009688;
-  font-size: 2.0rem;
-  font-weight: 600;
-  margin: 5rem auto;
-  margin-top: 1rem;
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin: auto;
+  margin-top: 5rem;
+  font-family: 'Exo';
 }
 
   .brand-title h1 span {
@@ -473,7 +476,11 @@ h5.form-header {
 }
 
 img.brand-img {
-  height: 65px;
+  height: 50px;
+}
+
+img.hos-img {
+  height: 50px;
 }
 
 .waiting-icon ul {
@@ -538,9 +545,8 @@ img.brand-img {
 }
 
   .powered-section img {
-    opacity: 0.6;
-    height: 35px;
-    left: 25px;
+    height: 55px;
+    left: 0px;
     position: relative;
   }
 
@@ -589,6 +595,7 @@ img.brand-img {
   .brand-title h1 {
     font-size: 1.5rem;
     margin: auto;
+    margin-top: 3rem;
   }
 
     .brand-title h1 span {
@@ -596,7 +603,7 @@ img.brand-img {
     }
 
   img.brand-img {
-    height: 80px;
+    height: 50px;
   }
 
   .patient-info .p-all {
@@ -676,6 +683,7 @@ img.brand-img {
   .brand-title h1 {
     font-size: 1.5rem;
     margin: auto;
+    margin-top: 2rem;
   }
 
     .brand-title h1 span {
@@ -683,7 +691,7 @@ img.brand-img {
     }
 
   img.brand-img {
-    height: 80px;
+    height: 50px;
   }
 
   .pi-counter span.counter {
@@ -693,9 +701,11 @@ img.brand-img {
 
 .p-que {
   color: #009688;
-  font-size: 12px;
+  font-size: 14px;
   background: #f9f9f9;
   padding: 9px 15px;
+  font-family: 'Exo';
+  font-weight: bold;
 }
 
   .p-que i {
@@ -720,6 +730,7 @@ img.brand-img {
 
 .animated-item {
   text-align: center;
+  min-width: 100%;
 }
 
   .animated-item .waiting-info {
@@ -736,6 +747,7 @@ img.brand-img {
       z-index: 9;
       font-weight: 500;
       display: inline-block;
+      font-family: 'Exo';
     }
 
     .animated-item .waiting-info .for-info {
@@ -811,6 +823,13 @@ i.fa {
   .brand-title h1 span {
     margin-bottom: 2px;
   }
+
+  .doctor-room iframe {
+    height: auto;
+    border: none;
+    display: block;
+    width: 100%;
+  }
 }
 
 @media all and (max-width: 640px) {
@@ -819,8 +838,12 @@ i.fa {
     color: #333;
   }
 
+  p.fever-checkbox {
+    min-width: 150px;
+  }
+
   .hide-sm {
-    display: none
+    /* display: none */
   }
 
   .full-section {
@@ -836,7 +859,7 @@ i.fa {
 
 .head-sm {
   font-weight: 600;
-  margin: 10px auto;
+  margin: 5px auto;
   display: block;
   font-size: 12px;
 }

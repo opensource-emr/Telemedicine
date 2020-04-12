@@ -7,11 +7,11 @@
           allow="microphone; camera"></iframe>
   <div class="patient-info">
     <div class="info-heading">
-      <img src="assets/img/logo-cap1.png" height="50px">
+      <img src="./assets/img/hospital.png" height="50px">
     </div>
     <div class="info-listing" *ngIf="(this.global.IsDoctor)">
       <table border="0">
-        <tr><td cellpadding="0" cellspacing="0" colspan="2" class="p-que">Patients in Queue</td></tr>
+        <tr><td cellpadding="0" cellspacing="0" colspan="2" class="p-que"><i class="fa fa-user"></i>Patients in Queue</td></tr>
         <tr *ngFor="let temp of patients">
           <td cellpadding="0" cellspacing="0">&nbsp;{{temp.PatientId}})&nbsp;&nbsp;{{temp.PatientName}}</td>
           <td cellpadding="0" cellspacing="0"><a (click)="CallPatient(temp)" [routerLink]="['/DoctorRoom']" class="btn-call"><i class="fa fa-video-camera"></i>Call</a></td>
@@ -46,7 +46,7 @@
       <label for=""> <span>&#10148;</span>&nbsp;&nbsp;Cancer : <span [ngClass]="global.patientObj?.Cancer == true ? 'badge-yes': 'badge-no'">{{global.patientObj?.Cancer | yesNoPipe}}</span></label>
       <label for=""> <span>&#10148;</span>&nbsp;&nbsp;Exposure of Covid Patient : <span [ngClass]="global.patientObj?.Exposure == true ? 'badge-yes': 'badge-no'">{{global.patientObj?.Exposure | yesNoPipe}}</span></label>
 
-      <label for="">  <span>&#10148;</span>&nbsp;&nbsp;Patient Medical Symptoms : <span>{{global.patientObj?.PatientMedicalSymptoms}}</span></label>
+      <label for="">  <span>&#10148;</span>&nbsp;&nbsp;Other Pertinent Information : <span>{{global.patientObj?.PatientMedicalSymptoms}}</span></label>
       <!-- <label for="">  <span>&#10148;</span>&nbsp;&nbsp;Other Patient Information :- <span>{{global.patientObj?.OtherPatientInformation}}</span></label> -->
 
 

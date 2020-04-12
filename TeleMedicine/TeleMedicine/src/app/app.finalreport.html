@@ -1,7 +1,7 @@
 <div class="wait-section" style="height: auto;">
 	<div class="report-title" id="Report">
 		<div>
-			<img src="assets/img/logo-cap1.png" height="50">
+			<img src="assets/img/hospital.png" height="50">
 			<h1>
 				This is Doctor Report for <span class="user-title">{{global.patientObj?.PatientName}}</span>.
 			</h1>
@@ -38,8 +38,8 @@
 				<li><i class="fa fa-info-circle"></i>Cancer : {{global.patientObj?.Cancer| yesNoPipe}} </li>
 				<li><i class="fa fa-info-circle"></i>Exposure to Covid patients : {{global.patientObj?.Exposure| yesNoPipe}} </li>
 
-				<li class="full-width"><i class="fa fa-info-circle"></i>Pertinent Medical Symptoms<br>{{global.patientObj?.PatientMedicalSymptoms}}</li>
-				<li class="full-width"><i class="fa fa-info-circle"></i>Other Patient Information<br>{{global.patientObj?.OtherPatientInformation}}</li>
+				<li class="full-width"><i class="fa fa-info-circle"></i>Other Pertinent Information<br>{{global.patientObj?.PatientMedicalSymptoms}}</li>
+				<!--<li class="full-width"><i class="fa fa-info-circle"></i>Other Patient Information<br>{{global.patientObj?.OtherPatientInformation}}</li>-->
 				<li class="full-width"><i class="fa fa-info-circle"></i>Medication given by doctor<br>{{global.patientObj?.Medication}}</li>
 			</ul>
 		</div>
