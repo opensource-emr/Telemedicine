@@ -76,6 +76,12 @@ export class DoctorRoomComponent {
   }
   NextPatient(res) {
     if (res) {
+      this.patients.forEach(p=>{
+        if(p.PatientId==res.PatientId)
+        {
+          p.Status=res.Status;
+        }
+      })
       this.global.patientObj = res;
     }
     this.RefreshPatients();

@@ -1,0 +1,129 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <title>Status</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: none !important;
+        }
+
+            table th {
+                background: #dedee6;
+                font-weight: 600;
+                font-size: 14px;
+                text-align: left;
+            }
+
+            table tr td {
+                background: #fff;
+                font-weight: 500;
+                font-size: 13px;
+                border: none;
+            }
+
+            table tr:nth-of-type(even) td {
+                background: #f7f7f7;
+            }
+
+        .logged-doc-list .one-third-table {
+            width: 30%;
+            display: inline-block;
+        }
+
+        .logged-doc-list .two-third-table {
+            width: 69%;
+            display: inline-block;
+            float: right;
+        }
+
+        table tr th, table tr td {
+            padding: 10px 7px;
+        }
+
+        html {
+            background: #f7f7f7;
+        }
+
+        .logged-doc-list {
+            font-family: 'Poppins';
+            background: #fff;
+            padding: 25px;
+        }
+        .logged-doc-list h3{
+            color:#009688;
+        }
+        body {
+            background-color: #fff;
+            width: 90%;
+            margin: auto;
+            color: #555
+        }
+    </style>
+</head>
+<body>
+    <div class="logged-doc-list">
+        <div class="full-table">
+            <h3>
+                Logged Patient List:
+            </h3>
+            <table border="1">
+                <tr>
+                    <th>Patient Id </th>
+                    <th>Patient Name </th>
+                    <th>Age </th>
+                    <th>Sex</th>
+                    <th>Email</th>
+                    <th>MobileNumber</th>
+                    <th>Address</th>
+                </tr>
+                @foreach (Patient p in ViewBag.PatientList)
+                {
+                    <tr>
+                        <td>@p.PatientId</td>
+                        <td>@p.PatientName</td>
+                        <td>@p.Age</td>
+                        <td>@p.Sex</td>
+                        <td>@p.Email</td>
+                        <td>@p.MobileNumber</td>
+                        <td>@p.Address</td>
+
+                    </tr>
+                }
+            </table>
+        </div>
+        <div class="one-third-table">
+            <h3>Logged doctor :</h3>
+            <table border="1">
+                <tr>
+                    <th>Doctor Name</th>
+                </tr>
+                <tr>
+                    <td>@ViewBag.DoctorCabin.DoctorName</td>
+                </tr>
+            </table>
+        </div>
+        <div class="two-third-table">
+            <h3>Doctor's checkup</h3>
+            <table>
+                <tr>
+                    <th>Doctor Name</th>
+                    <th>Patient Name</th>
+                </tr>
+                <tr>
+                    <td>@ViewBag.DoctorCabin.DoctorName</td>
+                    <td>@ViewBag.DoctorCabinPatient.PatientName</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

@@ -14,7 +14,8 @@
         <tr><td cellpadding="0" cellspacing="0" colspan="2" class="p-que"><i class="fa fa-user"></i>Patients in Queue</td></tr>
         <tr *ngFor="let temp of patients">
           <td cellpadding="0" cellspacing="0">&nbsp;{{temp.PatientId}})&nbsp;&nbsp;{{temp.PatientName}}</td>
-          <td cellpadding="0" cellspacing="0"><a (click)="CallPatient(temp)" [routerLink]="['/DoctorRoom']" class="btn-call"><i class="fa fa-video-camera"></i>Call</a></td>
+          <td cellpadding="0" cellspacing="0"><a (click)="CallPatient(temp)" [routerLink]="['/DoctorRoom']" *ngIf="temp.Status==0" class="btn-call"><i class="fa fa-video-camera"></i>Call</a></td>
+          <td cellpadding="0" cellspacing="0" *ngIf="temp.Status==1">In Call</td>
         </tr>
       </table>
     </div>
