@@ -57,6 +57,10 @@ export class DoctorRoomComponent {
         res => this.Error(res));
   }
   CallPatient(callPatient: Patient) {
+    if(this.global.patientObj.Status==1)
+    {
+        return ;
+    }
     this.showPatDetail = true;
     this.httpClient.post(this.global.ApiUrl + "CallPatient"
       , callPatient)

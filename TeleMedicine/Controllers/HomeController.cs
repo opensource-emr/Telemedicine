@@ -67,7 +67,7 @@ namespace TestTele.Controllers
                 if ((obj.PatientName == t.PatientName))
                 {
                     t.LastUpdated = DateTime.Now;
-                    if ((t.Status == -1))
+                    if ((t.Status ==(int) TeleConstants.NotInCall))
                     {
                         return Ok(true);
                     }
@@ -84,7 +84,7 @@ namespace TestTele.Controllers
                 if ((obj.PatientName == t.PatientName))
                 {
                     t.LastUpdated = DateTime.Now;
-                    if ((t.Status == 1))
+                    if ((t.Status ==(int) TeleConstants.InActive))
                     {
                         return Ok(true);
                     }
@@ -145,7 +145,7 @@ namespace TestTele.Controllers
         public IActionResult WriteMedication([FromBody]Patient obj)
         {
             Patient p = getPatientbyName(_doctorcabin.Patient.PatientName);
-            if (p.Status == -1)
+            if (p.Status ==(int)TeleConstants.NotInCall)
             {
                 p.Medication = obj.Medication;
                 return Ok(true);
@@ -159,7 +159,7 @@ namespace TestTele.Controllers
         {
             Patient p = getPatientbyName(p1.PatientName);
             if (p is null) { return Ok(null); }
-            if (p.Status == -1)
+            if (p.Status == (int)TeleConstants.NotInCall)
             {
                 _waitingroom.Patients.Remove(p);
                 return Ok(p);
@@ -180,7 +180,7 @@ namespace TestTele.Controllers
             else
             {
                 _doctorcabin.Patient = new Patient();
-                p.Status = -1;
+                p.Status = (int)TeleConstants.NotInCall;
                 p.Medication = obj.Medication;
                 return Ok(p);
             }
@@ -194,7 +194,7 @@ namespace TestTele.Controllers
             }
             else
             {
-                p.Status = 1;
+                p.Status = (int)TeleConstants.InCall;
                 p.LastUpdated = DateTime.Now;
                 _doctorcabin.Patient = p;
                 return Ok(p);
