@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { timer  } from 'rxjs';
+import { timer, config  } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Global } from './app.global';
+import { Global } from '../common/app.global';
 @Component({
     selector: 'app-root',
     templateUrl: './app.waitingroom.html'
@@ -24,7 +24,12 @@ export class WaitingRoom{
       );    
   }
   Success(res){
-    if(res){
+    if(res==false){return;}
+    if(res.DoctorNameAttending.length>0){
+
+    this.global.patientObj.DoctorNameAttending=res.DoctorNameAttending;
+    var url:string = this.global.config.videourl.replace("DOCTORNAME",this.global.patientObj.DoctorNameAttending);
+    this.global.config.videourl = url;
     this.routing.navigate(['/DoctorRoom']);
     }
   }

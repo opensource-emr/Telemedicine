@@ -7,9 +7,8 @@ namespace TestTele
 {
     public enum TeleConstants
     {
-        InCall = 1,
-        InActive = 1,
-        NotInCall = -1,
-        NotInActive = -1,
+        DoctorAttending = 1,
+        WaitingRoom = 0,
+        PatientAttended = -1,
     }
 }

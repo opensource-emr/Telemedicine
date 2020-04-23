@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Global } from './app.global';
-import { Patient } from './app.model';
+import { Global } from '../common/app.global';
+import { Patient } from './model/app.model';
 import { timer } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DomSanitizer } from '@angular/platform-browser';

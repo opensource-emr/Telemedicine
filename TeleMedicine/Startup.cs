@@ -23,13 +23,19 @@ namespace TestTele
 
         public IConfiguration Configuration { get; }
 
+      
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
 
             services.AddControllersWithViews();
-            services.AddSingleton<DoctorCabin>();
+            services.AddSession(); // add session
+
+            List<Doctor> doctors = Configuration.GetSection("Doctors").Get<List<Doctor>>();
+            services.AddSingleton<List<DoctorCabin>>();
             services.AddSingleton<WaitingRoom>();
+            services.AddSingleton<List<Doctor>>(doctors);
+
             services.AddCors(o => o.AddPolicy("AllowMyOrigin", builder =>
             {
                 builder.AllowAnyOrigin()
@@ -55,6 +61,7 @@ namespace TestTele
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseSession();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

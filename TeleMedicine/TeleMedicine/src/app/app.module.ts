@@ -3,7 +3,7 @@ import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { APP_BASE_HREF } from '@angular/common';
 
 import { LoginComponent } from './app.login';
-import { Global } from './app.global';
+import { Global } from '../common/app.global';
 import { DoctorRoomComponent } from './app.doctorroomcomponent';
 import { WaitingRoom } from './app.waitingroomcomponent';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms"

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { Doctor, Patient } from "./app.model"
+import { Doctor, Patient } from "./model/app.model"
 import { HttpClient } from "@angular/common/http"
 import { Router } from "@angular/router"
-import { Global } from './app.global';
+import { Global } from '../common/app.global';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 @Component({
   selector: 'app-root',
@@ -53,6 +53,8 @@ export class LoginComponent {
   }
   SuccessDoctor(res) {
     this.global.IsDoctor = true;
+    var url:string = this.global.config.videourl.replace("DOCTORNAME",this.global.doctorObj.Name);
+    this.global.config.videourl = url;
     this.routing.navigate(['/DoctorRoom']);
   }
   SuccessPatient(res) {

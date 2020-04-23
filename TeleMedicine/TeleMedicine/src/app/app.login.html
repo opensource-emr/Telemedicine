@@ -26,7 +26,7 @@
             </td> -->
             <td>
               <label> Name </label>
-              <input [(ngModel)]="patientObj.PatientName" type="text" name="patientName" value=""
+              <input [(ngModel)]="patientObj.Name" type="text" name="patientName" value=""
                      formControlName="patUsrName" />
               <div *ngIf="hasError('required','patUsrName')" style="color: red;"> Name is required</div>
               <input type="hidden" name="UserType" value="Patient" />
@@ -201,7 +201,7 @@
 
             <td>
               <label>User Name :</label>
-              <input [(ngModel)]="doctorObj.DoctorName" type="text" name="UserName" value=""
+              <input [(ngModel)]="doctorObj.Name" type="text" name="UserName" value=""
                      formControlName="docUsrName" />
               <div *ngIf="hasError('required','docUsrName')" style="color: red;">
                 User Name is required
