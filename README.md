@@ -1,5 +1,5 @@
 # Telemedicine project
-This is a simple telemedicine project which helps doctor and patients to connect using video conferencing. You can see the full demo of the same at https://www.youtube.com/watch?v=GslXbdrWbgk. The video is in Nepalese language but you should be able to follow it up.
+This is a simple telemedicine project which helps doctor and patients to connect using video conferencing and chat. You can see the full demo of the same at https://www.youtube.com/watch?v=GslXbdrWbgk. The video is in Nepalese language but you should be able to follow it up.
 
 Below  is the basic flow of the project.
 
