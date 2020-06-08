@@ -40,7 +40,7 @@
         }
 
         .logged-doc-list .two-third-table {
-            width: 69%;
+            width:100%;
             display: inline-block;
             float: right;
         }
@@ -80,7 +80,7 @@
                     <th>Patient Id </th>
                     <th>Patient Name </th>
                     <th>Age </th>
-                    <th>Sex</th>
+                    <th>Gender</th>
                     <th>Email</th>
                     <th>MobileNumber</th>
                     <th>Address</th>
@@ -91,26 +91,29 @@
                         <td>@p.PatientId</td>
                         <td>@p.Name</td>
                         <td>@p.Age</td>
-                        <td>@p.Sex</td>
+                        <td>@p.Gender</td>
                         <td>@p.Email</td>
-                        <td>@p.PhoneNumber</td>
+                        <td>@p.MobileNumber</td>
                         <td>@p.Address</td>
 
                     </tr>
                 }
             </table>
         </div>
-        <div class="one-third-table">
+        @*<div class="one-third-table">
             <h3>Logged doctor :</h3>
             <table border="1">
                 <tr>
                     <th>Doctor Name</th>
                 </tr>
+                @foreach(Doctor d in ViewBag.DoctorList)
+                {
                 <tr>
-                    <td>@ViewBag.DoctorCabin.DoctorName</td>
+                    <td>@d.Name</td>
                 </tr>
+                }
             </table>
-        </div>
+        </div>*@
         <div class="two-third-table">
             <h3>Doctor's checkup</h3>
             <table>
@@ -118,12 +121,23 @@
                     <th>Doctor Name</th>
                     <th>Patient Name</th>
                 </tr>
-                <tr>
-                    <td>@ViewBag.DoctorCabin.DoctorName</td>
-                    <td>@ViewBag.DoctorCabinPatient.PatientName</td>
-                </tr>
+                @foreach (DoctorCabin d in ViewBag.DoctorCabins)
+                {
+                    <tr>
+                        <td>@d.Doctor.Name</td>
+                        <td>@d.Patient.Name</td>
+                    </tr>
+                }
             </table>
         </div>
     </div>
+    <script type="text/javascript">
+        window.onload = function () {
+            setTimeout(() => {
+                location.reload();
+            }
+            ,5000)
+        }
+    </script>
 </body>
 </html>

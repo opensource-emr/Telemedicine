@@ -7,15 +7,16 @@ namespace TestTele.Models
 {
     public class User
     {
+        public string SignalRConnectionId { get; set; }
         public string Name { get; set; }
-        public string PhoneNumber { get; set; }
+        public string MobileNumber { get; set; }
     }
     public class Patient : User
     {
         public int PatientId { get; set; }
         public string DoctorNameAttending { get; set; }
         public string Age { get; set; }
-        public string Sex { get; set; }
+        public string Gender { get; set; }
         public string  Email { get; set; }
         public string Address { get; set; }
         public bool Fever { get; set; }
@@ -34,19 +35,21 @@ namespace TestTele.Models
         public bool Transplant { get; set; }
         public bool RecentTravel { get; set; }
         public bool Cancer { get; set; }
-        public bool TransPlant { get; set; }
+      /*  public bool TransPlant { get; set; }*/
         public bool Exposure { get; set; }
 
-        public string PatientMedicalSymptomps { get; set; }
-        public string OtherPatientInformation { get; set; }
+        public string PatientMedicalSymptoms { get; set; }
+        //public string OtherPatientInformation { get; set; }
         public int Status { get; set; }
         public string Medication { get; set; }
         public DateTime LastUpdated { get; set; }
+       public double TotalCheckupTime { get; set; }
     }
     
     public class Doctor : User
     {
         public string Password { get; set; }
+
     }
 
     public class DoctorCabin
@@ -71,5 +74,16 @@ namespace TestTele.Models
         {
             this.Patients = new List<Patient>();
         }
+    }
+
+    public class Singleton
+    {
+        public int MyProperty { get; set; }
+    }
+    public class ChatMessage
+    {
+        public bool IsDoctor { get; set; }
+        public string Name { get; set; }
+        public string Message { get; set; }
     }
 }

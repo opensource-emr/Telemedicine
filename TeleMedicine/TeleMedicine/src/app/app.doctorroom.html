@@ -1,6 +1,6 @@
 <div class="doctor-room">
 
-  <iframe [src]="global.config.videourl | safe"
+   <iframe [src]="global.config.videourl | safe"
           width=800
           height=640
           scrolling="auto"
@@ -11,6 +11,7 @@
     </div>
     <div class="info-listing" *ngIf="(this.global.IsDoctor)">
       <table border="0">
+        <tr><th  class="p-que"><i class="fa fa-user-md"></i>Dr.{{global.doctorObj?.Name}}</th></tr>
         <tr><td cellpadding="0" cellspacing="0" colspan="2" class="p-que"><i class="fa fa-user"></i>Patients in Queue</td></tr>
         <tr *ngFor="let temp of patients">
           <td cellpadding="0" cellspacing="0">&nbsp;{{temp.PatientId}})&nbsp;&nbsp;{{temp.Name}}</td>
@@ -21,11 +22,11 @@
     </div>
     <div *ngIf="showPatDetail" class="p-all">
       <label for=""> <span>&#10148;</span>&nbsp;&nbsp;Patient Id : <span>{{global.patientObj?.PatientId}}</span></label>
-      <label for=""> <span>&#10148;</span>&nbsp;&nbsp;Patient Name : <span>{{global.patientObj?.name}}</span></label>
+      <label for=""> <span>&#10148;</span>&nbsp;&nbsp;Patient Name : <span>{{global.patientObj?.Name}}</span></label>
       <label for=""> <span>&#10148;</span>&nbsp;&nbsp;Age : <span>{{global.patientObj?.Age}}</span></label>
       <label for=""> <span>&#10148;</span>&nbsp;&nbsp;Sex : <span>{{global.patientObj?.Sex}}</span></label>
       <label for=""> <span>&#10148;</span>&nbsp;&nbsp;Email : <span>{{global.patientObj?.Email}}</span></label>
-      <label for=""> <span>&#10148;</span>&nbsp;&nbsp;MobileNumber : <span>{{global.patientObj?.MobileNumber}}</span></label>
+      <label for=""> <span>&#10148;</span>&nbsp;&nbsp;Mobile Number : <span>{{global.patientObj?.MobileNumber}}</span></label>
       <label for=""> <span>&#10148;</span>&nbsp;&nbsp;Address : <span>{{global.patientObj?.Address}}</span></label>
 
       <label for=""> <span>&#10148;</span>&nbsp;&nbsp;Fever : <span [ngClass]="global.patientObj?.Fever == true ? 'badge-yes': 'badge-no'">{{global.patientObj?.Fever | yesNoPipe}}</span></label>
@@ -47,12 +48,46 @@
       <label for=""> <span>&#10148;</span>&nbsp;&nbsp;Cancer : <span [ngClass]="global.patientObj?.Cancer == true ? 'badge-yes': 'badge-no'">{{global.patientObj?.Cancer | yesNoPipe}}</span></label>
       <label for=""> <span>&#10148;</span>&nbsp;&nbsp;Exposure of Covid Patient : <span [ngClass]="global.patientObj?.Exposure == true ? 'badge-yes': 'badge-no'">{{global.patientObj?.Exposure | yesNoPipe}}</span></label>
 
-      <label for="">  <span>&#10148;</span>&nbsp;&nbsp;Other Pertinent Information : <span>{{global.patientObj?.PatientMedicalSymptoms}}</span></label>
-      <!-- <label for="">  <span>&#10148;</span>&nbsp;&nbsp;Other Patient Information :- <span>{{global.patientObj?.OtherPatientInformation}}</span></label> -->
-
-
+      <label for="">  <span>&#10148;</span>&nbsp;&nbsp;Patient Medical Symptoms  : <span>{{global.patientObj?.PatientMedicalSymptoms}}</span></label>
       <span *ngIf="(this.global.IsDoctor)" style="margin-bottom: 15px; display: block">Treatment Advice :</span> <textarea *ngIf="(this.global.IsDoctor)" [(ngModel)]="global.patientObj.Medication"></textarea>
       <input *ngIf="(this.global.IsDoctor)" type="button" value="Complete Visit" (click)="PatientAttended(global.patientObj)">
     </div>
+    <div class="info-listing" *ngIf="(this.global.IsPatient)">
+      <table border="0">
+        <tr><th  class="p-que"><i class="fa fa-user-md"></i>Dr.&nbsp;{{global.patientObj?.DoctorNameAttending}}</th></tr>
+      </table>
+    </div>
+
+    <div class="chat-section">
+      <form [formGroup]="ChatForm">
+      <div class="chat-top">
+        <label *ngIf="showChat" for="selPatient" style="float: left;">{{ global.IsDoctor ? 'Patient' : 'Doctor' }}: </label>
+        <select *ngIf="showChat" id="selPatient" style="float: left;" formControlName="selUser" (change)="OnChatUserChange()">
+            <option disabled value="null">Select {{ global.IsDoctor ? 'Patient' : 'Doctor' }} </option>
+            <option *ngFor="let user of ChatUserDropDowns"> {{ user.Name }} </option>
+        </select>
+        <div *ngIf="hasError('required','selUser') && showChat" style="color: red;">
+          Select {{ global.IsDoctor ? 'Patient' : 'Doctor' }} is required
+        </div>
+        <input type="button" style="float: right;" [value]="showChat ? 'Hide Chat' : 'Show Chat'" (click)="OnShowHideChat()" />
+      </div>
+      <div *ngIf="showChat" class="chat-main">
+        <p *ngFor="let msg of ChatMessages" [ngClass]="msg.Class">
+          <b>{{ msg.Name }}:</b>{{ msg.Message }}
+        </p>
+      </div>
+      <div *ngIf="showChat" class="chat-btm">
+        <div class="chat-input">
+          <input type="text" placeholder="Enter your message" formControlName="chatMessage" />
+          <div *ngIf="hasError('required','chatMessage')" style="color: red;">
+            Chat message is required
+          </div>
+        </div>
+        <input type="button" (click)="SendChatMsg()" value="Send" [disabled]="!ChatForm.valid" />
+      </div>
+    </form>
+    </div>
+
   </div>
 </div>
+

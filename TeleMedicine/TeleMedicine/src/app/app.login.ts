@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { Doctor, Patient } from "./model/app.model"
 import { HttpClient } from "@angular/common/http"
 import { Router } from "@angular/router"
 import { Global } from '../common/app.global';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { User } from './model/app.model';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.login.html'
@@ -14,11 +16,12 @@ export class LoginComponent {
   patientObj: Patient = new Patient();
   patientFrm: FormGroup;
   doctorFrm: FormGroup;
+
   constructor(public httpClient: HttpClient,
     public routing: Router,
     public global: Global,
-    private formBuilder: FormBuilder ) {
-      
+    private formBuilder: FormBuilder) {
+    
     this.initForm();
   }
 
@@ -30,19 +33,18 @@ export class LoginComponent {
       docUsrName: ['', Validators.required],
       docPassword: ['', Validators.required]
     });
+    this.doctorObj.Name = "doc1";
+    this.doctorObj.Password = "pass@123";
   }
-  hasError(typeofvalidator:string,controlname:string):boolean
-  {
-    var control=this.doctorFrm.controls[controlname];
-    if(control == undefined){
+  hasError(typeofvalidator: string, controlname: string): boolean {
+    var control = this.doctorFrm.controls[controlname];
+    if (control == undefined) {
       control = this.patientFrm.controls[controlname];
     }
     return control.hasError(typeofvalidator) && control.touched;
   }
   LoginDoctor() {
-    if(this.doctorFrm.invalid)
-    {
-      //alert("Doctor form is invalid");
+    if (this.doctorFrm.invalid) {
       return;
     }
     this.global.doctorObj = this.doctorObj;
@@ -52,20 +54,24 @@ export class LoginComponent {
         res => this.Error(res));
   }
   SuccessDoctor(res) {
+    this.global.token = res.Value.Token;
     this.global.IsDoctor = true;
-    var url:string = this.global.config.videourl.replace("DOCTORNAME",this.global.doctorObj.Name);
+    var url: string = this.global.config.videourl.replace("DOCTORNAME", this.global.doctorObj.Name);
     this.global.config.videourl = url;
     this.routing.navigate(['/DoctorRoom']);
+    
   }
   SuccessPatient(res) {
-    this.global.patientObj = res.Value;
+    this.global.token = res.Value.Token;
+    this.global.IsPatient = true;
+    this.global.patientObj = res.Value.User;
     this.routing.navigate(['/WaitingRoom']);
   }
   Error(res) {
     alert("Can not connect please talk with admin");
   }
   LoginPatient() {
-    if(this.patientFrm.invalid){
+    if (this.patientFrm.invalid) {
       return;
     }
     this.httpClient.

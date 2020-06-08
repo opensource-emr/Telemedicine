@@ -881,3 +881,59 @@ i.fa {
     padding-top: 0px;
     padding-bottom: 0px;
   }
+
+  .chat-section {
+    position: fixed;
+    bottom: 0px;
+    min-width: 25%;
+    line-height: initial;
+    padding: 0px 4px;
+  }
+
+  .loading-container .chat-section {
+    border: 1px grey dashed;
+    border-radius: 10px;
+    width: 25%;
+    right: 8px;
+    padding: 8px 4px 0px 8px;
+  }
+
+  .chat-section-collapse {
+    border: 0px !important;
+  }
+
+  .chat-top {
+    overflow: auto;
+  }
+
+  .chat-top > label, input {
+    line-height: initial;
+  }
+
+  .chat-main .sender-msg {
+    background: #f3f5f8;
+    padding: 4px 0px;
+    font-size: 14px;
+    margin: 10px 0px;
+  }
+
+  .chat-main .receiver-msg {
+      padding: 4px 0px;
+      font-size: 14px;
+      margin: 10px 0px;
+  }
+
+  .chat-btm {
+    display: table;
+    margin: 0px 4px;
+    padding: 0px 1px;
+  }
+
+  .chat-input {
+    display: table-cell;
+    width: 100%;
+  }
+
+  div.chat-input > input {
+    width: 98%;
+}

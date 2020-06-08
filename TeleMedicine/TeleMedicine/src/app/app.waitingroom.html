@@ -15,4 +15,36 @@
       <p class="for-info"><i class="fa fa-info-circle"></i>You are now in a queue. Your doctor will visit with you soon.</p>
     </div>
   </div>
+
+  <div class="chat-section" [ngClass]="{'chat-section-collapse': !showChat}">
+    <form [formGroup]="ChatForm">
+      <div class="chat-top">
+        <label *ngIf="showChat" for="selPatient" style="float: left;">Doctor: </label>
+        <select *ngIf="showChat" id="selPatient" style="float: left;" formControlName="selUser" (change)="OnChatUserChange($event)">
+          <option disabled value="null">Select Doctor</option>
+          <option *ngFor="let dr of doctors"> {{ dr.Name }} </option>
+        </select>
+        <div *ngIf="hasError('required','selUser') && showChat" style="color: red;">
+          Select Doctor is required
+        </div>
+        <input type="button" style="float: right;" [value]="showChat ? 'Hide Chat' : 'Show Chat'"
+          (click)="OnShowHideChat()" />
+      </div>
+      <div *ngIf="showChat" class="chat-main">
+        <p *ngFor="let msg of ChatMessages" [ngClass]="msg.Class">
+          <b>{{ msg.Name }}:</b>{{ msg.Message }}
+        </p>
+      </div>
+      <div *ngIf="showChat" class="chat-btm">
+        <div class="chat-input">
+          <input type="text" placeholder="Enter your message"  formControlName="chatMessage" />
+          <div *ngIf="hasError('required','chatMessage')" style="color: red;">
+            Chat message is required
+          </div>
+        </div>
+        <input type="button" (click)="SendChatMsg()" value="Send" [disabled]="!ChatForm.valid" />
+      </div>
+    </form>
+  </div>
+
 </div>

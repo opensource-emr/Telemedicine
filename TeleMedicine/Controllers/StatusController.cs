@@ -10,20 +10,23 @@ namespace TestTele.Controllers
     public class StatusController : Controller
     {
         private readonly WaitingRoom _waitingroom;
-        private readonly DoctorCabin _doctorcabin;
+        private readonly List<DoctorCabin> _doctorcabins;
 
-        public StatusController(WaitingRoom waitingroom, DoctorCabin doctorcabin)
+        //private readonly List<Doctor> _doctors;
+
+        public StatusController(WaitingRoom waitingroom, List<DoctorCabin> doctorcabins)
         {
             _waitingroom = waitingroom;
-            _doctorcabin = doctorcabin;
+            _doctorcabins = doctorcabins;
+            //_doctors = doctors;
         }
 
         public IActionResult Index()
-        {
-            ViewBag.DoctorCabin = _doctorcabin.Doctor;
+        { 
+            //ViewBag.DoctorList = _doctors;
             ViewBag.PatientList = _waitingroom.Patients;
-            ViewBag.DoctorCabinPatient = _doctorcabin.Patient;
-            return View();
+            ViewBag.DoctorCabins = _doctorcabins;
+              return View();
         }
     }
 }

@@ -23,6 +23,7 @@ import { Router } from '@angular/router';
         popupWinindow.document.open();
         let documentContent = '<html><head>';
         documentContent += '<link rel="stylesheet" type="text/css" />';
+        documentContent += '<style>.print-action{display:none;}</style>';
         documentContent += '</head>';
         documentContent += '<body onload="window.print()" style="margin:8px 0px 0px 50px !important;">' + printContents + '</body></html>'
         popupWinindow.document.write(documentContent);

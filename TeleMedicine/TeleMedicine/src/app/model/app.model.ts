@@ -1,16 +1,18 @@
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-export class User{
+export class User {
   Name: string = "";
-
+  SignalRConnectionId: string = "";
+  MobileNumber: string = "";
 }
 
-export class Patient extends User{
-  PatientId: Number;
-  DoctorNameAttending:string="";
+export class Patient extends User {
+  PatientId: number;
+  //Name: string = "";
+  DoctorNameAttending: string = "";
   Age: string = "";
-  Sex: string = "";
+  Gender: string = "";
   Email: string = "";
-  MobileNumber: string = "";
+  //MobileNumber: string = "";
   Address: string = "";
 
   Fever: boolean = false;
@@ -33,12 +35,18 @@ export class Patient extends User{
   Exposure: boolean = false;
   PatientMedicalSymptoms: string = "";
   //OtherPatientInformation: string = "";
-
-
   Status: number = 0;
   Medication: string = "";
-  LastUpdatedTime: Date;
+  LastUpdated: Date;
+  TotalCheckupTime : number = 0;
 }
-export class Doctor  extends User{
+
+export class Doctor extends User {
   Password: string = "";
+}
+
+
+export class Message {
+  Type: string = "";
+  Payload: string = "";
 }

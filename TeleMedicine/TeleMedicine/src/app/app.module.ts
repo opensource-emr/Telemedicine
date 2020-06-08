@@ -6,8 +6,8 @@ import { LoginComponent } from './app.login';
 import { Global } from '../common/app.global';
 import { DoctorRoomComponent } from './app.doctorroomcomponent';
 import { WaitingRoom } from './app.waitingroomcomponent';
-import {FormsModule, ReactiveFormsModule} from "@angular/forms"
-import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from "@angular/forms"
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { HomeRoutes } from './app.routing';
 import { ClinicComponent } from './app.cliniccomponent';
@@ -16,42 +16,45 @@ import { YesNoPipe } from 'src/common/YesNo.pipe';
 import 'zone.js/dist/zone';
 import { ConfigService } from 'src/common/common.appconfig';
 import { SafePipe } from 'src/common/common.safe';
-const initializerConfigFn = (config: ConfigService ) => {
+import { HttpInterceptorService } from 'src/common/app.http-intrceptor';
+const initializerConfigFn = (config: ConfigService) => {
   return () => {
-    var ret:any =  config.loadAppConfig();
+    var ret: any = config.loadAppConfig();
     return ret;
   };
 };
 @NgModule({
   declarations: [
-    LoginComponent , DoctorRoomComponent,
-    WaitingRoom , ClinicComponent , FinalReportComponent,
-    YesNoPipe , SafePipe
+    LoginComponent, DoctorRoomComponent,
+    WaitingRoom, ClinicComponent, FinalReportComponent,
+    YesNoPipe, SafePipe
   ],
   imports: [
     BrowserModule,
-    FormsModule ,
+    FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    RouterModule.forRoot(HomeRoutes)  
+    RouterModule.forRoot(HomeRoutes)
   ],
   providers: [
     {
       provide: APP_BASE_HREF,
       useValue: '/' + (window.location.pathname.split('/')[1] || '')
-  },
+    },
     {
       provide: APP_INITIALIZER,
       useFactory: initializerConfigFn,
       multi: true,
       deps: [ConfigService],
-    },Global],
+    },
+    Global,
+    { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true }],
   bootstrap: [ClinicComponent]
 })
-export class AppModule { 
+export class AppModule {
 
-  constructor(g:Global){
-     // alert(g.config.videoUrl);
+  constructor(g: Global) {
+    // alert(g.config.videoUrl);
   }
 
 }

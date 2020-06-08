@@ -3,13 +3,7 @@
   <div class="full-section">
     <div class="brand-title">
       <img src="./assets/img/logo-cap.png" class="brand-img">
-      <!-- <h1> -->
-      <!--  DANPHE TELEHEALTH -->
-      <!-- <span>Connect with your doctor from  your home</span> -->
-      <!-- </h1> -->
-
-      <h1>
-        <!--  DANPHE TELEHEALTH -->
+       <h1>
         <img src="./assets/img/hospital.png" class="hos-img">
         <span>Stay Home Stay Safe</span>
         <span></span>Connect with your doctor from your home
@@ -21,26 +15,26 @@
       <form [formGroup]="patientFrm">
         <table>
           <tr class="3-cols">
-            <!--  <td>
-                User Name :-
-            </td> -->
             <td>
               <label> Name </label>
               <input [(ngModel)]="patientObj.Name" type="text" name="patientName" value=""
-                     formControlName="patUsrName" />
+                formControlName="patUsrName" />
               <div *ngIf="hasError('required','patUsrName')" style="color: red;"> Name is required</div>
               <input type="hidden" name="UserType" value="Patient" />
             </td>
             <td>
               <label for="">Age</label>
               <input [(ngModel)]="patientObj.Age" type="text" name="Age" value=""
-                     [ngModelOptions]="{standalone: true}" />
+                [ngModelOptions]="{standalone: true}" />
             </td>
             <td style="vertical-align: top;">
-              <label for="Sex">Sex</label>
-              <input type="radio" value="Male" name="Sex" [(ngModel)]="patientObj.Sex" [ngModelOptions]="{standalone: true}"> M<span class="hide-sm">ale</span>
-              <input type="radio" value="Female" name="Sex" [(ngModel)]="patientObj.Sex" [ngModelOptions]="{standalone: true}"> F<span class="hide-sm">emale</span>
-              <input type="radio" value="Other" name="Sex" [(ngModel)]="patientObj.Sex" [ngModelOptions]="{standalone: true}"> O<span class="hide-sm">ther</span>
+              <label for="Gender">Gender</label>
+              <input type="radio" value="Male" name="Gender" [(ngModel)]="patientObj.Gender"
+                [ngModelOptions]="{standalone: true}"> M<span class="hide-sm">ale</span>
+              <input type="radio" value="Female" name="Gender" [(ngModel)]="patientObj.Gender"
+                [ngModelOptions]="{standalone: true}"> F<span class="hide-sm">emale</span>
+              <input type="radio" value="Other" name="Gender" [(ngModel)]="patientObj.Gender"
+                [ngModelOptions]="{standalone: true}"> O<span class="hide-sm">ther</span>
             </td>
           </tr>
           <tr class="2-cols">
@@ -50,7 +44,8 @@
             </td>
             <td>
               <label for="">Mobile Number</label>
-              <input [(ngModel)]="patientObj.MobileNumber" type="text" name="MobileNumber" value="" [ngModelOptions]="{standalone: true}" />
+              <input [(ngModel)]="patientObj.MobileNumber" type="text" name="MobileNumber" value=""
+                [ngModelOptions]="{standalone: true}" />
             </td>
           </tr>
           <tr>
@@ -59,50 +54,48 @@
               <input [(ngModel)]="patientObj.Address" type="text" name="address1" [ngModelOptions]="{standalone: true}">
             </td>
           </tr>
-          <!-- <label>Covid signs :</label> -->
           <tr>
-            <!-- <td valign="top">
-            Covid signs :-
-            </td> -->
             <td colspan="3">
               <label class="head-sm">Common Symptoms :</label>
               <div class="form-group text-left">
                 <p class="fever-checkbox">
                   <input [(ngModel)]="patientObj.Fever" type="checkbox" name="" id="fever"
-                         [ngModelOptions]="{standalone: true}">
+                    [ngModelOptions]="{standalone: true}">
                   <label for="fever">Fever</label>
                 </p>
                 <p class="fever-checkbox">
                   <input [(ngModel)]="patientObj.Cough" type="checkbox" name="" id="cough"
-                         [ngModelOptions]="{standalone: true}">
+                    [ngModelOptions]="{standalone: true}">
                   <label for="cough">Cough</label>
                 </p>
                 <p class="fever-checkbox">
                   <input [(ngModel)]="patientObj.BreathingDifficulty" type="checkbox" name="" id="breath"
-                         [ngModelOptions]="{standalone: true}">
+                    [ngModelOptions]="{standalone: true}">
                   <label for="breath">Breathing Difficulty</label>
                 </p>
                 <p class="fever-checkbox">
                   <input [(ngModel)]="patientObj.Tiredness" type="checkbox" name="" id="tiredness"
-                         [ngModelOptions]="{standalone: true}">
+                    [ngModelOptions]="{standalone: true}">
                   <label for="tiredness">Tiredness</label>
                 </p>
                 <p class="fever-checkbox">
                   <input [(ngModel)]="patientObj.SoreThroat" type="checkbox" name="" id="soreThroat"
-                         [ngModelOptions]="{standalone: true}">
+                    [ngModelOptions]="{standalone: true}">
                   <label for="soreThroat">Sore Throat</label>
                 </p>
                 <p class="fever-checkbox">
                   <input [(ngModel)]="patientObj.Bodyache" type="checkbox" name="" id="bodyache"
-                         [ngModelOptions]="{standalone: true}">
+                    [ngModelOptions]="{standalone: true}">
                   <label for="bodyache">Bodyache</label>
                 </p>
                 <p class="fever-checkbox">
-                  <input [(ngModel)]="patientObj.ChestPain" type="checkbox" name="" id="Chestpain" [ngModelOptions]="{standalone: true}">
+                  <input [(ngModel)]="patientObj.ChestPain" type="checkbox" name="" id="Chestpain"
+                    [ngModelOptions]="{standalone: true}">
                   <label for="Chestpain">Chest Pain</label>
                 </p>
                 <p class="fever-checkbox">
-                  <input [(ngModel)]="patientObj.Diarrhea" type="checkbox" name="" id="diarrhea" [ngModelOptions]="{standalone: true}">
+                  <input [(ngModel)]="patientObj.Diarrhea" type="checkbox" name="" id="diarrhea"
+                    [ngModelOptions]="{standalone: true}">
                   <label for="diarrhea">Diarrhea</label>
                 </p>
               </div>
@@ -111,79 +104,63 @@
           <tr>
             <td colspan="3">
               <label>Any other symptoms :</label>
-              <textarea [(ngModel)]="patientObj.AnyOtherSymptoms" [ngModelOptions]="{standalone: true}" cols="50" rows="1" name=""></textarea>
+              <textarea [(ngModel)]="patientObj.AnyOtherSymptoms" [ngModelOptions]="{standalone: true}" cols="50"
+                rows="1" name=""></textarea>
             </td>
           </tr>
           <tr>
-            <!-- <p class="fever-checkbox">
-                            <input [(ngModel)]="patientObj.Exposure" type="checkbox" name="" id="exposure"
-                                [ngModelOptions]="{standalone: true}">
-                            <label for="exposure">Exposure</label>
-                        </p> -->
             <td colspan="3">
               <label class="head-sm">Medical Issues :</label>
               <div class="form-group text-left">
-                <!--  Fever :- <input [(ngModel)]="patientObj.Fever" type="checkbox" name="" id=""><br>
-                        Cough:- <input [(ngModel)]="patientObj.Cough" type="checkbox" name="" id=""><br>
-                        Breathing:- <input [(ngModel)]="patientObj.Breathing" type="checkbox" name="" id=""><br>
-                    TiredNess <input [(ngModel)]="patientObj.TiredNess" type="checkbox" name="" id=""><br> -->
                 <p class="fever-checkbox">
                   <input [(ngModel)]="patientObj.HeartDisease" type="checkbox" name="" id="heartDisease"
-                         [ngModelOptions]="{standalone: true}">
+                    [ngModelOptions]="{standalone: true}">
                   <label for="heartDisease">Heart Disease</label>
                 </p>
                 <p class="fever-checkbox">
-                  <input [(ngModel)]="patientObj.HighBloodPressure" type="checkbox" name=""
-                         id="highBloodPressure" [ngModelOptions]="{standalone: true}">
+                  <input [(ngModel)]="patientObj.HighBloodPressure" type="checkbox" name="" id="highBloodPressure"
+                    [ngModelOptions]="{standalone: true}">
                   <label for="highBloodPressure">High Blood Pressure</label>
                 </p>
                 <p class="fever-checkbox">
                   <input [(ngModel)]="patientObj.Diabetes" type="checkbox" name="" id="diabetes"
-                         [ngModelOptions]="{standalone: true}">
+                    [ngModelOptions]="{standalone: true}">
                   <label for="diabetes">Diabetes</label>
                 </p>
                 <p class="fever-checkbox">
                   <input [(ngModel)]="patientObj.Copd" type="checkbox" name="" id="copd"
-                         [ngModelOptions]="{standalone: true}">
+                    [ngModelOptions]="{standalone: true}">
                   <label for="copd">COPD/Asthma</label>
                 </p>
                 <p class="fever-checkbox">
                   <input [(ngModel)]="patientObj.Transplant" type="checkbox" name="" id="transplant"
-                         [ngModelOptions]="{standalone: true}">
+                    [ngModelOptions]="{standalone: true}">
                   <label for="transplant">Transplant</label>
                 </p>
                 <p class="fever-checkbox">
                   <input [(ngModel)]="patientObj.Cancer" type="checkbox" name="" id="cancer"
-                         [ngModelOptions]="{standalone: true}">
+                    [ngModelOptions]="{standalone: true}">
                   <label for="cancer">Cancer</label>
                 </p>
                 <p class="fever-checkbox">
                   <input [(ngModel)]="patientObj.RecentTravel" type="checkbox" name="" id="recentTravel"
-                         [ngModelOptions]="{standalone: true}">
+                    [ngModelOptions]="{standalone: true}">
                   <label for="recentTravel"> Recent Travel</label>
                 </p>
                 <p class="fever-checkbox">
-                  <input [(ngModel)]="patientObj.Exposure" type="checkbox" name="" id="exposure" [ngModelOptions]="{standalone: true}">
+                  <input [(ngModel)]="patientObj.Exposure" type="checkbox" name="" id="exposure"
+                    [ngModelOptions]="{standalone: true}">
                   <label for="exposure"> Exposure to Covid Patient</label>
                 </p>
               </div>
           </tr>
           <tr>
-            <!--  <td valign="top">
-                Any specific problems :-
-            </td> -->
             <td colspan="3">
-              <label>Other Pertinent Information:</label>
-              <textarea [(ngModel)]="patientObj.PatientMedicalSymptoms" [ngModelOptions]="{standalone: true}" cols="50" rows="1"></textarea>
+              <label class="head-sm">Patient Medical Symptoms:</label>
+              <textarea [(ngModel)]="patientObj.PatientMedicalSymptoms" [ngModelOptions]="{standalone: true}" cols="50"
+                rows="1"></textarea>
             </td>
           </tr>
-          <!-- <tr>
-              <td colspan="3">
-                  <label>Other Patient Information :</label>
-                  <textarea [(ngModel)]="patientObj.OtherPatientInformation" [ngModelOptions]="{standalone: true}" cols="50" rows="1" name="OtherPatientInformation"
-                      [ngModelOptions]="{standalone: true}"></textarea>
-              </td>
-          </tr>-->
           <tr>
 
             <td colspan="3">
@@ -201,8 +178,7 @@
 
             <td>
               <label>User Name :</label>
-              <input [(ngModel)]="doctorObj.Name" type="text" name="UserName" value=""
-                     formControlName="docUsrName" />
+              <input [(ngModel)]="doctorObj.Name" type="text" name="UserName" value="" formControlName="docUsrName" />
               <div *ngIf="hasError('required','docUsrName')" style="color: red;">
                 User Name is required
               </div>
@@ -212,7 +188,7 @@
             <td valign="top">
               <label>Password:</label>
               <input [(ngModel)]="doctorObj.Password" type="password" name="Password" value=""
-                     formControlName="docPassword" />
+                formControlName="docPassword" />
               <div *ngIf="hasError('required','docPassword')" style="color: red;">
                 Password is required
               </div>
@@ -233,8 +209,7 @@
   <!-- Powered BY section -->
   <div class="powered-section">
     <a href="http://www.imark.com.np/" target="_blank">
-      <img src="./assets/img/imark-powered.png"
-           class="powered-img">
+      <img src="./assets/img/imark-powered.png" class="powered-img">
     </a>
   </div>
 </div>
