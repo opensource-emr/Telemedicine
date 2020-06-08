@@ -7,16 +7,13 @@ Below  is the basic flow of the project.
 2. Both go in to video conference call and discuss issues.
 3. Doctor fills advice.
 4. Patient can  print advice after the call.
+5. Doctor and patients can also send chat messages to each other. 
 
 Features :-
 
 Application supports Multi doctor and Multihospital.
 Medication can be filled by Doc
 Patient can input problems
+Chat message support.
 
-
-Its created using Angular as front end and .NET core as back end. Any further technical clarification send me mail at shiv_koirala@yahoo.com 
-
-This project is sponsored by http://www.danphehealth.com
-
-You can find working version of this at https://telemedicine.danphehealth.com/danphe
+Its created using Angular as front end and .NET core as back end. Any further technical clarification send me mail at shiv_koirala@yahoo.com.
