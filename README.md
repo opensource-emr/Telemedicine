@@ -17,3 +17,5 @@ Patient can input problems
 Chat message support.
 
 Its created using Angular as front end and .NET core as back end. Any further technical clarification send me mail at shiv_koirala@yahoo.com.
+
+This complete initative is funded by https://danphehealth.com .  They have used this framework to create advanced enterprise version which Fewa Telehealth. 
