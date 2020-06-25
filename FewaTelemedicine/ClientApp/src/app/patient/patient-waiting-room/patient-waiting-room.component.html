@@ -1,0 +1,86 @@
+
+<body id="page-top">
+  <div class="row m-w100">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="loading-container">
+        <div class="animated-item">
+          <!--  <img src="img/video-camera3.svg" alt="" style="height: 120px;"> -->
+          <!-- Patient camera settlement -->
+          <div class="patient-camera">
+            <video  #pcam  autoplay autoplay="true"></video>
+          </div>
+          <!-- Patient camera sattlement end -->
+         
+          <div class="waiting-info">
+            <p class="for-info mb-4"><i class="fa fa-info-circle"></i>Please wait! Your Doctor will join you soon. </p>
+            <p class="for-info mb-4"><i class="fa fa-info-circle"></i>Till then you can check your video for smooth communication when you talk with doctor. </p>
+            <p style="text-align: left;" class="for-info mb-4">
+              1) Open Chrome and select the Chrome menu,<br> 2)represented by three vertical dots in the top-right corner.
+              3) Select Settings. ...Scroll down and select Advanced. <br>
+              4) Under the Privacy and security section, select Site settings.<br>
+              5) Select either Camera or Microphone to access either setting.</p>
+          </div>
+          <!-- chat modal  -->
+          <!-- <div class="modal fade" >
+                  <div class="modal-dialog modal-sm" > -->
+
+          <!-- Modal content-->
+          <div class="card mb-4 br-0 b-0 accordionItem open">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header accordionItemHeading py-3 d-flex flex-row align-items-center justify-content-between br-0">
+              <h6 class="m-0 font-weight-bold"><i class="fa fa-comments"></i>Send Message</h6>                  
+            </div>
+            <!-- Card Body -->
+            <div class="card-body p-0 accordionItemContent">
+              <div class="chatbox-holder">
+                <div class="chatbox">    
+                  <form [formGroup]="ChatForm">
+                  <div class="chat-messages" width="500px">
+                    <label *ngIf="showChat" for="selPatient" style="float: left;">Doctor: </label>
+                    <select  id="selPatient" formControlName="selUser" (change)="OnChatUserChange()">
+                      <option disabled value="null">Select Doctor</option>
+                      <option *ngFor="let dr of doctors"> {{ dr.UserName }}  </option>
+                    </select>
+                     <div #scrollBtm class="message-box-holder" *ngFor="let msg of ChatMessages">
+                     <div class="message-sender">
+                     <b> {{ msg.Name }} :-</b> {{ msg.Message }}
+                     </div>
+                     </div>               
+                  </div>
+                  
+                  <div class="chat-input-holder">
+                    <textarea class="chat-input" placeholder="Type your message here.."  formControlName="chatMessage" (keyup)="onChatEnter($event)"></textarea>
+                    <div *ngIf="hasError('required','chatMessage')" style="color: red;"> Chat message is required </div>
+                    <input type="button" value="Send" class="message-send btn-primary"  (click)="SendChatMsg()" />
+                  </div>
+                  
+                </form>
+                </div>
+              </div>
+            </div>
+          </div>
+         
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<script src="js/vendor.bundle.base.js"></script>
+<script src="js/vendor.bundle.addons.js"></script>
+<script src="js/jquery.dataTables.min.js"></script>
+<!-- Js for camera -->
+<script>
+  var video = document.querySelector("#p-cam");
+
+  if (navigator.mediaDevices.getUserMedia) {
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(function (stream) {
+        video.srcObject = stream;
+      })
+      .catch(function (err0r) {
+        console.log("Something went wrong!");
+      });
+  }
+</script>
+<!-- JS for camera end -->
+<!-- </html> -->

@@ -1,0 +1,86 @@
+<div class="container">
+
+    <!-- Outer Row -->
+    <div class="row justify-content-center">
+
+        <div class="col-xl-10 col-lg-12 col-md-9">
+
+            <div class="card o-hidden border-0 shadow-lg my-5">
+                <div class="card-body p-0">
+                    <!-- Nested Row within Card Body -->
+                    <div class="row">
+                        <div class="d-flex col-lg-6 d-none d-lg-block bg-light">
+                            <div class="align-self-stretch login-left">
+                                <img src="img/logo.png" />
+                                <p class="my-3">..Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate
+                                    dolorem facilis aliquam veritatis, quam debitis beatae quaerat id totam dolor, ipsa
+                                    dolorum, at iusto. Explicabo numquam, nostrum iste voluptatem maiores.</p>
+                                <ul>
+                                    <li><i class="fa fa-phone"></i>Phone Number: <span
+                                            class="text-primary">98465175</span></li>
+                                    <li><i class="fa fa-envelope"></i>Email ID: <span class="text-primary"><a
+                                                href="">dummy@email.com</a></span></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="p-5">
+                                <div class="text-center">
+                                    <h1 class="h3 text-gray-700 mb-4 heading-text">Fewa Telemedicine<p
+                                            class="h6 d-block mt-2">Login Using you credintials</p>
+                                    </h1>
+                                </div>
+                                <form class="user" [formGroup]="doctorFrm">
+                                    <div class="form-group">
+                                        <input type="email" class="form-control form-control-user"
+                                            formControlName="docUsrName" name="UserName" id="exampleInputEmail"
+                                            aria-describedby="emailHelp" placeholder="Username">
+                                        <div *ngIf="hasError('required','docUsrName')" style="color: red;">
+                                            User Name is required
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control form-control-user"
+                                            formControlName="docPassword" name="Password" id="exampleInputPassword"
+                                            placeholder="Password">
+                                        <div *ngIf="hasError('required','docPassword')" style="color: red;">
+                                            Password is required
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-6 pull-left">
+                                            <div class="custom-control custom-checkbox small">
+                                                <input type="checkbox" class="custom-control-input" id="customCheck">
+                                                <label class="custom-control-label" for="customCheck">Remember
+                                                    Me</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 pull-right">
+                                            <a href="javascript:;" routerLink="/ForgotPassword"
+                                                class="text-primary text-small text-right d-block"
+                                                style="font-size: 12px;">Forgot Password?</a>
+                                        </div>
+                                    </div>
+                                    <a href="javascript:;" (click)="LoginDoctor()"
+                                        class="btn btn-primary btn-user btn-block">
+                                        Login
+                                    </a>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer -->
+<footer class="sticky-footer bg-transparent">
+    <div class="container my-auto">
+        <div class="copyright text-center my-auto">
+            <span class="text-white"><img src="img/logo-cap.png" class="powered-footer-logo d-block">Powered by &copy;
+                Fewa Telehealth 2020 </span>
+        </div>
+    </div>
+</footer>
+<!-- End of Footer -->
