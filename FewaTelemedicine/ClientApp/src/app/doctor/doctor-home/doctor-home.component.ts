@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild, ChangeDetectorRef, ElementRef } from "@angular/core";
 import { Router, NavigationStart, ActivatedRoute, Data } from '@angular/router';
 import { NotificationService } from 'src/Common/notification.service';
 import { GlobalModel } from 'src/Common/global.model'
@@ -16,15 +16,24 @@ import { SMSModel } from 'src/models/SMS.model';
 })
 export class DoctorHomeComponent implements OnInit{
 private state: Observable<object>;
+showChat: boolean = true;
+AllUserChats: any = {};
+ChatMessages: Array<any> = new Array<any>();
+ChatReceivedMessages: Array<any> = new Array<any>();
+ChatUserDropDowns: Array<any> = new Array<any>();
+ChatForm: FormGroup;
+@ViewChild('scrollBtm', { static: false }) private scrollBottom: ElementRef;
  
 public SendInvitation:boolean= true;
 public CompletedAppointments:boolean= false;
 public AccountSettings:boolean= false;
+public ChatSection:boolean= false;
 public CompletedPatients:Array<PatientsAttendedModel> = null;
 doctorObj: DoctorsModel = new DoctorsModel();
   public invitationForm:FormGroup;
-    constructor(private routing: Router,private notificationService:NotificationService,public global: GlobalModel,public httpClient: HttpClient,private formBuilder:FormBuilder,private activatedRoute:ActivatedRoute) 
+    constructor(private routing: Router,private notificationService:NotificationService,public global: GlobalModel,public httpClient: HttpClient,private formBuilder:FormBuilder,private activatedRoute:ActivatedRoute, private cdr: ChangeDetectorRef) 
     { 
+      this.initForm();
       this.patients.push(this.global.patientObj);
       if (this.global.IsPatient) {
 
@@ -33,6 +42,7 @@ doctorObj: DoctorsModel = new DoctorsModel();
                     this.global.patientObj = _patient;
                     this.patients=_patient;
                    // this.PatientCompleted(_patient);
+                   this.ChatUserDropDowns = new Array<any>();
              }
          ); 
      }
@@ -40,13 +50,31 @@ doctorObj: DoctorsModel = new DoctorsModel();
      this.notificationService.EventGetAllPatients
         .subscribe(_patients => {
           this.patients = _patients;
-
+          this.ChatUserDropDowns = _patients;
         });
 
       this.notificationService.EventCallPatient.subscribe(_patient => {
         this.global.patientObj = _patient;
       }
       );
+
+      this.notificationService.EventChatMessage.subscribe(data => {
+        if (this.ChatForm.controls['selUser'].value != data.Name) {
+          this.ChatForm.controls['selUser'].setValue(data.Name);
+          this.OnChatUserChange();
+        }
+        if (!this.showChat) {
+          this.showChat = true;
+        }
+        const chatMsg = { Name: data.Name, Message: data.Message, Class: 'receiver-msg' };
+        //this.ChatMessages.push(chatMsg);
+        this.ChatReceivedMessages.push(chatMsg);
+        this.pushChatMsgUserwise(data.Name, chatMsg);
+        
+  
+        this.cdr.detectChanges();
+        this.scrollBottom.nativeElement.lastElementChild.scrollIntoView(); // scroll to bottom
+      });
       
       this.invitationForm=this.formBuilder.group({
         email:['',Validators.email],
@@ -61,12 +89,25 @@ doctorObj: DoctorsModel = new DoctorsModel();
       }
       //this.RefreshPatients(); 
     }
+    
     public showPatDetail: boolean = false;
     patients: Array<PatientsAttendedModel> = new Array<PatientsAttendedModel>();
 
 
     ngOnInit() {
       this.state = history.state;
+    }
+
+    private initForm() {
+      this.ChatForm = this.formBuilder.group({
+        selUser: [null, Validators.required],
+        chatMessage: ['', Validators.required]
+      });
+    }
+  
+    hasError(typeofvalidator: string, controlname: string): boolean {
+      const control = this.ChatForm.controls[controlname];
+      return control.hasError(typeofvalidator) && control.dirty;
     }
 Difference(start:Date , end:Date):number{
   start = new Date(start);
@@ -87,11 +128,13 @@ Check(param)
     this.SendInvitation=true;
     this.CompletedAppointments=false;
     this.AccountSettings=false;
+    this.ChatSection=false;
   }
   else if(data == 'completedList'){
     this.SendInvitation=false;
     this.CompletedAppointments=true;
     this.AccountSettings=false;
+    this.ChatSection=false;
     this.LoadPatientsAttended();
   }
   
@@ -99,6 +142,13 @@ Check(param)
     this.SendInvitation=false;
     this.CompletedAppointments=false;
     this.AccountSettings=true;
+    this.ChatSection=false;
+  }  
+  else if(data == 'chatSection') {
+    this.SendInvitation=false;
+    this.CompletedAppointments=false;
+    this.AccountSettings=false;
+    this.ChatSection=true;
   }  
 }
 UpdateProfile()
@@ -187,5 +237,67 @@ EmailInvitationSuccess(res)
  }
  Error(err) {
  }
- 
+ SendChatMsg() {
+  try {
+    for (const i in this.ChatForm.controls) {
+      this.ChatForm.controls[i].markAsDirty();
+      this.ChatForm.controls[i].updateValueAndValidity();
+    }
+
+    if (this.ChatForm.valid) {
+      const chatMsg = {
+        IsDoctor: this.global.IsDoctor ? false : true,
+        Name: this.ChatForm.controls['selUser'].value,
+        Message: this.ChatForm.controls['chatMessage'].value
+      };
+      const chatmsgObj = { Name: 'Me', Message: chatMsg.Message, Class: 'sender-msg' };
+      this.ChatMessages.push(chatmsgObj);
+      this.pushChatMsgUserwise(this.ChatForm.controls['selUser'].value, chatmsgObj);
+
+      this.cdr.detectChanges();
+      this.scrollBottom.nativeElement.lastElementChild.scrollIntoView(); // scroll to bottom
+
+      this.notificationService.SendChatMessage(chatMsg);
+
+      this.ChatForm.reset();
+      this.ChatForm.controls['selUser'].setValue(chatMsg.Name);
+    }
+  } catch (e) { }
+}
+
+OnChatUserChange() {
+  try {
+    const selUser = this.ChatForm.controls['selUser'].value;
+    if (this.AllUserChats.hasOwnProperty(selUser)) {
+      this.ChatMessages = this.AllUserChats[selUser].slice();
+     // this.ChatReceivedMessages=this.AllUserChats[selUser].slice();
+    } else {
+      this.ChatMessages = new Array<any>();
+     // this.ChatReceivedMessages=new Array<any>();
+    }
+  } catch (e) { }
+}
+
+OnShowHideChat() {
+  try {
+    this.showChat = !this.showChat;
+  } catch (e) {
+
+  }
+}
+
+onChatEnter(event) {
+  if (event.keyCode === 13) {
+    this.SendChatMsg();
+  }
+}
+
+pushChatMsgUserwise(user, messageObj) {
+  try {
+    if (!this.AllUserChats.hasOwnProperty(user)) {
+      this.AllUserChats[user] = new Array<any>();
+    }
+    this.AllUserChats[user].push(messageObj);
+  } catch (e) { }
+}
 }

@@ -40,7 +40,7 @@ namespace FewaTelemedicine.Domain
             modelBuilder.Entity<ParametersModel>().ToTable("mst_Parameters");
             // Default user name and password
             modelBuilder.Entity<DoctorsModel>().HasData(new DoctorsModel
-            {UserName = "shiv",Password = "pass"}
+            {Id=1, UserName = "shiv",Password = "pass"}
             );
         }
     }

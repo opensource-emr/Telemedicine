@@ -56,6 +56,14 @@ namespace FewaTelemedicine.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("mst_Doctors");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Password = "pass",
+                            UserName = "shiv"
+                        });
                 });
 
             modelBuilder.Entity("FewaTelemedicine.Domain.Models.ParametersModel", b =>

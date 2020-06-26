@@ -83,7 +83,11 @@
                   <a class="nav-item nav-link btn btn-success btn-sm" id="nav-contact-tab" data-toggle="tab"
                     href="javascript:;" role="tab" aria-controls="nav-contact" aria-selected="false"
                     (click)="Check('accSett')"><i class="fa fa-lock"></i>Account Settings</a>
+                  <a class="nav-item nav-link btn btn-success btn-sm" id="nav-contact-tab" data-toggle="tab"
+                    href="javascript:;" role="tab" aria-controls="nav-contact" aria-selected="false"
+                    (click)="Check('chatSection')"><i class="fa fa-lock"></i>Chat Section</a>
                 </div> 
+                
                
               </nav>
               
@@ -257,7 +261,59 @@
                  
                 </div>
               </div>
-
+              <div *ngIf="ChatSection">
+                
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+                  *ngIf="ChatSection">
+                  <h6 class="m-0 font-weight-bold"><i class="fa fa-calendar"></i>Chat Messages</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                  <div class="card-body p-0 accordionItemContent">
+                    <div class="chatbox-holder">
+              <div class="chatbox">    
+                <form [formGroup]="ChatForm">
+                <div class="chat-messages">
+                  <label *ngIf="showChat" for="selPatient">{{ global.IsDoctor ? 'Patient' : 'Doctor' }}:
+                  </label>
+                  <select *ngIf="showChat" id="selPatient" formControlName="selUser" (change)="OnChatUserChange()">
+                    <option disabled value="null">Select {{ global.IsDoctor ? 'Patient' : 'Doctor' }} </option>
+                    <option *ngFor="let user of ChatUserDropDowns"> {{ user.PatientName }} </option>
+                  </select>
+                  <div *ngIf="hasError('required','selUser') && showChat" style="color: red;display: inline;">
+                    {{ global.IsDoctor ? 'Patient' : 'Doctor' }} is required
+                  </div>
+            
+                   <div class="message-box-holder" *ngFor="let msg of ChatMessages"   #scrollBtm>
+            
+                   <div class="message-sender" #scrollBtm>
+                    {{ msg.Name }} :- {{ msg.Message }}
+                   </div>
+                   </div>
+            
+                   <div class="message-box-holder" *ngFor="let msg of ChatReceivedMessages"  #scrollBtm>
+                    <div class="message-sender" #scrollBtm>
+                      {{ msg.Name }} :- {{ msg.Message }}
+                     </div>
+                   
+                  </div>
+                     
+                </div>
+                
+                <div class="chat-input-holder" *ngIf="showChat">
+                  <textarea class="chat-input" placeholder="Type your message here.."  formControlName="chatMessage" (keyup)="onChatEnter($event)"></textarea>
+                  <div *ngIf="hasError('required','chatMessage')" style="color: red;"> Chat message is required </div>
+                  <input type="button" value="Send" class="message-send btn-primary" (click)="SendChatMsg()" />
+                </div>
+                
+              </form>
+              </div>
+            </div>
+                  </div>
+                </div>
+              
+              </div>
             </div>
 
             <!-- Pie Chart -->

@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FewaTelemedicine.Migrations
 {
     [DbContext(typeof(FewaDbContext))]
-    [Migration("20200624175636_v1")]
+    [Migration("20200626021347_v1")]
     partial class v1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -58,6 +58,14 @@ namespace FewaTelemedicine.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("mst_Doctors");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Password = "pass",
+                            UserName = "shiv"
+                        });
                 });
 
             modelBuilder.Entity("FewaTelemedicine.Domain.Models.ParametersModel", b =>

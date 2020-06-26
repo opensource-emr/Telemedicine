@@ -62,6 +62,11 @@ namespace FewaTelemedicine.Migrations
                 {
                     table.PrimaryKey("PK_txn_Patients_Attended", x => x.Id);
                 });
+
+            migrationBuilder.InsertData(
+                table: "mst_Doctors",
+                columns: new[] { "Id", "Clinic", "Designation", "DoctorName", "Email", "MedicalDegree", "MobileNumber", "NameTitle", "Password", "UserName" },
+                values: new object[] { 1, null, null, null, null, null, null, null, "pass", "shiv" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
