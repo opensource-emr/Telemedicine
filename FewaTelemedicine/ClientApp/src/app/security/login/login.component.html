@@ -11,15 +11,13 @@
                     <div class="row">
                         <div class="d-flex col-lg-6 d-none d-lg-block bg-light">
                             <div class="align-self-stretch login-left">
-                                <img src="img/logo.png" />
-                                <p class="my-3">..Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate
-                                    dolorem facilis aliquam veritatis, quam debitis beatae quaerat id totam dolor, ipsa
-                                    dolorum, at iusto. Explicabo numquam, nostrum iste voluptatem maiores.</p>
+                                <img src="{{ hospitalDetails.logoPath }}" />
+                                <p class="my-3">{{ hospitalDetails.description }}</p>
                                 <ul>
                                     <li><i class="fa fa-phone"></i>Phone Number: <span
-                                            class="text-primary">98465175</span></li>
+                                            class="text-primary">{{ hospitalDetails.contactNo }}</span></li>
                                     <li><i class="fa fa-envelope"></i>Email ID: <span class="text-primary"><a
-                                                href="">dummy@email.com</a></span></li>
+                                                href="">{{ hospitalDetails.email }}</a></span></li>
                                 </ul>
                             </div>
                         </div>

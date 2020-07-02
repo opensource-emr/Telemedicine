@@ -39,8 +39,8 @@ export class PatientRoomComponent{
             this.showChat = true;
           }
           const chatMsg = { Name: chatData.Name, Message: chatData.Message, Class: 'receiver-msg' };
-          //this.ChatMessages.push(chatMsg);
-          this.ChatReceivedMessages.push(chatMsg);
+          this.ChatMessages.push(chatMsg);
+          //this.ChatReceivedMessages.push(chatMsg);
           this.pushChatMsgUserwise(chatData.Name, chatMsg);
     
          // this.cdr.detectChanges();

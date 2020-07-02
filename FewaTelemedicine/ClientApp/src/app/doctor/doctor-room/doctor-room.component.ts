@@ -70,8 +70,8 @@ export class DoctorRoomComponent {
         this.showChat = true;
       }
       const chatMsg = { Name: data.Name, Message: data.Message, Class: 'receiver-msg' };
-      //this.ChatMessages.push(chatMsg);
-      this.ChatReceivedMessages.push(chatMsg);
+      this.ChatMessages.push(chatMsg);
+      //this.ChatReceivedMessages.push(chatMsg);
       this.pushChatMsgUserwise(data.Name, chatMsg);
       
 

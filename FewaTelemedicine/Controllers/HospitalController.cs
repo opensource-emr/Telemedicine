@@ -62,7 +62,22 @@ namespace FewaTelemedicine.Controllers
         {
             return View();
         }
+        public IActionResult GetHospitalParams()
+        {
+            try
+            {
+                string[] parameters = { "Description", "Name", "ContactNumber", "Email", "LogoPath" };
+                List<string> paramsList = new List<string>(parameters);
 
+                List<ParametersModel> result = FewaDbContext.ParametersModels.Where(a => a.ParameterGroupName == "Hospital" && paramsList.Any(b => b == a.ParameterName)).ToList();
+                return Ok(Json(result));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error.");
+            }
+
+        }
         [AllowAnonymous]
         public IActionResult LoginPatient([FromBody] PatientsAttendedModel obj)
         {

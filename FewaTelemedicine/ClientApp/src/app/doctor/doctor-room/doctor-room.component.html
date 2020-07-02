@@ -84,19 +84,18 @@
         {{ global.IsDoctor ? 'Patient' : 'Doctor' }} is required
       </div>
 
-       <div class="message-box-holder" *ngFor="let msg of ChatMessages"   #scrollBtm>
-
-       <div class="message-sender" #scrollBtm>
-        {{ msg.Name }} :- {{ msg.Message }}
-       </div>
-       </div>
-
+      <div #scrollBtm class="message-box-holder" *ngFor="let msg of ChatMessages">
+        <div class="message-sender">
+        <b> {{ msg.Name }} :-</b> {{ msg.Message }}
+        </div>
+        </div>   
+<!-- 
        <div class="message-box-holder" *ngFor="let msg of ChatReceivedMessages"  #scrollBtm>
         <div class="message-sender" #scrollBtm>
           {{ msg.Name }} :- {{ msg.Message }}
          </div>
        
-      </div>
+      </div> -->
          
     </div>
     

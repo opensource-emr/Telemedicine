@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { GlobalModel } from 'src/Common/global.model';
@@ -8,9 +8,10 @@ import { DoctorsModel } from 'src/models/doctors.model';
 @Component({
   templateUrl: './login.component.html'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   doctorObj: DoctorsModel = new DoctorsModel();
   doctorFrm: FormGroup;
+  hospitalDetails = { description: '', contactNo: '', email: '', logoPath: '' };
 
   constructor(private httpClient: HttpClient,
     private routing: Router,
@@ -18,6 +19,24 @@ export class LoginComponent {
     private formBuilder: FormBuilder
   ) {
     this.initForm();
+  }
+
+  ngOnInit(): void {
+    this.LoadHospitalParams();
+  }
+
+  LoadHospitalParams() {
+    this.httpClient.get<any>(this.global.HospitalUrl + 'GetHospitalParams').subscribe(res => {
+      if (res && res.Value && res.Value.length > 0) {
+        const params = res.Value;
+        this.hospitalDetails.description = params.find(a => a.ParameterName === 'Description') ? params.find(a => a.ParameterName === 'Description').ParameterValue : '';
+        this.hospitalDetails.contactNo = params.find(a => a.ParameterName === 'ContactNumber') ? params.find(a => a.ParameterName === 'ContactNumber').ParameterValue : '';
+        this.hospitalDetails.email = params.find(a => a.ParameterName === 'Email') ? params.find(a => a.ParameterName === 'Email').ParameterValue : '';
+        this.hospitalDetails.logoPath = params.find(a => a.ParameterName === 'LogoPath') ? params.find(a => a.ParameterName === 'LogoPath').ParameterValue : '';
+      }
+    }, err => {
+      alert('Can not connect please talk with admin.');
+    });
   }
 
   private initForm() {

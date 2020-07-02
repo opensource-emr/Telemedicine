@@ -39,19 +39,12 @@
                     {{ global.IsDoctor ? 'Patient' : 'Doctor' }} is required
                   </div>
 
-                  <div class="message-box-holder" *ngFor="let msg of ChatMessages" [ngClass]="msg.Class" #scrollBtm>
-                    <div>
-                      {{ msg.Name }}:- {{ msg.Message }}
+                  <div #scrollBtm class="message-box-holder" *ngFor="let msg of ChatMessages">
+                    <div class="message-sender">
+                    <b> {{ msg.Name }} :-</b> {{ msg.Message }}
                     </div>
-                  </div>
-
-                  <div  #scrollBtm  class="message-box-holder" *ngFor="let msg of ChatReceivedMessages" [ngClass]="msg.Class">
-                    <div>
-                      {{ msg.Name }}:-{{ msg.Message }}
-                    </div>                  
-                  </div>
-                </div>
-
+                    </div>   
+                  </div>  
                 <div class="chat-input-holder">
                   <textarea class="chat-input" placeholder="Type your message here.." formControlName="chatMessage"
                     (keyup)="onChatEnter($event)"></textarea>

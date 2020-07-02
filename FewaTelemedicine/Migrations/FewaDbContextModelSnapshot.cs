@@ -91,6 +91,48 @@ namespace FewaTelemedicine.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("mst_Parameters");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ParameterGroupName = "Hospital",
+                            ParameterName = "Name",
+                            ParameterValue = "Fewa Telemedicine",
+                            ValueDataType = "string"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ParameterGroupName = "Hospital",
+                            ParameterName = "Description",
+                            ParameterValue = "..Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate dolorem facilis aliquam veritatis, quam debitis beatae quaerat id totam dolor, ipsa dolorum, at iusto. Explicabo numquam, nostrum iste voluptatem maiores.",
+                            ValueDataType = "string"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ParameterGroupName = "Hospital",
+                            ParameterName = "ContactNumber",
+                            ParameterValue = "98465175",
+                            ValueDataType = "string"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ParameterGroupName = "Hospital",
+                            ParameterName = "Email",
+                            ParameterValue = "dummy@email.com",
+                            ValueDataType = "string"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ParameterGroupName = "Hospital",
+                            ParameterName = "LogoPath",
+                            ParameterValue = "img/logo.png",
+                            ValueDataType = "string"
+                        });
                 });
 
             modelBuilder.Entity("FewaTelemedicine.Domain.Models.PatientsAttendedModel", b =>

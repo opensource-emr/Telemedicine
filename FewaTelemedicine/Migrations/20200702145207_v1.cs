@@ -67,6 +67,18 @@ namespace FewaTelemedicine.Migrations
                 table: "mst_Doctors",
                 columns: new[] { "Id", "Clinic", "Designation", "DoctorName", "Email", "MedicalDegree", "MobileNumber", "NameTitle", "Password", "UserName" },
                 values: new object[] { 1, null, null, null, null, null, null, null, "pass", "shiv" });
+
+            migrationBuilder.InsertData(
+                table: "mst_Parameters",
+                columns: new[] { "Id", "Description", "ParameterGroupName", "ParameterName", "ParameterValue", "ValueDataType" },
+                values: new object[,]
+                {
+                    { 1, null, "Hospital", "Name", "Fewa Telemedicine", "string" },
+                    { 2, null, "Hospital", "Description", "..Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate dolorem facilis aliquam veritatis, quam debitis beatae quaerat id totam dolor, ipsa dolorum, at iusto. Explicabo numquam, nostrum iste voluptatem maiores.", "string" },
+                    { 3, null, "Hospital", "ContactNumber", "98465175", "string" },
+                    { 4, null, "Hospital", "Email", "dummy@email.com", "string" },
+                    { 5, null, "Hospital", "LogoPath", "img/logo.png", "string" }
+                });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -50,7 +50,7 @@ export class PatientWaitingRoomComponent {
       this.ChatMessages.push(chatMsg);
       this.pushChatMsgUserwise(chatData.Name, chatMsg);
       
-      //this.cdr.detectChanges();
+      this.cdr.detectChanges();
       this.scrollBottom.nativeElement.lastElementChild.scrollIntoView(); // scroll to bottom
     });
 
