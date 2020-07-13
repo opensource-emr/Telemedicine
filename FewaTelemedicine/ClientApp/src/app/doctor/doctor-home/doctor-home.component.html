@@ -27,8 +27,9 @@
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="javascript:;" id="userDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Manoj Adhikari</span>
-                <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{global.doctorObj.NameTitle}}&nbsp;{{global.doctorObj.DoctorName}}</span>
+                <img *ngIf="retrievedImage" class="img-profile rounded-circle" [src]="Transform()">
+                <img *ngIf="!retrievedImage" class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -245,10 +246,28 @@
                         <div class="row form-group">
                           <label for="" class="col-md-3 control-label">Confirm Password</label>
                           <div class="col-md-9">
-                            <input type="password" placeholder="**********" class="form-control" name="ConfirmPassword" [(ngModel)]="global.doctorObj.ConfirmPassword">
+                            <input type="password" placeholder="**********" class="form-control" name="ConfirmPassword" [(ngModel)]="doctorObj.ConfirmPassword">
                           </div>
 
                         </div>
+
+                        <div class="row form-group">
+                          <label for="" class="col-md-3 control-label">Upload Image</label>
+                          <div class="col-md-5">
+                            <input style="display: none" type="file" placeholder="Choose File" (change)="onFileChanged($event)" #fileInput>
+                            <button (click)="fileInput.click()">Upload File</button>
+                            <label *ngIf="selectedFile"> {{selectedFile.name}}</label>
+                          </div>
+                          <div class="col-md-4">
+                            <span class="upload" *ngIf="progress > 0">
+                              {{progress}}%
+                            </span>
+                            <span class="upload" *ngIf="message">
+                              {{message}}
+                            </span>
+                          </div>
+                        </div>
+
                         <div class="row mt-4">
                           <div class="col-md-3"></div>
                           <div class="col-md-3">

@@ -59,14 +59,14 @@ export class LoginComponent implements OnInit {
       return;
     }
     this.doctorObj.UserName = this.doctorFrm.value.docUsrName;
-    this.doctorObj.Password = this.doctorFrm.value.docPassword;
+    //this.doctorObj.Password = this.doctorFrm.value.docPassword;
     this.global.doctorObj = this.doctorObj;
     this.httpClient.
       post<any>(this.global.ApiUrl + "Security/Login", this.doctorObj)
       .subscribe(res => {
         this.global.token = res.Token;
         this.global.IsDoctor = true;
-        //this.global.doctorObj=res.User;
+        this.global.doctorObj=res.User;
         var url: string = this.global.config.videourl.replace("DOCTORNAME", this.global.doctorObj.UserName);
         this.global.config.videourl = url;
         this.routing.navigate(['Home']);

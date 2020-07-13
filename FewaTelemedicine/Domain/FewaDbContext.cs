@@ -13,7 +13,7 @@ namespace FewaTelemedicine.Domain
         public FewaDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<FewaDbContext>();
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;User Id=postgres;Password=password@123;Database=Fewa_Telemedicine");
+            optionsBuilder.UseNpgsql("Server=xxxx;Database=xxx;Port=5432;User Id=xxxx;Password=xxx;Ssl Mode=Require;");
 
             return new FewaDbContext(optionsBuilder.Options);
         }
@@ -40,7 +40,7 @@ namespace FewaTelemedicine.Domain
             modelBuilder.Entity<ParametersModel>().ToTable("mst_Parameters");
             // Default user name and password
             modelBuilder.Entity<DoctorsModel>().HasData(new DoctorsModel
-            {Id=1, UserName = "shiv",Password = "pass"}
+            {Id=1, UserName = "doctor",Password = "doctor"}
             );
             // Filling the parameter table with default names
             modelBuilder.Entity<ParametersModel>().HasData(

@@ -13,31 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20200624072053_v1db.cs" />
-    <Compile Remove="Migrations\20200624072053_v1db.Designer.cs" />
-    <Compile Remove="Migrations\20200624073632_v1db.cs" />
-    <Compile Remove="Migrations\20200624073632_v1db.Designer.cs" />
-    <Compile Remove="Migrations\20200624073720_v1db.cs" />
-    <Compile Remove="Migrations\20200624073720_v1db.Designer.cs" />
-    <Compile Remove="Migrations\20200624080133_v1db.cs" />
-    <Compile Remove="Migrations\20200624080133_v1db.Designer.cs" />
-    <Compile Remove="Migrations\20200624080551_v1db.cs" />
-    <Compile Remove="Migrations\20200624080551_v1db.Designer.cs" />
-    <Compile Remove="Migrations\20200624081234_v1db.cs" />
-    <Compile Remove="Migrations\20200624081234_v1db.Designer.cs" />
-    <Compile Remove="Migrations\20200624081641_v1db.cs" />
-    <Compile Remove="Migrations\20200624081641_v1db.Designer.cs" />
-    <Compile Remove="Migrations\20200624174846_v1.cs" />
-    <Compile Remove="Migrations\20200624174846_v1.Designer.cs" />
-    <Compile Remove="Migrations\20200624175636_v1.cs" />
-    <Compile Remove="Migrations\20200624175636_v1.Designer.cs" />
-    <Compile Remove="Migrations\20200626020953_v1.cs" />
-    <Compile Remove="Migrations\20200626020953_v1.Designer.cs" />
-    <Compile Remove="Migrations\20200626021347_v1.cs" />
-    <Compile Remove="Migrations\20200626021347_v1.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.3" />

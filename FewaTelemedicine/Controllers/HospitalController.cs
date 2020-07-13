@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
@@ -26,6 +27,7 @@ namespace FewaTelemedicine.Controllers
     public class HospitalController : Controller
     {
         private readonly ILogger<HospitalController> _logger;
+        private readonly IDoctorRepository _doctorRepository;
         List<DoctorCabin> _doctorcabins = null;
 
         WaitingRoom _waitingroom = null;
@@ -45,6 +47,7 @@ namespace FewaTelemedicine.Controllers
             List<DoctorsModel> doctorsmodels,
             IHubContext<NotificationHub, INotificationHub> notify,
             IConfiguration config,IPatientRepository patientRepository,
+             IDoctorRepository doctorRepository,
             FewaDbContext  fewaDbContext)
         {
             FewaDbContext = fewaDbContext;
@@ -54,6 +57,7 @@ namespace FewaTelemedicine.Controllers
             _logger = logger;
             _doctorcabins = doctorcabins;
             _waitingroom = waitingroom;
+            _doctorRepository = doctorRepository;
             idletime = Convert.ToInt32(configuration["IdleTime"]);
             _notify = notify;
             _config = config;
@@ -164,6 +168,15 @@ namespace FewaTelemedicine.Controllers
                                     select temp
                                     ).ToList<PatientsAttendedModel>();
             return attendedPatients;
+        }
+
+    public IActionResult GetUpdatedDoctor()
+        {
+            string username = HttpContext.Session.GetString("Name");
+            var doctorProfile = (from temp in FewaDbContext.DoctorsModels
+                                 where temp.UserName == username
+                                 select temp).FirstOrDefault();
+            return Ok(doctorProfile);
         }
         public IActionResult GetDoctorCabin()
         {
@@ -305,6 +318,79 @@ namespace FewaTelemedicine.Controllers
             {
                 _waitingroom.Patients   .Remove(t);
             }
+        }
+
+        public IActionResult UpdateProfile([FromBody] DoctorsModel obj)
+        {
+            var doc = _doctorRepository.GetDoctorByUserName(obj.UserName);
+            if (doc is null)
+            {
+                return StatusCode(500);
+            }
+            else
+            {
+                doc.NameTitle = obj.NameTitle;
+                doc.DoctorName = obj.DoctorName;
+                doc.Email = obj.Email;
+                doc.MobileNumber = obj.MobileNumber;
+                doc.Designation = obj.Designation;
+                doc.MedicalDegree = obj.MedicalDegree;
+                doc.Clinic = obj.Clinic;
+                doc.Password = obj.Password;
+                doc.Image = obj.Image;
+            }
+            FewaDbContext.DoctorsModels.Update(doc);
+            FewaDbContext.SaveChanges();
+            return Ok(doc);
+        }
+
+        public async Task<IActionResult> UploadImage()
+        {
+            try
+            {
+                var user = JsonSerializer.Deserialize<DoctorsModel>(Request.Form["user"].ToString());
+                var file = Request.Form.Files[0];
+                var doc = _doctorRepository.GetDoctorByUserName(user.UserName);
+                if (doc is null)
+                {
+                    return StatusCode(500);
+                }
+
+                using (var memoryStream = new MemoryStream())
+                {
+                    await file.CopyToAsync(memoryStream);
+
+                    // Upload the file if less than 2 MB
+                    if (memoryStream.Length < 2097152)
+                    {
+                        doc.Image = memoryStream.ToArray();
+                        //_fewaDbContext.DoctorsModels.Update(doc);
+                        //await _fewaDbContext.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("File", "The file is too large.");
+                    }
+                    return Ok(doc.Image);
+                }
+            }
+            catch (System.Exception ex)
+            {
+                return Ok("Upload Failed: " + ex.Message);
+            }
+        }
+
+        [HttpGet("GetImage/{username}")]
+        public IActionResult GetImage(string username)
+        {
+            var doc = _doctorRepository.GetDoctorByUserName(username);
+            if (doc.Image != null)
+            {
+                //string base64Data = Convert.ToBase64String(doc.Image);
+                //var imageURL = string.Format("data:image/png;base64,{0}", base64Data);
+                return Ok(doc);
+            }
+            return StatusCode(500);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

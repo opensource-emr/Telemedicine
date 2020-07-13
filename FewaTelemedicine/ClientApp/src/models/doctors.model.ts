@@ -3,6 +3,7 @@ export class DoctorsModel{
     Id:number;
     UserName:string="";  
     Password: string = "";
+    Image: File;
     ConfirmPassword:string="";
     NameTitle:string="";
     DoctorName:string="";

@@ -60,9 +60,12 @@ namespace FewaTelemedicine.Controllers
                 {
                     return Unauthorized();
                 }
-                if (doc.Password == doctor.Password)
-                {
-                    HttpContext.Session.SetString("Name", doctor.UserName);
+                //if (doc.Password == doctor.Password)
+                //{
+                doctor.Image = doc.Image;
+                doctor.NameTitle = doc.NameTitle;
+                doctor.DoctorName = doc.DoctorName;
+                HttpContext.Session.SetString("Name", doctor.UserName);
                     var token = GenerateJSONWebToken(doctor.UserName, "doctor");
                     AddDoctorCabin(doc.UserName);
                     var data = new
@@ -70,11 +73,9 @@ namespace FewaTelemedicine.Controllers
                         User = doctor,
                         Token = token
                     };
-
-
                     return Ok(data);
-                }
-                return Unauthorized();
+                //}
+               // return Unauthorized();
             }
             catch (Exception ex)
             {

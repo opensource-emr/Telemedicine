@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace FewaTelemedicine.Domain.Models
 {
-   
-    public class DoctorsModel 
+
+    public class DoctorsModel
     {
         [Key]
         public int Id { get; set; }
@@ -20,6 +20,7 @@ namespace FewaTelemedicine.Domain.Models
         public string Designation { get; set; }
         public string MedicalDegree { get; set; }
         public string MobileNumber { get; set; }
+        public byte[] Image { get; set; }
         public string Clinic { get; set; }
         [NotMapped]
         public string SignalRConnectionId { get; set; }

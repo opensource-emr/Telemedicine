@@ -9,10 +9,11 @@
     <div class="col-md-3 col-sm-12 col-xs-12 p-0 right-panel">
       <!-- My doctor Info -->
       <div class="my-doc">
-        <img src="img/doc.svg" alt="" class="doc-img-p">
-        <h5 class="mt-4">Dr. Dipen Bhattarai</h5>
-        <span class="d-block mt-2"><i class="fa fa-user-md"></i>Senior Surgen</span>
-        <p class=""><i class="fa fa-hospital-o"></i>John Doe International Hospital</p>
+        <img *ngIf="retrievedImage" class="img-profile rounded-circle" [src]="Transform()">
+        <img *ngIf="!retrievedImage"  src="img/doc.svg" alt="" class="doc-img-p">
+        <h5 class="mt-4">{{global.doctorObj.NameTitle}} &nbsp;&nbsp;{{global.doctorObj.DoctorName}} </h5>
+        <span class="d-block mt-2"><i class="fa fa-user-md"></i>{{global.doctorObj.Designation}} </span>
+        <p class=""><i class="fa fa-hospital-o"></i>{{global.doctorObj.Clinic}} </p>
       </div>
       <!-- End My doc info -->
       <!-- Text Accrodian -->

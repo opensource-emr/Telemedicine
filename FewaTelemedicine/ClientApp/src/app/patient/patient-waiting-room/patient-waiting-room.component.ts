@@ -83,11 +83,17 @@ export class PatientWaitingRoomComponent {
           if (res.DoctorNameAttending.length > 0 && res.Name == this.global.patientObj.PatientName) {
       
             this.global.patientObj.DoctorNameAttending = res.DoctorNameAttending;
-            var url: string = this.global.config.videourl.replace("DOCTORNAME", this.global.patientObj.DoctorNameAttending);
-            this.global.config.videourl = url;
-            
-            this.routing.navigate(['/PatientRoom']);
-      
+            this.httpClient.
+            get<DoctorsModel>(this.global.HospitalUrl + "GetUpdatedDoctor")
+            .subscribe(res => {
+             this.global.doctorObj = res;
+             var url: string = this.global.config.videourl.replace("DOCTORNAME", this.global.patientObj.DoctorNameAttending);
+             this.global.config.videourl = url;     
+             this.routing.navigate(['/PatientRoom']);
+            });
+            // var url: string = this.global.config.videourl.replace("DOCTORNAME", this.global.patientObj.DoctorNameAttending);
+            // this.global.config.videourl = url;        
+            // this.routing.navigate(['/PatientRoom']);      
           }
         }
 
