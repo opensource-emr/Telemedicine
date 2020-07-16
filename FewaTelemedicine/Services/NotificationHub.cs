@@ -2,10 +2,12 @@
 using FewaTelemedicine.Domain;
 using FewaTelemedicine.Domain.Models;
 using FewaTelemedicine.Domain.Services;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,15 +20,21 @@ namespace FewaTelemedicine.Services
         List<DoctorsModel> doctors = null;
         List<DoctorCabin> doctorcabins = null;
         FewaDbContext fewaDbContext = null;
+	    [Obsolete]
+        private IHostingEnvironment _hostingEnvironment;
+
+        [Obsolete]
         public NotificationHub(WaitingRoom _waitingroom,
                                 List<DoctorsModel> _doctors,
                                 List<DoctorCabin> _doctorcabins,
-                                FewaDbContext _fewaDbContext)
+                                FewaDbContext _fewaDbContext,
+				IHostingEnvironment hostingEnvironment)
         {
             fewaDbContext = _fewaDbContext;
             waitingroom = _waitingroom;
             doctors = _doctors;
             doctorcabins = _doctorcabins;
+_hostingEnvironment = hostingEnvironment;
         }
 
         // This attaches user with Signalr connection id
@@ -185,6 +193,21 @@ namespace FewaTelemedicine.Services
         public override Task OnDisconnectedAsync(Exception exception)
         {
             RemoveUser(Context.User.Identity.Name);
+	string folderName = "Upload";
+            string webRootPath = _hostingEnvironment.WebRootPath;
+            string newPath = Path.Combine(webRootPath, folderName);
+            if (Directory.Exists(newPath))
+            {
+                DirectoryInfo di = new DirectoryInfo(newPath);
+                foreach (FileInfo dir in di.GetFiles())
+                {
+                    dir.Delete();
+                }
+                foreach (DirectoryInfo dir in di.GetDirectories())
+                {
+                    dir.Delete(true);
+                }
+            }
             SendUpdatedPatients();
             if (IsDoctor())
             {

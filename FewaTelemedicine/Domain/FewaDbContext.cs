@@ -14,7 +14,7 @@ namespace FewaTelemedicine.Domain
         {
             var optionsBuilder = new DbContextOptionsBuilder<FewaDbContext>();
             optionsBuilder.UseNpgsql("Server=xxxx;Database=xxx;Port=5432;User Id=xxxx;Password=xxx;Ssl Mode=Require;");
-
+            
             return new FewaDbContext(optionsBuilder.Options);
         }
 
