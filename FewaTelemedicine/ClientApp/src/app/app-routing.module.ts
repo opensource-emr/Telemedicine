@@ -9,7 +9,6 @@ import { DoctorRoomComponent } from './doctor/doctor-room/doctor-room.component'
 import { PatientRoomComponent } from './patient/patient-room/patient-room.component';
 import { PatientReportSummaryComponent } from './patient/patient-report-summary/patient-report-summary.component';
 import { PatientRegistrationComponent } from './patient/patient-registation/patient-registration.component';
-import { PatientUploadFilesComponent } from './patient/patient-upload-files/patient-upload-files.component';
 
 
 
@@ -23,8 +22,7 @@ const routes: Routes = [
   {path:'Waiting',component:PatientWaitingRoomComponent},
   {path:'DoctorRoom',component:DoctorRoomComponent},
   {path:'ReportSummary',component:PatientReportSummaryComponent},
-  {path:'PatientRoom',component:PatientRoomComponent},
-  {path:'Upload',component:PatientUploadFilesComponent}
+  {path:'PatientRoom',component:PatientRoomComponent}
 ];
 
 @NgModule({

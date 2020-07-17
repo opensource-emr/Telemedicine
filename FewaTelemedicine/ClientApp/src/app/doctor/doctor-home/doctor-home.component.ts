@@ -77,12 +77,12 @@ export class DoctorHomeComponent implements OnInit {
       this.ChatMessages.push(chatMsg);
       //this.ChatReceivedMessages.push(chatMsg);
       this.pushChatMsgUserwise(data.Name, chatMsg);
-      
+
 
       this.cdr.detectChanges();
-      this.scrollBottom.nativeElement.lastElementChild.scrollIntoView(false); // scroll to bottom
+      this.scrollBottom.nativeElement.lastElementChild.scrollIntoView(); // scroll to bottom
     });
-    
+
     this.invitationForm = this.formBuilder.group({
       email: ['', Validators.email],
       mobileno: ['', Validators.required],

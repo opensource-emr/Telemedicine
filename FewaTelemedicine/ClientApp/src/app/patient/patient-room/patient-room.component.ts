@@ -32,22 +32,22 @@ export class PatientRoomComponent {
         this.SuccessTestDone(_patient);
       }
       );
-      this.notificationService.EventChatMessage.subscribe(chatData => {
-        if (this.ChatForm.controls['selUser'].value != chatData.Name) {
-          this.ChatForm.controls['selUser'].setValue(chatData.Name);
-          this.OnChatUserChange();
-        }
-        if (!this.showChat) {
-          this.showChat = true;
-        }
-        const chatMsg = { Name: chatData.Name, Message: chatData.Message, Class: 'receiver-msg' };
-        this.ChatMessages.push(chatMsg);
-        //this.ChatReceivedMessages.push(chatMsg);
-        this.pushChatMsgUserwise(chatData.Name, chatMsg);
-  
-       this.cdr.detectChanges();
-        this.scrollBottom.nativeElement.lastElementChild.scrollIntoView(false); // scroll to bottom
-      });
+    this.notificationService.EventChatMessage.subscribe(chatData => {
+      if (this.ChatForm.controls['selUser'].value != chatData.Name) {
+        this.ChatForm.controls['selUser'].setValue(chatData.Name);
+        this.OnChatUserChange();
+      }
+      if (!this.showChat) {
+        this.showChat = true;
+      }
+      const chatMsg = { Name: chatData.Name, Message: chatData.Message, Class: 'receiver-msg' };
+      this.ChatMessages.push(chatMsg);
+      //this.ChatReceivedMessages.push(chatMsg);
+      this.pushChatMsgUserwise(chatData.Name, chatMsg);
+
+      // this.cdr.detectChanges();
+      //this.scrollBottom.nativeElement.lastElementChild.scrollIntoView(); // scroll to bottom
+    });
 
     this.notificationService.EventGetAllDoctors.subscribe(_doctors => {
       this.doctors = _doctors;

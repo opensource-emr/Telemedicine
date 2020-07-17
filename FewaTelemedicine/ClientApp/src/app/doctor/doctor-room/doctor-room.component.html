@@ -18,22 +18,6 @@
               </a>
             </h6>                  
           </div>
-          
-          <div class="card-header accordionItemHeading py-3 d-flex flex-row align-items-center justify-content-between br-0">
-            <h6 class="m-0 font-weight-bold"><i class="fa fa-users"></i>Uploaded Documents
-              <a href="javascript:;" (click)="getFiles()" class="btn btn-primary btn-sm p-rm10">
-                <i class="fa fa-home"></i>Documents
-              </a>
-            </h6>            
-            <div class="tab-content card shadow">
-              <div >
-              </div>
-            </div>
-          </div>
-          <div class="card-header accordionItemHeading py-3 d-flex flex-row align-items-center justify-content-between br-0" *ngFor="let temp of documentArray">
-            <h6 class="m-0 font-weight-bold"><i class="fa fa-calendar"></i> <a href="javascipt:;" (click)="download(temp)">{{temp.filename}}</a></h6>
-          </div>
-          
           <!-- Card Body -->
           <div class="card-body p-0 accordionItemContent">
             <table class="table">          
@@ -87,55 +71,48 @@
       <!-- Card Body -->
       <div class="card-body p-0 accordionItemContent">
         <div class="chatbox-holder">
-          <div class="chatbox">    
-            <form [formGroup]="ChatForm">
-            <div class="chat-messages">
-              <label *ngIf="showChat" for="selPatient">{{ global.IsDoctor ? 'Patient' : 'Doctor' }}:
-              </label>
-              <select *ngIf="showChat" id="selPatient" formControlName="selUser" (change)="OnChatUserChange()">
-                <option disabled value="null">Select {{ global.IsDoctor ? 'Patient' : 'Doctor' }} </option>
-                <option *ngFor="let user of ChatUserDropDowns"> {{ user.PatientName }} </option>
-              </select>
-              <div *ngIf="hasError('required','selUser') && showChat" style="color: red;display: inline;">
-                {{ global.IsDoctor ? 'Patient' : 'Doctor' }} is required
-              </div>
-        
-              <!-- <div #scrollBtm class="message-box-holder" *ngFor="let msg of ChatMessages">
-                <div class="message-sender">
-                <b> {{ msg.Name }} :-</b> {{ msg.Message }}
-                </div>
-                </div>    -->
-                <div *ngIf="showChat" class="chat-main">
-                  <ul #scrollBtm style="list-style-type: none;">
-                    <li *ngFor="let msg of ChatMessages" [ngClass]="msg.Class">
-                      {{ msg.Name }} :- {{ msg.Message }}
-                    </li>
-                  </ul>
-                </div>
-        <!-- 
-               <div class="message-box-holder" *ngFor="let msg of ChatReceivedMessages"  #scrollBtm>
-                <div class="message-sender" #scrollBtm>
-                  {{ msg.Name }} :- {{ msg.Message }}
-                 </div>
-               
-              </div> -->
-                 
-            </div>
-            
-            <div class="chat-input-holder" *ngIf="showChat">
-              <textarea class="chat-input" placeholder="Type your message here.."  formControlName="chatMessage" (keyup)="onChatEnter($event)"></textarea>
-              <div *ngIf="hasError('required','chatMessage')" style="color: red;"> Chat message is required </div>
-              <input type="button" value="Send" class="message-send btn-primary" (click)="SendChatMsg()" />
-            </div>
-            
-          </form>
-          </div>
+  <div class="chatbox">    
+    <form [formGroup]="ChatForm">
+    <div class="chat-messages">
+      <label *ngIf="showChat" for="selPatient">{{ global.IsDoctor ? 'Patient' : 'Doctor' }}:
+      </label>
+      <select *ngIf="showChat" id="selPatient" formControlName="selUser" (change)="OnChatUserChange()">
+        <option disabled value="null">Select {{ global.IsDoctor ? 'Patient' : 'Doctor' }} </option>
+        <option *ngFor="let user of ChatUserDropDowns"> {{ user.PatientName }} </option>
+      </select>
+      <div *ngIf="hasError('required','selUser') && showChat" style="color: red;display: inline;">
+        {{ global.IsDoctor ? 'Patient' : 'Doctor' }} is required
+      </div>
+
+      <div #scrollBtm class="message-box-holder" *ngFor="let msg of ChatMessages">
+        <div class="message-sender">
+        <b> {{ msg.Name }} :-</b> {{ msg.Message }}
+        </div>
+        </div>   
+<!-- 
+       <div class="message-box-holder" *ngFor="let msg of ChatReceivedMessages"  #scrollBtm>
+        <div class="message-sender" #scrollBtm>
+          {{ msg.Name }} :- {{ msg.Message }}
+         </div>
+       
+      </div> -->
+         
+    </div>
+    
+    <div class="chat-input-holder" *ngIf="showChat">
+      <textarea class="chat-input" placeholder="Type your message here.."  formControlName="chatMessage" (keyup)="onChatEnter($event)"></textarea>
+      <div *ngIf="hasError('required','chatMessage')" style="color: red;"> Chat message is required </div>
+      <input type="button" value="Send" class="message-send btn-primary" (click)="SendChatMsg()" />
+    </div>
+    
+  </form>
+  </div>
 </div>
       </div>
     </div>
     <!-- Texts Accrodian End -->
         <!-- upload  -->
-      <!-- <div class="drop droped-files" style="height: auto;">
+      <div class="drop droped-files" style="height: auto;">
         <div class="cont">
           <div class="uploaded-files">
             <img src="img/1.jpg" alt="" class="up-img" data-toggle="modal" data-target="#myModalpdf">
@@ -145,7 +122,7 @@
             <img src="img/7.jpg" alt="" class="up-img" data-toggle="modal" data-target="#myModalpdf">
           </div>
         </div>
-      </div> -->
+      </div>
       <!-- See File On popup click  -->
        <div id="myModalpdf" class="modal fade uploads" role="dialog">
                 <div class="modal-dialog modal-lg">
@@ -186,7 +163,7 @@
                 </div>
             </div>
               <!-- End See File On popup click  -->
-              <!-- <div class="drop">
+              <div class="drop">
                 <div class="cont">
                   <i class="fa fa-cloud-upload"></i>
                   <div class="tit">
@@ -200,7 +177,7 @@
                   </div>
                 </div>
                 <output id="list"></output><input id="files" multiple="true" name="files[]" type="file" />
-              </div> -->
+              </div>
                 <!-- Upload end -->
                 <!-- Visit Summary -->
                 <div *ngIf="(this.global.IsDoctor)" class="card mb-4 br-0 b-0 accordionItem open">

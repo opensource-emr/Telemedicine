@@ -1,24 +1,16 @@
-import { Component, ChangeDetectorRef, ElementRef, ViewChild,EventEmitter } from "@angular/core";
+import { Component, ChangeDetectorRef, ElementRef, ViewChild } from "@angular/core";
 import { Router } from '@angular/router';
 import { NotificationService } from 'src/Common/notification.service';
 import { GlobalModel } from 'src/Common/global.model';
 import { PatientsAttendedModel } from 'src/models/patients-attended.model';
-import { HttpClient, HttpEventType } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { FormGroup, Validators,FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { UploadDownloadService } from 'src/Common/upload-download.service';
-import { ProgressStatus } from 'src/models/progress-status.model';
 
 @Component({
     templateUrl:'./doctor-room.component.html'
 })
 export class DoctorRoomComponent {
-  public documentArray: any[] = [];
-  FileName: string;
-  public showDownloadError: boolean;
-  public progress: number;
-  public message: string;
-  public downloadStatus: EventEmitter<ProgressStatus>;
   public showPatDetail: boolean = false;
   patients: Array<PatientsAttendedModel> = new Array<PatientsAttendedModel>();
   showChat: boolean = true;
@@ -34,7 +26,7 @@ export class DoctorRoomComponent {
   constructor(
     public httpClient: HttpClient, public routing: Router, private formBuilder: FormBuilder,
     public notificationService: NotificationService, 
-    public global: GlobalModel, private cdr: ChangeDetectorRef,public service: UploadDownloadService) {
+    public global: GlobalModel, private cdr: ChangeDetectorRef) {
     this.initForm();
     this.state = history.state;
     if (this.global.IsPatient) {
@@ -81,10 +73,10 @@ export class DoctorRoomComponent {
       this.ChatMessages.push(chatMsg);
       //this.ChatReceivedMessages.push(chatMsg);
       this.pushChatMsgUserwise(data.Name, chatMsg);
-
+      
 
       this.cdr.detectChanges();
-      this.scrollBottom.nativeElement.lastElementChild.scrollIntoView(false); // scroll to bottom
+      this.scrollBottom.nativeElement.lastElementChild.scrollIntoView(); // scroll to bottom
     });
   }
 
@@ -99,45 +91,7 @@ export class DoctorRoomComponent {
     const control = this.ChatForm.controls[controlname];
     return control.hasError(typeofvalidator) && control.dirty;
   }
-  public getFiles() {
-    this.httpClient.get<any[]>('https://localhost:44304/api/upload/files').subscribe(
-      data => {
-        for (var i = 0; i < data.length; i++) {
-          this.FileName = data[i].replace(/^.*[\\\/]/, '');
-          this.documentArray[i] = {
-            filename: this.FileName,
-            filepath: data[i]
-          }
-        }
-      }
-    );
-  }
-  
-  public download(temp) {
-    this.service.downloadFile(temp.filename).subscribe(
-      data => {
-        if (data.type === HttpEventType.UploadProgress) {
-          this.progress = Math.round(100 * data.loaded / data.total);
-        }
-        else if (data.type === HttpEventType.Response) {
 
-          const downloadedFile = new Blob([data.body], { type: data.body.type });
-          const a = document.createElement('a');
-          a.setAttribute('style', 'display:none;');
-          document.body.appendChild(a);
-          a.download = temp.filename;
-          a.href = URL.createObjectURL(downloadedFile);
-          a.target = '_blank';
-          a.click();
-          document.body.removeChild(a);
-          this.message = 'download success.';
-
-        }
-
-      }
-    );
-  }
-  pri
   
   PatientAttended(attendedPatient: PatientsAttendedModel) {
     this.showPatDetail = false;
