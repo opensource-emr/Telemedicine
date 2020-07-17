@@ -1,4 +1,6 @@
-﻿using FewaTelemedicine.Domain.Repositories;
+﻿using FewaTelemedicine.Domain;
+using FewaTelemedicine.Domain.Models;
+using FewaTelemedicine.Domain.Repositories;
 using FewaTelemedicine.Domain.Services;
 using SendGrid;
 using SendGrid.Helpers.Mail;
@@ -15,9 +17,11 @@ namespace FewaTelemedicine.Persistence.Repositories
     {
 
         private ILoggerService _logger;
-        public MessengerRepository(ILoggerService logger)
+        private FewaDbContext FewaDbContext = null;
+        public MessengerRepository(ILoggerService logger, FewaDbContext fewaDbContext)
         {
             _logger = logger;
+            FewaDbContext = fewaDbContext;
         }
 
         public async Task<bool> SendEmailAsync(string subject, string message, string receiverEmail)
@@ -26,9 +30,16 @@ namespace FewaTelemedicine.Persistence.Repositories
             
             try
             {
-                var apiKey = "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";   // hardcoded
+                string[] parameters = { "ApiKey", "Email", "Name" };
+                List<string> paramsList = new List<string>(parameters);
+                List<ParametersModel> result = FewaDbContext.ParametersModels.Where(a => a.ParameterGroupName == "EmailAPI" && paramsList.Any(b => b == a.ParameterName)).ToList();
+                var apiKey = result.Find(a => a.ParameterName == "ApiKey").ParameterValue;
+                var email = result.Find(a => a.ParameterName == "Email").ParameterValue;
+                var name = result.Find(a => a.ParameterName == "Name").ParameterValue;
+                //var apiKey = "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";   // hardcoded
                 var client = new SendGridClient(apiKey);
-                var from = new EmailAddress("ramavtar.jangid@outlook.in", "Ramavtar Jangid");       // hardcoded
+                var from = new EmailAddress(email,name);
+                //var from = new EmailAddress("ramavtar.jangid@outlook.in", "Ramavtar Jangid");       // hardcoded
                 var to = new EmailAddress(receiverEmail);
                 var plainTextContent = message;
                 var htmlContent = message;
@@ -50,14 +61,21 @@ namespace FewaTelemedicine.Persistence.Repositories
         {
             try
             {
-                const string accountSid = "ACd3214af8b133290431f4e58030ad6429"; // hardcoded
-                const string authToken = "16ff3cb51a8cfbea333d4213476393ac"; // hardcoded
+                string[] parameters = { "AccountSID", "AuthToken", "PhoneNumber" };
+                List<string> paramsList = new List<string>(parameters);
+                List<ParametersModel> result = FewaDbContext.ParametersModels.Where(a => a.ParameterGroupName == "SMSAPI" && paramsList.Any(b => b == a.ParameterName)).ToList();
+                var accountSid = result.Find(a => a.ParameterName == "AccountSID").ParameterValue;
+                var authToken = result.Find(a => a.ParameterName == "AuthToken").ParameterValue;
+                var phone = result.Find(a => a.ParameterName == "PhoneNumber").ParameterValue;
+                //const string accountSid = "ACd3214af8b133290431f4e58030ad6429"; // hardcoded
+                //const string authToken = "16ff3cb51a8cfbea333d4213476393ac"; // hardcoded
 
                 TwilioClient.Init(accountSid, authToken);
 
                 var messageResource = MessageResource.Create(
                     body: message,
-                    from: new Twilio.Types.PhoneNumber("+13343423821"),  // hardcoded
+                    from: new Twilio.Types.PhoneNumber(phone),
+                    //from: new Twilio.Types.PhoneNumber("+13343423821"),  // hardcoded
                     to: new Twilio.Types.PhoneNumber(receiverContact)
                 );
                 return true;

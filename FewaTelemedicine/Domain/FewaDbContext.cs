@@ -83,7 +83,55 @@ namespace FewaTelemedicine.Domain
                             ParameterName = "LogoPath",
                             ParameterValue = "img/logo.png",
                             ValueDataType = "string"
-                        });
+                        },
+                         new
+                         {
+                             Id = 6,
+                             ParameterGroupName = "EmailAPI",
+                             ParameterName = "ApiKey",
+                             ParameterValue = "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",
+                             ValueDataType = "string"
+                         },
+                        new
+                        {
+                            Id = 7,
+                            ParameterGroupName = "EmailAPI",
+                            ParameterName = "Email",
+                            ParameterValue = "ramavtar.jangid@outlook.in",
+                            ValueDataType = "string"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            ParameterGroupName = "EmailAPI",
+                            ParameterName = "Name",
+                            ParameterValue = "Ramavtar Jangid",
+                            ValueDataType = "string"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            ParameterGroupName = "SMSAPI",
+                            ParameterName = "AccountSID",
+                            ParameterValue = "ACd3214af8b133290431f4e58030ad6429",
+                            ValueDataType = "string"
+                        },
+                         new
+                         {
+                             Id = 10,
+                             ParameterGroupName = "SMSAPI",
+                             ParameterName = "AuthToken",
+                             ParameterValue = "ACd3214af8b133290431f4e58030ad6429",
+                             ValueDataType = "string"
+                         },
+                          new
+                          {
+                              Id = 11,
+                              ParameterGroupName = "SMSAPI",
+                              ParameterName = "PhoneNumber",
+                              ParameterValue = "+13343423821",
+                              ValueDataType = "string"
+                          });
             // Default entry in to paramete table
 
         }

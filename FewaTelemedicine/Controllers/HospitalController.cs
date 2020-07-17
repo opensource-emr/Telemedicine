@@ -380,10 +380,11 @@ namespace FewaTelemedicine.Controllers
             }
         }
 
-        [HttpGet("GetImage/{username}")]
-        public IActionResult GetImage(string username)
+        //[HttpGet("GetImage/{username}")]
+        public IActionResult GetImage()
         {
-            var doc = _doctorRepository.GetDoctorByUserName(username);
+            string username = HttpContext.Session.GetString("Name");
+             var doc = _doctorRepository.GetDoctorByUserName(username);
             if (doc.Image != null)
             {
                 //string base64Data = Convert.ToBase64String(doc.Image);

@@ -104,6 +104,7 @@ export class DoctorHomeComponent implements OnInit {
     get<DoctorsModel>(this.global.HospitalUrl + "GetUpdatedDoctor")
     .subscribe(res => {
      this.doctorObj = res;
+     if(this.doctorObj.Image)
      this.retrievedImage = 'data:image/png;base64,' + this.doctorObj.Image;
     });
 
@@ -197,6 +198,7 @@ export class DoctorHomeComponent implements OnInit {
       .subscribe(
         res => {
           this.retrieveResponse = res
+          if(this.retrieveResponse)
           this.retrievedImage = 'data:image/png;base64,' + this.retrieveResponse.Image;
         }
       );

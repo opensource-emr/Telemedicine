@@ -135,6 +135,7 @@ namespace FewaTelemedicine.Controllers
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
         [HttpPost("UpdateProfile")]
         public IActionResult UpdateProfile([FromBody] DoctorsModel obj)
         {
