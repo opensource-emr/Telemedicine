@@ -9,6 +9,7 @@ import { ProgressStatus} from 'src/models/progress-status.model';
 })
 
 export class PatientUploadFilesComponent {
+    public baseApiUrl: string;
     public progress: number;
     public message: string;
     public FileName: string;
@@ -41,7 +42,7 @@ export class PatientUploadFilesComponent {
             formData.append('name' + index, file, FileName);
             console.log(formData.get('name'));
         });
-        this.http.post('https://localhost:44304/api/upload', formData, { reportProgress: true, observe: 'events' })
+        this.http.post(this.service.apiUploadUrl, formData, { reportProgress: true, observe: 'events' })
             .subscribe(
                 event => {
                     if (event.type === HttpEventType.UploadProgress) {

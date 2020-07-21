@@ -102,7 +102,7 @@ export class DoctorRoomComponent {
     return control.hasError(typeofvalidator) && control.dirty;
   }
   public getFiles() {
-    this.httpClient.get<any[]>('https://localhost:44304/api/upload/files').subscribe(
+    this.httpClient.get<any[]>(this.service.apiFileUrl).subscribe(
       data => {
         for (var i = 0; i < data.length; i++) {
           this.FileName = data[i].replace(/^.*[\\\/]/, '');

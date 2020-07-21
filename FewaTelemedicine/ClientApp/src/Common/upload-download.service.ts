@@ -1,20 +1,24 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpRequest, HttpEvent, HttpResponse } from '@angular/common/http';
 import { of, Observable,Subject } from 'rxjs';
+import { GlobalModel } from './global.model';
 
 @Injectable()
 export class UploadDownloadService {
   private baseApiUrl: string;
-  private apiDownloadUrl: string;
-  private apiUploadUrl: string;
-  private apiFileUrl: string;
+  public apiDownloadUrl: string;
+  public  apiUploadUrl: string;
+  public apiFileUrl: string;
   public FileName: string;
   
-  constructor(private httpClient: HttpClient) {
-    this.baseApiUrl = 'https://localhost:44304/api/Upload/';
-    this.apiDownloadUrl = this.baseApiUrl + 'download';
-    this.apiUploadUrl = this.baseApiUrl + 'upload';
-    this.apiFileUrl = this.baseApiUrl + 'files';
+  constructor(private httpClient: HttpClient,private global:GlobalModel) {
+    //this.baseApiUrl = 'https://localhost:44304/api/Upload/';
+    this.baseApiUrl=window.location.origin+window.location.pathname+this.global.ApiUrl;
+  //   this.apiUploadUrl= '/' + (window.location.pathname.split('/')[1] || '')
+  // this.apiDownloadUrl=(window.location.pathname.split('/')[1] || '')
+   this.apiDownloadUrl = this.baseApiUrl +this.global.UploadUrl+ 'download';
+   this.apiUploadUrl = this.baseApiUrl + 'upload';
+   this.apiFileUrl = this.baseApiUrl +this.global.UploadUrl+ 'files';
   }
   public downloadFile(file: string): Observable<HttpEvent<Blob>> {
     return this.httpClient.request(new HttpRequest(
