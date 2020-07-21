@@ -3,11 +3,13 @@ using FewaTelemedicine.Domain;
 using FewaTelemedicine.Domain.Models;
 using FewaTelemedicine.Domain.Services;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace FewaTelemedicine.Services
 {
@@ -18,15 +20,20 @@ namespace FewaTelemedicine.Services
         List<DoctorsModel> doctors = null;
         List<DoctorCabin> doctorcabins = null;
         FewaDbContext fewaDbContext = null;
+	[Obsolete]
+        private IHostingEnvironment _hostingEnvironment;
+	[Obsolete]
         public NotificationHub(WaitingRoom _waitingroom,
                                 List<DoctorsModel> _doctors,
                                 List<DoctorCabin> _doctorcabins,
-                                FewaDbContext _fewaDbContext)
+                                FewaDbContext _fewaDbContext,
+				IHostingEnvironment hostingEnvironment)
         {
             fewaDbContext = _fewaDbContext;
             waitingroom = _waitingroom;
             doctors = _doctors;
             doctorcabins = _doctorcabins;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         // This attaches user with Signalr connection id
@@ -173,6 +180,21 @@ namespace FewaTelemedicine.Services
         {
             AttachUser(Context.User.Identity.Name,
                 Context.ConnectionId);
+	         string folderName = "Upload";
+            string webRootPath = _hostingEnvironment.WebRootPath;
+            string newPath = Path.Combine(webRootPath, folderName);
+            if (Directory.Exists(newPath))
+            {
+                DirectoryInfo di = new DirectoryInfo(newPath);
+                foreach (FileInfo dir in di.GetFiles())
+                {
+                    dir.Delete();
+                }
+                foreach (DirectoryInfo dir in di.GetDirectories())
+                {
+                    dir.Delete(true);
+                }
+            }
             // over here send message to all doctor that pateint has logged
 
             SendUpdatedPatients();

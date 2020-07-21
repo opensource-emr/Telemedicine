@@ -10,6 +10,7 @@ export class GlobalModel {
     IsPatient: boolean = false;
     ApiUrl: string = "api/";
     HospitalUrl: string = "Hospital/";
+    UploadUrl:string="Upload/"
     config: any = null;
     token: string;
     constructor() {
