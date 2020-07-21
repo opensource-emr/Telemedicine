@@ -37,6 +37,8 @@ export class PatientRegistrationComponent implements OnInit
          this.global.token = res.Value.Token;
       this.global.IsDoctor = false;
       this.global.IsPatient = true;
+      this.global.patientObj.PatientName = res.Value.User.PatientName;
+      sessionStorage.setItem('PatientName', this.global.patientObj.PatientName);
       this.global.patientObj = res.Value.User;
       this.global.patientObj = res.Value;
       this.global.patientObj.Id=res.Value.Id;

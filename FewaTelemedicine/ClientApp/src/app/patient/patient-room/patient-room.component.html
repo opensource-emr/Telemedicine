@@ -60,7 +60,7 @@
       </div>
       <!-- Texts Accrodian End -->
       <!-- upload  -->
-      <div class="drop droped-files" style="height: auto;">
+      <!-- <div class="drop droped-files" style="height: auto;">
         <div class="cont">
           <div class="uploaded-files">
             <img src="img/1.jpg" alt="" class="up-img" data-toggle="modal" data-target="#myModalpdf">
@@ -70,7 +70,7 @@
             <img src="img/7.jpg" alt="" class="up-img" data-toggle="modal" data-target="#myModalpdf">
           </div>
         </div>
-      </div>
+      </div> -->
       <!-- See File On popup click  -->
       <div id="myModalpdf" class="modal fade uploads" role="dialog">
         <div class="modal-dialog modal-lg">
@@ -113,18 +113,24 @@
       <!-- End See File On popup click  -->
       <div class="drop">
         <div class="cont">
-          <i class="fa fa-cloud-upload"></i>
-          <div class="tit">
+          <!-- <i class="fa fa-cloud-upload"></i> -->
+          <!-- <button type="button" class="btn btn-primary btn-user btn-block" [routerLink]='["/Upload"]'>Upload File</button> -->
+        <!-- <li [routerLinkActive]='["link-active"]'>
+          <a [routerLink]='["/Upload"]' [state]="this.global.patientObj" (click)='collapse()'>
+           <span class='glyphicon glyphicon-upload'></span> Upload
+        </a>  -->
+      <!-- </li> -->
+          <!-- <div class="tit">
             Drag & Drop
-          </div>
+          </div> -->
           <div class="desc">
             your files to Assets, or
           </div>
-          <div class="btn btn-sm btn-primary">
+          <div class="btn btn-sm btn-primary" [routerLink]='["/Upload"]'>
             click here to browse
           </div>
         </div>
-        <output id="list"></output><input id="files" multiple="true" name="files[]" type="file" />
+        <!-- <output id="list"></output><input id="files" multiple="true" name="files[]" type="file" /> -->
       </div>
       <!-- Upload end -->
     </div>
