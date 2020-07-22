@@ -66,6 +66,7 @@ namespace FewaTelemedicine.Controllers
                 doctor.NameTitle = doc.NameTitle;
                 doctor.DoctorName = doc.DoctorName;
                 HttpContext.Session.SetString("Name", doctor.UserName);
+
                     var token = GenerateJSONWebToken(doctor.UserName, "doctor");
                     AddDoctorCabin(doc.UserName);
                     var data = new

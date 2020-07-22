@@ -12,6 +12,7 @@ using FewaTelemedicine.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,13 +34,15 @@ namespace FewaTelemedicine
 
         public IConfiguration Configuration { get; }
 
+        //protected IHttpContextAccessor HttpContextAccessor { get; }
+
         private List<DoctorsModel> LoadDoctors( )
         {
-            
             var optionsBuilder = new DbContextOptionsBuilder<FewaDbContext>();
             optionsBuilder.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
-
             FewaDbContext db = new FewaDbContext(optionsBuilder.Options);
+  
+
             return db.DoctorsModels.ToList<DoctorsModel>();
         }
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -63,8 +66,8 @@ namespace FewaTelemedicine
             services.AddScoped<IMessengerRepository, MessengerRepository>();
             services.AddScoped<IMessengerService, MessengerServ>();
 
-            
 
+            services.AddHttpContextAccessor();
 
             services.AddControllers()
                 .AddJsonOptions(options =>
