@@ -34,24 +34,27 @@ namespace FewaTelemedicine.Persistence.Repositories
             var bResponse = false;
             try
             {
-                List<ParametersModel> result = FewaDbContext.ParametersModels.Where(a => a.ParameterGroupName == "EmailAPI").ToList();
+                List<ParametersModel> paramEmail = FewaDbContext.ParametersModels.Where(a => a.ParameterGroupName == "EmailAPI").ToList();
+                List<ParametersModel> paramHospital = FewaDbContext.ParametersModels.Where(a => a.ParameterGroupName == "Hospital").ToList();
                 var username = accessor.HttpContext.Session.GetString("Name");
                 var doctor = _doctorRepository.GetDoctorByUserName(username);
                 var imageURL = "https://source.unsplash.com/QAB-WJcbgJk/60x60";
+                var HospitalName = paramHospital.Find(a => a.ParameterName == "Name").ParameterValue;
+                var HospitalContact = paramHospital.Find(a => a.ParameterName == "ContactNumber").ParameterValue;
                 //var doctor = FewaDbContext.DoctorsModels.FirstOrDefault(a => a.UserName == username);
-                var apiKey = result.Find(a => a.ParameterName == "ApiKey").ParameterValue;
+                var apiKey = paramEmail.Find(a => a.ParameterName == "ApiKey").ParameterValue;
                if(doctor.Image != null)
                 {
                     string base64Data = Convert.ToBase64String(doctor.Image);
                      imageURL = string.Format("data:image/png;base64,{0}", base64Data); 
                 }
-                var email = result.Find(a => a.ParameterName == "Email").ParameterValue;
-                var name = result.Find(a => a.ParameterName == "Name").ParameterValue;
+                var email = paramEmail.Find(a => a.ParameterName == "Email").ParameterValue;
+                var name = paramEmail.Find(a => a.ParameterName == "Name").ParameterValue;
                 var client = new SendGridClient(apiKey);
                 var from = new EmailAddress(email, name);
                 var to = new EmailAddress(receiverEmail);
-                var plainTextContent = result.Find(a => a.ParameterName == "EmailPlainBody").ParameterValue;
-                var htmlContent = result.Find(a => a.ParameterName == "EmailHTMLBody").ParameterValue;
+                var plainTextContent = paramEmail.Find(a => a.ParameterName == "EmailPlainBody").ParameterValue;
+                var htmlContent = paramEmail.Find(a => a.ParameterName == "EmailHTMLBody").ParameterValue;
                 var newHtmlContent = "<body id='page-top'><div id='wrapper'><!--Content Wrapper-->" +
                                      "<script>" +
                                      "document.getElementById('img').onError = function() { " +
@@ -74,7 +77,7 @@ namespace FewaTelemedicine.Persistence.Repositories
                                      "<!-- Nav Item - User Information --><li class='nav-item dropdown no-arrow'>" +
                                      "<a class='nav-link dropdown-toggle' href='#' id='userDropdown' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>" +
                                      "<span class='mr-2 d-none d-lg-inline text-gray-600 small'>" + doctor.NameTitle + "&nbsp;&nbsp;"+  doctor.DoctorName + "</span>" +
-                                     "<img class='img-profile rounded-circle' id='img'  style='height:60px;padding-left:10%;' " +
+                                     "<img class='img-profile rounded-circle' id='img'  style='height:60px;padding-left:5%;' " +
                                      " src='" + imageURL + "'>" +
                                      //"<img class='img-profile rounded-circle' src='https://source.unsplash.com/QAB-WJcbgJk/60x60' style='padding-left:5%;'></a>" +
                                      //"<!-- Dropdown - User Information --><div class='dropdown-menu dropdown-menu-right shadow animated--grow-in' aria-labelledby='userDropdown'>" +
@@ -91,10 +94,10 @@ namespace FewaTelemedicine.Persistence.Repositories
                                      "table{font-family: 'Verdana';} @media Print{table{font - family: 'Verdana';}}</style>" +
                                      "<table style = 'width: 100%; text-align: center; margin: 45px 0; font-size: 13px; font-family: Verdana;'><tr>" +
                                      "<td><img src = 'https://localhost:44304/img/logo.png' style='height: 80px;' alt='Fewa Telemedicine'></td></tr><tr><td><h4 style = 'margin-top: 15px; margin-bottom: 5px; font-weight: 800'>" +
-                                     "<span style = 'display: block; margin-top: 15px;'>John Doe International Hospital</span></h4>" +
+                                     "<span style = 'display: block;margin-top:15px;font-size:16px;'>" + HospitalName + "</span></h4>" +
                                      "<p style = 'margin-top: 5px; margin-bottom: 15px; font-size: 15px; font-weight: 600'>" +
                                      "<span style = 'display: block;'>Hospital Address two</span></p>" +
-                                     "<span style = 'display: block; margin-top: 5px;'>Phone No. *********, Fax: **********</span>" +
+                                     "<span style = 'display: block; margin-top: 5px;'>Phone No." + HospitalContact + ", Fax: **********</span>" +
                                      "</td></tr></table><table style = 'width: 100%; text-align: center; margin: 45px 0; font-size: 13px; font-family: Verdana;'>" +
                                      "<tr><td><a href = 'https://localhost:44304/#/Join' style='text-decoration:none;'><h5 style='font-weight: 600;font-size: 15px;" +
                                      "background: #009688; padding: 15px; color: #fff;'>Invitation from Fewa Telemedicine" +
@@ -112,7 +115,7 @@ namespace FewaTelemedicine.Persistence.Repositories
                                      "<div class='copyright text-center my-auto'>" +
                                      "<span class=''>Powered by © Fewa Telehealth 2020 <img src='https://localhost:44304/./img/logo-cap.png' alt='Fewa Telemedicine' style='height:50px' class='powered-footer-logo'></span>" +
                                      "</div></div></footer></div></div></body>";
-                subject = result.Find(a => a.ParameterName == "EmailSubject").ParameterValue;
+                subject = paramEmail.Find(a => a.ParameterName == "EmailSubject").ParameterValue;
                 var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, newHtmlContent);
                 var res = await client.SendEmailAsync(msg);
                 if (res.StatusCode == System.Net.HttpStatusCode.OK || res.StatusCode == System.Net.HttpStatusCode.Accepted)
