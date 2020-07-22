@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, ChangeDetectorRef } from "@angular/core";
+import { Component, ViewChild, ElementRef, ChangeDetectorRef, OnDestroy } from "@angular/core";
 import { NotificationService } from 'src/Common/notification.service';
 import {GlobalModel} from 'src/Common/global.model';
 import { Router } from '@angular/router';
@@ -9,8 +9,9 @@ import { HttpClient } from '@angular/common/http';
 @Component({
     templateUrl:'./patient-waiting-room.component.html'
 })
-export class PatientWaitingRoomComponent {
+export class PatientWaitingRoomComponent implements OnDestroy {
     @ViewChild('pcam') video:any; 
+    Video:any;
   showChat: boolean = true;
   doctors: Array<DoctorsModel> = new Array<DoctorsModel>();
   ChatMessages: Array<any> = new Array<any>();
@@ -18,13 +19,14 @@ export class PatientWaitingRoomComponent {
   AllUserChats: any = {};
   @ViewChild('scrollBtm', { static: false }) private scrollBottom: ElementRef;
   ngAfterViewInit() {
-          let _video=this.video.nativeElement;
+         let _video=this.video.nativeElement;
+         this.Video=_video;
           if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             navigator.mediaDevices.getUserMedia({ video: true })
                                   .then(stream => {
                                     _video.srcObject = stream;
                                     _video.play();
-                                  })
+                                   })
           }
         }
   constructor(
@@ -61,6 +63,11 @@ export class PatientWaitingRoomComponent {
     this.notificationService.EventConnectionEstablished.subscribe(() => {
       this.notificationService.LoadActiveDoctors();
     });
+  }
+  ngOnDestroy() {
+  
+    const mediaStream = this.Video.srcObject;
+    (<MediaStream>mediaStream).getTracks().forEach( stream => stream.stop());
   }
 
   private initForm() {

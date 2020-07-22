@@ -104,14 +104,25 @@ export class DoctorRoomComponent {
   public getFiles() {
     this.httpClient.get<any[]>(this.service.apiFileUrl).subscribe(
       data => {
-        for (var i = 0; i < data.length; i++) {
+
+      if (data && data.length > 0)
+      {
+     
+        for (var i = 0; i < data.length; i++) 
+        {
           this.FileName = data[i].replace(/^.*[\\\/]/, '');
-          this.documentArray[i] = {
+          this.documentArray[i] = 
+          {
             filename: this.FileName,
             filepath: data[i]
           }
         }
       }
+      else{
+        alert("files are not uploaded yet");
+      }
+    }
+      
     );
   }
   
