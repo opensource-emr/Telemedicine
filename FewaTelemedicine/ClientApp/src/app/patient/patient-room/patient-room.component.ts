@@ -13,6 +13,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class PatientRoomComponent {
   showChat: boolean = false;
   doctors: Array<DoctorsModel> = new Array<DoctorsModel>();
+  doctorObj: DoctorsModel = new DoctorsModel();
   retrievedImage:any;
   ChatMessages: Array<any> = new Array<any>();
   ChatReceivedMessages: Array<any> = new Array<any>();
@@ -51,6 +52,11 @@ export class PatientRoomComponent {
 
     this.notificationService.EventGetAllDoctors.subscribe(_doctors => {
       this.doctors = _doctors;
+      this.doctorObj=_doctors[0];
+      this.global.doctorObj=_doctors[0];
+      if (this.global.doctorObj.Image) {
+        this.retrievedImage = 'data:image/png;base64,' + this.global.doctorObj.Image;
+      }
       console.log(this.doctors);
     });
     // gets doctor list
@@ -62,9 +68,8 @@ export class PatientRoomComponent {
   }
 
   ngOnInit() {
-    if (this.global.doctorObj.Image) {
-      this.retrievedImage = 'data:image/png;base64,' + this.global.doctorObj.Image;
-    }
+
+   
   }
 
   private initForm() {
