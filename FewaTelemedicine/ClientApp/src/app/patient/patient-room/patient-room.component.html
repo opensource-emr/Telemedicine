@@ -11,9 +11,9 @@
       <div class="my-doc">
         <img *ngIf="retrievedImage" class="img-profile rounded-circle" [src]="Transform()">
         <img *ngIf="!retrievedImage"  src="img/doc.svg" alt="" class="doc-img-p">
-        <h5 class="mt-4">{{global.doctorObj.NameTitle}} &nbsp;&nbsp;{{global.doctorObj.DoctorName}} </h5>
-        <span class="d-block mt-2"><i class="fa fa-user-md"></i>{{global.doctorObj.Designation}} </span>
-        <p class=""><i class="fa fa-hospital-o"></i>{{global.doctorObj.Clinic}} </p>
+        <h5 class="mt-4">{{doctorObj.NameTitle}} &nbsp;&nbsp;{{doctorObj.DoctorName}} </h5>
+        <span class="d-block mt-2"><i class="fa fa-user-md"></i>{{doctorObj.Designation}} </span>
+        <p class=""><i class="fa fa-hospital-o"></i>{{doctorObj.Clinic}} </p>
       </div>
       <!-- End My doc info -->
       <!-- Text Accrodian -->
