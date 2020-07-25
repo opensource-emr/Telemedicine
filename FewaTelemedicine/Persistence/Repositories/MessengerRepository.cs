@@ -36,6 +36,7 @@ namespace FewaTelemedicine.Persistence.Repositories
             {
                 List<ParametersModel> paramEmail = FewaDbContext.ParametersModels.Where(a => a.ParameterGroupName == "EmailAPI").ToList();
                 List<ParametersModel> paramHospital = FewaDbContext.ParametersModels.Where(a => a.ParameterGroupName == "Hospital").ToList();
+                var ServerName = FewaDbContext.ParametersModels.FirstOrDefault(a => a.ParameterGroupName == "Server").ParameterValue;
                 var username = accessor.HttpContext.Session.GetString("Name");
                 var doctor = _doctorRepository.GetDoctorByUserName(username);
                 var imageURL = "https://source.unsplash.com/QAB-WJcbgJk/60x60";
@@ -58,7 +59,7 @@ namespace FewaTelemedicine.Persistence.Repositories
                 var newHtmlContent = "<body id='page-top'><div id='wrapper'><!--Content Wrapper-->" +
                                      "<script>" +
                                      "document.getElementById('img').onError = function() { " +
-                                     "var url2 = 'https://source.unsplash.com/QAB-WJcbgJk/60x60' ;" +
+                                     "var url2 = 'https://source.unsplash.com/QAB-WJcbgJk/60x60';" +
                                      "document.getElementById('img').setAttribute('src', url2);}" +
                                      //"(function(){ while(img = document.evaluate('//img[contains(@src, \'googleusercontent.com\')]'," +                                   
                                     //" document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue){ var src = img.attributes.src.value;" +
@@ -72,7 +73,7 @@ namespace FewaTelemedicine.Persistence.Repositories
                                      //"<button id='sidebarToggleTop' class='btn btn-link d-md-none rounded-circle mr-3'>" +
                                      //"<i class='fa fa-bars'></i></button><!-- Topbar Navbar -->" +
                                      "<a class='sidebar-brand d-flex align-items-center justify-content-center' href='#'>" +
-                                     "<div class='sidebar-brand-text mx-3'><img src='https://localhost:44304/./img/logo.png' alt='Fewa Telemedicine'></div></a>" +
+                                     "<div class='sidebar-brand-text mx-3'><img src='" + ServerName + "./img/logo.png' alt='Fewa Telemedicine'></div></a>" +
                                      "<ul class='navbar-nav ml-auto'><div class='topbar-divider d-none d-sm-block'></div>" +
                                      "<!-- Nav Item - User Information --><li class='nav-item dropdown no-arrow'>" +
                                      "<a class='nav-link dropdown-toggle' href='#' id='userDropdown' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>" +
@@ -93,27 +94,27 @@ namespace FewaTelemedicine.Persistence.Repositories
                                      "<div class='card-body'><!-- Report Printable Area --><style type = 'text/css' media='Print'>" +
                                      "table{font-family: 'Verdana';} @media Print{table{font - family: 'Verdana';}}</style>" +
                                      "<table style = 'width: 100%; text-align: center; margin: 45px 0; font-size: 13px; font-family: Verdana;'><tr>" +
-                                     "<td><img src = 'https://localhost:44304/img/logo.png' style='height: 80px;' alt='Fewa Telemedicine'></td></tr><tr><td><h4 style = 'margin-top: 15px; margin-bottom: 5px; font-weight: 800'>" +
+                                     "<td><img src = '" + ServerName + "img/logo.png' style='height: 80px;' alt='Fewa Telemedicine'></td></tr><tr><td><h4 style = 'margin-top: 15px; margin-bottom: 5px; font-weight: 800'>" +
                                      "<span style = 'display: block;margin-top:15px;font-size:16px;'>" + HospitalName + "</span></h4>" +
                                      "<p style = 'margin-top: 5px; margin-bottom: 15px; font-size: 15px; font-weight: 600'>" +
                                      "<span style = 'display: block;'>Hospital Address two</span></p>" +
                                      "<span style = 'display: block; margin-top: 5px;'>Phone No." + HospitalContact + ", Fax: **********</span>" +
                                      "</td></tr></table><table style = 'width: 100%; text-align: center; margin: 45px 0; font-size: 13px; font-family: Verdana;'>" +
-                                     "<tr><td><a href = 'https://localhost:44304/#/Join' style='text-decoration:none;'><h5 style='font-weight: 600;font-size: 15px;" +
+                                     "<tr><td><a href = '" + ServerName + "#/Join' style='text-decoration:none;'><h5 style='font-weight: 600;font-size: 15px;" +
                                      "background: #009688; padding: 15px; color: #fff;'>Invitation from Fewa Telemedicine" +
                                      "</h5></a></td></tr></table>" +
                                      "<table style = 'font-family: Verdana; font-size: 13px; width: 100%;border-collapse: inherit !important;'>" +
                                      "<tr style = 'border: 1px solid #fff; border-top: none'>" +
                                      "<td style='padding: 8px; padding-top: 0' align='center'>This is <strong>" + doctor.NameTitle + "&nbsp;&nbsp;" + doctor.DoctorName +
                                      "</strong>.<br/> Please click this link to join me for a secure video meeting - <br/>" +
-                                     "<a href='https://localhost:44304/#/Join?MeetingId:" + doctor.MeetingId + " ' style='margin-top:15px'>" +
+                                     "<a href='"+ ServerName + "#/Join?MeetingId:" + doctor.MeetingId + " ' style='margin-top:15px'>" +
                                      /*"[queryParams]='{'MeetingId':this.global.doctorObj.MeetingId}' [state]=''>"*/  "link</a></td>" +
                                      "</tr> </table>" +
                                      "<!-- Report Printable area end -->" +
                                      "</div></div></div></div></div></div>" +
                                      "<footer class='sticky-footer bg-white'><div class='container my-auto'>" +
                                      "<div class='copyright text-center my-auto'>" +
-                                     "<span class=''>Powered by © Fewa Telehealth 2020 <img src='https://localhost:44304/./img/logo-cap.png' alt='Fewa Telemedicine' style='height:50px' class='powered-footer-logo'></span>" +
+                                     "<span class=''>Powered by © Fewa Telehealth 2020 <img src='" + ServerName + "./img/logo-cap.png' alt='Fewa Telemedicine' style='height:50px' class='powered-footer-logo'></span>" +
                                      "</div></div></footer></div></div></body>";
                 subject = paramEmail.Find(a => a.ParameterName == "EmailSubject").ParameterValue;
                 var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, newHtmlContent);

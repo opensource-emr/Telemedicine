@@ -107,7 +107,6 @@ export class DoctorHomeComponent implements OnInit {
      if(this.doctorObj.Image)
      this.retrievedImage = 'data:image/png;base64,' + this.doctorObj.Image;
     });
-
     this.state = history.state;
   }
 
@@ -139,6 +138,7 @@ export class DoctorHomeComponent implements OnInit {
     }
     return diff;
   }
+  
   Check(param) {
     let data = param;
 

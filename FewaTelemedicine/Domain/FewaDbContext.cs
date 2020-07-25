@@ -18,7 +18,7 @@ namespace FewaTelemedicine.Domain
         public FewaDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<FewaDbContext>();
-            optionsBuilder.UseNpgsql("Server=localhost;Database=fewatelemedicine;Port=5432;User Id=postgres;Password=bha@7058");
+            optionsBuilder.UseNpgsql("Server=localhost;Database=fewatelemedicine;Port=5432;User Id=postgres;Password=password@123");
             return new FewaDbContext(optionsBuilder.Options);
         }
 
@@ -90,7 +90,7 @@ namespace FewaTelemedicine.Domain
                             ParameterName = "LogoPath",
                             ParameterValue = "img/logo.png",
                             ValueDataType = "string"
-                        },
+                        },                     
                          new
                          {
                              Id = 6,
@@ -210,7 +210,15 @@ namespace FewaTelemedicine.Domain
                                  ParameterName = "EmailSubject",
                                  ParameterValue = "fewa Telemedicine call today schedule.",
                                  ValueDataType = "string"
-                             }
+                             },
+                              new
+                              {
+                                  Id = 15,
+                                  ParameterGroupName = "Server",
+                                  ParameterName = "ServerName",
+                                  ParameterValue = "https://localhost:44304/",
+                                  ValueDataType = "string"
+                              }
 
                           );
             // Default entry in to paramete table
