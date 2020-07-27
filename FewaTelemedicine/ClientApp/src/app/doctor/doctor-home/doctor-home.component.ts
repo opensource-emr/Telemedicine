@@ -237,7 +237,7 @@ export class DoctorHomeComponent implements OnInit {
 
   CallPatient(callPatient: PatientsAttendedModel) {
     if (this.global.patientObj.Status == 1) {
-      return;
+      this.global.patientObj=new PatientsAttendedModel;
     }
     this.showPatDetail = true;
     let dateTime = new Date();
