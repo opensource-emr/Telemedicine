@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, ElementRef, ViewChild,EventEmitter } from "@angular/core";
+import { Component, ChangeDetectorRef, ElementRef, ViewChild,EventEmitter ,Output} from "@angular/core";
 import { Router } from '@angular/router';
 import { NotificationService } from 'src/Common/notification.service';
 import { GlobalModel } from 'src/Common/global.model';
@@ -7,7 +7,7 @@ import { HttpClient , HttpEventType } from '@angular/common/http';
 import { FormGroup, Validators,FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { UploadDownloadService } from 'src/Common/upload-download.service';
-import { ProgressStatus } from 'src/models/progress-status.model';
+import { ProgressStatus, ProgressStatusEnum } from 'src/models/progress-status.model';
 
 @Component({
     templateUrl:'./doctor-room.component.html'
@@ -15,10 +15,11 @@ import { ProgressStatus } from 'src/models/progress-status.model';
 export class DoctorRoomComponent {
   public documentArray: any[] = [];
   FileName: string;
+  FileAdr:string;
   public showDownloadError: boolean;
   public progress: number;
   public message: string;
-  public downloadStatus: EventEmitter<ProgressStatus>;
+  @Output() public downloadStatus: EventEmitter<ProgressStatus>;
 
 
   public showPatDetail: boolean = false;
@@ -114,7 +115,8 @@ export class DoctorRoomComponent {
           this.documentArray[i] = 
           {
             filename: this.FileName,
-            filepath: data[i]
+            filepath: data[i],
+            fileAdr:this.service.DownloadUrl+this.FileName
           }
         }
       }
@@ -125,32 +127,6 @@ export class DoctorRoomComponent {
       
     );
   }
-  
-  public download(temp) {
-    this.service.downloadFile(temp.filename).subscribe(
-      data => {
-        if (data.type === HttpEventType.UploadProgress) {
-          this.progress = Math.round(100 * data.loaded / data.total);
-        }
-        else if (data.type === HttpEventType.Response) {
-
-          const downloadedFile = new Blob([data.body], { type: data.body.type });
-          const a = document.createElement('a');
-          a.setAttribute('style', 'display:none;');
-          document.body.appendChild(a);
-          a.download = temp.filename;
-          a.href = URL.createObjectURL(downloadedFile);
-          a.target = '_blank';
-          a.click();
-          document.body.removeChild(a);
-          this.message = 'download success.';
-
-        }
-
-      }
-    );
-  }
-
   
   PatientAttended(attendedPatient: PatientsAttendedModel) {
     this.showPatDetail = false;
@@ -163,7 +139,7 @@ export class DoctorRoomComponent {
   }
   CallPatient(callPatient: PatientsAttendedModel) {
     if (this.global.patientObj.Status == 1) {
-      return;
+      this.global.patientObj=new PatientsAttendedModel;
     }
     this.showPatDetail = true;
     this.notificationService.CallPatient(callPatient);

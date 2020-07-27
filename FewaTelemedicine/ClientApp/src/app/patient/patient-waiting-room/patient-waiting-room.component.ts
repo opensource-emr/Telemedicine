@@ -67,6 +67,10 @@ export class PatientWaitingRoomComponent implements OnDestroy {
   ngOnDestroy() {
   
     const mediaStream = this.Video.srcObject;
+    if(mediaStream==null)
+    {
+      return;
+    }
     (<MediaStream>mediaStream).getTracks().forEach( stream => stream.stop());
   }
 

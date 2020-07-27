@@ -9,7 +9,7 @@
     <div class="col-md-3 col-sm-12 col-xs-12 p-0 right-panel">
       <!-- My doctor Info -->
       <div class="my-doc">
-        <img *ngIf="retrievedImage" class="img-profile rounded-circle" [src]="Transform()">
+        <img *ngIf="retrievedImage" class="img-profile rounded-circle" [src]="Transform()" height="50%" width="50%">
         <img *ngIf="!retrievedImage"  src="img/doc.svg" alt="" class="doc-img-p">
         <h5 class="mt-4">{{doctorObj.NameTitle}} &nbsp;&nbsp;{{doctorObj.DoctorName}} </h5>
         <span class="d-block mt-2"><i class="fa fa-user-md"></i>{{doctorObj.Designation}} </span>

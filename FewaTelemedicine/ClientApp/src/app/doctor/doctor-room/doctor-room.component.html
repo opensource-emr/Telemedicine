@@ -45,7 +45,7 @@
           </div> -->
 
           <div class="card-header accordionItemHeading py-3 d-flex flex-row align-items-center justify-content-between br-0" *ngFor="let temp of documentArray">
-            <h6 class="m-0 font-weight-bold"><i class="fa fa-calendar"></i> <a href="javascipt:;" (click)="download(temp)">{{temp.filename}}</a></h6>
+            <h6 class="m-0 font-weight-bold"><i class="fa fa-calendar"></i><a href="{{temp.fileAdr}}" download>{{temp.filename}}</a></h6>
           </div>
           <!-- Card Body -->
           <div class="card-body p-0 accordionItemContent">
