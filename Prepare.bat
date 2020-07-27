@@ -5,7 +5,7 @@ cd clientapp
 call npm.cmd install
 call ng build --deploy-url=/ClientApp/
 cd..
-dotnet tool install --global dotnet-ef
-dotnet ef migrations remove
-dotnet ef migrations add initial
-dotnet ef database update
+call dotnet tool install --global dotnet-ef
+call dotnet ef migrations remove
+call dotnet ef migrations add initial
+call dotnet ef database update
