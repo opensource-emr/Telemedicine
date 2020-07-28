@@ -63,7 +63,7 @@ namespace FewaTelemedicine
             services.AddScoped<IMessengerRepository, MessengerRepository>();
             services.AddScoped<IMessengerService, MessengerServ>();
 
-            
+            services.AddHttpContextAccessor();
 
 
             services.AddControllers()
@@ -78,7 +78,7 @@ namespace FewaTelemedicine
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                     options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
                 });
-
+            
             services.AddSignalR((options =>
             {
                 options.EnableDetailedErrors = true;

@@ -13,5 +13,12 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
    // this.router.navigate(['Login']);
+   window.addEventListener("beforeunload", function (e) {
+    var confirmationMessage = "\o/";
+    console.log("cond");
+    e.returnValue = confirmationMessage;  
+    return confirmationMessage;             
+});
+  
   }
 }
