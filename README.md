@@ -8,6 +8,7 @@ Below  is the basic flow of the project.
 3. Doctor fills advice.
 4. Patient can  print advice after the call.
 5. Doctor and patients can also send chat messages to each other. 
+6. Patients can also share documents with doctor.
 
 Features :-
 
