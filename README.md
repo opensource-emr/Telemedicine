@@ -14,8 +14,10 @@ Features :-
 Application supports Multi doctor and Multihospital.
 Medication can be filled by Doc
 Patient can input problems
-Chat message support.
+Chat message support between doctors and patients.
+Patients can share document with doctors while conferencing.
+Tracks time spent per call between doctor and patient.
 
-Its created using Angular as front end and .NET core as back end. Any further technical clarification send me mail at shiv_koirala@yahoo.com.
+Its created using Angular as front end and .NET core as back end and postgre database. Any further technical clarification send me mail at shiv_koirala@yahoo.com.
 
-This complete initative is funded by https://danphehealth.com .  They have used this framework to create advanced enterprise version which Fewa Telehealth. 
+This complete initative is funded by https://danphehealth.com . 
