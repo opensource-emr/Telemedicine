@@ -11,6 +11,7 @@ import { DoctorsModel } from 'src/models/doctors.model';
 export class LoginComponent implements OnInit {
   doctorObj: DoctorsModel = new DoctorsModel();
   doctorFrm: FormGroup;
+  clicked: boolean = false;
   hospitalDetails = { description: '', contactNo: '', email: '', logoPath: '' };
 
   constructor(private httpClient: HttpClient,
