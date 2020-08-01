@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { DoctorsModel } from 'src/models/doctors.model';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   templateUrl: './patient-room.component.html'
@@ -25,7 +26,7 @@ export class PatientRoomComponent {
     public routing: Router,
     private formBuilder: FormBuilder,
     private cdr: ChangeDetectorRef,
-    private sanitizer: DomSanitizer) {
+    private sanitizer: DomSanitizer,private toastr: ToastrService) {
     this.initForm();
     this.notificationService.EventCompletePatient
       .subscribe(_patient => {
@@ -43,6 +44,8 @@ export class PatientRoomComponent {
       }
       const chatMsg = { Name: chatData.Name, Message: chatData.Message, Class: 'receiver-msg' };
       this.ChatMessages.push(chatMsg);
+      this.toastr.success(chatMsg.Message, chatMsg.Name,
+        {timeOut: 5000});
       //this.ChatReceivedMessages.push(chatMsg);
       this.pushChatMsgUserwise(chatData.Name, chatMsg);
 

@@ -10,6 +10,9 @@ import { DoctorsModel } from 'src/models/doctors.model';
 import { Observable } from 'rxjs';
 import { SMSModel } from 'src/models/SMS.model';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ToastrService } from 'ngx-toastr';
+import { Message } from '@angular/compiler/src/i18n/i18n_ast';
+
 
 @Component({
   templateUrl: './doctor-home.component.html',
@@ -39,7 +42,7 @@ export class DoctorHomeComponent implements OnInit {
   doctorObj: DoctorsModel = new DoctorsModel();
   public invitationForm: FormGroup;
   constructor(private routing: Router, private notificationService: NotificationService, public global: GlobalModel, public httpClient: HttpClient, private formBuilder: FormBuilder, private activatedRoute: ActivatedRoute, private cdr: ChangeDetectorRef,
-    private sanitizer: DomSanitizer) {
+    private sanitizer: DomSanitizer,private toastr: ToastrService) {
     this.initForm();
     this.patients.push(this.global.patientObj);
     if (this.global.IsPatient) {
@@ -75,6 +78,8 @@ export class DoctorHomeComponent implements OnInit {
       }
       const chatMsg = { Name: data.Name, Message: data.Message, Class: 'receiver-msg' };
       this.ChatMessages.push(chatMsg);
+      this.toastr.success(chatMsg.Message, chatMsg.Name,
+      {timeOut: 5000});
       //this.ChatReceivedMessages.push(chatMsg);
       this.pushChatMsgUserwise(data.Name, chatMsg);
 
