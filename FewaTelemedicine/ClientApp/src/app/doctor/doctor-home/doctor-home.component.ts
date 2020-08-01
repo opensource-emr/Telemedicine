@@ -30,7 +30,7 @@ export class DoctorHomeComponent implements OnInit {
   ChatUserDropDowns: Array<any> = new Array<any>();
   ChatForm: FormGroup;
   @ViewChild('scrollBtm', { static: false }) private scrollBottom: ElementRef;
-
+  public InvitationButton: boolean = true;
   public SendInvitation: boolean = true;
   public CompletedAppointments: boolean = false;
   public AccountSettings: boolean = false;
@@ -229,7 +229,11 @@ export class DoctorHomeComponent implements OnInit {
   }
 
   Invitation() {
-
+    // if(this.global.doctorObj.Email==null)
+    // {
+    //   return alert("Email should be there");;
+    // }
+    this.InvitationButton=false;
     //this.httpClient.post("Messenger/SendSMS",data).subscribe(res=>this.SMSInvitationSuccess(res),err=>this.Error(err));
 
     this.httpClient.post("Messenger/SendEmail", this.global.doctorObj).subscribe(res => this.EmailInvitationSuccess(res), err => this.Error(err));
@@ -272,9 +276,15 @@ export class DoctorHomeComponent implements OnInit {
   EmailInvitationSuccess(res) {
     console.log(res);
     if (res)
+    {
+      this.InvitationButton=true;
       alert("Email Invitation Sent has been sent ");
+    }
     else
-      alert("Incorrect email address");
+    {
+      this.InvitationButton=true;
+      alert("Sending failed!");
+    }
   }
   // SMSInvitationSuccess(res)
   // {

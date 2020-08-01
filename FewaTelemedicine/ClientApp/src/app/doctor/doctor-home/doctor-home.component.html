@@ -117,9 +117,9 @@
                             <input type="text" class="form-control form-control-user"  aria-describedby="" placeholder="Invitation Link">
                           </div> -->
                       <div class="col-md-2">
-                        <a href="javascript:;" class="btn btn-primary btn-user btn-block" (click)="Invitation()">
+                        <button href="javascript:;" class="btn btn-primary btn-user btn-block" (click)="Invitation()" [disabled]="!(this.InvitationButton)">
                           Send
-                        </a>
+                        </button>
                       </div>
 
                     </div>
