@@ -10,6 +10,9 @@ import { DoctorsModel } from 'src/models/doctors.model';
 import { Observable } from 'rxjs';
 import { SMSModel } from 'src/models/SMS.model';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ToastrService } from 'ngx-toastr';
+import { Message } from '@angular/compiler/src/i18n/i18n_ast';
+
 
 @Component({
   templateUrl: './doctor-home.component.html',
@@ -30,7 +33,7 @@ export class DoctorHomeComponent implements OnInit {
   ChatUserDropDowns: Array<any> = new Array<any>();
   ChatForm: FormGroup;
   @ViewChild('scrollBtm', { static: false }) private scrollBottom: ElementRef;
-
+  public InvitationButton: boolean = true;
   public SendInvitation: boolean = true;
   public CompletedAppointments: boolean = false;
   public AccountSettings: boolean = false;
@@ -39,7 +42,7 @@ export class DoctorHomeComponent implements OnInit {
   doctorObj: DoctorsModel = new DoctorsModel();
   public invitationForm: FormGroup;
   constructor(private routing: Router, private notificationService: NotificationService, public global: GlobalModel, public httpClient: HttpClient, private formBuilder: FormBuilder, private activatedRoute: ActivatedRoute, private cdr: ChangeDetectorRef,
-    private sanitizer: DomSanitizer) {
+    private sanitizer: DomSanitizer,private toastr: ToastrService) {
     this.initForm();
     this.patients.push(this.global.patientObj);
     if (this.global.IsPatient) {
@@ -75,6 +78,8 @@ export class DoctorHomeComponent implements OnInit {
       }
       const chatMsg = { Name: data.Name, Message: data.Message, Class: 'receiver-msg' };
       this.ChatMessages.push(chatMsg);
+      this.toastr.success(chatMsg.Message, chatMsg.Name,
+      {timeOut: 5000});
       //this.ChatReceivedMessages.push(chatMsg);
       this.pushChatMsgUserwise(data.Name, chatMsg);
 
@@ -227,6 +232,7 @@ export class DoctorHomeComponent implements OnInit {
   }
 
   Invitation() {
+
     //this.httpClient.post("Messenger/SendSMS",data).subscribe(res=>this.SMSInvitationSuccess(res),err=>this.Error(err));
     this.httpClient.post("Messenger/SendEmail", this.global.doctorObj).subscribe(res => this.EmailInvitationSuccess(res), err => this.Error(err));
   }
@@ -268,9 +274,15 @@ export class DoctorHomeComponent implements OnInit {
   EmailInvitationSuccess(res) {
     console.log(res);
     if (res)
+    {
+      this.InvitationButton=true;
       alert("Email Invitation Sent has been sent ");
+    }
     else
-      alert("Incorrect email address");
+    {
+      this.InvitationButton=true;
+      alert("Sending failed!");
+    }
   }
   // SMSInvitationSuccess(res)
   // {

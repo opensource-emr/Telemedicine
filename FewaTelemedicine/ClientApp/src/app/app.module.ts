@@ -23,6 +23,8 @@ import { SafePipe } from 'src/Common/safe.pipe';
 import { PatientWaitingRoomComponent } from './patient/patient-waiting-room/patient-waiting-room.component';
 import { PatientUploadFilesComponent } from './patient/patient-upload-files/patient-upload-files.component';
 import { UploadDownloadService } from 'src/Common/upload-download.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 
 const initializerConfigFn = (config: ConfigService) => {
   return () => {
@@ -55,7 +57,10 @@ const initializerConfigFn = (config: ConfigService) => {
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    CommonModule
+    CommonModule,
+    BrowserAnimationsModule, // required animations module
+    ToastrModule.forRoot() // ToastrModule added
+
   ],
   providers: [
     UploadDownloadService,

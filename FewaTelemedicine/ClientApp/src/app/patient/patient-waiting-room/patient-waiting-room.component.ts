@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { DoctorsModel } from 'src/models/doctors.model';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     templateUrl:'./patient-waiting-room.component.html'
@@ -32,7 +33,7 @@ export class PatientWaitingRoomComponent implements OnDestroy {
   constructor(
     public httpClient: HttpClient, private notificationService: NotificationService,
     public routing: Router, private formBuilder: FormBuilder,
-    public global: GlobalModel, private cdr: ChangeDetectorRef) {
+    public global: GlobalModel, private cdr: ChangeDetectorRef,private toastr: ToastrService) {
     this.initForm();
     this.notificationService.Connect();
 
@@ -50,6 +51,8 @@ export class PatientWaitingRoomComponent implements OnDestroy {
       }
       const chatMsg = { Name: chatData.Name, Message: chatData.Message, Class: 'receiver-msg' };
       this.ChatMessages.push(chatMsg);
+      this.toastr.success(chatMsg.Message, chatMsg.Name,
+        {timeOut: 5000});
       this.pushChatMsgUserwise(chatData.Name, chatMsg);
       
       this.cdr.detectChanges();

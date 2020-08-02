@@ -8,6 +8,7 @@ import { FormGroup, Validators,FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { UploadDownloadService } from 'src/Common/upload-download.service';
 import { ProgressStatus, ProgressStatusEnum } from 'src/models/progress-status.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     templateUrl:'./doctor-room.component.html'
@@ -37,7 +38,7 @@ export class DoctorRoomComponent {
   constructor(
     public httpClient: HttpClient, public routing: Router, private formBuilder: FormBuilder,
     public notificationService: NotificationService, 
-    public global: GlobalModel, private cdr: ChangeDetectorRef, public service: UploadDownloadService) {
+    public global: GlobalModel, private cdr: ChangeDetectorRef, public service: UploadDownloadService,private toastr: ToastrService) {
     this.initForm();
     this.state = history.state;
     if (this.global.IsPatient) {
@@ -82,6 +83,8 @@ export class DoctorRoomComponent {
       }
       const chatMsg = { Name: data.Name, Message: data.Message, Class: 'receiver-msg' };
       this.ChatMessages.push(chatMsg);
+      this.toastr.success(chatMsg.Message, chatMsg.Name,
+        {timeOut: 5000});
       //this.ChatReceivedMessages.push(chatMsg);
       this.pushChatMsgUserwise(data.Name, chatMsg);
       
