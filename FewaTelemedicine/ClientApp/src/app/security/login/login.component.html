@@ -59,7 +59,7 @@
                                                 style="font-size: 12px;">Forgot Password?</a>
                                         </div>
                                     </div>
-                                    <button type="submit" href="javascript:;" (click)="LoginDoctor()"
+                                    <button type="submit"  [disabled]="clicked" href="javascript:;" (click)="LoginDoctor(); clicked = true;;"
                                         class="btn btn-primary btn-user btn-block">
                                         Login
                                     </button>

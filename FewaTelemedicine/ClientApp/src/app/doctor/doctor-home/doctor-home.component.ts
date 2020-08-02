@@ -3,7 +3,7 @@ import { Router, NavigationStart, ActivatedRoute, Data } from '@angular/router';
 import { NotificationService } from 'src/Common/notification.service';
 import { GlobalModel } from 'src/Common/global.model'
 import { PatientsAttendedModel } from 'src/models/patients-attended.model';
-import { HttpClient, HttpEventType } from '@angular/common/http';
+import { HttpClient, HttpEventType , HttpEvent} from '@angular/common/http';
 import { DoctorCabinModel } from 'src/models/doctor-cabin.model';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DoctorsModel } from 'src/models/doctors.model';
@@ -112,7 +112,6 @@ export class DoctorHomeComponent implements OnInit {
      if(this.doctorObj.Image)
      this.retrievedImage = 'data:image/png;base64,' + this.doctorObj.Image;
     });
-
     this.state = history.state;
   }
 
@@ -136,7 +135,6 @@ export class DoctorHomeComponent implements OnInit {
     start = new Date(start);
     end = new Date(end);
     var startminutes = start.getMinutes();
-
     var endminutes = end.getMinutes();
     var diff = 0;
     if (endminutes > startminutes) {
@@ -184,7 +182,7 @@ export class DoctorHomeComponent implements OnInit {
     fd.append('image', this.selectedFile, this.selectedFile.name);
     this.doctorObj.UserName = this.global.doctorObj.UserName;
     //this.doctorObj.Password = this.global.doctorObj.Password;
-    fd.append('user', JSON.stringify(this.doctorObj));
+    //fd.append('user', JSON.stringify(this.doctorObj));
     this.httpClient.post(this.global.HospitalUrl + "UploadImage", fd, { reportProgress: true, observe: 'events', responseType: 'json' })
       .subscribe(event => {
         if (event.type === HttpEventType.UploadProgress)
@@ -234,13 +232,8 @@ export class DoctorHomeComponent implements OnInit {
   }
 
   Invitation() {
-    // if(this.global.doctorObj.Email==null)
-    // {
-    //   return alert("Email should be there");;
-    // }
-    this.InvitationButton=false;
-    //this.httpClient.post("Messenger/SendSMS",data).subscribe(res=>this.SMSInvitationSuccess(res),err=>this.Error(err));
 
+    //this.httpClient.post("Messenger/SendSMS",data).subscribe(res=>this.SMSInvitationSuccess(res),err=>this.Error(err));
     this.httpClient.post("Messenger/SendEmail", this.global.doctorObj).subscribe(res => this.EmailInvitationSuccess(res), err => this.Error(err));
   }
 

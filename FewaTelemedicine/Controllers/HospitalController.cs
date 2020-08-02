@@ -348,7 +348,8 @@ namespace FewaTelemedicine.Controllers
         {
             try
             {
-                var user = JsonSerializer.Deserialize<DoctorsModel>(Request.Form["user"].ToString());
+                string username = HttpContext.Session.GetString("Name");
+                var user = JsonSerializer.Deserialize<DoctorsModel>(Request.Form["user"].ToString());               
                 var file = Request.Form.Files[0];
                 var doc = _doctorRepository.GetDoctorByUserName(user.UserName);
                 if (doc is null)
@@ -380,9 +381,10 @@ namespace FewaTelemedicine.Controllers
             }
         }
 
-        [HttpGet("GetImage/{username}")]
-        public IActionResult GetImage(string username)
+        [HttpGet("GetImage")]
+        public IActionResult GetImage()
         {
+            string username = HttpContext.Session.GetString("Name");
             var doc = _doctorRepository.GetDoctorByUserName(username);
             if (doc.Image != null)
             {
