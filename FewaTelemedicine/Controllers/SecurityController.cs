@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using FewaTelemedicine.Domain;
 using FewaTelemedicine.Domain.Models;
 using FewaTelemedicine.Domain.Repositories;
 using Microsoft.AspNetCore.Http;
@@ -22,12 +23,15 @@ namespace FewaTelemedicine.Controllers
         List<DoctorCabin> _doctorcabins = null;
         List<DoctorsModel> _doctors = null;
         private readonly IConfiguration _config;
+        private FewaDbContext FewaDbContext = null;
 
         public SecurityController(
             IDoctorRepository doctorRepository,
-            List<DoctorCabin> doctorcabins, IConfiguration config, List<DoctorsModel> doctors
+            List<DoctorCabin> doctorcabins, IConfiguration config, List<DoctorsModel> doctors,
+            FewaDbContext fewaDbContext
             )
         {
+            FewaDbContext = fewaDbContext;
             _doctorRepository = doctorRepository;
             _doctorcabins = doctorcabins;
             _doctors = doctors;
@@ -56,6 +60,9 @@ namespace FewaTelemedicine.Controllers
                     return BadRequest();
                 }
                 var doc = _doctorRepository.GetDoctorByUserName(doctor.UserName);
+                doc.DoctorRoomName = "Fewa" + doc.UserName;
+                FewaDbContext.DoctorsModels.Update(doc);
+                FewaDbContext.SaveChanges();
                 if (doc == null)
                 {
                     return Unauthorized();
@@ -65,6 +72,7 @@ namespace FewaTelemedicine.Controllers
                 doctor.Image = doc.Image;
                 doctor.NameTitle = doc.NameTitle;
                 doctor.DoctorName = doc.DoctorName;
+                doctor.DoctorRoomName = doc.DoctorRoomName;
                 HttpContext.Session.SetString("Name", doctor.UserName);
                     var token = GenerateJSONWebToken(doctor.UserName, "doctor");
                     AddDoctorCabin(doc.UserName);
@@ -72,6 +80,7 @@ namespace FewaTelemedicine.Controllers
                     {
                         User = doctor,
                         Token = token
+                    
                     };
                     return Ok(data);
                 //}

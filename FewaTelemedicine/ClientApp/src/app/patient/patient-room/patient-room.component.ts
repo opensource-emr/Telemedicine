@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, ChangeDetectorRef } from "@angular/core";
+import { Component, ViewChild, ElementRef, ChangeDetectorRef, AfterViewInit } from "@angular/core";
 import { NotificationService } from 'src/Common/notification.service';
 import { GlobalModel } from 'src/Common/global.model';
 import { SubjectSubscriber } from 'rxjs/internal/Subject';
@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { DoctorsModel } from 'src/models/doctors.model';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
+import 'src/vendor/jitsi/external_api.js';
+declare var JitsiMeetExternalAPI : any;
 
 @Component({
   templateUrl: './patient-room.component.html'
@@ -19,6 +21,9 @@ export class PatientRoomComponent {
   ChatReceivedMessages: Array<any> = new Array<any>();
   ChatForm: FormGroup;
   AllUserChats: any = {};
+  options: {};
+  domain:string;
+  api:any;
   @ViewChild('scrollBtm', { static: false }) private scrollBottom: ElementRef;
   constructor(private notificationService: NotificationService,
     public global: GlobalModel,
@@ -27,6 +32,7 @@ export class PatientRoomComponent {
     private cdr: ChangeDetectorRef,
     private sanitizer: DomSanitizer) {
     this.initForm();
+
     this.notificationService.EventCompletePatient
       .subscribe(_patient => {
         this.global.patientObj = _patient;
@@ -68,7 +74,23 @@ export class PatientRoomComponent {
   }
 
   ngOnInit() {
-
+    this.domain = "meet.jit.si";
+    this.options = {
+      roomName:this.global.doctorObj.DoctorRoomName,
+      width: 950,
+      height: 570,
+      parentNode: document.querySelector('#meet'),
+      configOverwrite: {},
+      interfaceConfigOverwrite: {
+        filmStripOnly: false,
+        SHOW_JITSI_WATERMARK: false,
+        SHOW_WATERMARK_FOR_GUESTS: false,
+        SHOW_BRAND_WATERMARK: false,
+        TOOLBAR_BUTTONS: ['microphone', 'camera', 'tileview']
+      }
+    } 
+    this.api = new JitsiMeetExternalAPI(this.domain, this.options);
+    this.api.executeCommand('displayName',this.global.patientObj.PatientName);
    
   }
 

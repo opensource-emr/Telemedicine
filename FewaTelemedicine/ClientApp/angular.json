@@ -26,7 +26,7 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": ["src/vendor/jitsi/external_api.js"]
           },
           "configurations": {
             "production": {
@@ -93,6 +93,7 @@
             "scripts": []
           }
         },
+        
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {

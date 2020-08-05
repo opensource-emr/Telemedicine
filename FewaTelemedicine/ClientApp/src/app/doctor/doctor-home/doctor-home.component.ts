@@ -137,6 +137,7 @@ export class DoctorHomeComponent implements OnInit {
     }
     return diff;
   }
+  
   Check(param) {
     let data = param;
 
@@ -204,7 +205,7 @@ export class DoctorHomeComponent implements OnInit {
 
   UpdateProfile() {
     this.doctorObj.UserName = this.global.doctorObj.UserName;
-   // this.doctorObj.Password = this.global.doctorObj.Password;
+    //this.doctorObj.Password = this.global.doctorObj.Password;
     // this.global.doctorObj = this.doctorObj;
     if(this.receivedImageData)
     this.doctorObj.Image = this.receivedImageData.body;

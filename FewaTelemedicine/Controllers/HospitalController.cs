@@ -172,7 +172,7 @@ namespace FewaTelemedicine.Controllers
 
     public IActionResult GetUpdatedDoctor()
         {
-            string username = HttpContext.Session.GetString("Name");
+            string username = HttpContext.Session.GetString("Name");           
             var doctorProfile = (from temp in FewaDbContext.DoctorsModels
                                  where temp.UserName == username
                                  select temp).FirstOrDefault();

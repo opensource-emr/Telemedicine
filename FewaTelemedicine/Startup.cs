@@ -38,7 +38,6 @@ namespace FewaTelemedicine
             
             var optionsBuilder = new DbContextOptionsBuilder<FewaDbContext>();
             optionsBuilder.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
-
             FewaDbContext db = new FewaDbContext(optionsBuilder.Options);
             return db.DoctorsModels.ToList<DoctorsModel>();
         }
@@ -54,17 +53,13 @@ namespace FewaTelemedicine
             doctors = LoadDoctors();
             services.AddSingleton<List<DoctorCabin>>();
             services.AddSingleton<WaitingRoom>();
-            services.AddSingleton<List<DoctorsModel>>(doctors);
-      
+            services.AddSingleton<List<DoctorsModel>>(doctors);      
             services.AddTransient<IDoctorRepository, DoctorRepository>();
             services.AddTransient<IPatientRepository, PatientRepository>();
-
             services.AddSingleton<ILoggerService, LoggerRepository>();
             services.AddScoped<IMessengerRepository, MessengerRepository>();
             services.AddScoped<IMessengerService, MessengerServ>();
-
             services.AddHttpContextAccessor();
-
 
             services.AddControllers()
                 .AddJsonOptions(options =>

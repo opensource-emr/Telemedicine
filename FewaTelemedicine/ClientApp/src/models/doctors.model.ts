@@ -5,6 +5,8 @@ export class DoctorsModel{
     Password: string = "";
     Image: File;
     ConfirmPassword:string="";
+    DoctorRoomName:string="";
+    DoctorRoomKey:string="";
     NameTitle:string="";
     DoctorName:string="";
     Email:string=""

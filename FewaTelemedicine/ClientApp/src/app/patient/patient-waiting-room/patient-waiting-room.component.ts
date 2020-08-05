@@ -1,33 +1,65 @@
-import { Component, ViewChild, ElementRef, ChangeDetectorRef, OnDestroy } from "@angular/core";
+import { Component, ViewChild, ElementRef, ChangeDetectorRef, OnDestroy, AfterViewInit } from "@angular/core";
 import { NotificationService } from 'src/Common/notification.service';
 import {GlobalModel} from 'src/Common/global.model';
 import { Router } from '@angular/router';
 import { DoctorsModel } from 'src/models/doctors.model';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import  'src/vendor/jitsi/external_api.js';
+declare var JitsiMeetExternalAPI : any;
 
 @Component({
     templateUrl:'./patient-waiting-room.component.html'
 })
-export class PatientWaitingRoomComponent implements OnDestroy {
-    @ViewChild('pcam') video:any; 
-    Video:any;
+export class PatientWaitingRoomComponent implements AfterViewInit,OnDestroy {
+  @ViewChild('pcam') video:any; 
+  Video:any;
   showChat: boolean = true;
   doctors: Array<DoctorsModel> = new Array<DoctorsModel>();
   ChatMessages: Array<any> = new Array<any>();
   ChatForm: FormGroup;
   AllUserChats: any = {};
+  options: {};
+  domain:string;
+  api:any;
   @ViewChild('scrollBtm', { static: false }) private scrollBottom: ElementRef;
+
+
+  ngOnInit() {
+    // this.httpClient.
+    // get<DoctorsModel>(this.global.HospitalUrl + "GetUpdatedDoctor")
+    // .subscribe(res => {
+    //  this.global.doctorObj = res;
+    //  this.domain = "meet.jit.si";
+    //  this.options = {
+    //    roomName: this.global.doctorObj.DoctorRoomName,
+    //    width: 380,
+    //    height: 280,
+    //    parentNode: document.querySelector('#meet'),
+    //    configOverwrite: {},
+    //    interfaceConfigOverwrite: {
+    //      filmStripOnly: false,
+    //      SHOW_JITSI_WATERMARK: false,
+    //      SHOW_WATERMARK_FOR_GUESTS: false,
+    //      SHOW_BRAND_WATERMARK: false,
+    //      TOOLBAR_BUTTONS: ['microphone', 'camera']
+    //    }
+    //  }               
+    //  this.api = new JitsiMeetExternalAPI(this.domain, this.options);
+    //  this.api.executeCommand('displayName',this.global.patientObj.PatientName);        
+    // });     
+  }
+
   ngAfterViewInit() {
-         let _video=this.video.nativeElement;
-         this.Video=_video;
-          if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices.getUserMedia({ video: true })
-                                  .then(stream => {
-                                    _video.srcObject = stream;
-                                    _video.play();
-                                   })
-          }
+         //let _video=this.video.nativeElement;
+         //this.Video=_video;
+          // if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+          //   navigator.mediaDevices.getUserMedia({ video: true })
+          //                         .then(stream => {
+          //                           _video.srcObject = stream;
+          //                           _video.play();
+          //                          })
+          // }                      
         }
   constructor(
     public httpClient: HttpClient, private notificationService: NotificationService,
@@ -35,6 +67,29 @@ export class PatientWaitingRoomComponent implements OnDestroy {
     public global: GlobalModel, private cdr: ChangeDetectorRef) {
     this.initForm();
     this.notificationService.Connect();
+
+    this.httpClient.
+    get<DoctorsModel>(this.global.HospitalUrl + "GetUpdatedDoctor")
+    .subscribe(res => {
+     this.global.doctorObj = res;
+     this.domain = "meet.jit.si";
+     this.options = {
+       roomName: this.global.doctorObj.DoctorRoomName,
+       width: 380,
+       height: 280,
+       parentNode: document.querySelector('#meet'),
+       configOverwrite: {},
+       interfaceConfigOverwrite: {
+         filmStripOnly: false,
+         SHOW_JITSI_WATERMARK: false,
+         SHOW_WATERMARK_FOR_GUESTS: false,
+         SHOW_BRAND_WATERMARK: false,
+         TOOLBAR_BUTTONS: ['microphone', 'camera']
+       }
+     }               
+     this.api = new JitsiMeetExternalAPI(this.domain, this.options);
+     this.api.executeCommand('displayName',this.global.patientObj.PatientName);        
+    });  
 
     this.notificationService.EventCallPatient.subscribe(patient => {
       this.GotoDoctorRoom(patient);
@@ -64,14 +119,14 @@ export class PatientWaitingRoomComponent implements OnDestroy {
       this.notificationService.LoadActiveDoctors();
     });
   }
-  ngOnDestroy() {
-  
-    const mediaStream = this.Video.srcObject;
-    if(mediaStream==null)
-    {
-      return;
-    }
-    (<MediaStream>mediaStream).getTracks().forEach( stream => stream.stop());
+
+  ngOnDestroy() { 
+    // const mediaStream = this.Video.srcObject;
+    // if(mediaStream==null)
+    // {
+    //   return;
+    // }
+    // (<MediaStream>mediaStream).getTracks().forEach( stream => stream.stop());
   }
 
   private initForm() {
@@ -89,6 +144,7 @@ export class PatientWaitingRoomComponent implements OnDestroy {
   SendToken(res) {
 
   }
+
   GotoDoctorRoom(res) {
           if (res == false) { return; }
           if (res.DoctorNameAttending.length > 0 && res.Name == this.global.patientObj.PatientName) {

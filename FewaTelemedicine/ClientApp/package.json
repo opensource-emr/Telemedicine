@@ -20,6 +20,7 @@
     "@angular/platform-browser-dynamic": "~9.0.7",
     "@angular/router": "~9.0.7",
     "@aspnet/signalr": "^1.1.4",
+    "lib-jitsi-meet": "^1.0.6",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"

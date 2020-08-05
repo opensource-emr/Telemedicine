@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, ElementRef, ViewChild,EventEmitter ,Output} from "@angular/core";
+import { Component, ChangeDetectorRef, ElementRef, ViewChild,EventEmitter ,Output, AfterViewInit} from "@angular/core";
 import { Router } from '@angular/router';
 import { NotificationService } from 'src/Common/notification.service';
 import { GlobalModel } from 'src/Common/global.model';
@@ -8,7 +8,9 @@ import { FormGroup, Validators,FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { UploadDownloadService } from 'src/Common/upload-download.service';
 import { ProgressStatus, ProgressStatusEnum } from 'src/models/progress-status.model';
-
+import 'src/vendor/jitsi/external_api.js';
+// import 'https://meet.jit.si/external_api.js';
+declare var JitsiMeetExternalAPI : any;
 @Component({
     templateUrl:'./doctor-room.component.html'
 })
@@ -20,8 +22,6 @@ export class DoctorRoomComponent {
   public progress: number;
   public message: string;
   @Output() public downloadStatus: EventEmitter<ProgressStatus>;
-
-
   public showPatDetail: boolean = false;
   patients: Array<PatientsAttendedModel> = new Array<PatientsAttendedModel>();
   showChat: boolean = true;
@@ -30,10 +30,12 @@ export class DoctorRoomComponent {
   ChatReceivedMessages: Array<any> = new Array<any>();
   ChatUserDropDowns: Array<any> = new Array<any>();
   ChatForm: FormGroup;
+  options: {};
+  domain:string;
+  api:any;
   private state: Observable<object>;
   @ViewChild('scrollBtm', { static: false }) private scrollBottom: ElementRef;
   
-
   constructor(
     public httpClient: HttpClient, public routing: Router, private formBuilder: FormBuilder,
     public notificationService: NotificationService, 
@@ -84,11 +86,29 @@ export class DoctorRoomComponent {
       this.ChatMessages.push(chatMsg);
       //this.ChatReceivedMessages.push(chatMsg);
       this.pushChatMsgUserwise(data.Name, chatMsg);
-      
-
       this.cdr.detectChanges();
       this.scrollBottom.nativeElement.lastElementChild.scrollIntoView(false); // scroll to bottom
     });
+  }
+
+  ngOnInit() {
+    this.domain = "meet.jit.si";
+    this.options = {
+      roomName: this.global.doctorObj.DoctorRoomName,
+      width: 950,
+      height: 570,
+      parentNode: document.querySelector('#meet'),
+      configOverwrite: {},
+      interfaceConfigOverwrite: {
+        filmStripOnly: false,
+        SHOW_JITSI_WATERMARK: false,
+        SHOW_WATERMARK_FOR_GUESTS: false,
+        SHOW_BRAND_WATERMARK: false,
+        TOOLBAR_BUTTONS: ['microphone', 'camera', 'tileview']
+      }
+    }  
+    this.api = new JitsiMeetExternalAPI(this.domain, this.options);
+    this.api.executeCommand('displayName',this.global.doctorObj.UserName);
   }
 
   private initForm() {
@@ -143,7 +163,6 @@ export class DoctorRoomComponent {
     }
     this.showPatDetail = true;
     this.notificationService.CallPatient(callPatient);
-
   }
   PatientCompleted(res) {
     if (res.PatientName == this.global.patientObj.PatientName) {
