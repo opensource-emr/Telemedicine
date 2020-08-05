@@ -25,7 +25,7 @@ import { PatientUploadFilesComponent } from './patient/patient-upload-files/pati
 import { UploadDownloadService } from 'src/Common/upload-download.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
-
+import {NgxPrintModule} from 'ngx-print';
 const initializerConfigFn = (config: ConfigService) => {
   return () => {
     var ret: any = config.loadAppConfig();
@@ -59,7 +59,8 @@ const initializerConfigFn = (config: ConfigService) => {
     ReactiveFormsModule,
     CommonModule,
     BrowserAnimationsModule, // required animations module
-    ToastrModule.forRoot() // ToastrModule added
+    ToastrModule.forRoot(), // ToastrModule added
+    NgxPrintModule
 
   ],
   providers: [

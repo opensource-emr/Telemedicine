@@ -255,7 +255,7 @@ export class DoctorHomeComponent implements OnInit {
 
   }
   LoadPatientSuccess(res) {
-    this.CompletedPatients = res;
+    this.CompletedPatients = res.reverse();
   }
 
   NextPatient(res) {
