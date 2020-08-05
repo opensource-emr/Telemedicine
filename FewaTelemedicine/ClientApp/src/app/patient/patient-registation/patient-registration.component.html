@@ -68,7 +68,7 @@
 									<form action="" class="user">
 										<input type="text" class="form-control post-invitation" placeholder="Enter Your Name" [(ngModel)]="patientObj.PatientName" name="PatientName"/>
 										<div class="custom-control custom-checkbox mt-4">
-				                        <input type="checkbox" class="custom-control-input" id="customCheck"/>
+				                        <input type="checkbox" class="custom-control-input" id="customCheck" checked/>
 				                        <label class="custom-control-label font-weight-normal" for="customCheck">By clicking you will accept our <a href="">Terms and Condition</a></label>
 				                      </div>
 										<button type="submit" class="btn btn-primary d-inline  mt-5" style="width: 150px;" href="javascrpt:;" (click)="LoginPatient()" >Check In</button>
@@ -80,10 +80,11 @@
 					</div>
 				</div>
 			</div>
-			<footer class="sticky-footer bg-white">
+			<footer class="sticky-footer bg-transparent">
 				<div class="container my-auto">
 					<div class="copyright text-center my-auto">
-						<span class="">Powered by © Fewa Telehealth 2020 <img src="img/logo-cap.png" class="powered-footer-logo"></span>
+						<span class="text-black"><img src="img/logo-cap.png" class="powered-footer-logo d-block">Powered by &copy;
+							Danphe Telehealth 2020 </span>
 					</div>
 				</div>
 			</footer>

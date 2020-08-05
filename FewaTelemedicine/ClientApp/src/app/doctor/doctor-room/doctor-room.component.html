@@ -261,7 +261,7 @@
                             </div>
                             <div class="row mt-4">
                                 <div class="col-md-12 p-0">
-                                    <input value="Complete visit" *ngIf="(this.global.IsDoctor)" type="button" name="" class="btn btn-lg btn-primary btn-block" style="font-size: 14px;"  href="javascript:;" (click)="PatientAttended(global.patientObj)">
+                                    <input value="Complete visit" *ngIf="(this.global.IsDoctor)" type="button" name="" class="btn btn-lg btn-primary btn-block" style="font-size: 14px;"  href="javascript:;" (click)="PatientAttended(global.patientObj)" routerLink='/Home' [state]="this.global.patientObj">
                                 </div>
                             </div>
                             

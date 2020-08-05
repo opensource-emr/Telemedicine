@@ -60,7 +60,7 @@
           <!-- Begin Page Content -->
   
           <div class="container-fluid">          
-            <div class="row m-w100">
+            <div class="row m-w100" id="print-section">
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="card">
                   <div class="card-body">
@@ -125,7 +125,8 @@
             </div>
             <div class="row">
               <div class="col-md-12 text-center mt-4 mb-4">
-                <a href="" class="btn btn-primary">Email</a>
+                <a href="" class="btn btn-primary">Email</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button  class="btn btn-primary" [useExistingCss]="true" printSectionId="print-section" ngxPrint>print</button>
               </div>
             </div>
           </div>

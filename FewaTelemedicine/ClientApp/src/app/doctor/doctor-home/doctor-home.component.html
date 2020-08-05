@@ -26,7 +26,7 @@
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="javascript:;" id="userDropdown" role="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
+                aria-haspopup="true" aria-expanded="false"  (click)="Check('accSett')"><strong *ngIf="global.doctorObj.DoctorName==null">Upload profile</strong>
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{global.doctorObj.NameTitle}}&nbsp;{{global.doctorObj.DoctorName}}</span>
                 <img *ngIf="retrievedImage" class="img-profile rounded-circle" [src]="Transform()">
                 <img *ngIf="!retrievedImage" class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
@@ -81,9 +81,9 @@
                   <a class="nav-item nav-link btn btn-success btn-sm" id="nav-profile-tab" data-toggle="tab"
                     href="javascript:;" role="tab" aria-controls="nav-profile" aria-selected="false"
                     (click)="Check('completedList')"><i class="fa fa-check-square"></i>Completed Appointments</a>
-                  <a class="nav-item nav-link btn btn-success btn-sm" id="nav-contact-tab" data-toggle="tab"
+                  <!-- <a class="nav-item nav-link btn btn-success btn-sm" id="nav-contact-tab" data-toggle="tab"
                     href="javascript:;" role="tab" aria-controls="nav-contact" aria-selected="false"
-                    (click)="Check('accSett')"><i class="fa fa-lock"></i>Account Settings</a>
+                    (click)="Check('accSett')"><i class="fa fa-lock"></i>Account Settings</a> -->
                   <a class="nav-item nav-link btn btn-success btn-sm" id="nav-contact-tab" data-toggle="tab"
                     href="javascript:;" role="tab" aria-controls="nav-contact" aria-selected="false"
                     (click)="Check('chatSection')"><i class="fa fa-lock"></i>Chat Section</a>
@@ -146,10 +146,10 @@
                           </tr>
                         </thead>
                         <tr *ngFor="let temp of CompletedPatients">
-                          <td>{{temp.AppointmentDate |  date: 'dd/MM/yyyy'}}</td>
+                          <td>{{temp.AppointmentDate |  date: 'LLLL dd, yyyy'}}</td>
                           <td>{{Difference(temp.StartTime,temp.EndTime)}}mins </td>
-                          <td>{{temp.StartTime| date:'hh:mm:ss'}}</td>
-                          <td>{{temp.EndTime| date:'hh:mm:ss'}}</td>
+                          <td>{{temp.StartTime| date:'hh:mm:ss a'}}</td>
+                          <td>{{temp.EndTime| date:'hh:mm:ss a'}}</td>
                         </tr>
                       </table>
                     </div>
@@ -580,14 +580,14 @@
       <!-- End of Main Content -->
 
       <!-- Footer -->
-      <footer class="sticky-footer bg-white">
+      <footer class="sticky-footer bg-transparent">
         <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-            <span class="">Powered by &copy; Fewa Telehealth 2020 <img src="./img/logo-cap.png"
-                class="powered-footer-logo"></span>
-          </div>
+            <div class="copyright text-center my-auto">
+                <span class="text-black"><img src="img/logo-cap.png" class="powered-footer-logo d-block">Powered by &copy;
+                    Danphe Telehealth 2020 </span>
+            </div>
         </div>
-      </footer>
+    </footer>
       <!-- End of Footer -->
 
     </div>
