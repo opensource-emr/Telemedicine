@@ -74,6 +74,7 @@ namespace FewaTelemedicine.Controllers
                 doctor.DoctorName = doc.DoctorName;
                 doctor.DoctorRoomName = doc.DoctorRoomName;
                 HttpContext.Session.SetString("Name", doctor.UserName);
+
                     var token = GenerateJSONWebToken(doctor.UserName, "doctor");
                     AddDoctorCabin(doc.UserName);
                     var data = new
@@ -144,6 +145,7 @@ namespace FewaTelemedicine.Controllers
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
         [HttpPost("UpdateProfile")]
         public IActionResult UpdateProfile([FromBody] DoctorsModel obj)
         {

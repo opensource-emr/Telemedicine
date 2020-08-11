@@ -338,7 +338,7 @@ if (content.locals) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\Users\bhavana vanjani\Documents\telemedicine\FewaTelemedicine\ClientApp\src\styles.css */"./src/styles.css");
+module.exports = __webpack_require__(/*! C:\Users\bhavana vanjani\Downloads\TeleOpenSouceEMR\Telemedicine\FewaTelemedicine\ClientApp\src\styles.css */"./src/styles.css");
 
 
 /***/ })

@@ -172,7 +172,7 @@ namespace FewaTelemedicine.Controllers
 
     public IActionResult GetUpdatedDoctor()
         {
-            string username = HttpContext.Session.GetString("Name");           
+            string username = HttpContext.Session.GetString("Name");
             var doctorProfile = (from temp in FewaDbContext.DoctorsModels
                                  where temp.UserName == username
                                  select temp).FirstOrDefault();
@@ -348,8 +348,7 @@ namespace FewaTelemedicine.Controllers
         {
             try
             {
-                string username = HttpContext.Session.GetString("Name");
-                var user = JsonSerializer.Deserialize<DoctorsModel>(Request.Form["user"].ToString());               
+                var user = JsonSerializer.Deserialize<DoctorsModel>(Request.Form["user"].ToString());
                 var file = Request.Form.Files[0];
                 var doc = _doctorRepository.GetDoctorByUserName(user.UserName);
                 if (doc is null)
@@ -381,11 +380,11 @@ namespace FewaTelemedicine.Controllers
             }
         }
 
-        [HttpGet("GetImage")]
+        //[HttpGet("GetImage/{username}")]
         public IActionResult GetImage()
         {
             string username = HttpContext.Session.GetString("Name");
-            var doc = _doctorRepository.GetDoctorByUserName(username);
+             var doc = _doctorRepository.GetDoctorByUserName(username);
             if (doc.Image != null)
             {
                 //string base64Data = Convert.ToBase64String(doc.Image);
