@@ -4,7 +4,7 @@ import {GlobalModel} from 'src/Common/global.model';
 import { Router } from '@angular/router';
 import { DoctorsModel } from 'src/models/doctors.model';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -67,8 +67,7 @@ export class PatientWaitingRoomComponent implements OnDestroy {
       this.notificationService.LoadActiveDoctors();
     });
   }
-  ngOnDestroy() {
-  
+  ngOnDestroy() { 
     const mediaStream = this.Video.srcObject;
     if(mediaStream==null)
     {
@@ -94,13 +93,13 @@ export class PatientWaitingRoomComponent implements OnDestroy {
   }
   GotoDoctorRoom(res) {
           if (res == false) { return; }
-          if (res.DoctorNameAttending.length > 0 && res.Name == this.global.patientObj.PatientName) {
-      
+          if (res.DoctorNameAttending.length > 0 && res.Name == this.global.patientObj.PatientName) {           
             this.global.patientObj.DoctorNameAttending = res.DoctorNameAttending;
+            var params = new HttpParams().set('username',this.global.patientObj.DoctorNameAttending);
             this.httpClient.
-            get<DoctorsModel>(this.global.HospitalUrl + "GetUpdatedDoctor")
+            get<any>(this.global.HospitalUrl + "GetUpdatedDoctor",{params : params})
             .subscribe(res => {
-             this.global.doctorObj = res;
+             this.global.doctorObj = res.User;
              var url: string = this.global.config.videourl.replace("DOCTORNAME", this.global.patientObj.DoctorNameAttending);
              this.global.config.videourl = url;     
              this.routing.navigate(['/PatientRoom']);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
@@ -170,13 +171,20 @@ namespace FewaTelemedicine.Controllers
             return attendedPatients;
         }
 
-    public IActionResult GetUpdatedDoctor()
+        public IActionResult GetUpdatedDoctor(string username)
         {
-            string username = HttpContext.Session.GetString("Name");
+            //string username = HttpContext.Session.GetString("Name");       
+            var parameter = FewaDbContext.ParametersModels.ToList();
             var doctorProfile = (from temp in FewaDbContext.DoctorsModels
                                  where temp.UserName == username
                                  select temp).FirstOrDefault();
-            return Ok(doctorProfile);
+            var data = new
+            {
+
+                User = doctorProfile,
+                Parameter = parameter,             
+            };
+            return Ok(data);
         }
         public IActionResult GetDoctorCabin()
         {
@@ -344,14 +352,36 @@ namespace FewaTelemedicine.Controllers
             return Ok(doc);
         }
 
+
+        public IActionResult UpdateParameters([FromBody]List<ParametersModel> list)
+        {
+            if (ModelState.IsValid)
+            {             
+                    foreach (var i in list)
+                    {
+                        var c = FewaDbContext.ParametersModels.Where(a => a.ParameterGroupName.Equals(i.ParameterGroupName) && a.ParameterName.Equals(i.ParameterName)).FirstOrDefault();
+                        if (c != null)
+                        {
+                            c.ParameterValue = i.ParameterValue;
+                        }
+                    }
+                    FewaDbContext.SaveChanges();
+                    return Ok(list);
+            }
+            else
+            {
+                return Ok("Update Failed");
+            }
+        }
+
         public async Task<IActionResult> UploadImage()
         {
             try
             {
                 string username = HttpContext.Session.GetString("Name");
-                var user = JsonSerializer.Deserialize<DoctorsModel>(Request.Form["user"].ToString());               
+                //var user = JsonSerializer.Deserialize<DoctorsModel>(Request.Form["user"].ToString());               
                 var file = Request.Form.Files[0];
-                var doc = _doctorRepository.GetDoctorByUserName(user.UserName);
+                var doc = _doctorRepository.GetDoctorByUserName(username);
                 if (doc is null)
                 {
                     return StatusCode(500);
@@ -381,7 +411,6 @@ namespace FewaTelemedicine.Controllers
             }
         }
 
-        [HttpGet("GetImage")]
         public IActionResult GetImage()
         {
             string username = HttpContext.Session.GetString("Name");

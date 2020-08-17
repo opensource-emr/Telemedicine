@@ -25,11 +25,14 @@
 
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
-              <a class="nav-link dropdown-toggle" href="javascript:;" id="userDropdown" role="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false"  (click)="Check('accSett')"><strong *ngIf="global.doctorObj.DoctorName==null">Upload profile</strong>
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{global.doctorObj.NameTitle}}&nbsp;{{global.doctorObj.DoctorName}}</span>
+              <a class="nav-link dropdown-toggle" href="javascript:;" id="userDropdown" role="button"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="Check('accSett')"><strong
+                  *ngIf="global.doctorObj.DoctorName==null">Upload profile</strong>
+                <span
+                  class="mr-2 d-none d-lg-inline text-gray-600 small">{{global.doctorObj.NameTitle}}&nbsp;{{global.doctorObj.DoctorName}}</span>
                 <img *ngIf="retrievedImage" class="img-profile rounded-circle" [src]="Transform()">
-                <img *ngIf="!retrievedImage" class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+                <img *ngIf="!retrievedImage" class="img-profile rounded-circle"
+                  src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -64,7 +67,8 @@
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-3">
-            <h5 class="h4 mb-0 text-gray-800 font-weight-light"><strong class="">Hello!&nbsp;&nbsp;{{global.doctorObj.NameTitle}}&nbsp;{{global.doctorObj.DoctorName}}
+            <h5 class="h4 mb-0 text-gray-800 font-weight-light"><strong
+                class="">Hello!&nbsp;&nbsp;{{global.doctorObj.NameTitle}}&nbsp;{{global.doctorObj.DoctorName}}
               </strong><span class="font-weight-normal d-block text-sm mt-1">Choose following actions to
                 proceed.</span></h5>
           </div>
@@ -87,11 +91,11 @@
                   <a class="nav-item nav-link btn btn-success btn-sm" id="nav-contact-tab" data-toggle="tab"
                     href="javascript:;" role="tab" aria-controls="nav-contact" aria-selected="false"
                     (click)="Check('chatSection')"><i class="fa fa-lock"></i>Chat Section</a>
-                </div> 
-                
-               
+                </div>
+
+
               </nav>
-              
+
             </div>
           </div>
 
@@ -107,17 +111,18 @@
                     <div class="row">
                       <div class="col-md-4">
                         <input type="email" class="form-control form-control-user" placeholder="Email"
-                          formControlName="email" [(ngModel)]="global.doctorObj.Email"/>
+                          formControlName="email" [(ngModel)]="global.doctorObj.Email" />
                       </div>
                       <div class="col-md-4">
                         <input type="text" class="form-control form-control-user" placeholder="Mobile number"
-                          formControlName="mobileno" [(ngModel)]="global.doctorObj.MobileNumber"/>
+                          formControlName="mobileno" [(ngModel)]="global.doctorObj.MobileNumber" />
                       </div>
                       <!-- <div class="col-md-4">
                             <input type="text" class="form-control form-control-user"  aria-describedby="" placeholder="Invitation Link">
                           </div> -->
                       <div class="col-md-2">
-                        <button href="javascript:;" class="btn btn-primary btn-user btn-block" (click)="Invitation()" [disabled]="!(this.InvitationButton)">
+                        <button href="javascript:;" class="btn btn-primary btn-user btn-block" (click)="Invitation()"
+                          [disabled]="!(this.InvitationButton)">
                           Send
                         </button>
                       </div>
@@ -126,162 +131,260 @@
                   </form>
                 </div>
                 <div *ngIf="CompletedAppointments">
-                
-                    <!-- Card Header - Dropdown -->
-                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
-                      *ngIf="CompletedAppointments">
-                      <h6 class="m-0 font-weight-bold"><i class="fa fa-calendar"></i>Completed Appointments</h6>
-                    </div>
-                    <!-- Card Body -->
-                    <div class="card-body">
-                      <table class="table table-striped" id="dataTable">
-                        <thead>
-                          <tr>
-                            <th>Date</th>
-                            <th>Call Duration</th>
-                            <th>Call Start Time</th>
-                            <th>Call End Time</th>
-                            <!-- <th>Phone</th>
+                  <!-- Card Header - Dropdown -->
+                  <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+                    *ngIf="CompletedAppointments">
+                    <h6 class="m-0 font-weight-bold"><i class="fa fa-calendar"></i>Completed Appointments</h6>
+                  </div>
+                  <!-- Card Body -->
+                  <div class="card-body">
+                    <table class="table table-striped" id="dataTable">
+                      <thead>
+                        <tr>
+                          <th>Date</th>
+                          <th>Call Duration</th>
+                          <th>Call Start Time</th>
+                          <th>Call End Time</th>
+                          <!-- <th>Phone</th>
                       <th>Email</th> -->
-                          </tr>
-                        </thead>
-                        <tr *ngFor="let temp of CompletedPatients">
-                          <td>{{temp.AppointmentDate |  date: 'LLLL dd, yyyy'}}</td>
-                          <td>{{Difference(temp.StartTime,temp.EndTime)}}mins </td>
-                          <td>{{temp.StartTime| date:'hh:mm:ss a'}}</td>
-                          <td>{{temp.EndTime| date:'hh:mm:ss a'}}</td>
                         </tr>
-                      </table>
-                    </div>
-                  
+                      </thead>
+                      <tr *ngFor="let temp of CompletedPatients">
+                        <td>{{temp.AppointmentDate |  date: 'LLLL dd, yyyy'}}</td>
+                        <td>{{Difference(temp.StartTime,temp.EndTime)}}mins </td>
+                        <td>{{temp.StartTime| date:'hh:mm:ss a'}}</td>
+                        <td>{{temp.EndTime| date:'hh:mm:ss a'}}</td>
+                      </tr>
+                    </table>
+                  </div>
+
                 </div>
                 <div *ngIf="AccountSettings">
-                 
-                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                      <h6 class="m-0 font-weight-bold"><i class="fa fa-user"></i>Update Profile</h6>
-                    </div>
-                    <div class="card-body">
-                      <form action="" class="user">
-                        <div class="row form-group">
-                          <label for="" class="col-md-3 control-label">Name</label>
-                          <!-- <div class="col-md-2">                      
-                             <select name=""  class="form-control">
-                              <option value="" disabled="">--Choose--</option>
-                               <option value="">Esq</option>
-                               <option value="">JD</option>
-                               <option value="">Jr</option>
-                               <option value="">LLD</option>
-                             </select>
-                            </div> -->
-                          <div class="col-md-2">
-                            <select name="NameTitle" class="form-control" [(ngModel)]="doctorObj.NameTitle">
-                              <option value="" disabled="">--Choose--</option>
-                              <option value="Dr">Dr</option>
-                              <option value="Proof">Prof</option>
-                              <option value="Mr">Mr</option>
-                              <option value="Mrs">Mrs</option>
+                  <!-- Nav tabs -->
+                  <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                      <a class=" nav-item nav-link active" [ngClass]="{ 'active':activeTab==='updateProfile'}"
+                        data-toggle="tab" href="javascript:;" (click)="Check('updateProfile')"> Update Profile </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-item nav-link" [ngClass]="{ 'active':activeTab==='updateParams'}" data-toggle="tab"
+                        href="javascript:;" (click)="Check('updateParams')">Update Parameter </a>
+                    </li>
+                  </ul>
+                  <!-- Tab panes -->
+                  <div class="tab-content">
+                    <div *ngIf="ProfileUpdate"><br>
+                      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold"><i class="fa fa-user"></i>Update Profile</h6>
+                      </div>
+                      <div class="card-body">
+                        <form action="" class="user">
+                          <div class="row form-group">
+                            <label for="" class="col-md-3 control-label">Name</label>
+                            <!-- <div class="col-md-2">                      
+                                       <select name=""  class="form-control">
+                                        <option value="" disabled="">--Choose--</option>
+                                         <option value="">Esq</option>
+                                         <option value="">JD</option>
+                                         <option value="">Jr</option>
+                                         <option value="">LLD</option>
+                                       </select>
+                                      </div> -->
+                            <div class="col-md-2">
+                              <select name="NameTitle" class="form-control" [(ngModel)]="doctorObj.NameTitle">
+                                <option value="" disabled="">--Choose--</option>
+                                <option value="Dr">Dr</option>
+                                <option value="Proof">Prof</option>
+                                <option value="Mr">Mr</option>
+                                <option value="Mrs">Mrs</option>
 
-                            </select>
-                          </div>
-                          <div class="col-md-7">
-                            <input type="text" placeholder="Full Name" class="form-control" name="DoctorName" [(ngModel)]="doctorObj.DoctorName">
-                          </div>
-                          <!-- <div class="col-md-3">                      
-                              <input type="text" placeholder="Middle Name" class="form-control">
-                            </div> -->
-                          <!-- <div class="col-md-3">                      
-                              <input type="text" placeholder="Last Name" class="form-control">
-                            </div> -->
-                        </div>
-
-                        <!-- <div class="row form-group">
-                            <label for="" class="col-md-3 control-label">Date of Birth</label>
-                            <div class="col-md-9">                      
-                              <input type="date" placeholder="DOB" class="form-control">
+                              </select>
                             </div>
-                            
-                          </div> -->
-                        <div class="row form-group">
-                          <label for="" class="col-md-3 control-label">Email</label>
-                          <div class="col-md-9">
-                            <input type="email" placeholder="Email" class="form-control" name="Email" [(ngModel)]="doctorObj.Email">
+                            <div class="col-md-7">
+                              <input type="text" placeholder="Full Name" class="form-control" name="DoctorName"
+                                [(ngModel)]="doctorObj.DoctorName">
+                            </div>
+                            <!-- <div class="col-md-3">                      
+                                        <input type="text" placeholder="Middle Name" class="form-control">
+                                      </div> -->
+                            <!-- <div class="col-md-3">                      
+                                        <input type="text" placeholder="Last Name" class="form-control">
+                                      </div> -->
                           </div>
 
-                        </div>
-                        <div class="row form-group">
-                          <label for="" class="col-md-3 control-label">Phone</label>
-                          <div class="col-md-9">
-                            <input type="number" placeholder="Mobile Number" class="form-control" name="MobileNumber" [(ngModel)]="doctorObj.MobileNumber">
+                          <!-- <div class="row form-group">
+                                      <label for="" class="col-md-3 control-label">Date of Birth</label>
+                                      <div class="col-md-9">                      
+                                        <input type="date" placeholder="DOB" class="form-control">
+                                      </div>
+                                      
+                                    </div> -->
+                          <div class="row form-group">
+                            <label for="" class="col-md-3 control-label">Email</label>
+                            <div class="col-md-9">
+                              <input type="email" placeholder="Email" class="form-control" name="Email"
+                                [(ngModel)]="doctorObj.Email">
+                            </div>
+
+                          </div>
+                          <div class="row form-group">
+                            <label for="" class="col-md-3 control-label">Phone</label>
+                            <div class="col-md-9">
+                              <input type="number" placeholder="Mobile Number" class="form-control" name="MobileNumber"
+                                [(ngModel)]="doctorObj.MobileNumber">
+                            </div>
+
+                          </div>
+                          <div class="row form-group">
+                            <label for="" class="col-md-3 control-label">Designation</label>
+                            <div class="col-md-9">
+                              <input type="text" placeholder="Desgination" class="form-control" name="Designation"
+                                [(ngModel)]="doctorObj.Designation">
+                            </div>
+
+                          </div>
+                          <div class="row form-group">
+                            <label for="" class="col-md-3 control-label">Medical degree</label>
+                            <div class="col-md-9">
+                              <input type="text" placeholder="Medical degree" class="form-control" name="MedicalDegree"
+                                [(ngModel)]="doctorObj.MedicalDegree">
+                            </div>
+
+                          </div>
+                          <div class="row form-group">
+                            <label for="" class="col-md-3 control-label">Affiliated Hospital or Clinic</label>
+                            <div class="col-md-9">
+                              <input type="text" placeholder="Affiliated Hospital or Clinic" class="form-control"
+                                name="Clinic" [(ngModel)]="doctorObj.Clinic">
+                            </div>
+
+                          </div>
+                          <div class="row form-group">
+                            <label for="" class="col-md-3 control-label">Password</label>
+                            <div class="col-md-9">
+                              <input type="password" class="form-control" name="Password"
+                                [(ngModel)]="doctorObj.Password" placeholder="{{global.doctorObj.Password}}">
+                            </div>
+
+                          </div>
+                          <div class="row form-group">
+                            <label for="" class="col-md-3 control-label">Confirm Password</label>
+                            <div class="col-md-9">
+                              <input type="password" placeholder="**********" class="form-control"
+                                name="ConfirmPassword" [(ngModel)]="doctorObj.ConfirmPassword">
+                            </div>
+
                           </div>
 
-                        </div>
-                        <div class="row form-group">
-                          <label for="" class="col-md-3 control-label">Designation</label>
-                          <div class="col-md-9">
-                            <input type="text" placeholder="Desgination" class="form-control" name="Designation" [(ngModel)]="doctorObj.Designation">
+                          <div class="row form-group">
+                            <label for="" class="col-md-3 control-label">Upload Image</label>
+                            <div class="col-md-5">
+                              <input style="display: none" type="file" placeholder="Choose File"
+                                (change)="onFileChanged($event)" #fileInput>
+                              <button (click)="fileInput.click()">Upload File</button>
+                              <label *ngIf="selectedFile"> {{selectedFile.name}}</label>
+                            </div>
+                            <div class="col-md-4">
+                              <span class="upload" *ngIf="progress > 0">
+                                {{progress}}%
+                              </span>
+                              <span class="upload" *ngIf="message">
+                                {{message}}
+                              </span>
+                            </div>
                           </div>
 
-                        </div>
-                        <div class="row form-group">
-                          <label for="" class="col-md-3 control-label">Medical degree</label>
-                          <div class="col-md-9">
-                            <input type="text" placeholder="Medical degree" class="form-control" name="MedicalDegree" [(ngModel)]="doctorObj.MedicalDegree">
+                          <div class="row mt-4">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-3">
+                              <input type="button" name="Submit" value="Submit" class="btn btn-sm btn-primary"
+                                (click)="UpdateProfile()">
+                            </div>
                           </div>
 
-                        </div>
-                        <div class="row form-group">
-                          <label for="" class="col-md-3 control-label">Affiliated Hospital or Clinic</label>
-                          <div class="col-md-9">
-                            <input type="text" placeholder="Affiliated Hospital or Clinic" class="form-control" name="Clinic" [(ngModel)]="doctorObj.Clinic">
-                          </div>
-
-                        </div>
-                        <div class="row form-group">
-                          <label for="" class="col-md-3 control-label">Password</label>
-                          <div class="col-md-9">
-                            <input type="password"  class="form-control" name="Password" [(ngModel)]="doctorObj.Password" placeholder="{{global.doctorObj.Password}}">
-                          </div>
-
-                        </div>
-                        <div class="row form-group">
-                          <label for="" class="col-md-3 control-label">Confirm Password</label>
-                          <div class="col-md-9">
-                            <input type="password" placeholder="**********" class="form-control" name="ConfirmPassword" [(ngModel)]="doctorObj.ConfirmPassword">
-                          </div>
-
-                        </div>
-
-                        <div class="row form-group">
-                          <label for="" class="col-md-3 control-label">Upload Image</label>
-                          <div class="col-md-5">
-                            <input style="display: none" type="file" placeholder="Choose File" (change)="onFileChanged($event)" #fileInput>
-                            <button (click)="fileInput.click()">Upload File</button>
-                            <label *ngIf="selectedFile"> {{selectedFile.name}}</label>
-                          </div>
-                          <div class="col-md-4">
-                            <span class="upload" *ngIf="progress > 0">
-                              {{progress}}%
-                            </span>
-                            <span class="upload" *ngIf="message">
-                              {{message}}
-                            </span>
-                          </div>
-                        </div>
-
-                        <div class="row mt-4">
-                          <div class="col-md-3"></div>
-                          <div class="col-md-3">
-                            <input type="button" name="Submit" value="Submit" class="btn btn-sm btn-primary" (click)="UpdateProfile()" >
-                          </div>
-                        </div>
-
-                      </form>
+                        </form>
+                      </div>
                     </div>
-                 
+                    <div *ngIf="ParamsUpdate"><br>
+                      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold">Update Parameters</h6>
+                      </div>
+                      <div class="card-body">
+                        <form action="" class="user">
+                          <h6 class="m-0 font-weight-bold">Hospital Parameters :</h6><br>
+                          <div class="row form-group">
+                            <label for="" class="col-md-3 control-label">Hospital Name</label>
+                            <div class="col-md-9">
+                              <input type="text" placeholder="HospitalName" class="form-control" name="HospitalName"
+                                [(ngModel)]="HospitalName">
+                            </div>
+                          </div>
+                          <div class="row form-group">
+                            <label for="" class="col-md-3 control-label">Hospital Contact No.</label>
+                            <div class="col-md-9">
+                              <input type="number" placeholder="Contact Number" class="form-control" name="ContactNumber"
+                                [(ngModel)]="HospitalContact">
+                            </div>
+
+                          </div>
+                          <div class="row form-group">
+                            <label for="" class="col-md-3 control-label">Hospital Email </label>
+                            <div class="col-md-9">
+                              <input type="email" placeholder="Hospital Email" class="form-control" name="HospitalEmail"
+                                [(ngModel)]="HospitalEmail">
+                            </div>
+
+                          </div>
+                          <div class="row form-group">
+                            <label for="" class="col-md-3 control-label">Hospital Description</label>
+                            <div class="col-md-9">
+                              <textarea placeholder="Description"  class="form-control" style="overflow:hidden;min-height:80px;"
+                                name="HospitalDesc" [(ngModel)]="HospitalDesc"></textarea>
+                            </div>
+                          </div>
+                          <h6 class="m-0 font-weight-bold">Email Parameters :</h6><br>
+                          <div class="row form-group">
+                            <label for="" class="col-md-3 control-label">Sender Email Id for Invitation</label>
+                            <div class="col-md-9">
+                              <input type="email" placeholder="From Email" class="form-control" name="SenderEmail"
+                                [(ngModel)]="SenderEmail">
+                            </div>
+
+                          </div>
+                          <div class="row form-group">
+                            <label for="" class="col-md-3 control-label">Email API Key</label>
+                            <div class="col-md-9">
+                              <input type="text" class="form-control" name="APIKey" [(ngModel)]="APIKey"
+                                placeholder="APIKey">
+                            </div>
+
+                          </div>
+                          <div class="row form-group">
+                            <label for="" class="col-md-3 control-label">Email Name</label>
+                            <div class="col-md-9">
+                              <input type="text" placeholder="Name" class="form-control" name="EmailName"
+                                [(ngModel)]="EmailName">
+                            </div>
+
+                          </div>
+
+                          <div class="row mt-4">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-3">
+                              <input type="button" name="Submit" value="Submit" class="btn btn-sm btn-primary"
+                                (click)="UpdateParameters()">
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+
+
                 </div>
               </div>
               <div *ngIf="ChatSection">
-                
+
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
                   *ngIf="ChatSection">
@@ -291,45 +394,50 @@
                 <div class="card-body">
                   <div class="card-body p-0 accordionItemContent">
                     <div class="chatbox-holder">
-              <div class="chatbox">    
-                <form [formGroup]="ChatForm">
-                <div class="chat-messages">
-                  <label *ngIf="showChat" for="selPatient">{{ global.IsDoctor ? 'Patient' : 'Doctor' }}:
-                  </label>
-                  <select *ngIf="showChat" id="selPatient" formControlName="selUser" (change)="OnChatUserChange()">
-                    <option disabled value="null">Select {{ global.IsDoctor ? 'Patient' : 'Doctor' }} </option>
-                    <option *ngFor="let user of ChatUserDropDowns"> {{ user.PatientName }} </option>
-                  </select>
-                  <div *ngIf="hasError('required','selUser') && showChat" style="color: red;display: inline;">
-                    {{ global.IsDoctor ? 'Patient' : 'Doctor' }} is required
-                  </div>
-            
-                  <div #scrollBtm class="message-box-holder" *ngFor="let msg of ChatMessages">
-                    <div class="message-sender">
-                    <b> {{ msg.Name }} :-</b> {{ msg.Message }}
-                    </div>
-                    </div>   
-                    <!-- <div class="message-box-holder" *ngFor="let msg of ChatReceivedMessages"  #scrollBtm>
+                      <div class="chatbox">
+                        <form [formGroup]="ChatForm">
+                          <div class="chat-messages">
+                            <label *ngIf="showChat" for="selPatient">{{ global.IsDoctor ? 'Patient' : 'Doctor' }}:
+                            </label>
+                            <select *ngIf="showChat" id="selPatient" formControlName="selUser"
+                              (change)="OnChatUserChange()">
+                              <option disabled value="null">Select {{ global.IsDoctor ? 'Patient' : 'Doctor' }}
+                              </option>
+                              <option *ngFor="let user of ChatUserDropDowns"> {{ user.PatientName }} </option>
+                            </select>
+                            <div *ngIf="hasError('required','selUser') && showChat" style="color: red;display: inline;">
+                              {{ global.IsDoctor ? 'Patient' : 'Doctor' }} is required
+                            </div>
+                            <br>
+                            <div #scrollBtm class="message-box-holder" *ngFor="let msg of ChatMessages">
+                              <div class="message-sender">
+                                <b> {{ msg.Name }} :-</b> {{ msg.Message }}
+                              </div>
+                            </div>
+                            <!-- <div class="message-box-holder" *ngFor="let msg of ChatReceivedMessages"  #scrollBtm>
                      <div class="message-sender" #scrollBtm>
                        {{ msg.Name }} :- {{ msg.Message }}
                       </div>
                     
                    </div> -->
-                     
-                </div>
-                
-                <div class="chat-input-holder" *ngIf="showChat">
-                  <textarea class="chat-input" placeholder="Type your message here.."  formControlName="chatMessage" (keyup)="onChatEnter($event)"></textarea>
-                  <div *ngIf="hasError('required','chatMessage')" style="color: red;"> Chat message is required </div>
-                  <input type="button" value="Send" class="message-send btn-primary" (click)="SendChatMsg()" />
-                </div>
-                
-              </form>
-              </div>
-            </div>
+
+                          </div>
+
+                          <div class="chat-input-holder" *ngIf="showChat">
+                            <textarea class="chat-input" placeholder="Type your message here.."
+                              formControlName="chatMessage" (keyup)="onChatEnter($event)"></textarea>
+                            <div *ngIf="hasError('required','chatMessage')" style="color: red;"> Chat message is
+                              required </div>
+                            <input type="button" value="Send" class="message-send btn-primary"
+                              (click)="SendChatMsg()" />
+                          </div>
+
+                        </form>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              
+
               </div>
             </div>
 
@@ -341,21 +449,21 @@
                   <h6 class="m-0 font-weight-bold"><i class="fa fa-users"></i>My Patients</h6>
                   <!-- <a href="javascript:;" class="btn btn-primary btn-user btn-block" routerLink="/DoctorRoom"></a>     -->
                   <a href="javascript:;" class="nav-item nav-link btn btn-success btn-sm active" id="nav-home-tab"
-                    data-toggle="tab" routerLink="/DoctorRoom" [state]="this.global.patientObj" role="tab" aria-controls="nav-home"
-                    aria-selected="true"><i class="fa fa-share"></i>Back to Call</a>
+                    data-toggle="tab" routerLink="/DoctorRoom" [state]="this.global.patientObj" role="tab"
+                    aria-controls="nav-home" aria-selected="true"><i class="fa fa-share"></i>Back to Call</a>
                 </div>
                 <!-- Card Body -->
                 <div class="card-body" *ngIf="(this.global.IsDoctor)">
                   <table class="table table-striped">
                     <thead>
                       <tr *ngFor="let temp of patients">
-                        <td cellpadding="0" cellspacing="0">&nbsp;{{temp.Id}})&nbsp;&nbsp;{{temp.PatientName}}</td>
-                        <td cellpadding="0" cellspacing="0"><a [routerLink]="['/DoctorRoom']" (click)="CallPatient(temp)"
-                            *ngIf="temp.Status==0" class="btn-call"><i
+                        <td cellpadding="0" cellspacing="0" *ngIf="temp.PatientName">&nbsp;{{temp.Id + 1}})&nbsp;&nbsp;{{temp.PatientName}}</td>
+                        <td cellpadding="0" cellspacing="0"><a [routerLink]="['/DoctorRoom']"
+                            (click)="CallPatient(temp)" *ngIf="temp.Status==0 && temp.PatientName" class="btn-call"><i
                               class="fa fa-video-camera"></i>Call</a></td>
-                        <td cellpadding="0" cellspacing="0"><a class="btn-call"><i
-                              class="fa fa-video-camera"></i>Chat</a></td>
-                        <td cellpadding="0" cellspacing="0" *ngIf="temp.Status==1">In Call</td>
+                        <td cellpadding="0" cellspacing="0" *ngIf="temp.PatientName"><a class="btn-call"><i
+                              class="fa fa-video-camera" ></i>Chat</a></td>
+                        <td cellpadding="0" cellspacing="0" *ngIf="temp.Status==1 && temp.PatientName">In Call</td>
                       </tr>
                       <tr>
                         <th></th>
@@ -582,18 +690,22 @@
       <!-- Footer -->
       <footer class="sticky-footer bg-transparent">
         <div class="container my-auto">
-            <div class="copyright text-center my-auto">
-                <span class="text-black"><img src="img/logo-cap.png" class="powered-footer-logo d-block">Powered by &copy;
-                    Danphe Telehealth 2020 </span>
-            </div>
+          <div class="copyright text-center my-auto">
+            <span class="text-black"><img src="img/logo-cap.png" class="powered-footer-logo d-block">Powered by &copy;
+              Danphe Telehealth 2020 </span>
+          </div>
         </div>
-    </footer>
+      </footer>
       <!-- End of Footer -->
 
     </div>
     <!-- End of Content Wrapper -->
 
   </div>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="js/vendor.bundle.base.js"></script>
   <script src="js/vendor.bundle.addons.js"></script>
   <script src="js/jquery.dataTables.min.js"></script>

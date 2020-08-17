@@ -21,6 +21,8 @@ namespace FewaTelemedicine.Domain.Models
         public string MedicalDegree { get; set; }
         public string MobileNumber { get; set; }
         public byte[] Image { get; set; }
+        public string DoctorRoomName { get; set; }
+        public string DoctorRoomKey { get; set; }
         public string Clinic { get; set; }
         [NotMapped]
         public string SignalRConnectionId { get; set; }
