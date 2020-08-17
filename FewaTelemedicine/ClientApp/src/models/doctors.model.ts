@@ -7,6 +7,8 @@ export class DoctorsModel{
     ConfirmPassword:string="";
     NameTitle:string="";
     DoctorName:string="";
+    DoctorRoomName:string="";
+    DoctorRoomKey:string="";
     Email:string=""
     MobileNumber:string="";
     Designation:string="";
