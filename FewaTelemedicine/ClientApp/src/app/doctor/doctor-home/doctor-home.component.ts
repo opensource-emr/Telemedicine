@@ -23,6 +23,7 @@ export class DoctorHomeComponent implements OnInit {
   public selectedFile: File;
   public progress: number;
   public message: string;
+  count:number=0;
   receivedImageData: any;
   retrievedImage: any;
   retrieveResponse: any;
@@ -78,6 +79,8 @@ export class DoctorHomeComponent implements OnInit {
       }
       const chatMsg = { Name: data.Name, Message: data.Message, Class: 'receiver-msg' };
       this.ChatMessages.push(chatMsg);
+      this.count=this.count+1;
+
       this.toastr.success(chatMsg.Message, chatMsg.Name,
       {timeOut: 5000});
       //this.ChatReceivedMessages.push(chatMsg);
@@ -85,7 +88,7 @@ export class DoctorHomeComponent implements OnInit {
 
 
       this.cdr.detectChanges();
-      this.scrollBottom.nativeElement.lastElementChild.scrollIntoView(); // scroll to bottom
+     // this.scrollBottom.nativeElement.lastElementChild.scrollIntoView(false); // scroll to bottom
     });
 
     this.invitationForm = this.formBuilder.group({
@@ -255,7 +258,7 @@ export class DoctorHomeComponent implements OnInit {
 
   }
   LoadPatientSuccess(res) {
-    this.CompletedPatients = res.reverse();
+    this.CompletedPatients = res;
   }
 
   NextPatient(res) {

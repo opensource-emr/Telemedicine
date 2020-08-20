@@ -49,8 +49,8 @@ export class PatientRoomComponent {
       //this.ChatReceivedMessages.push(chatMsg);
       this.pushChatMsgUserwise(chatData.Name, chatMsg);
 
-      // this.cdr.detectChanges();
-      //this.scrollBottom.nativeElement.lastElementChild.scrollIntoView(); // scroll to bottom
+       this.cdr.detectChanges();
+      //this.scrollBottom.nativeElement.lastElementChild.scrollIntoView(false); // scroll to bottom
     });
 
     this.notificationService.EventGetAllDoctors.subscribe(_doctors => {

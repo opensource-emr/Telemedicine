@@ -20,6 +20,7 @@
 
 						<div class="sidebar-brand-text mx-3"><img src="img/logo.png" alt=""></div>
 					</a>
+					
 					<!-- <ul class="navbar-nav ml-auto">
 
 						<div class="topbar-divider d-none d-sm-block"></div> -->
@@ -69,14 +70,47 @@
 										<input type="text" class="form-control post-invitation" placeholder="Enter Your Name" [(ngModel)]="patientObj.PatientName" name="PatientName"/>
 										<div class="custom-control custom-checkbox mt-4">
 				                        <input type="checkbox" class="custom-control-input" id="customCheck" checked/>
-				                        <label class="custom-control-label font-weight-normal" for="customCheck">By clicking you will accept our <a href="">Terms and Condition</a></label>
+				                        <label class="custom-control-label font-weight-normal" for="customCheck">By clicking you will accept our <a href="">Terms and Conditions</a></label>
 				                      </div>
 										<button type="submit" class="btn btn-primary d-inline  mt-5" style="width: 150px;" href="javascrpt:;" (click)="LoginPatient()" >Check In</button>
 										<!-- <a href="" class="text-gray-400 d-block mt-4 d-inline">Cancel</a> -->
 									</form>
 								</div>
+
+								<div class="card shadow mb-4" style="position: fixed;right:436px;top: 435px;width: 525px;height: 78px">
+							 
+									<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="height: 20%;">
+									  <h6 class="m-0 font-weight-bold"><i class="fa fa-users"></i>logged Doctors</h6>
+									
+									  <button style="background-color: #007bff;font-size: 76%;" class="nav-item nav-link btn btn-success btn-sm active" id="nav-home-tab"
+										data-toggle="tab"  (click)="ngOnInit()" role="tab" aria-controls="nav-home"
+										aria-selected="true"><i class="fa fa-share" ></i>Refresh</button>
+									</div>
+								  
+									<!-- <div class="card-body" *ngFor="let temp of this.getAllPatients;let indexOfelement=index;">
+										<div >&nbsp;{{indexOfelement+1}}.&nbsp;&nbsp;{{temp.PatientName}}</div> -->
+										<div style="overflow-y: scroll;">
+									  <table class="table table-striped">
+										<thead>
+										  <tr *ngFor="let temp of this.getAlldoctors;">
+											<td style="padding: 0%;">&nbsp;{{temp.Id}}.&nbsp;{{temp.NameTitle}}&nbsp;{{temp.DoctorName}}</td>
+											
+										  </tr>
+										 
+										</thead>
+									   
+									  </table>
+									</div>
+									<!-- </div> -->
+								  </div>
+
+
+
 							</div>
 						</div>
+						<!-- <div class="col-xl-4 col-lg-5"> -->
+						
+						  <!-- </div> -->
 					</div>
 				</div>
 			</div>

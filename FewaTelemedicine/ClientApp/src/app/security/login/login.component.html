@@ -5,7 +5,38 @@
 
         <div class="col-xl-10 col-lg-12 col-md-9">
 
+
+
+               
+            <!-- <div class="card shadow mb-4" style="position:fixed;right:3%;top: 23%;">
+							 
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold"><i class="fa fa-users"></i>logged Patients</h6>
+                
+                  <button style="background-color: #0631ae;" class="nav-item nav-link btn btn-success btn-sm active" id="nav-home-tab"
+                    data-toggle="tab"  (click)="ngOnInit()" role="tab" aria-controls="nav-home"
+                    aria-selected="true"><i class="fa fa-share" ></i>Refresh</button>
+                </div>
+              
+                <div class="card-body">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr *ngFor="let temp of this.getAllPatients;let indexOfelement=index;">
+                        <td cellpadding="0" cellspacing="0">&nbsp;{{indexOfelement+1}}.&nbsp;&nbsp;{{temp.PatientName}}</td>
+                        
+                      </tr>
+                     
+                    </thead>
+                   
+                  </table>
+                </div>
+              </div> -->
+
             <div class="card o-hidden border-0 shadow-lg my-5">
+
+
+
+                
                 <div class="card-body p-0">
                     <!-- Nested Row within Card Body -->
                     <div class="row">
@@ -63,11 +94,67 @@
                                         class="btn btn-primary btn-user btn-block">
                                         Login
                                     </button>
+
+                                   
                                 </form>
+                                <!-- <div class="card shadow mb-4" style="position:fixed;right:3%;top: 23%;">
+							 
+                                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                      <h6 class="m-0 font-weight-bold"><i class="fa fa-users"></i>logged Patients</h6>
+                                    
+                                      <button style="background-color: #0631ae;" class="nav-item nav-link btn btn-success btn-sm active" id="nav-home-tab"
+                                        data-toggle="tab"  (click)="ngOnInit()" role="tab" aria-controls="nav-home"
+                                        aria-selected="true"><i class="fa fa-share" ></i>Refresh</button>
+                                    </div>
+                                  
+                                    <div class="card-body">
+                                      <table class="table table-striped">
+                                        <thead>
+                                          <tr *ngFor="let temp of this.getAllPatients;let indexOfelement=index;">
+                                            <td cellpadding="0" cellspacing="0">&nbsp;{{indexOfelement+1}}.&nbsp;&nbsp;{{temp.PatientName}}</td>
+                                            
+                                          </tr>
+                                         
+                                        </thead>
+                                       
+                                      </table>
+                                    </div>
+                                  </div> -->
+
+                            </div>
+
+                            <div class="card shadow mb-4" style="position: fixed;right: 223px;top: 345px;width: 463px;height: 78px;">
+							 
+                              <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="height: 20%;">
+                                <h6 class="m-0 font-weight-bold"><i class="fa fa-users"></i>logged Patients</h6>
+                              
+                                <button style="background-color: #007bff;font-size: 76%;" class="nav-item nav-link btn btn-success btn-sm active" id="nav-home-tab"
+                                  data-toggle="tab"  (click)="ngOnInit()" role="tab" aria-controls="nav-home"
+                                  aria-selected="true"><i class="fa fa-share" ></i>Refresh</button>
+                              </div>
+                            
+                              <!-- <div class="card-body" *ngFor="let temp of this.getAllPatients;let indexOfelement=index;">
+                                  <div >&nbsp;{{indexOfelement+1}}.&nbsp;&nbsp;{{temp.PatientName}}</div> -->
+                                  <div style="overflow-y: scroll;">
+                                <table class="table table-striped">
+                                  <thead>
+                                    <tr *ngFor="let temp of this.getAllPatients;let indexOfelement=index;">
+                                      <td style="padding: 0%;">&nbsp;{{indexOfelement+1}}.&nbsp;&nbsp;{{temp.PatientName}}</td>
+                                      
+                                    </tr>
+                                   
+                                  </thead>
+                                 
+                                </table>
+                              </div>
+                              <!-- </div> -->
                             </div>
                         </div>
                     </div>
                 </div>
+
+             
+
             </div>
         </div>
     </div>

@@ -1,3 +1,10 @@
+<head>
+
+  <link href="//cdn.syncfusion.com/ej2/ej2-notifications/styles/material.css" rel="stylesheet" />
+
+</head>
+
+
 <body id="page-top">
 
   <!-- Page Wrapper -->
@@ -78,15 +85,21 @@
                   <a class="nav-item nav-link btn btn-success btn-sm" id="nav-home-tab" data-toggle="tab"
                     href="javascript:;" role="tab" aria-controls="nav-home" aria-selected="true"
                     (click)="Check('sendInv')"><i class="fa fa-share"></i>Send Invitation</a>
-                  <a class="nav-item nav-link btn btn-success btn-sm" id="nav-profile-tab" data-toggle="tab"
+                  <!-- <a class="nav-item nav-link btn btn-success btn-sm" id="nav-profile-tab" data-toggle="tab"
                     href="javascript:;" role="tab" aria-controls="nav-profile" aria-selected="false"
-                    (click)="Check('completedList')"><i class="fa fa-check-square"></i>Completed Appointments</a>
+                    (click)="Check('completedList')"><i class="fa fa-check-square"></i>Completed Appointments</a> -->
                   <!-- <a class="nav-item nav-link btn btn-success btn-sm" id="nav-contact-tab" data-toggle="tab"
                     href="javascript:;" role="tab" aria-controls="nav-contact" aria-selected="false"
                     (click)="Check('accSett')"><i class="fa fa-lock"></i>Account Settings</a> -->
+
+                    <!-- <div style="position:relative;display:inline-block;margin:20px 20px 10px 20px;">
+                      <div class="facebook svg_icons"></div>
+                      <span class="e-badge e-badge-info e-badge-overlap e-badge-notification e-badge-circle">2</span>
+                  </div> -->
                   <a class="nav-item nav-link btn btn-success btn-sm" id="nav-contact-tab" data-toggle="tab"
-                    href="javascript:;" role="tab" aria-controls="nav-contact" aria-selected="false"
+                    href="javascript:;" role="tab" aria-controls="nav-contact" aria-selected="false" (click)="count=0"
                     (click)="Check('chatSection')"><i class="fa fa-lock"></i>Chat Section</a>
+                    <span class="e-badge e-badge-info e-badge-overlap e-badge-notification e-badge-circle" style="position:inherit;display:inline-block;margin: -9px 0px 0px -6px;" *ngIf="count>0">{{count}}</span>
                 </div> 
                 
                
@@ -125,11 +138,11 @@
                     </div>
                   </form>
                 </div>
-                <div *ngIf="CompletedAppointments">
+                <div *ngIf="SendInvitation">
                 
                     <!-- Card Header - Dropdown -->
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
-                      *ngIf="CompletedAppointments">
+                      *ngIf="SendInvitation">
                       <h6 class="m-0 font-weight-bold"><i class="fa fa-calendar"></i>Completed Appointments</h6>
                     </div>
                     <!-- Card Body -->
@@ -340,9 +353,9 @@
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                   <h6 class="m-0 font-weight-bold"><i class="fa fa-users"></i>My Patients</h6>
                   <!-- <a href="javascript:;" class="btn btn-primary btn-user btn-block" routerLink="/DoctorRoom"></a>     -->
-                  <a href="javascript:;" class="nav-item nav-link btn btn-success btn-sm active" id="nav-home-tab"
+                  <!-- <a href="javascript:;" class="nav-item nav-link btn btn-success btn-sm active" id="nav-home-tab"
                     data-toggle="tab" routerLink="/DoctorRoom" [state]="this.global.patientObj" role="tab" aria-controls="nav-home"
-                    aria-selected="true"><i class="fa fa-share"></i>Back to Call</a>
+                    aria-selected="true"><i class="fa fa-share"></i>Back to Call</a> -->
                 </div>
                 <!-- Card Body -->
                 <div class="card-body" *ngIf="(this.global.IsDoctor)">
