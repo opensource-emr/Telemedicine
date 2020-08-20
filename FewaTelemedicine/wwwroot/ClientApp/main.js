@@ -2297,17 +2297,30 @@ class DoctorRoomComponent {
             width: 950,
             height: 570,
             parentNode: document.querySelector('#meet'),
-            configOverwrite: {},
+            configOverwrite: {
+                doNotStoreRoom: true,
+                disableInviteFunctions: true,
+                startWithVideoMuted: true,
+                startWithAudioMuted: true,
+                enableWelcomePage: false,
+                disableRemoteMute: true,
+                prejoinPageEnabled: false,
+                remoteVideoMenu: {
+                    // If set to true the 'Kick out' button will be disabled.
+                    disableKick: true
+                },
+            },
             interfaceConfigOverwrite: {
-                filmStripOnly: false,
-                SHOW_JITSI_WATERMARK: false,
-                SHOW_WATERMARK_FOR_GUESTS: false,
                 SHOW_BRAND_WATERMARK: false,
-                TOOLBAR_BUTTONS: ['microphone', 'camera', 'tileview']
+                GENERATE_ROOMNAMES_ON_WELCOME_PAGE: false,
+                DISPLAY_WELCOME_PAGE_CONTENT: false,
+                DISPLAY_WELCOME_PAGE_TOOLBAR_ADDITIONAL_CONTENT: false,
+                DEFAULT_REMOTE_DISPLAY_NAME: 'patient',
+                filmStripOnly: false,
+                TOOLBAR_BUTTONS: ['microphone', 'camera']
             }
         };
         this.api = new JitsiMeetExternalAPI(this.domain, this.options);
-        this.api.executeCommand('displayName', this.global.doctorObj.UserName);
     }
     initForm() {
         this.ChatForm = this.formBuilder.group({
@@ -3156,8 +3169,8 @@ const _c0 = ["scrollBtm"];
 function PatientRoomComponent_img_7_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "img", 46);
 } if (rf & 2) {
-    const ctx_r110 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("src", ctx_r110.Transform(), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsanitizeUrl"]);
+    const ctx_r485 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("src", ctx_r485.Transform(), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsanitizeUrl"]);
 } }
 function PatientRoomComponent_img_8_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "img", 47);
@@ -3167,18 +3180,18 @@ function PatientRoomComponent_option_32_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const dr_r116 = ctx.$implicit;
+    const dr_r491 = ctx.$implicit;
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", dr_r116.UserName, " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", dr_r491.UserName, " ");
 } }
 function PatientRoomComponent_div_33_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 48);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const ctx_r113 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
+    const ctx_r488 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", ctx_r113.global.IsDoctor ? "Patient" : "Doctor", " is required ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", ctx_r488.global.IsDoctor ? "Patient" : "Doctor", " is required ");
 } }
 function PatientRoomComponent_div_34_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 49, 50);
@@ -3190,11 +3203,11 @@ function PatientRoomComponent_div_34_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const msg_r117 = ctx.$implicit;
+    const msg_r492 = ctx.$implicit;
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](4);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", msg_r117.Name, " :-");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", msg_r492.Name, " :-");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", msg_r117.Message, " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", msg_r492.Message, " ");
 } }
 function PatientRoomComponent_div_37_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 52);
@@ -3263,13 +3276,24 @@ class PatientRoomComponent {
             height: 570,
             parentNode: document.querySelector('#meet'),
             configOverwrite: {
+                doNotStoreRoom: true,
+                disableInviteFunctions: true,
+                startWithVideoMuted: true,
+                startWithAudioMuted: true,
+                disableRemoteMute: true,
+                enableWelcomePage: false,
+                prejoinPageEnabled: false,
                 remoteVideoMenu: {
                     // If set to true the 'Kick out' button will be disabled.
                     disableKick: true
-                },
+                }
             },
             interfaceConfigOverwrite: {
                 filmStripOnly: false,
+                GENERATE_ROOMNAMES_ON_WELCOME_PAGE: false,
+                DISPLAY_WELCOME_PAGE_CONTENT: false,
+                DISPLAY_WELCOME_PAGE_TOOLBAR_ADDITIONAL_CONTENT: false,
+                DEFAULT_REMOTE_DISPLAY_NAME: 'doctor',
                 SHOW_JITSI_WATERMARK: false,
                 SHOW_WATERMARK_FOR_GUESTS: false,
                 SHOW_BRAND_WATERMARK: false,
@@ -3277,7 +3301,6 @@ class PatientRoomComponent {
             }
         };
         this.api = new JitsiMeetExternalAPI(this.domain, this.options);
-        this.api.executeCommand('displayName', this.global.patientObj.PatientName);
     }
     initForm() {
         this.ChatForm = this.formBuilder.group({
@@ -3741,9 +3764,9 @@ function PatientWaitingRoomComponent_option_37_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const dr_r204 = ctx.$implicit;
+    const dr_r79 = ctx.$implicit;
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", dr_r204.UserName, " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", dr_r79.UserName, " ");
 } }
 function PatientWaitingRoomComponent_div_38_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 31, 32);
@@ -3755,11 +3778,11 @@ function PatientWaitingRoomComponent_div_38_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const msg_r205 = ctx.$implicit;
+    const msg_r80 = ctx.$implicit;
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](4);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", msg_r205.Name, " :-");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", msg_r80.Name, " :-");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", msg_r205.Message, " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", msg_r80.Message, " ");
 } }
 function PatientWaitingRoomComponent_div_41_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 34);

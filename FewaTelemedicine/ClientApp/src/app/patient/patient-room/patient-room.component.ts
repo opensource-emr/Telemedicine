@@ -86,21 +86,31 @@ export class PatientRoomComponent {
       height: 570,
       parentNode: document.querySelector('#meet'),
       configOverwrite: {
+        doNotStoreRoom:true,    
+        disableInviteFunctions:true,
+        startWithVideoMuted: true,
+        startWithAudioMuted: true,
+        disableRemoteMute:true,
+        enableWelcomePage:false,
+        prejoinPageEnabled:false,
         remoteVideoMenu: {
 					// If set to true the 'Kick out' button will be disabled.
 					disableKick: true
-				},
+				}
       },
       interfaceConfigOverwrite: {
         filmStripOnly: false,
+        GENERATE_ROOMNAMES_ON_WELCOME_PAGE:false,
+        DISPLAY_WELCOME_PAGE_CONTENT:false,
+        DISPLAY_WELCOME_PAGE_TOOLBAR_ADDITIONAL_CONTENT:false,
+        DEFAULT_REMOTE_DISPLAY_NAME:'doctor',
         SHOW_JITSI_WATERMARK: false,
         SHOW_WATERMARK_FOR_GUESTS: false,
         SHOW_BRAND_WATERMARK: false,
         TOOLBAR_BUTTONS: ['microphone', 'camera', 'tileview']
       }
     } 
-    this.api = new JitsiMeetExternalAPI(this.domain, this.options);
-    this.api.executeCommand('displayName',this.global.patientObj.PatientName);   
+    this.api = new JitsiMeetExternalAPI(this.domain, this.options); 
   }
 
   private initForm() {

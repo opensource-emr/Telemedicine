@@ -58,7 +58,9 @@ namespace FewaTelemedicine.Controllers
                     return BadRequest();
                 }
                 var doc = _doctorRepository.GetDoctorByUserName(doctor.UserName);
-                doc.DoctorRoomName = "Fewa" + doc.UserName;
+                /*if(doc.DoctorRoomName == null)
+                doc.DoctorRoomName = "Fewa" + doc.UserName;*/
+                doc.DoctorRoomName = doc.DoctorRoomName.Replace("DoctorName", doctor.UserName);
                 FewaDbContext.DoctorsModels.Update(doc);
                 FewaDbContext.SaveChanges();
                 if (doc == null)
@@ -76,7 +78,6 @@ namespace FewaTelemedicine.Controllers
                     AddDoctorCabin(doc.UserName);
                     var data = new
                     {
-
                         User = doctor,                  
                         Token = token
                     };

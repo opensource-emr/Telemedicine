@@ -91,6 +91,7 @@ export class PatientWaitingRoomComponent implements OnDestroy {
   SendToken(res) {
 
   }
+  
   GotoDoctorRoom(res) {
           if (res == false) { return; }
           if (res.DoctorNameAttending.length > 0 && res.Name == this.global.patientObj.PatientName) {           
