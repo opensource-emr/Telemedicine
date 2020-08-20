@@ -78,7 +78,6 @@ export class PatientRoomComponent {
   }
 
   ngOnInit() {
-    if(this.global.doctorObj)
     this.domain = "meet.jit.si";
     this.options = {
       roomName:this.global.doctorObj.DoctorRoomName,
@@ -94,16 +93,16 @@ export class PatientRoomComponent {
         enableWelcomePage:false,
         prejoinPageEnabled:false,
         remoteVideoMenu: {
-					// If set to true the 'Kick out' button will be disabled.
-					disableKick: true
-				}
+		// If set to true the 'Kick out' button will be disabled.
+		disableKick: true
+	}
       },
       interfaceConfigOverwrite: {
         filmStripOnly: false,
         GENERATE_ROOMNAMES_ON_WELCOME_PAGE:false,
         DISPLAY_WELCOME_PAGE_CONTENT:false,
         DISPLAY_WELCOME_PAGE_TOOLBAR_ADDITIONAL_CONTENT:false,
-        DEFAULT_REMOTE_DISPLAY_NAME:'doctor',
+        DEFAULT_REMOTE_DISPLAY_NAME:this.global.doctorObj.NameTitle + " " + this.global.doctorObj.DoctorName,
         SHOW_JITSI_WATERMARK: false,
         SHOW_WATERMARK_FOR_GUESTS: false,
         SHOW_BRAND_WATERMARK: false,

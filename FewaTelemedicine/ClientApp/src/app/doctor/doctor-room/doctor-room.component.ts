@@ -114,16 +114,16 @@ export class DoctorRoomComponent {
         disableRemoteMute:true,
         prejoinPageEnabled:false,
         remoteVideoMenu: {
-					// If set to true the 'Kick out' button will be disabled.
-					disableKick: true
-				},
+	// If set to true the 'Kick out' button will be disabled.
+	disableKick: true
+	},
       },
       interfaceConfigOverwrite: {
         SHOW_BRAND_WATERMARK:false,
         GENERATE_ROOMNAMES_ON_WELCOME_PAGE:false,
         DISPLAY_WELCOME_PAGE_CONTENT:false,
         DISPLAY_WELCOME_PAGE_TOOLBAR_ADDITIONAL_CONTENT:false,
-        DEFAULT_REMOTE_DISPLAY_NAME:'patient',
+        DEFAULT_REMOTE_DISPLAY_NAME:this.global.patientObj.PatientName,
         filmStripOnly: false,
         TOOLBAR_BUTTONS: ['microphone', 'camera']
       }
