@@ -14,7 +14,6 @@ namespace FewaTelemedicine.Domain
     {
         // private readonly IHttpContextAccessor accessor;
 
-
         public FewaDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<FewaDbContext>();
@@ -46,7 +45,7 @@ namespace FewaTelemedicine.Domain
             modelBuilder.Entity<ParametersModel>().ToTable("mst_Parameters");
             // Default user name and password
             modelBuilder.Entity<DoctorsModel>().HasData(new DoctorsModel
-            { Id = 1, UserName = "doctor", Password = "doctor" }
+            { Id = 1, UserName = "doctor", Password = "doctor",DoctorRoomName = Guid.NewGuid().ToString() + "-" + "DoctorName" }
             );
 
             // Filling the parameter table with default names
@@ -297,6 +296,14 @@ namespace FewaTelemedicine.Domain
                                                  "      </body>  " +
                                                  "  </html>  "   ,
                                 ValueDataType = "string"
+                          },
+                          new
+                          {
+                              Id = 17,
+                              ParameterGroupName = "Doctor",
+                              ParameterName = "DoctorRoomName",
+                              ParameterValue = "doctor",
+                              ValueDataType = "string"
                           }
 
 

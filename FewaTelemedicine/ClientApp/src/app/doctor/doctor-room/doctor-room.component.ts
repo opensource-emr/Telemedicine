@@ -105,17 +105,30 @@ export class DoctorRoomComponent {
       width: 950,
       height: 570,
       parentNode: document.querySelector('#meet'),
-      configOverwrite: {},
+      configOverwrite: {   
+        doNotStoreRoom:true,    
+        disableInviteFunctions:true,
+        startWithVideoMuted: true,
+        startWithAudioMuted: true,
+        enableWelcomePage:false,
+        disableRemoteMute:true,
+        prejoinPageEnabled:false,
+        remoteVideoMenu: {
+					// If set to true the 'Kick out' button will be disabled.
+					disableKick: true
+				},
+      },
       interfaceConfigOverwrite: {
+        SHOW_BRAND_WATERMARK:false,
+        GENERATE_ROOMNAMES_ON_WELCOME_PAGE:false,
+        DISPLAY_WELCOME_PAGE_CONTENT:false,
+        DISPLAY_WELCOME_PAGE_TOOLBAR_ADDITIONAL_CONTENT:false,
+        DEFAULT_REMOTE_DISPLAY_NAME:'patient',
         filmStripOnly: false,
-        SHOW_JITSI_WATERMARK: false,
-        SHOW_WATERMARK_FOR_GUESTS: false,
-        SHOW_BRAND_WATERMARK: false,
-        TOOLBAR_BUTTONS: ['microphone', 'camera', 'tileview']
+        TOOLBAR_BUTTONS: ['microphone', 'camera']
       }
     }  
     this.api = new JitsiMeetExternalAPI(this.domain, this.options);
-    this.api.executeCommand('displayName',this.global.doctorObj.UserName);
   }
 
   private initForm() {
@@ -129,6 +142,7 @@ export class DoctorRoomComponent {
     const control = this.ChatForm.controls[controlname];
     return control.hasError(typeofvalidator) && control.dirty;
   }
+
   public getFiles() {
     this.httpClient.get<any[]>(this.service.apiFileUrl).subscribe(
       data => {
