@@ -45,6 +45,7 @@ export class DoctorHomeComponent implements OnInit {
   constructor(private routing: Router, private notificationService: NotificationService, public global: GlobalModel, public httpClient: HttpClient, private formBuilder: FormBuilder, private activatedRoute: ActivatedRoute, private cdr: ChangeDetectorRef,
     private sanitizer: DomSanitizer,private toastr: ToastrService) {
     this.initForm();
+    this.LoadPatientsAttended();
     this.patients.push(this.global.patientObj);
     if (this.global.IsPatient) {
 
@@ -153,6 +154,7 @@ export class DoctorHomeComponent implements OnInit {
       this.CompletedAppointments = false;
       this.AccountSettings = false;
       this.ChatSection = false;
+      this.LoadPatientsAttended();
     }
     else if (data == 'completedList') {
       this.SendInvitation = false;
