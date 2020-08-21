@@ -7,6 +7,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Npgsql;
+using Microsoft.IdentityModel.Protocols;
+using System.Configuration;
+using System.Data;
 
 namespace FewaTelemedicine.Domain
 {
@@ -44,9 +48,32 @@ namespace FewaTelemedicine.Domain
                     .ValueGeneratedOnAdd();
             modelBuilder.Entity<ParametersModel>().ToTable("mst_Parameters");
             // Default user name and password
-            modelBuilder.Entity<DoctorsModel>().HasData(new DoctorsModel
-            { Id = 1, UserName = "doctor", Password = "doctor",DoctorRoomName = Guid.NewGuid().ToString() + "-" + "DoctorName" }
+            modelBuilder.Entity<DoctorsModel>().HasData(new DoctorsModel{ Id = 1, UserName = "doctor",Password = "ajNJkHEqM5bu0szpIIhwzw==" ,DoctorRoomName = Guid.NewGuid().ToString() + "-" + "DoctorName" }
             );
+          
+
+            //using (NpgsqlConnection connection = new NpgsqlConnection())
+            //{
+            //    connection.ConnectionString = ConfigurationManager.ConnectionStrings["constr"].ToString();
+            //    connection.Open();
+            //    NpgsqlCommand cmd = new NpgsqlCommand();
+            //    cmd.Connection = connection;
+            //    cmd.CommandText = "Insert into employee values(@ID,@Fname,@Lname,@Email)";
+            //    cmd.CommandType = CommandType.Text;
+            //    cmd.Parameters.Add(new NpgsqlParameter("@ID", Convert.ToInt32(txtEmpID.Text)));
+            //    cmd.Parameters.Add(new NpgsqlParameter("@Fname", txtEmpFname.Text));
+            //    cmd.Parameters.Add(new NpgsqlParameter("@Lname", txtEmpLname.Text));
+            //    cmd.Parameters.Add(new NpgsqlParameter("@Email", txtEmpEmail.Text));
+            //    cmd.ExecuteNonQuery();
+            //    cmd.Dispose();
+            //    connection.Close();
+            //    txtEmpEmail.Text = "";
+            //    txtEmpFname.Text = "";
+            //    txtEmpID.Text = "";
+            //    txtEmpLname.Text = "";
+            //    lblmsg.Text = "Data Has been Saved";
+            //}
+
 
             // Filling the parameter table with default names
             modelBuilder.Entity<ParametersModel>().HasData(

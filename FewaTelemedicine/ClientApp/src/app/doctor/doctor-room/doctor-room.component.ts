@@ -94,7 +94,7 @@ export class DoctorRoomComponent {
       
 
       this.cdr.detectChanges();
-      this.scrollBottom.nativeElement.lastElementChild.scrollIntoView(false); // scroll to bottom
+     //this.scrollBottom.nativeElement.lastElementChild.scrollIntoView(false); // scroll to bottom
     });
   }
 

@@ -4,6 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { GlobalModel } from 'src/Common/global.model';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DoctorsModel } from 'src/models/doctors.model';
+import { NotificationService } from 'src/Common/notification.service';
+import { PatientsAttendedModel } from 'src/models/patients-attended.model';
 
 @Component({
   templateUrl: './login.component.html'
@@ -13,16 +15,58 @@ export class LoginComponent implements OnInit {
   doctorFrm: FormGroup;
   clicked: boolean = false;
   hospitalDetails = { description: '', contactNo: '', email: '', logoPath: '' };
+  patients: Array<PatientsAttendedModel> = new Array<PatientsAttendedModel>();
+  getAllPatients: any;
+
 
   constructor(private httpClient: HttpClient,
     private routing: Router,
     public global: GlobalModel,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+     private notificationService: NotificationService
   ) {
+   // this.notificationService.Connect();
+    this.notificationService.EventGetAllPatients
+    .subscribe(_patients => {
+      this.patients = _patients;
+      console.log(this.patients);
+     
+    });
+
+  this.notificationService.EventCallPatient.subscribe(_patient => {
+    this.global.patientObj = _patient;
+    console.log(this.global.doctorObj);
+  }
+  );
     this.initForm();
   }
 
   ngOnInit(): void {
+   
+    this.httpClient.get<any>(this.global.HospitalUrl+"CurrentPatients").subscribe(res=>{
+      if(res)
+      {
+      this.getAllPatients=res;
+      console.log(this.getAllPatients);
+      }
+      else
+      alert('please wait until patient join');
+     
+    });
+    
+   // this.notificationService.Connect();
+    // this.notificationService.EventGetAllPatients
+    //   .subscribe(_patients => {
+    //     this.patients = _patients;
+    //     console.log(this.patients);
+       
+    //   });
+
+    // this.notificationService.EventCallPatient.subscribe(_patient => {
+    //   this.global.patientObj = _patient;
+    //   console.log(this.global.doctorObj);
+    // }
+    // );
     this.LoadHospitalParams();
   }
 
@@ -60,7 +104,7 @@ export class LoginComponent implements OnInit {
       return;
     }
     this.doctorObj.UserName = this.doctorFrm.value.docUsrName;
-    //this.doctorObj.Password = this.doctorFrm.value.docPassword;
+    this.doctorObj.Password = this.doctorFrm.value.docPassword;
     this.global.doctorObj = this.doctorObj;
     this.httpClient.
       post<any>(this.global.ApiUrl + "Security/Login", this.doctorObj)

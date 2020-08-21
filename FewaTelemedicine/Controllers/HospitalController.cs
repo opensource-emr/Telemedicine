@@ -178,6 +178,7 @@ namespace FewaTelemedicine.Controllers
             var doctorProfile = (from temp in FewaDbContext.DoctorsModels
                                  where temp.UserName == username
                                  select temp).FirstOrDefault();
+             doctorProfile.Password= Cipher.Decrypt(doctorProfile.Password,doctorProfile.UserName);
             var data = new
             {
 
@@ -185,6 +186,7 @@ namespace FewaTelemedicine.Controllers
                 Parameter = parameter,             
             };
             return Ok(data);
+
         }
         public IActionResult GetDoctorCabin()
         {
@@ -344,7 +346,7 @@ namespace FewaTelemedicine.Controllers
                 doc.Designation = obj.Designation;
                 doc.MedicalDegree = obj.MedicalDegree;
                 doc.Clinic = obj.Clinic;
-                doc.Password = obj.Password;
+                doc.Password = Cipher.Decrypt(doc.Password, doc.UserName);
                 doc.Image = obj.Image;
             }
             FewaDbContext.DoctorsModels.Update(doc);
