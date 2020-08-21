@@ -305,6 +305,7 @@ export class DoctorHomeComponent implements OnInit {
     this.showPatDetail = true;
     let dateTime = new Date();
     this.global.patientObj.AppointmentDate = dateTime;
+    this.global.patientObj.PatientName = callPatient.PatientName;
     this.notificationService.CallPatient(callPatient);
     this.routing.navigate(['DoctorRoom']);
   }
