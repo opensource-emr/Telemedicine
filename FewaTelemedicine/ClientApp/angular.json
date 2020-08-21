@@ -27,7 +27,9 @@
               "src/styles.css",
               "node_modules/ngx-toastr/toastr.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/vendor/jitsi/external_api.js"
+            ]
           },
           "configurations": {
             "production": {

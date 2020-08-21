@@ -9,7 +9,8 @@ import { Observable } from 'rxjs';
 import { UploadDownloadService } from 'src/Common/upload-download.service';
 import { ProgressStatus, ProgressStatusEnum } from 'src/models/progress-status.model';
 import { ToastrService } from 'ngx-toastr';
-
+import 'src/vendor/jitsi/external_api.js';
+declare var JitsiMeetExternalAPI : any;
 @Component({
     templateUrl:'./doctor-room.component.html'
 })
@@ -32,6 +33,9 @@ export class DoctorRoomComponent {
   ChatUserDropDowns: Array<any> = new Array<any>();
   ChatForm: FormGroup;
   private state: Observable<object>;
+  options: {};
+  domain:string;
+  api:any;
   @ViewChild('scrollBtm', { static: false }) private scrollBottom: ElementRef;
   
 
@@ -40,9 +44,9 @@ export class DoctorRoomComponent {
     public notificationService: NotificationService, 
     public global: GlobalModel, private cdr: ChangeDetectorRef, public service: UploadDownloadService,private toastr: ToastrService) {
     this.initForm();
-    this.state = history.state;
-    if (this.global.IsPatient) {
-      
+    this.state = history.state; 
+
+    if (this.global.IsPatient) {    
       this.notificationService.EventCompletePatient
         .subscribe(_patient => {
           this.global.patientObj = _patient;
@@ -60,7 +64,6 @@ export class DoctorRoomComponent {
     }
     else {
       this.notificationService.Connect();
-
       this.notificationService.EventGetAllPatients
         .subscribe(_patients => {
           this.patients = _patients;
@@ -73,6 +76,7 @@ export class DoctorRoomComponent {
       }
       );
     }
+    
     this.notificationService.EventChatMessage.subscribe(data => {
       if (this.ChatForm.controls['selUser'].value != data.Name) {
         this.ChatForm.controls['selUser'].setValue(data.Name);
@@ -94,6 +98,39 @@ export class DoctorRoomComponent {
     });
   }
 
+  ngOnInit() { 
+    this.domain = "meet.jit.si";
+    this.options = {
+      roomName: this.global.doctorObj.DoctorRoomName,
+      width: 950,
+      height: 570,
+      parentNode: document.querySelector('#meet'),
+      configOverwrite: {   
+        doNotStoreRoom:true,    
+        disableInviteFunctions:true,
+        startWithVideoMuted: true,
+        startWithAudioMuted: true,
+        enableWelcomePage:false,
+        disableRemoteMute:true,
+        prejoinPageEnabled:false,
+        remoteVideoMenu: {
+					// If set to true the 'Kick out' button will be disabled.
+					disableKick: true
+				},
+      },
+      interfaceConfigOverwrite: {
+        SHOW_BRAND_WATERMARK:false,
+        GENERATE_ROOMNAMES_ON_WELCOME_PAGE:false,
+        DISPLAY_WELCOME_PAGE_CONTENT:false,
+        DISPLAY_WELCOME_PAGE_TOOLBAR_ADDITIONAL_CONTENT:false,
+        DEFAULT_REMOTE_DISPLAY_NAME:'patient',
+        filmStripOnly: false,
+        TOOLBAR_BUTTONS: ['microphone', 'camera']
+      }
+    }  
+    this.api = new JitsiMeetExternalAPI(this.domain, this.options);
+  }
+
   private initForm() {
     this.ChatForm = this.formBuilder.group({
       selUser: [null, Validators.required],
@@ -105,6 +142,7 @@ export class DoctorRoomComponent {
     const control = this.ChatForm.controls[controlname];
     return control.hasError(typeofvalidator) && control.dirty;
   }
+
   public getFiles() {
     this.httpClient.get<any[]>(this.service.apiFileUrl).subscribe(
       data => {
@@ -140,23 +178,26 @@ export class DoctorRoomComponent {
     this.routing.navigateByUrl('/Home', { state: this.global.patientObj });
     //this.routing.navigate(['/Home',this.global.patientObj]);
   }
+
   CallPatient(callPatient: PatientsAttendedModel) {
     if (this.global.patientObj.Status == 1) {
       this.global.patientObj=new PatientsAttendedModel;
     }
     this.showPatDetail = true;
     this.notificationService.CallPatient(callPatient);
-
   }
+
   PatientCompleted(res) {
     if (res.PatientName == this.global.patientObj.PatientName) {
       this.global.patientObj = res;
       this.routing.navigate(['/ReportSummary']);
     }
   }
+
   Error(res) {
     alert(res.status);
   }
+
   SendChatMsg() {
     try {
       for (const i in this.ChatForm.controls) {

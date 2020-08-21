@@ -7,6 +7,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using FewaTelemedicine.Domain;
 using FewaTelemedicine.Domain.Models;
 using FewaTelemedicine.Domain.Repositories;
 using Microsoft.AspNetCore.Http;
@@ -20,6 +21,7 @@ namespace FewaTelemedicine.Controllers
     [ApiController]
     public class SecurityController : ControllerBase
     {
+        private FewaDbContext FewaDbContext = null;
         private readonly IDoctorRepository _doctorRepository;
         List<DoctorCabin> _doctorcabins = null;
         List<DoctorsModel> _doctors = null;
@@ -27,10 +29,12 @@ namespace FewaTelemedicine.Controllers
 
         public SecurityController(
             IDoctorRepository doctorRepository,
-            List<DoctorCabin> doctorcabins, IConfiguration config, List<DoctorsModel> doctors
+            List<DoctorCabin> doctorcabins, IConfiguration config, List<DoctorsModel> doctors,
+            FewaDbContext fewaDbContext
             )
         {
             _doctorRepository = doctorRepository;
+            FewaDbContext = fewaDbContext;
             _doctorcabins = doctorcabins;
             _doctors = doctors;
             _config = config;
@@ -41,8 +45,6 @@ namespace FewaTelemedicine.Controllers
         {
             return Ok(_doctorRepository.GetDoctorsList());
         }
-
-
 
         [HttpPost("Login")]
         public ActionResult Login(DoctorsModel doctor)
@@ -58,6 +60,11 @@ namespace FewaTelemedicine.Controllers
                     return BadRequest();
                 }
                 var doc = _doctorRepository.GetDoctorByUserName(doctor.UserName);
+                /*if(doc.DoctorRoomName == null)
+                doc.DoctorRoomName = "Fewa" + doc.UserName;*/
+                doc.DoctorRoomName = doc.DoctorRoomName.Replace("DoctorName", doctor.UserName);
+                FewaDbContext.DoctorsModels.Update(doc);
+                FewaDbContext.SaveChanges();
                 if (doc == null)
                 {
                     return Unauthorized();
@@ -72,12 +79,13 @@ namespace FewaTelemedicine.Controllers
                 doctor.Image = doc.Image;
                 doctor.NameTitle = doc.NameTitle;
                 doctor.DoctorName = doc.DoctorName;
+                doctor.DoctorRoomName = doc.DoctorRoomName;
                 HttpContext.Session.SetString("Name", doctor.UserName);
                     var token = GenerateJSONWebToken(doctor.UserName, "doctor");
                     AddDoctorCabin(doc.UserName);
                     var data = new
                     {
-                        User = doctor,
+                        User = doctor,                  
                         Token = token
                     };
                     return Ok(data);

@@ -3,7 +3,7 @@ import { Router, NavigationStart, ActivatedRoute, Data } from '@angular/router';
 import { NotificationService } from 'src/Common/notification.service';
 import { GlobalModel } from 'src/Common/global.model'
 import { PatientsAttendedModel } from 'src/models/patients-attended.model';
-import { HttpClient, HttpEventType , HttpEvent} from '@angular/common/http';
+import { HttpClient, HttpEventType , HttpEvent, HttpParams} from '@angular/common/http';
 import { DoctorCabinModel } from 'src/models/doctor-cabin.model';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DoctorsModel } from 'src/models/doctors.model';
@@ -12,6 +12,7 @@ import { SMSModel } from 'src/models/SMS.model';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import { Message } from '@angular/compiler/src/i18n/i18n_ast';
+import { ParametersModel } from 'src/models/parameters.model';
 
 
 @Component({
@@ -27,6 +28,14 @@ export class DoctorHomeComponent implements OnInit {
   receivedImageData: any;
   retrievedImage: any;
   retrieveResponse: any;
+  activeTab = 'updateProfile';
+  HospitalName:string ="";
+  HospitalContact: string = "";
+  HospitalEmail:string = "";
+  SenderEmail:string = "";
+  APIKey:string = "";
+  EmailName:string = "";
+  HospitalDesc: string = "";
   showChat: boolean = true;
   AllUserChats: any = {};
   ChatMessages: Array<any> = new Array<any>();
@@ -38,9 +47,13 @@ export class DoctorHomeComponent implements OnInit {
   public SendInvitation: boolean = true;
   public CompletedAppointments: boolean = false;
   public AccountSettings: boolean = false;
+  public ProfileUpdate: boolean = true;
+  public ParamsUpdate: boolean = false;
   public ChatSection: boolean = false;
   public CompletedPatients: Array<PatientsAttendedModel> = null;
   doctorObj: DoctorsModel = new DoctorsModel();
+  parameterArray: Array<ParametersModel> = null;
+  parameterObj: ParametersModel = new ParametersModel();
   public invitationForm: FormGroup;
   constructor(private routing: Router, private notificationService: NotificationService, public global: GlobalModel, public httpClient: HttpClient, private formBuilder: FormBuilder, private activatedRoute: ActivatedRoute, private cdr: ChangeDetectorRef,
     private sanitizer: DomSanitizer,private toastr: ToastrService) {
@@ -107,12 +120,21 @@ export class DoctorHomeComponent implements OnInit {
   public showPatDetail: boolean = false;
   patients: Array<PatientsAttendedModel> = new Array<PatientsAttendedModel>();
 
-
+ 
   ngOnInit() {
+    var params = new HttpParams().set('username',this.global.doctorObj.UserName );
     this.httpClient.
-    get<DoctorsModel>(this.global.HospitalUrl + "GetUpdatedDoctor")
+    get<any>(this.global.HospitalUrl + "GetUpdatedDoctor",{params : params})
     .subscribe(res => {
-     this.doctorObj = res;
+     this.doctorObj = res.User;
+     this.parameterArray = res.Parameter;
+     this.HospitalName = this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "Name").ParameterValue;
+     this.HospitalContact = this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "ContactNumber").ParameterValue;
+     this.HospitalEmail = this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "Email").ParameterValue;
+     this.HospitalDesc = this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "Description").ParameterValue;
+     this.SenderEmail = this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "Email").ParameterValue;
+     this.APIKey = this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "ApiKey").ParameterValue;
+     this.EmailName = this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "Name").ParameterValue;
      if(this.doctorObj.Image)
      this.retrievedImage = 'data:image/png;base64,' + this.doctorObj.Image;
     });
@@ -176,6 +198,24 @@ export class DoctorHomeComponent implements OnInit {
       this.AccountSettings = false;
       this.ChatSection = true;
     }
+    else if (data == 'updateProfile') {
+      this.SendInvitation = false;
+      this.CompletedAppointments = false;
+      this.AccountSettings = true;
+      this.ProfileUpdate = true;
+      this.activeTab = data;
+      this.ParamsUpdate = false;
+      this.ChatSection = false;
+    }
+    else if (data == 'updateParams') {
+      this.SendInvitation = false;
+      this.CompletedAppointments = false;
+      this.AccountSettings = true;
+      this.ProfileUpdate = false;
+      this.ParamsUpdate = true;
+      this.activeTab = data;
+      this.ChatSection = false;
+    }
   }
 
   onFileChanged(event) {
@@ -236,8 +276,24 @@ export class DoctorHomeComponent implements OnInit {
     else { alert("Password doesn't matched"); }
   }
 
-  Invitation() {
+  UpdateParameters() {
+    this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "Name").ParameterValue = this.HospitalName ;
+    this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "ContactNumber").ParameterValue = this.HospitalContact;
+    this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "Email").ParameterValue = this.HospitalEmail;
+    this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "Description").ParameterValue = this.HospitalDesc;
+    this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "Email").ParameterValue  =  this.SenderEmail;
+    this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "ApiKey").ParameterValue  =  this.APIKey;
+    this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "Name").ParameterValue  = this.EmailName;
+    this.httpClient.
+    post<any>(this.global.HospitalUrl  + "UpdateParameters", this.parameterArray)
+    .subscribe(res => {
+      this.parameterArray= res;
+      alert("parameters updated");
+    },
+      err => { console.log(err); });
+  }
 
+  Invitation() {
     //this.httpClient.post("Messenger/SendSMS",data).subscribe(res=>this.SMSInvitationSuccess(res),err=>this.Error(err));
     this.httpClient.post("Messenger/SendEmail", this.global.doctorObj).subscribe(res => this.EmailInvitationSuccess(res), err => this.Error(err));
   }
@@ -249,11 +305,10 @@ export class DoctorHomeComponent implements OnInit {
     this.showPatDetail = true;
     let dateTime = new Date();
     this.global.patientObj.AppointmentDate = dateTime;
-
     this.notificationService.CallPatient(callPatient);
     this.routing.navigate(['DoctorRoom']);
-
   }
+
   LoadPatientsAttended() {
     this.httpClient.get("Hospital/GetPatientsAttended")
       .subscribe(res => this.LoadPatientSuccess(res), err => this.Error(err));
