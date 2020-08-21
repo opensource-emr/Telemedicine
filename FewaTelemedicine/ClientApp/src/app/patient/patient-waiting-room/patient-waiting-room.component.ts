@@ -62,6 +62,7 @@ export class PatientWaitingRoomComponent implements OnDestroy {
 
     this.notificationService.EventGetAllDoctors.subscribe(_doctors => {
       this.doctors = _doctors;
+      //this.global.doctorObj=_doctors[0];
     });
 
     this.notificationService.EventConnectionEstablished.subscribe(() => {
@@ -100,7 +101,8 @@ export class PatientWaitingRoomComponent implements OnDestroy {
               // this.httpClient.
             // get<DoctorsModel>(this.global.HospitalUrl + "GetUpdatedDoctor")
             // .subscribe(res => {
-            // this.global.doctorObj = res;
+             //this.global.doctorObj = res;
+             console.log(this.global.doctorObj);
              var url: string = this.global.config.videourl.replace("DOCTORNAME", this.global.patientObj.DoctorNameAttending);
              this.global.config.videourl = url;     
              this.routing.navigate(['/PatientRoom']);
