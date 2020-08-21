@@ -60,6 +60,9 @@ export class PatientRoomComponent {
       //this.scrollBottom.nativeElement.lastElementChild.scrollIntoView(false); // scroll to bottom
     });
 
+    this.notificationService.EventConnectionEstablished.subscribe(() => {
+      this.notificationService.LoadActiveDoctors();
+    });
     this.notificationService.EventGetAllDoctors.subscribe(_doctors => {
       this.doctors = _doctors;
       this.doctorObj=_doctors[0];
@@ -69,8 +72,9 @@ export class PatientRoomComponent {
       }
       console.log(this.doctors);
     });
+    
     // gets doctor list
-    this.notificationService.LoadActiveDoctors();
+    // this.notificationService.LoadActiveDoctors();
   }
 
   Transform() {

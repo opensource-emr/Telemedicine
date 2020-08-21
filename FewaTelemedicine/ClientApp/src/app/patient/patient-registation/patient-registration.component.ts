@@ -37,7 +37,7 @@ export class PatientRegistrationComponent implements OnInit
         if(res)
         {
         this.getAlldoctors = res;
-        this.global.doctorObj=res;
+        this.global.doctorObj=res[0];
         console.log(this.getAlldoctors);
         }
         else
