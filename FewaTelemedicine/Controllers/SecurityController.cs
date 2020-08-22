@@ -167,7 +167,7 @@ namespace FewaTelemedicine.Controllers
                 doc.Designation = obj.Designation;
                 doc.MedicalDegree = obj.MedicalDegree;
                 doc.Clinic = obj.Clinic;
-                doc.Password = Cipher.Decrypt(doc.Password, obj.UserName);
+                //doc.Password = Cipher.Decrypt(doc.Password, obj.UserName);
             }
             return Ok(doc);
         }
