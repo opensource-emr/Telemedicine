@@ -22,6 +22,7 @@ export class DoctorRoomComponent {
   public progress: number;
   public message: string;
   @Output() public downloadStatus: EventEmitter<ProgressStatus>;
+  public CompletedPatients: Array<PatientsAttendedModel> = null;
 
 
   public showPatDetail: boolean = false;
@@ -175,8 +176,16 @@ export class DoctorRoomComponent {
     this.notificationService.PatientAttended(attendedPatient);
     this.global.patientObj=attendedPatient;
     //this.patients.push(attendedPatient)
-    this.routing.navigateByUrl('/Home', { state: this.global.patientObj });
+
+      this.httpClient.get("Hospital/GetPatientsAttended")
+        .subscribe(res => this.LoadPatientSuccess(res), err => this.Error(err));
+
+    this.routing.navigateByUrl('/Home', { state: this.CompletedPatients});
     //this.routing.navigate(['/Home',this.global.patientObj]);
+  }
+
+  LoadPatientSuccess(res) {
+    this.CompletedPatients = res;
   }
 
   CallPatient(callPatient: PatientsAttendedModel) {
