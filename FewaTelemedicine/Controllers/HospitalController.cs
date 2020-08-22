@@ -346,7 +346,7 @@ namespace FewaTelemedicine.Controllers
                 doc.Designation = obj.Designation;
                 doc.MedicalDegree = obj.MedicalDegree;
                 doc.Clinic = obj.Clinic;
-                doc.Password = Cipher.Decrypt(doc.Password, doc.UserName);
+                //doc.Password = Cipher.Decrypt(doc.Password, doc.UserName);
                 doc.Image = obj.Image;
             }
             FewaDbContext.DoctorsModels.Update(doc);
