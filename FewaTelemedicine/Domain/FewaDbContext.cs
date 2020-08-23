@@ -14,14 +14,23 @@ using System.Data;
 
 namespace FewaTelemedicine.Domain
 {
-    public class FewaContextFactory : IDesignTimeDbContextFactory<FewaDbContext>
+   public class FewaContextFactory : IDesignTimeDbContextFactory<FewaDbContext>
     {
         // private readonly IHttpContextAccessor accessor;
 
         public FewaDbContext CreateDbContext(string[] args)
         {
+            string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+            // Build config
+            IConfiguration config = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddEnvironmentVariables()
+                .Build();
+            var connectionString = config.GetConnectionString("DefaultConnection");
+
             var optionsBuilder = new DbContextOptionsBuilder<FewaDbContext>();
-            optionsBuilder.UseNpgsql("Server=localhost;Database=fewatelemedicine;Port=5432;User Id=postgres;Password=password@123");
+            optionsBuilder.UseNpgsql(connectionString);
             return new FewaDbContext(optionsBuilder.Options);
         }
 
