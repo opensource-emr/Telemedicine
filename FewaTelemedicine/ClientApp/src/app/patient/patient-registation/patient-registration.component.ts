@@ -12,7 +12,7 @@ import { DoctorsModel } from 'src/models/doctors.model';
 })
 export class PatientRegistrationComponent implements OnInit
 {
-  meetingId:any;
+    meetingId:any;
     patientObj: PatientsAttendedModel = new PatientsAttendedModel();
     doctors: Array<DoctorsModel> = new Array<DoctorsModel>();
     getAlldoctors:any;
@@ -37,7 +37,7 @@ export class PatientRegistrationComponent implements OnInit
         if(res)
         {
         this.getAlldoctors = res;
-        this.global.doctorObj=res[0];
+        this.global.doctorObj=res;
         console.log(this.getAlldoctors);
         }
         else
@@ -49,10 +49,6 @@ export class PatientRegistrationComponent implements OnInit
          
         });
 
-      // this.httpClient.get<any>(this.global.HospitalUrl+"GetUpdatedDoctor").subscribe(p=>{
-      //   this.getAlldoctors=p;
-      //   console.log(this.getAlldoctors);
-      // });
       this.route.queryParams.subscribe(param=>{
          this.meetingId=param['MeetingId']
         this.global.patientObj.MeetingId=this.meetingId;
