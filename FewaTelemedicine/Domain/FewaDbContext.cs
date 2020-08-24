@@ -11,6 +11,7 @@ using Npgsql;
 using Microsoft.IdentityModel.Protocols;
 using System.Configuration;
 using System.Data;
+using Microsoft.Extensions.Configuration;
 
 namespace FewaTelemedicine.Domain
 {
