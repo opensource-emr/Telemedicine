@@ -1,171 +1,132 @@
 <div class="container">
 
-    <!-- Outer Row -->
-    <div class="row justify-content-center">
+  <!-- Outer Row -->
+  <div class="row justify-content-center">
 
-        <div class="col-xl-10 col-lg-12 col-md-9">
-
-
-
-               
-            <!-- <div class="card shadow mb-4" style="position:fixed;right:3%;top: 23%;">
-							 
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold"><i class="fa fa-users"></i>logged Patients</h6>
-                
-                  <button style="background-color: #0631ae;" class="nav-item nav-link btn btn-success btn-sm active" id="nav-home-tab"
-                    data-toggle="tab"  (click)="ngOnInit()" role="tab" aria-controls="nav-home"
-                    aria-selected="true"><i class="fa fa-share" ></i>Refresh</button>
-                </div>
-              
-                <div class="card-body">
-                  <table class="table table-striped">
-                    <thead>
-                      <tr *ngFor="let temp of this.getAllPatients;let indexOfelement=index;">
-                        <td cellpadding="0" cellspacing="0">&nbsp;{{indexOfelement+1}}.&nbsp;&nbsp;{{temp.PatientName}}</td>
-                        
-                      </tr>
-                     
-                    </thead>
-                   
-                  </table>
-                </div>
-              </div> -->
-
-            <div class="card o-hidden border-0 shadow-lg my-5">
+      <div class="col-xl-10 col-lg-12 col-md-9">
 
 
-
-                
-                <div class="card-body p-0">
-                    <!-- Nested Row within Card Body -->
-                    <div class="row">
-                        <div class="d-flex col-lg-6 d-none d-lg-block bg-light">
-                            <div class="align-self-stretch login-left">
-                                <img src="{{ hospitalDetails.logoPath }}" />
-                                <p class="my-3">{{ hospitalDetails.description }}</p>
-                                <ul>
-                                    <li><i class="fa fa-phone"></i>Phone Number: <span
-                                            class="text-primary">{{ hospitalDetails.contactNo }}</span></li>
-                                    <li><i class="fa fa-envelope"></i>Email ID: <span class="text-primary"><a
-                                                href="">{{ hospitalDetails.email }}</a></span></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="p-5">
-                                <div class="text-center">
-                                    <h1 class="h3 text-gray-700 mb-4 heading-text">Fewa Telemedicine<p
-                                            class="h6 d-block mt-2">Login using your credentials</p>
-                                    </h1>
-                                </div>
-                                <form class="user" [formGroup]="doctorFrm">
-                                    <div class="form-group">
-                                        <input type="email" class="form-control form-control-user"
-                                            formControlName="docUsrName" name="UserName" id="exampleInputEmail"
-                                            aria-describedby="emailHelp" placeholder="Username">
-                                        <div *ngIf="hasError('required','docUsrName')" style="color: red;">
-                                            User Name is required
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="password" class="form-control form-control-user"
-                                            formControlName="docPassword" name="Password" id="exampleInputPassword"
-                                            placeholder="Password">
-                                        <div *ngIf="hasError('required','docPassword')" style="color: red;">
-                                            Password is required
-                                        </div>
-                                    </div>
-                                    <!-- <div class="row form-group">
-                                        <div class="col-md-6 pull-left">
-                                            <div class="custom-control custom-checkbox small">
-                                                <input type="checkbox" class="custom-control-input" id="customCheck">
-                                                <label class="custom-control-label" for="customCheck">Remember
-                                                    Me</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 pull-right">
-                                            <a href="javascript:;" routerLink="/ForgotPassword"
-                                                class="text-primary text-small text-right d-block"
-                                                style="font-size: 12px;">Forgot Password?</a>
-                                        </div>
-                                    </div> -->
-                                    <button type="submit"  [disabled]="clicked" href="javascript:;" (click)="LoginDoctor(); clicked = true;;"
-                                        class="btn btn-primary btn-user btn-block">
-                                        Login
-                                    </button>
-
-                                   
-                                </form>
-                                <!-- <div class="card shadow mb-4" style="position:fixed;right:3%;top: 23%;">
-							 
-                                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                      <h6 class="m-0 font-weight-bold"><i class="fa fa-users"></i>logged Patients</h6>
-                                    
-                                      <button style="background-color: #0631ae;" class="nav-item nav-link btn btn-success btn-sm active" id="nav-home-tab"
-                                        data-toggle="tab"  (click)="ngOnInit()" role="tab" aria-controls="nav-home"
-                                        aria-selected="true"><i class="fa fa-share" ></i>Refresh</button>
-                                    </div>
-                                  
-                                    <div class="card-body">
-                                      <table class="table table-striped">
-                                        <thead>
-                                          <tr *ngFor="let temp of this.getAllPatients;let indexOfelement=index;">
-                                            <td cellpadding="0" cellspacing="0">&nbsp;{{indexOfelement+1}}.&nbsp;&nbsp;{{temp.PatientName}}</td>
-                                            
-                                          </tr>
-                                         
-                                        </thead>
-                                       
-                                      </table>
-                                    </div>
-                                  </div> -->
-
-                            </div>
-
-                            <div class="card shadow mb-4" style="position: fixed;right: 223px;top: 345px;width: 463px;height: 78px;">
-							 
-                              <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="height: 20%;">
-                                <h6 class="m-0 font-weight-bold"><i class="fa fa-users"></i>logged Patients</h6>
-                              
-                                <button style="background-color: #007bff;font-size: 76%;" class="nav-item nav-link btn btn-success btn-sm active" id="nav-home-tab"
-                                  data-toggle="tab"  (click)="ngOnInit()" role="tab" aria-controls="nav-home"
-                                  aria-selected="true"><i class="fa fa-share" ></i>Refresh</button>
-                              </div>
-                            
-                              <!-- <div class="card-body" *ngFor="let temp of this.getAllPatients;let indexOfelement=index;">
-                                  <div >&nbsp;{{indexOfelement+1}}.&nbsp;&nbsp;{{temp.PatientName}}</div> -->
-                                  <div style="overflow-y: scroll;">
-                                <table class="table table-striped">
-                                  <thead>
-                                    <tr *ngFor="let temp of this.getAllPatients;let indexOfelement=index;">
-                                      <td style="padding: 0%;">&nbsp;{{indexOfelement+1}}.&nbsp;&nbsp;{{temp.PatientName}}</td>
-                                      
-                                    </tr>
-                                   
-                                  </thead>
-                                 
-                                </table>
-                              </div>
-                              <!-- </div> -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
              
+          <!-- <div class="card shadow mb-4" style="position:fixed;right:3%;top: 23%;">
+             
+              <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold"><i class="fa fa-users"></i>logged Patients</h6>
+              
+                <button style="background-color: #0631ae;" class="nav-item nav-link btn btn-success btn-sm active" id="nav-home-tab"
+                  data-toggle="tab"  (click)="ngOnInit()" role="tab" aria-controls="nav-home"
+                  aria-selected="true"><i class="fa fa-share" ></i>Refresh</button>
+              </div>
+            
+              <div class="card-body">
+                <table class="table table-striped">
+                  <thead>
+                    <tr *ngFor="let temp of this.getAllPatients;let indexOfelement=index;">
+                      <td cellpadding="0" cellspacing="0">&nbsp;{{indexOfelement+1}}.&nbsp;&nbsp;{{temp.PatientName}}</td>
+                      
+                    </tr>
+                   
+                  </thead>
+                 
+                </table>
+              </div>
+            </div> -->
 
-            </div>
-        </div>
-    </div>
+          <div class="card o-hidden border-0 shadow-lg my-5">
+
+
+
+              
+              <div class="card-body p-0">
+                  <!-- Nested Row within Card Body -->
+                  <div class="row">
+                      <div class="d-flex col-lg-6 d-none d-lg-block bg-light">
+                          <div class="align-self-stretch login-left">
+                              <img src="{{ hospitalDetails.logoPath }}" />
+                              <p class="my-3">{{ hospitalDetails.description }}</p>
+                              <ul>
+                                  <li><i class="fa fa-phone"></i>Phone Number: <span
+                                          class="text-primary">{{ hospitalDetails.contactNo }}</span></li>
+                                  <li><i class="fa fa-envelope"></i>Email ID: <span class="text-primary"><a
+                                              href="">{{ hospitalDetails.email }}</a></span></li>
+                              </ul>
+                          </div>
+                      </div>
+                      <div class="col-lg-6">
+                          <div class="p-5">
+                              <div class="text-center">
+                                  <h1 class="h3 text-gray-700 mb-4 heading-text">Fewa Telemedicine<p
+                                          class="h6 d-block mt-2">Login using your credentials</p>
+                                  </h1>
+                              </div>
+                              <form class="user" [formGroup]="doctorFrm">
+                                  <div class="form-group">
+                                      <input type="email" class="form-control form-control-user"
+                                          formControlName="docUsrName" name="UserName" id="exampleInputEmail"
+                                          aria-describedby="emailHelp" placeholder="Username">
+                                      <div *ngIf="hasError('required','docUsrName')" style="color: red;">
+                                          User Name is required
+                                      </div>
+                                  </div>
+                                  <div class="form-group">
+                                      <input type="password" class="form-control form-control-user"
+                                          formControlName="docPassword" name="Password" id="exampleInputPassword"
+                                          placeholder="Password">
+                                      <div *ngIf="hasError('required','docPassword')" style="color: red;">
+                                          Password is required
+                                      </div>
+                                  </div>
+                                  <!-- <div class="row form-group">
+                                      <div class="col-md-6 pull-left">
+                                          <div class="custom-control custom-checkbox small">
+                                              <input type="checkbox" class="custom-control-input" id="customCheck">
+                                              <label class="custom-control-label" for="customCheck">Remember
+                                                  Me</label>
+                                          </div>
+                                      </div>
+                                      <div class="col-md-6 pull-right">
+                                          <a href="javascript:;" routerLink="/ForgotPassword"
+                                              class="text-primary text-small text-right d-block"
+                                              style="font-size: 12px;">Forgot Password?</a>
+                                      </div>
+                                  </div> -->
+                                  <button type="submit"  [disabled]="clicked" href="javascript:;" (click)="LoginDoctor(); clicked = true;;"
+                                      class="btn btn-primary btn-user btn-block">
+                                      Login
+                                  </button>
+
+                                 
+                              </form>
+                           
+
+                          </div>
+                         
+                          <h6 class="m-0 font-weight-bold"><i class="fa fa-users"></i>logged Patients</h6>
+                          <div style="overflow-y: auto;height: 43px;display: block;" >
+                              <table class="table table-striped" >
+                                <thead>
+                                  <tr *ngFor="let temp of this.getAllPatients;let indexOfelement=index;">
+                                    <td style="padding: 0%;">&nbsp;{{indexOfelement+1}}.&nbsp;&nbsp;{{temp.PatientName}}</td>
+                                   </tr>
+                                 </thead>
+                              </table>
+                        </div>
+              
+              </div>
+
+           
+
+          </div>
+      </div>
+  </div>
 </div>
 <!-- Footer -->
 <footer class="sticky-footer bg-transparent">
-    <div class="container my-auto">
-        <div class="copyright text-center my-auto">
-            <span class="text-white"><img src="img/logo-cap.png" class="powered-footer-logo d-block">Powered by &copy;
-                Danphe Telehealth 2020 </span>
-        </div>
-    </div>
+  <div class="container my-auto">
+      <div class="copyright text-center my-auto">
+          <span class="text-white"><img src="img/logo-cap.png" class="powered-footer-logo d-block">Powered by &copy;
+              Danphe Telehealth 2020 </span>
+      </div>
+  </div>
 </footer>
 <!-- End of Footer -->
