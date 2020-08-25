@@ -332,26 +332,30 @@ namespace FewaTelemedicine.Controllers
 
         public IActionResult UpdateProfile([FromBody] DoctorsModel obj)
         {
-            var doc = _doctorRepository.GetDoctorByUserName(obj.UserName);
-            if (doc is null)
+            if (obj != null)
             {
-                return StatusCode(500);
+                var doc = _doctorRepository.GetDoctorByUserName(obj.UserName);
+                if (doc is null)
+                {
+                    return StatusCode(500);
+                }
+                else
+                {
+                    doc.NameTitle = obj.NameTitle;
+                    doc.DoctorName = obj.DoctorName;
+                    doc.Email = obj.Email;
+                    doc.MobileNumber = obj.MobileNumber;
+                    doc.Designation = obj.Designation;
+                    doc.MedicalDegree = obj.MedicalDegree;
+                    doc.Clinic = obj.Clinic;
+                    //doc.Password = Cipher.Decrypt(doc.Password, doc.UserName);
+                    doc.Image = obj.Image;
+                }
+                FewaDbContext.DoctorsModels.Update(doc);
+                FewaDbContext.SaveChanges();
+                return Ok(doc);
             }
-            else
-            {
-                doc.NameTitle = obj.NameTitle;
-                doc.DoctorName = obj.DoctorName;
-                doc.Email = obj.Email;
-                doc.MobileNumber = obj.MobileNumber;
-                doc.Designation = obj.Designation;
-                doc.MedicalDegree = obj.MedicalDegree;
-                doc.Clinic = obj.Clinic;
-                //doc.Password = Cipher.Decrypt(doc.Password, doc.UserName);
-                doc.Image = obj.Image;
-            }
-            FewaDbContext.DoctorsModels.Update(doc);
-            FewaDbContext.SaveChanges();
-            return Ok(doc);
+            return StatusCode(500);
         }
 
 
