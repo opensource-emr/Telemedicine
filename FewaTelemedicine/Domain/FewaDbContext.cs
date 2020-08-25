@@ -100,7 +100,7 @@ namespace FewaTelemedicine.Domain
                            Id = 2,
                            ParameterGroupName = "Hospital",
                            ParameterName = "Description",
-                           ParameterValue = "..Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate dolorem facilis aliquam veritatis, quam debitis beatae quaerat id totam dolor, ipsa dolorum, at iusto. Explicabo numquam, nostrum iste voluptatem maiores.",
+                           ParameterValue = "Welcome to the demo of Fewa. This is the place where you can put your hospital description. Fewa is a application which helps to connect doctors and patient using video. Patient can print advice , share documents with doctor and doctor also knows how much time he has given to attend the patient. To start using the demo login as username-doctor,password doctor , send a invitation to the patient and then both can communicate. ",
                            ValueDataType = "string"
                        },
                        new
