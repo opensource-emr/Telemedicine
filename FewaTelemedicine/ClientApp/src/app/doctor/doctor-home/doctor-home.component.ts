@@ -258,8 +258,6 @@ export class DoctorHomeComponent implements OnInit {
     //this.doctorObj.Image = this.receivedImageData.body;
    // this.doctorObj.Password = this.global.doctorObj.Password;
     // this.global.doctorObj = this.doctorObj;
-   // if(this.receivedImageData)
-    //{
     // if (this.doctorObj.Password == this.doctorObj.ConfirmPassword) {
     this.httpClient.
       post<any>(this.global.HospitalUrl  + "UpdateProfile", this.doctorObj)
@@ -274,7 +272,6 @@ export class DoctorHomeComponent implements OnInit {
        // }
       },
         err => { console.log(err); });
-    //}
     // else { alert("Password doesn't matched"); }
   }
 

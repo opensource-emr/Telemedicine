@@ -332,8 +332,6 @@ namespace FewaTelemedicine.Controllers
 
         public IActionResult UpdateProfile([FromBody] DoctorsModel obj)
         {
-            if (obj != null)
-            {
                 var doc = _doctorRepository.GetDoctorByUserName(obj.UserName);
                 if (doc is null)
                 {
@@ -349,13 +347,12 @@ namespace FewaTelemedicine.Controllers
                     doc.MedicalDegree = obj.MedicalDegree;
                     doc.Clinic = obj.Clinic;
                     //doc.Password = Cipher.Decrypt(doc.Password, doc.UserName);
+                    if(obj.Image != null)
                     doc.Image = obj.Image;
                 }
                 FewaDbContext.DoctorsModels.Update(doc);
                 FewaDbContext.SaveChanges();
                 return Ok(doc);
-            }
-            return StatusCode(500);
         }
 
 
