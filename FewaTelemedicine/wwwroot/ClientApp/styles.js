@@ -376,8 +376,8 @@ if (content.locals) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\bhavana vanjani\Documents\TestingFewa\Telemedicine\FewaTelemedicine\ClientApp\src\styles.css */"./src/styles.css");
-module.exports = __webpack_require__(/*! C:\Users\bhavana vanjani\Documents\TestingFewa\Telemedicine\FewaTelemedicine\ClientApp\node_modules\ngx-toastr\toastr.css */"./node_modules/ngx-toastr/toastr.css");
+__webpack_require__(/*! C:\Users\bhavana vanjani\Documents\Fewa24Aug\Telemedicine\FewaTelemedicine\ClientApp\src\styles.css */"./src/styles.css");
+module.exports = __webpack_require__(/*! C:\Users\bhavana vanjani\Documents\Fewa24Aug\Telemedicine\FewaTelemedicine\ClientApp\node_modules\ngx-toastr\toastr.css */"./node_modules/ngx-toastr/toastr.css");
 
 
 /***/ })
