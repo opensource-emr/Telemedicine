@@ -146,10 +146,6 @@ export class DoctorRoomTokboxComponent {
     attendedPatient.Medication = this.global.patientObj.Medication;
     this.notificationService.PatientAttended(attendedPatient);
     this.global.patientObj=attendedPatient;
-    //this.patients.push(attendedPatient)
-
-      // this.httpClient.get("Hospital/GetPatientsAttended")
-      //   .subscribe(res => this.LoadPatientSuccess(res), err => this.Error(err));
 
     this.routing.navigateByUrl('/Home', { state: this.global.patientObj});
    
