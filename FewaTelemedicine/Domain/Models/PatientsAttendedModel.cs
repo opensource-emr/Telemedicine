@@ -49,6 +49,8 @@ namespace FewaTelemedicine.Domain.Models
         public string SignalRConnectionId { get; set; }
         [NotMapped]
         public string Medication { get; set; }
+        [NotMapped]
+        public string VideoCallPlatform { get; set; }
     }
     public class WaitingRoom
     {

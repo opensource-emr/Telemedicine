@@ -17,4 +17,5 @@ export class DoctorsModel{
     MeetingId:any="123";
     Message:any="https://localhost:44304/#/Invitation";
     Subject:any="Invitation from doctor";
+    VideoCallPlatform:string="";
   }

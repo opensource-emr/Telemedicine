@@ -3,6 +3,8 @@ import { HttpClient, HttpEventType} from '@angular/common/http'
 import { PatientsAttendedModel } from 'src/models/patients-attended.model';
 import { UploadDownloadService } from 'src/Common/upload-download.service';
 import { ProgressStatus} from 'src/models/progress-status.model';
+import { GlobalModel } from 'src/Common/global.model';
+import { Router } from '@angular/router';
 
 @Component({
     templateUrl: './patient-upload-files.component.html',
@@ -20,7 +22,8 @@ export class PatientUploadFilesComponent {
     public uploadStatus = new EventEmitter<ProgressStatus>();
     patients: Array<PatientsAttendedModel> = new Array<PatientsAttendedModel>();
     public docArray: any[] = [];
-    constructor(private http: HttpClient, public service: UploadDownloadService) {
+    tokbox:string='tokbox';
+    constructor(private http: HttpClient, public service: UploadDownloadService,public global:GlobalModel,private routing:Router) {
         this.uploadStatus = new EventEmitter<ProgressStatus>();
     }
 
@@ -61,6 +64,15 @@ export class PatientUploadFilesComponent {
                 }
             );
     }
-
+backToCall()
+{
+    if(this.global.patientObj.VideoCallPlatform=this.tokbox)
+    { this.routing.navigateByUrl('/PatientRoomTokbox', { state: this.global.patientObj });
+}
+else{
+this.routing.navigateByUrl('/PatientRoom', { state: this.global.patientObj });
+}
+    
+}
     
 }

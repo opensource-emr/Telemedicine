@@ -10,6 +10,8 @@ import { PatientRoomComponent } from './patient/patient-room/patient-room.compon
 import { PatientReportSummaryComponent } from './patient/patient-report-summary/patient-report-summary.component';
 import { PatientRegistrationComponent } from './patient/patient-registation/patient-registration.component';
 import { PatientUploadFilesComponent } from './patient/patient-upload-files/patient-upload-files.component';
+import { DoctorRoomTokboxComponent } from './doctor/doctor-room-tokbox/doctor-room-tokbox.component';
+import { PatientRoomTokboxComponent } from './patient/patient-room-tokbox/patient-room-tokbox.component';
 
 
 
@@ -24,7 +26,9 @@ const routes: Routes = [
   {path:'DoctorRoom',component:DoctorRoomComponent},
   {path:'ReportSummary',component:PatientReportSummaryComponent},
   {path:'PatientRoom',component:PatientRoomComponent},
-  {path:'Upload',component:PatientUploadFilesComponent}
+  {path:'Upload',component:PatientUploadFilesComponent},
+  {path:'DoctorRoomTokbox',component:DoctorRoomTokboxComponent},
+  {path:'PatientRoomTokbox',component:PatientRoomTokboxComponent}
 ];
 
 @NgModule({

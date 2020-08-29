@@ -341,6 +341,14 @@ namespace FewaTelemedicine.Domain
                               ParameterName = "DoctorRoomName",
                               ParameterValue = "doctor",
                               ValueDataType = "string"
+                          },
+                          new
+                          {
+                              Id = 18,
+                              ParameterGroupName = "Hospital",
+                              ParameterName = "VideoCallPlatform",
+                              ParameterValue = "jitsi",
+                              ValueDataType = "string"
                           }
 
 

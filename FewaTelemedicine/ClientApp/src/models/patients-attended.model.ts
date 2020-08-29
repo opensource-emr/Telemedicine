@@ -20,4 +20,5 @@ export class PatientsAttendedModel {
   FollowUpNumber:string="";
   FollowUpMeasure:string="";
   Medication:string="";
+  VideoCallPlatform:string="";
  }

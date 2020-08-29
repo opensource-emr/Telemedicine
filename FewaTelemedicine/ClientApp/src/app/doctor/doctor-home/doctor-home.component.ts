@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ChangeDetectorRef, ElementRef } from "@angular/core";
+import { Component, OnInit, ViewChild, ChangeDetectorRef, ElementRef, OnDestroy, AfterViewInit } from "@angular/core";
 import { Router, NavigationStart, ActivatedRoute, Data } from '@angular/router';
 import { NotificationService } from 'src/Common/notification.service';
 import { GlobalModel } from 'src/Common/global.model'
@@ -19,7 +19,7 @@ import { ParametersModel } from 'src/models/parameters.model';
   templateUrl: './doctor-home.component.html',
   template: `<pre>{{ state | async | json }}</pre>`
 })
-export class DoctorHomeComponent implements OnInit {
+export class DoctorHomeComponent implements OnInit,OnDestroy{
   private state: Observable<object>;
   public selectedFile: File;
   public progress: number;
@@ -42,6 +42,8 @@ export class DoctorHomeComponent implements OnInit {
   ChatReceivedMessages: Array<any> = new Array<any>();
   ChatUserDropDowns: Array<any> = new Array<any>();
   ChatForm: FormGroup;
+  parameterArray: Array<ParametersModel> = null;
+  
   @ViewChild('scrollBtm', { static: false }) private scrollBottom: ElementRef;
   public InvitationButton: boolean = true;
   public SendInvitation: boolean = true;
@@ -52,9 +54,22 @@ export class DoctorHomeComponent implements OnInit {
   public ChatSection: boolean = false;
   public CompletedPatients: Array<PatientsAttendedModel> = null;
   doctorObj: DoctorsModel = new DoctorsModel();
-  parameterArray: Array<ParametersModel> = null;
-  parameterObj: ParametersModel = new ParametersModel();
+  @ViewChild('pcam') video:any; 
+  Video:any;
+  tokbox:string='Tokbox';
+  // parameterObj: ParametersModel = new ParametersModel();
   public invitationForm: FormGroup;
+  ngAfterViewInit() {
+    let _video=this.video.nativeElement;
+    this.Video=_video;
+     if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+       navigator.mediaDevices.getUserMedia({ video: true })
+                             .then(stream => {
+                               _video.srcObject = stream;
+                               _video.play();
+                              })
+     }
+   }
   constructor(private routing: Router, private notificationService: NotificationService, public global: GlobalModel, public httpClient: HttpClient, private formBuilder: FormBuilder, private activatedRoute: ActivatedRoute, private cdr: ChangeDetectorRef,
     private sanitizer: DomSanitizer,private toastr: ToastrService) {
     this.initForm();
@@ -95,8 +110,8 @@ export class DoctorHomeComponent implements OnInit {
       this.ChatMessages.push(chatMsg);
       this.count=this.count+1;
 
-      this.toastr.success(chatMsg.Message, chatMsg.Name,
-      {timeOut: 5000});
+      // this.toastr.success(chatMsg.Message, chatMsg.Name,
+      // {timeOut: 5000});
       //this.ChatReceivedMessages.push(chatMsg);
       this.pushChatMsgUserwise(data.Name, chatMsg);
 
@@ -135,12 +150,22 @@ export class DoctorHomeComponent implements OnInit {
      this.SenderEmail = this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "Email").ParameterValue;
      this.APIKey = this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "ApiKey").ParameterValue;
      this.EmailName = this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "Name").ParameterValue;
+     this.global.doctorObj.VideoCallPlatform= this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "VideoCallPlatform").ParameterValue;
      if(this.doctorObj.Image)
      this.retrievedImage = 'data:image/png;base64,' + this.doctorObj.Image;
     });
     this.state = history.state;
   }
-
+ 
+    
+   ngOnDestroy() { 
+    const mediaStream = this.Video.srcObject;
+    if(mediaStream==null)
+    {
+      return;
+    }
+    (<MediaStream>mediaStream).getTracks().forEach( stream => stream.stop());
+  }
   Transform() {
     return this.sanitizer.bypassSecurityTrustResourceUrl(this.retrievedImage);
   }
@@ -283,6 +308,7 @@ export class DoctorHomeComponent implements OnInit {
     this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "Email").ParameterValue  =  this.SenderEmail;
     this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "ApiKey").ParameterValue  =  this.APIKey;
     this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "Name").ParameterValue  = this.EmailName;
+    this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "VideoCallPlatform").ParameterValue= this.global.doctorObj.VideoCallPlatform;
     this.httpClient.
     post<any>(this.global.HospitalUrl  + "UpdateParameters", this.parameterArray)
     .subscribe(res => {
@@ -301,12 +327,20 @@ export class DoctorHomeComponent implements OnInit {
     if (this.global.patientObj.Status == 1) {
       this.global.patientObj=new PatientsAttendedModel;
     }
+    console.log(this.global.doctorObj);
     this.showPatDetail = true;
     let dateTime = new Date();
     this.global.patientObj.AppointmentDate = dateTime;
     this.global.patientObj.PatientName = callPatient.PatientName;
     this.notificationService.CallPatient(callPatient);
-    this.routing.navigate(['DoctorRoom']);
+  
+    if(this.global.doctorObj.VideoCallPlatform==this.tokbox)
+    {
+      this.routing.navigateByUrl('/DoctorRoomTokbox', { state: this.global.patientObj });
+    }
+    else
+    this.routing.navigateByUrl('/DoctorRoom', { state: this.global.patientObj });
+
   }
 
   LoadPatientsAttended() {
@@ -328,7 +362,14 @@ export class DoctorHomeComponent implements OnInit {
         }
       })
       this.global.patientObj = res;
-      this.routing.navigateByUrl('/DoctorRoom', { state: this.global.patientObj });
+    if(this.global.doctorObj.VideoCallPlatform==this.tokbox)
+    {
+      this.routing.navigateByUrl('/DoctorRoomTokbox', { state: this.global.patientObj });
+    }
+    else
+    this.routing.navigateByUrl('/DoctorRoom', { state: this.global.patientObj });
+      
+     
     }
   }
   EmailInvitationSuccess(res) {
