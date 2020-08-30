@@ -26,6 +26,8 @@ import { UploadDownloadService } from 'src/Common/upload-download.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import {NgxPrintModule} from 'ngx-print';
+import { DoctorRoomTokboxComponent } from './doctor/doctor-room-tokbox/doctor-room-tokbox.component';
+import { PatientRoomTokboxComponent } from './patient/patient-room-tokbox/patient-room-tokbox.component';
 const initializerConfigFn = (config: ConfigService) => {
   return () => {
     var ret: any = config.loadAppConfig();
@@ -48,6 +50,8 @@ const initializerConfigFn = (config: ConfigService) => {
     PatientReportSummaryComponent,
     PatientWaitingRoomComponent,
     PatientUploadFilesComponent,
+    DoctorRoomTokboxComponent,
+    PatientRoomTokboxComponent,
     YesNoPipe ,
     SafePipe
   ],

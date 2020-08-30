@@ -180,7 +180,20 @@ namespace FewaTelemedicine.Services
         {
             AttachUser(Context.User.Identity.Name,
                 Context.ConnectionId);
-	         string folderName = "Upload";
+	        
+            // over here send message to all doctor that pateint has logged
+
+            SendUpdatedPatients();
+            if (IsDoctor())
+            {
+                SendUpdatedDoctors();
+            }
+            return base.OnConnectedAsync();
+        }
+        public override Task OnDisconnectedAsync(Exception exception)
+        {
+            RemoveUser(Context.User.Identity.Name);
+            string folderName = "Upload";
             string webRootPath = _hostingEnvironment.WebRootPath;
             string newPath = Path.Combine(webRootPath, folderName);
             if (Directory.Exists(newPath))
@@ -195,18 +208,6 @@ namespace FewaTelemedicine.Services
                     dir.Delete(true);
                 }
             }
-            // over here send message to all doctor that pateint has logged
-
-            SendUpdatedPatients();
-            if (IsDoctor())
-            {
-                SendUpdatedDoctors();
-            }
-            return base.OnConnectedAsync();
-        }
-        public override Task OnDisconnectedAsync(Exception exception)
-        {
-            RemoveUser(Context.User.Identity.Name);
             SendUpdatedPatients();
             if (IsDoctor())
             {
@@ -238,17 +239,21 @@ namespace FewaTelemedicine.Services
         public async Task PatientCall(PatientsAttendedModel obj)
         {
             PatientsAttendedModel p = getPatientbyName(obj.PatientName);
+            var param = fewaDbContext.ParametersModels.Where(a => a.ParameterGroupName == "Hospital" && a.ParameterName == "VideoCallPlatform").FirstOrDefault();
+
             if (p is null)
             {
                 return;
             }
             else
             {
+               
                 p.Status = (int)TeleConstants.PatientCalled;
                 p.DoctorNameAttending = getDoctorByName(Context.User.Identity.Name).UserName;
                 p.AppointmentDate = DateTime.Now;
                 p.LastUpdated = DateTime.Now;
                 p.StartTime = DateTime.Now;
+                p.VideoCallPlatform = param.ParameterValue;
                 
                 getCurrentDoctorCabin().PatientsAttendedModel = p;
                 var patient = JsonConvert.SerializeObject(p);

@@ -9,12 +9,12 @@ import { Observable } from 'rxjs';
 import { UploadDownloadService } from 'src/Common/upload-download.service';
 import { ProgressStatus, ProgressStatusEnum } from 'src/models/progress-status.model';
 import { ToastrService } from 'ngx-toastr';
-import 'src/vendor/jitsi/external_api.js';
-declare var JitsiMeetExternalAPI : any;
+// import 'src/vendor/jitsi/external_api.js';
+// declare var JitsiMeetExternalAPI : any;
 @Component({
-    templateUrl:'./doctor-room.component.html'
+    templateUrl:'./doctor-room-tokbox.component.html'
 })
-export class DoctorRoomComponent {
+export class DoctorRoomTokboxComponent {
   public documentArray: any[] = [];
   FileName: string;
   FileAdr:string;
@@ -100,36 +100,7 @@ export class DoctorRoomComponent {
   }
 
   ngOnInit() { 
-    this.domain = "meet.jit.si";
-    this.options = {
-      roomName: this.global.doctorObj.DoctorRoomName,
-      width: 950,
-      height: 570,
-      parentNode: document.querySelector('#meet'),
-      configOverwrite: {   
-        doNotStoreRoom:true,    
-        disableInviteFunctions:true,
-        startWithVideoMuted: true,
-        startWithAudioMuted: true,
-        enableWelcomePage:false,
-        disableRemoteMute:true,
-        prejoinPageEnabled:false,
-        remoteVideoMenu: {
-	// If set to true the 'Kick out' button will be disabled.
-	disableKick: true
-	},
-      },
-      interfaceConfigOverwrite: {
-        SHOW_BRAND_WATERMARK:false,
-        GENERATE_ROOMNAMES_ON_WELCOME_PAGE:false,
-        DISPLAY_WELCOME_PAGE_CONTENT:false,
-        DISPLAY_WELCOME_PAGE_TOOLBAR_ADDITIONAL_CONTENT:false,
-        DEFAULT_REMOTE_DISPLAY_NAME:this.global.patientObj.PatientName,
-        filmStripOnly: false,
-        TOOLBAR_BUTTONS: ['microphone', 'camera']
-      }
-    }  
-    this.api = new JitsiMeetExternalAPI(this.domain, this.options);
+    
   }
 
   private initForm() {
@@ -175,8 +146,9 @@ export class DoctorRoomComponent {
     attendedPatient.Medication = this.global.patientObj.Medication;
     this.notificationService.PatientAttended(attendedPatient);
     this.global.patientObj=attendedPatient;
-    this.routing.navigateByUrl('/Home', { state: this.global.patientObj});
 
+    this.routing.navigateByUrl('/Home', { state: this.global.patientObj});
+   
   }
 
   LoadPatientSuccess(res) {

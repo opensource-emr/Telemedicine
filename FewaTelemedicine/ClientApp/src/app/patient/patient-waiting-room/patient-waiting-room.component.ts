@@ -6,6 +6,7 @@ import { DoctorsModel } from 'src/models/doctors.model';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
+import { ParametersModel } from 'src/models/parameters.model';
 
 @Component({
     templateUrl:'./patient-waiting-room.component.html'
@@ -18,6 +19,8 @@ export class PatientWaitingRoomComponent implements OnDestroy {
   ChatMessages: Array<any> = new Array<any>();
   ChatForm: FormGroup;
   AllUserChats: any = {};
+  tokbox:string="Tokbox";
+  parameterArray: Array<ParametersModel> = null;
   @ViewChild('scrollBtm', { static: false }) private scrollBottom: ElementRef;
 
   ngAfterViewInit() {
@@ -52,8 +55,8 @@ export class PatientWaitingRoomComponent implements OnDestroy {
       }
       const chatMsg = { Name: chatData.Name, Message: chatData.Message, Class: 'receiver-msg' };
       this.ChatMessages.push(chatMsg);
-      this.toastr.success(chatMsg.Message, chatMsg.Name,
-        {timeOut: 5000});
+      // this.toastr.success(chatMsg.Message, chatMsg.Name,
+      //   {timeOut: 5000});
       this.pushChatMsgUserwise(chatData.Name, chatMsg);
       
       this.cdr.detectChanges();
@@ -96,20 +99,22 @@ export class PatientWaitingRoomComponent implements OnDestroy {
   
   GotoDoctorRoom(res) {
           if (res == false) { return; }
-          if (res.DoctorNameAttending.length > 0 && res.Name == this.global.patientObj.PatientName) {           
+          if (res.DoctorNameAttending.length > 0 && res.PatientName == sessionStorage.getItem('PatientName')) {           
             this.global.patientObj.DoctorNameAttending = res.DoctorNameAttending;
-              // this.httpClient.
-            // get<DoctorsModel>(this.global.HospitalUrl + "GetUpdatedDoctor")
-            // .subscribe(res => {
-             //this.global.doctorObj = res;
+            
              console.log(this.global.doctorObj);
+             this.global.patientObj.VideoCallPlatform=res.VideoCallPlatform;
              var url: string = this.global.config.videourl.replace("DOCTORNAME", this.global.patientObj.DoctorNameAttending);
              this.global.config.videourl = url;     
-             this.routing.navigate(['/PatientRoom']);
-            // });
-            // var url: string = this.global.config.videourl.replace("DOCTORNAME", this.global.patientObj.DoctorNameAttending);
-            // this.global.config.videourl = url;        
-            // this.routing.navigate(['/PatientRoom']);      
+           
+             if(res.VideoCallPlatform==this.tokbox)
+             {
+             this.routing.navigateByUrl('/PatientRoomTokbox', { state: this.global.patientObj });
+             }
+             else{
+             this.routing.navigateByUrl('/PatientRoom', { state: this.global.patientObj });
+             }
+               
           }
         }
 

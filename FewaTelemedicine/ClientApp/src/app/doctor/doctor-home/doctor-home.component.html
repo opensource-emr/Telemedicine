@@ -74,12 +74,17 @@
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-3">
+           
             <h5 class="h4 mb-0 text-gray-800 font-weight-light"><strong
                 class="">Hello!&nbsp;&nbsp;{{global.doctorObj.NameTitle}}&nbsp;{{global.doctorObj.DoctorName}}
               </strong><span class="font-weight-normal d-block text-sm mt-1">Choose following actions to
                 proceed.</span></h5>
+             
+            <div class="patient-camera" style="float: right;">
+                <video  #pcam  autoplay autoplay="true"></video>
+            </div>
           </div>
-
+         
           <!-- Content Row -->
           <!-- Doctor Actions -->
           <div class="row mb-3">
@@ -97,7 +102,7 @@
                     (click)="Check('accSett')"><i class="fa fa-lock"></i>Account Settings</a> -->
                   <a class="nav-item nav-link btn btn-success btn-sm" id="nav-contact-tab" data-toggle="tab"
                     href="javascript:;" role="tab" aria-controls="nav-contact" aria-selected="false"
-                    (click)="Check('chatSection')"><i class="fa fa-lock"></i>Chat Section</a>
+                    (click)="Check('chatSection')" (click)="count=0"><i class="fa fa-lock"></i>Chat Section</a>
                     <span class="e-badge e-badge-info e-badge-overlap e-badge-notification e-badge-circle" style="position:inherit;display:inline-block;margin: -9px 0px 0px -6px;" *ngIf="count>0">{{count}}</span>
                 </div>
 
@@ -375,6 +380,14 @@
                             </div>
 
                           </div>
+                          <div class="row form-group">
+                            <label for="" class="col-md-3 control-label">video call platform</label>
+                            <div class="col-md-9">
+                              <input type="radio" name="VideoCallPlatform" value="Jitsi" [(ngModel)]="this.global.doctorObj.VideoCallPlatform" checked>Jitsi
+                              <input type="radio" name="VideoCallPlatform" value="Tokbox" [(ngModel)]="this.global.doctorObj.VideoCallPlatform">Tokbox
+                            </div>
+
+                          </div>
 
                           <div class="row mt-4">
                             <div class="col-md-3"></div>
@@ -466,7 +479,7 @@
                     <thead>
                       <tr *ngFor="let temp of patients">
                         <td cellpadding="0" cellspacing="0" *ngIf="temp.PatientName">&nbsp;{{temp.Id + 1}})&nbsp;&nbsp;{{temp.PatientName}}</td>
-                        <td cellpadding="0" cellspacing="0"><a [routerLink]="['/DoctorRoom']"
+                        <td cellpadding="0" cellspacing="0"><a 
                             (click)="CallPatient(temp)" *ngIf="temp.Status==0 && temp.PatientName" class="btn-call"><i
                               class="fa fa-video-camera"></i>Call</a></td>
                         <td cellpadding="0" cellspacing="0" *ngIf="temp.PatientName"><a class="btn-call"><i
