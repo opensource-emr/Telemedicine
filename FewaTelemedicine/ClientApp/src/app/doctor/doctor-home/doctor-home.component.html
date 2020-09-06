@@ -1,6 +1,7 @@
 <head>
 
   <link href="//cdn.syncfusion.com/ej2/ej2-notifications/styles/material.css" rel="stylesheet" />
+  <script src="../../../vendor/ckeditor/ckeditor.js"></script>
 
 </head>
 
@@ -93,7 +94,7 @@
                 <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
                   <a class="nav-item nav-link btn btn-success btn-sm" id="nav-home-tab" data-toggle="tab"
                     href="javascript:;" role="tab" aria-controls="nav-home" aria-selected="true"
-                    (click)="Check('sendInv')"><i class="fa fa-share"></i>Send Invitation</a>
+                    (click)="Check('sendInv')">Send Invitation</a>
                   <!-- <a class="nav-item nav-link btn btn-success btn-sm" id="nav-profile-tab" data-toggle="tab"
                     href="javascript:;" role="tab" aria-controls="nav-profile" aria-selected="false"
                     (click)="Check('completedList')"><i class="fa fa-check-square"></i>Completed Appointments</a> -->
@@ -118,7 +119,7 @@
               <div class="tab-content card shadow">
                 <div *ngIf="SendInvitation">
                   <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold"><i class="fa fa-share"></i>Send Invitation Link</h6>
+                    <h6 class="m-0 font-weight-bold">Send Invitation Link</h6>
                   </div>
                   <form class="user p-3" [formGroup]="invitationForm">
                     <div class="row">
@@ -182,6 +183,11 @@
                     <li class="nav-item">
                       <a class="nav-item nav-link" [ngClass]="{ 'active':activeTab==='updateParams'}" data-toggle="tab"
                         href="javascript:;" (click)="Check('updateParams')">Update Parameter </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-item nav-link" [ngClass]="{ 'active':activeTab==='updateEmailTemplate'}"
+                        data-toggle="tab" href="javascript:;" (click)="Check('updateEmailTemplate')">Update Email
+                        Template </a>
                     </li>
                   </ul>
                   <!-- Tab panes -->
@@ -355,31 +361,51 @@
                                 name="HospitalDesc" [(ngModel)]="HospitalDesc"></textarea>
                             </div>
                           </div>
+                          <div class="row form-group">
+                            <label for="" class="col-md-3 control-label">Hospital Logo</label>
+                            <div class="col-md-3">
+                              <div class="profile-pic">
+                                <img src="{{HospitalLogo}}"  id="logo" class="img-thumbnail img-circle img-responsive" width="210" height="80" />   
+                                <div class="edit">
+                                  <a href="javascript:;" class="icon" title="Edit">
+                                  <i (click)="fileInput.click()" class="fa fa-pencil fa-lg"></i>  
+                                  </a>                                                                     
+                                  <input style="display: none" type="file" placeholder="Choose File"
+                                  (change)="updateHospitalLogo($event.target.files)" accept="images/*" #fileInput>     
+                                </div>                                                                          
+                              </div>
+                                                                                   
+                            </div>
+                                <div class="col-md-6">
+                                    <label *ngIf="LogoToUpload"> {{LogoToUpload.name}}</label>
+                                  <span class="upload" *ngIf="progress > 0">
+                                    {{progress}}%
+                                  </span>
+                                  <span class="upload" *ngIf="message">
+                                    {{message}}
+                                  </span>
+                                </div>
+                           
+                          </div>
                           <h6 class="m-0 font-weight-bold">Email Parameters :</h6><br>
                           <div class="row form-group">
-                            <label for="" class="col-md-3 control-label">Sender Email Id for Invitation</label>
+                            <label for="" class="col-md-3 control-label">Email Subject</label>
                             <div class="col-md-9">
-                              <input type="email" placeholder="From Email" class="form-control" name="SenderEmail"
-                                [(ngModel)]="SenderEmail">
+                              <input type="email" placeholder="Email Subject" class="form-control" name="EmailSubject"
+                                [(ngModel)]="EmailSubject">
                             </div>
-
                           </div>
+    
                           <div class="row form-group">
-                            <label for="" class="col-md-3 control-label">Email API Key</label>
+                            <label for="" class="col-md-3 control-label">Email Plain Body</label>
                             <div class="col-md-9">
-                              <input type="text" class="form-control" name="APIKey" [(ngModel)]="APIKey"
-                                placeholder="APIKey">
+                              <input type="text" class="form-control" name="EmailPlainBody" [(ngModel)]="EmailPlainBody"
+                                placeholder="Email Plain Body">
                             </div>
-
                           </div>
-                          <div class="row form-group">
-                            <label for="" class="col-md-3 control-label">Email Name</label>
-                            <div class="col-md-9">
-                              <input type="text" placeholder="Name" class="form-control" name="EmailName"
-                                [(ngModel)]="EmailName">
-                            </div>
-
-                          </div>
+    
+                         
+                         
                           <div class="row form-group">
                             <label for="" class="col-md-3 control-label">video call platform</label>
                             <div class="col-md-9">
@@ -394,6 +420,28 @@
                             <div class="col-md-3">
                               <input type="button" name="Submit" value="Submit" class="btn btn-sm btn-primary"
                                 (click)="UpdateParameters()">
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                    <div *ngIf="EmailTemplateUpdate"><br>
+                      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold">Update Email Template: </h6>
+                      </div>
+                      <div class="card-body">
+                        <form action="" class="user">
+                          <div class="row form-group">
+                            <!-- <label for="" class="col-md-3 control-label">Email Template </label> -->
+                            <div class="col-md-12">
+                              <ckeditor [(ngModel)]="EmailHTMLBody" name="EmailHTMLBody"   [config]="{extraPlugins:'stylesheetparser', height:'700px'}"></ckeditor>
+                            </div>
+                          </div>
+                          <div class="row mt-4">
+                            <div class="col-md-5"></div>
+                            <div class="col-md-3">
+                              <input type="button" name="Submit" (click)="UpdateEmailTemplate()" value="Submit"
+                                class="btn btn-sm btn-primary">
                             </div>
                           </div>
                         </form>

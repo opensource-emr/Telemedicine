@@ -15,12 +15,16 @@ import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 import { ParametersModel } from 'src/models/parameters.model';
 
 
+
 @Component({
   templateUrl: './doctor-home.component.html',
-  template: `<pre>{{ state | async | json }}</pre>`
+  template: `<pre>{{ state | async | json }}</pre>`,
+  styleUrls: ['../../../assets/css/doctor-home-component.css']
+
 })
 export class DoctorHomeComponent implements OnInit,OnDestroy{
   private state: Observable<object>;
+  public LogoToUpload:File = null;
   public selectedFile: File;
   public progress: number;
   public message: string;
@@ -32,9 +36,10 @@ export class DoctorHomeComponent implements OnInit,OnDestroy{
   HospitalName:string ="";
   HospitalContact: string = "";
   HospitalEmail:string = "";
-  SenderEmail:string = "";
-  APIKey:string = "";
-  EmailName:string = "";
+  HospitalLogo: string = "";
+  EmailSubject:string = "";
+  EmailPlainBody:string = "";
+  EmailHTMLBody :string = "";
   HospitalDesc: string = "";
   showChat: boolean = true;
   AllUserChats: any = {};
@@ -51,6 +56,7 @@ export class DoctorHomeComponent implements OnInit,OnDestroy{
   public AccountSettings: boolean = false;
   public ProfileUpdate: boolean = true;
   public ParamsUpdate: boolean = false;
+  public EmailTemplateUpdate: boolean = false;
   public ChatSection: boolean = false;
   public CompletedPatients: Array<PatientsAttendedModel> = null;
   doctorObj: DoctorsModel = new DoctorsModel();
@@ -137,6 +143,7 @@ export class DoctorHomeComponent implements OnInit,OnDestroy{
 
  
   ngOnInit() {
+
     var params = new HttpParams().set('username',this.global.doctorObj.UserName );
     this.httpClient.
     get<any>(this.global.HospitalUrl + "GetUpdatedDoctor",{params : params})
@@ -144,13 +151,13 @@ export class DoctorHomeComponent implements OnInit,OnDestroy{
      this.doctorObj = res.User;
      this.parameterArray = res.Parameter;
      this.HospitalName = this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "Name").ParameterValue;
+     this.HospitalLogo = this.parameterArray.find(a => a.ParameterName === 'LogoPath' && a.ParameterGroupName === "Hospital").ParameterValue;
      this.HospitalContact = this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "ContactNumber").ParameterValue;
      this.HospitalEmail = this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "Email").ParameterValue;
      this.HospitalDesc = this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "Description").ParameterValue;
-     this.SenderEmail = this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "Email").ParameterValue;
-     this.APIKey = this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "ApiKey").ParameterValue;
-     this.EmailName = this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "Name").ParameterValue;
-     this.global.doctorObj.VideoCallPlatform= this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "VideoCallPlatform").ParameterValue;
+     this.EmailSubject = this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "EmailSubject").ParameterValue;
+     this.EmailPlainBody = this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "EmailPlainBody").ParameterValue;
+     this.EmailHTMLBody = res.EmailHTMLBody;
      if(this.doctorObj.Image)
      this.retrievedImage = 'data:image/png;base64,' + this.doctorObj.Image;
     });
@@ -230,6 +237,7 @@ export class DoctorHomeComponent implements OnInit,OnDestroy{
       this.ProfileUpdate = true;
       this.activeTab = data;
       this.ParamsUpdate = false;
+      this.EmailTemplateUpdate = false;
       this.ChatSection = false;
     }
     else if (data == 'updateParams') {
@@ -238,9 +246,50 @@ export class DoctorHomeComponent implements OnInit,OnDestroy{
       this.AccountSettings = true;
       this.ProfileUpdate = false;
       this.ParamsUpdate = true;
+      this.EmailTemplateUpdate = false;
       this.activeTab = data;
       this.ChatSection = false;
     }
+    else if (data == 'updateEmailTemplate') {
+      this.SendInvitation = false;
+      this.CompletedAppointments = false;
+      this.AccountSettings = true;
+      this.ProfileUpdate = false;
+      this.ParamsUpdate = false;
+      this.activeTab = data;
+      this.ChatSection = false;
+      this.EmailTemplateUpdate = true;
+    }
+  }
+
+  updateHospitalLogo(file:FileList) {
+    this.LogoToUpload = file.item(0);
+    //show image preview
+    var reader = new FileReader();
+    reader.onload = (event :any) => {
+      this.HospitalLogo = event.target.result;
+    }
+    reader.readAsDataURL(this.LogoToUpload);
+    //upload image
+    const formData = new FormData();
+    // To Rename File name 
+    //var fileExtension = '.' + this.LogoToUpload.name.split('.').pop();
+    //var filename = "hospitallogo" + new Date().getTime() + fileExtension;
+    formData.append('image', this.LogoToUpload, this.LogoToUpload.name);
+    //call to server
+    this.httpClient.post(this.global.HospitalUrl + "UploadHospitalLogo", formData, { reportProgress: true, observe: 'events', responseType: 'text'})
+      .subscribe(event => {
+        if (event.type === HttpEventType.UploadProgress)
+          this.progress = Math.round(100 * event.loaded / event.total);
+        else if (event.type === HttpEventType.Response) {
+          this.receivedImageData = event;
+          this.message = 'Upload Success.';
+          this.HospitalLogo = this.receivedImageData.body;
+        }
+        else {
+          this.message = 'Upload Failed.';
+        }
+      });
   }
 
   onFileChanged(event) {
@@ -305,15 +354,26 @@ export class DoctorHomeComponent implements OnInit,OnDestroy{
     this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "ContactNumber").ParameterValue = this.HospitalContact;
     this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "Email").ParameterValue = this.HospitalEmail;
     this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "Description").ParameterValue = this.HospitalDesc;
-    this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "Email").ParameterValue  =  this.SenderEmail;
-    this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "ApiKey").ParameterValue  =  this.APIKey;
-    this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "Name").ParameterValue  = this.EmailName;
+    this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "EmailSubject").ParameterValue  =  this.EmailSubject;
+    this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "EmailPlainBody").ParameterValue  =  this.EmailPlainBody;
+    this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "LogoPath").ParameterValue  = this.HospitalLogo;
     this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "VideoCallPlatform").ParameterValue= this.global.doctorObj.VideoCallPlatform;
     this.httpClient.
     post<any>(this.global.HospitalUrl  + "UpdateParameters", this.parameterArray)
     .subscribe(res => {
       this.parameterArray= res;
       alert("parameters updated");
+    },
+      err => { console.log(err); });
+  }
+
+  UpdateEmailTemplate() {
+    this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "EmailHTMLBody").ParameterValue  = this.EmailHTMLBody;
+    this.httpClient.
+    post<any>(this.global.HospitalUrl  + "UpdateParameters", this.parameterArray)
+    .subscribe(res => {
+      this.parameterArray= res;
+      alert("Email Template Updated");
     },
       err => { console.log(err); });
   }
