@@ -100,6 +100,7 @@ export class DoctorRoomComponent {
   }
 
   ngOnInit() { 
+    /*8/9/2020 => Updated by Bhavana Vanjani*/ 
     this.domain = "meet.jit.si";
     this.options = {
       roomName: this.global.doctorObj.DoctorRoomName,
@@ -120,13 +121,20 @@ export class DoctorRoomComponent {
 	},
       },
       interfaceConfigOverwrite: {
+        //DISABLE_VIDEO_BACKGROUND: true,
+        SHOW_JITSI_WATERMARK: false,
         SHOW_BRAND_WATERMARK:false,
+        SHOW_WATERMARK_FOR_GUESTS: false,
         GENERATE_ROOMNAMES_ON_WELCOME_PAGE:false,
+        JITSI_WATERMARK_LINK: '',
+        BRAND_WATERMARK_LINK: '',
         DISPLAY_WELCOME_PAGE_CONTENT:false,
         DISPLAY_WELCOME_PAGE_TOOLBAR_ADDITIONAL_CONTENT:false,
         DEFAULT_REMOTE_DISPLAY_NAME:this.global.patientObj.PatientName,
+        disable1On1Mode: false,
+        REMOTE_THUMBNAIL_RATIO: 0, // 1:1
         filmStripOnly: false,
-        TOOLBAR_BUTTONS: ['microphone', 'camera']
+        TOOLBAR_BUTTONS: ['microphone', 'camera','videoquality']
       }
     }  
     this.api = new JitsiMeetExternalAPI(this.domain, this.options);

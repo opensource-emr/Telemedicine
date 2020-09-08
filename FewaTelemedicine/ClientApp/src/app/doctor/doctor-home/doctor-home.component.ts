@@ -51,6 +51,8 @@ export class DoctorHomeComponent implements OnInit,OnDestroy{
   
   @ViewChild('scrollBtm', { static: false }) private scrollBottom: ElementRef;
   public InvitationButton: boolean = true;
+  public InvitationSuccess: boolean = false;
+  public InvitationFailure: boolean = false;
   public SendInvitation: boolean = true;
   public CompletedAppointments: boolean = false;
   public AccountSettings: boolean = false;
@@ -302,7 +304,7 @@ export class DoctorHomeComponent implements OnInit,OnDestroy{
     this.doctorObj.UserName = this.global.doctorObj.UserName;
     //this.doctorObj.Password = this.global.doctorObj.Password;
     //fd.append('user', JSON.stringify(this.doctorObj));
-    this.httpClient.post(this.global.HospitalUrl + "UploadImage", fd, { reportProgress: true, observe: 'events', responseType: 'json' })
+    this.httpClient.post(this.global.HospitalUrl + "UploadProfileImage", fd, { reportProgress: true, observe: 'events', responseType: 'json' })
       .subscribe(event => {
         if (event.type === HttpEventType.UploadProgress)
           this.progress = Math.round(100 * event.loaded / event.total);
@@ -317,12 +319,12 @@ export class DoctorHomeComponent implements OnInit,OnDestroy{
 
   getImage() {
     //Make a call to backend to get the Image Bytes.
-    this.httpClient.get(this.global.HospitalUrl + "GetImage")
+    this.httpClient.get(this.global.HospitalUrl + "GetProfileImage")
       .subscribe(
         res => {
           this.retrieveResponse = res;
           if(this.retrieveResponse)
-          this.retrievedImage = 'data:image/png;base64,' + this.retrieveResponse.Image;
+          this.retrievedImage = 'data:image/png;base64,' + this.retrieveResponse;
         }
       );
   }
@@ -379,8 +381,10 @@ export class DoctorHomeComponent implements OnInit,OnDestroy{
   }
 
   Invitation() {
+    this.InvitationButton = false;
     //this.httpClient.post("Messenger/SendSMS",data).subscribe(res=>this.SMSInvitationSuccess(res),err=>this.Error(err));
     this.httpClient.post("Messenger/SendEmail", this.global.doctorObj).subscribe(res => this.EmailInvitationSuccess(res), err => this.Error(err));
+    this.invitationForm.reset();
   }
 
   CallPatient(callPatient: PatientsAttendedModel) {
@@ -437,12 +441,15 @@ export class DoctorHomeComponent implements OnInit,OnDestroy{
     if (res)
     {
       this.InvitationButton=true;
-      alert("Email Invitation Sent has been sent ");
+      this.InvitationSuccess=true;
+      
+      //alert("Email Invitation Sent has been sent ");
     }
     else
     {
       this.InvitationButton=true;
-      alert("Sending failed!");
+      this.InvitationFailure=true;
+      //alert("Sending failed!");
     }
   }
   // SMSInvitationSuccess(res)

@@ -140,7 +140,15 @@
                           Send
                         </button>
                       </div>
-
+                      <div class="col-md-2" *ngIf="!(this.InvitationButton)">
+                        Sending Invitation...
+                      </div>
+                      <div class="col-md-2" *ngIf="this.InvitationSuccess">
+                        Email Invitation has been Sent.
+                      </div>
+                      <div class="col-md-2" *ngIf="this.InvitationFailure">
+                        Sending Failed.
+                      </div>
                     </div>
                   </form>
                 </div>
@@ -434,7 +442,7 @@
                           <div class="row form-group">
                             <!-- <label for="" class="col-md-3 control-label">Email Template </label> -->
                             <div class="col-md-12">
-                              <ckeditor [(ngModel)]="EmailHTMLBody" name="EmailHTMLBody"   [config]="{extraPlugins:'stylesheetparser', height:'700px'}"></ckeditor>
+                              <ckeditor [(ngModel)]="EmailHTMLBody" name="EmailHTMLBody"   [config]="{extraPlugins:'stylesheetparser', height:'700px',fullPage: true,allowedContent: true}"></ckeditor>
                             </div>
                           </div>
                           <div class="row mt-4">
@@ -527,7 +535,7 @@
                     <thead>
                       <tr *ngFor="let temp of patients">
                         <td cellpadding="0" cellspacing="0" *ngIf="temp.PatientName">&nbsp;{{temp.Id + 1}})&nbsp;&nbsp;{{temp.PatientName}}</td>
-                        <td cellpadding="0" cellspacing="0"><a 
+                        <td cellpadding="0" cellspacing="0"><a href="javascript:;"
                             (click)="CallPatient(temp)" *ngIf="temp.Status==0 && temp.PatientName" class="btn-call"><i
                               class="fa fa-video-camera"></i>Call</a></td>
                         <td cellpadding="0" cellspacing="0" *ngIf="temp.PatientName"><a class="btn-call"><i

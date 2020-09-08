@@ -209,23 +209,23 @@ namespace FewaTelemedicine.Domain
                                                  "      <head>  " +
                                                  "         <style>  " +
                                                  "            .banner-color {  " +
-                                                 "            background-color: #eb681f;  " +
+                                                 "            background-color: #eb681f!important;  " +
                                                  "            }  " +
                                                  "            .title-color {  " +
-                                                 "            color: #0066cc;  " +
+                                                 "            color: #0066cc!important;  " +
                                                  "            }  " +
                                                  "            .button-color {  " +
-                                                 "            background-color: #0066cc;  " +
+                                                 "            background-color: #0066cc!important;  " +
                                                  "            }  " +
                                                  "            @media screen and (min-width: 500px) {  " +
                                                  "            .banner-color {  " +
-                                                 "            background-color: #009688;  " +
+                                                 "            background-color: #eb681f!important;  " +
                                                  "            }  " +
                                                  "            .title-color {  " +
                                                  "            color: black;  " +
                                                  "            }  " +
                                                  "            .button-color {  " +
-                                                 "            background-color: #009688;  " +
+                                                 "            background-color: #0066cc!important;  " +
                                                  "            }  " +
                                                  "            }  " +
                                                  "         </style>  " +
@@ -261,7 +261,7 @@ namespace FewaTelemedicine.Domain
                                                  "                                                   <table border='0' cellspacing='0' cellpadding='0' style='font-weight:200;font-family:Helvetica,Arial,sans-serif' width='100%'>  " +
                                                  "                                                      <tbody>  " +
                                                  "                                                         <tr>  " +
-                                                 "                                                            <td align='center' bgcolor='#8BC34A' style='padding:20px 48px;color:#ffffff' class='banner-color'>  " +
+                                                 "                                                            <td align='center'  style='padding:20px 48px;color:#ffffff' class='banner-color'>  " +
                                                  "                                                               <table border='0' cellspacing='0' cellpadding='0' style='font-weight:200;font-family:Helvetica,Arial,sans-serif' width='100%'>  " +
                                                  "                                                                  <tbody>  " +
                                                  "                                                                     <tr>  " +

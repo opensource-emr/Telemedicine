@@ -189,9 +189,10 @@ namespace FewaTelemedicine.Controllers
         {
 
             var parameter = FewaDbContext.ParametersModels.ToList();
-            var doctorProfile = (from temp in FewaDbContext.DoctorsModels
+            var doctor = (from temp in FewaDbContext.DoctorsModels
                                  where temp.UserName == username
                                  select temp).FirstOrDefault();
+            doctor.DoctorRoomName = doctor.DoctorRoomName.Replace("DoctorName", doctor.UserName);
             var TodaysDate = DateTime.Now.ToString("MM-dd-yyyy HH:mm:ss");
             var ServerName = parameter.Find(a => a.ParameterGroupName == "Server").ParameterValue;
             var LogoPath = parameter.Find(a => a.ParameterGroupName == "Hospital" && a.ParameterName == "LogoPath").ParameterValue;
@@ -199,15 +200,14 @@ namespace FewaTelemedicine.Controllers
             var htmlContent = parameter.Find(a => a.ParameterGroupName == "EmailAPI" && a.ParameterName == "EmailHTMLBody").ParameterValue;
             htmlContent = htmlContent.Replace("{ImageUrl}", ServerName + LogoPath);
             htmlContent = htmlContent.Replace("{Join}", ServerName + "#/Join");
-            htmlContent = htmlContent.Replace("DoctorNameTitle", doctorProfile.NameTitle);
-            htmlContent = htmlContent.Replace("DoctorName", doctorProfile.DoctorName);
+            htmlContent = htmlContent.Replace("DoctorNameTitle", doctor.NameTitle);
+            htmlContent = htmlContent.Replace("DoctorName", doctor.DoctorName);
             htmlContent = htmlContent.Replace("HospitalName", HospitalName);
             htmlContent = htmlContent.Replace("TodaysDate", TodaysDate);
-            doctorProfile.Password = Cipher.Decrypt(doctorProfile.Password, doctorProfile.UserName);
+            doctor.Password = Cipher.Decrypt(doctor.Password, doctor.UserName);
             var data = new
             {
-
-                User = doctorProfile,
+                User = doctor,
                 Parameter = parameter,
                 EmailHTMLBody = htmlContent
             };
@@ -420,7 +420,7 @@ namespace FewaTelemedicine.Controllers
             return Ok(logoPath);
         }
 
-        public async Task<IActionResult> UploadProfileImage()
+        public  IActionResult UploadProfileImage()
         {
             try
             {
@@ -435,7 +435,7 @@ namespace FewaTelemedicine.Controllers
 
                 using (var memoryStream = new MemoryStream())
                 {
-                    await file.CopyToAsync(memoryStream);
+                    file.CopyTo(memoryStream);
 
                     // Upload the file if less than 2 MB
                     if (memoryStream.Length < 2097152)
@@ -459,15 +459,21 @@ namespace FewaTelemedicine.Controllers
 
         public IActionResult GetProfileImage()
         {
-            string username = HttpContext.Session.GetString("Name");
-            var doc = _doctorRepository.GetDoctorByUserName(username);
-            if (doc.Image != null)
+            try
             {
-                //string base64Data = Convert.ToBase64String(doc.Image);
-                //var imageURL = string.Format("data:image/png;base64,{0}", base64Data);
-                return Ok(doc);
+                string username = HttpContext.Session.GetString("Name");
+                var doc = _doctorRepository.GetDoctorByUserName(username);
+                if (doc.Image != null)
+                {
+                    return Ok(doc.Image);
+                }
+                return Ok(doc.Image);
             }
-            return StatusCode(500);
+            catch(Exception ex)
+            {
+                return Ok("Unable to fetch Image " + ex.Message);
+            }
+            
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
