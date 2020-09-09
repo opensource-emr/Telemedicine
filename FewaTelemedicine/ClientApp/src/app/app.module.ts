@@ -26,6 +26,7 @@ import { UploadDownloadService } from 'src/Common/upload-download.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import {NgxPrintModule} from 'ngx-print';
+import { CKEditorModule } from 'ckeditor4-angular';
 import { DoctorRoomTokboxComponent } from './doctor/doctor-room-tokbox/doctor-room-tokbox.component';
 import { PatientRoomTokboxComponent } from './patient/patient-room-tokbox/patient-room-tokbox.component';
 const initializerConfigFn = (config: ConfigService) => {
@@ -64,7 +65,8 @@ const initializerConfigFn = (config: ConfigService) => {
     CommonModule,
     BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot(), // ToastrModule added
-    NgxPrintModule
+    NgxPrintModule,
+    CKEditorModule
 
   ],
   providers: [

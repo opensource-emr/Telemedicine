@@ -29,7 +29,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵAnimationGroupPlayer", function() { return AnimationGroupPlayer; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵPRE_STYLE", function() { return ɵPRE_STYLE; });
 /**
- * @license Angular v9.1.12
+ * @license Angular v9.0.7
  * (c) 2010-2020 Google LLC. https://angular.io/
  * License: MIT
  */
@@ -569,8 +569,7 @@ function group(steps, options = null) {
  * \@usageNotes
  * When you pass an array of steps to a
  * `transition()` call, the steps run sequentially by default.
- * Compare this to the `{\@link animations/group group()}` call, which runs animation steps in
- * parallel.
+ * Compare this to the `{\@link animations/group group()}` call, which runs animation steps in parallel.
  *
  * When a sequence is used within a `{\@link animations/group group()}` or a `transition()` call,
  * execution continues to the next instruction only after each of the inner animation
@@ -1234,29 +1233,21 @@ class NoopAnimationPlayer {
      * @param {?} fn
      * @return {?}
      */
-    onStart(fn) {
-        this._onStartFns.push(fn);
-    }
+    onStart(fn) { this._onStartFns.push(fn); }
     /**
      * @param {?} fn
      * @return {?}
      */
-    onDone(fn) {
-        this._onDoneFns.push(fn);
-    }
+    onDone(fn) { this._onDoneFns.push(fn); }
     /**
      * @param {?} fn
      * @return {?}
      */
-    onDestroy(fn) {
-        this._onDestroyFns.push(fn);
-    }
+    onDestroy(fn) { this._onDestroyFns.push(fn); }
     /**
      * @return {?}
      */
-    hasStarted() {
-        return this._started;
-    }
+    hasStarted() { return this._started; }
     /**
      * @return {?}
      */
@@ -1275,12 +1266,10 @@ class NoopAnimationPlayer {
      * \@internal
      * @return {?}
      */
-    triggerMicrotask() {
-        scheduleMicroTask((/**
-         * @return {?}
-         */
-        () => this._onFinish()));
-    }
+    triggerMicrotask() { scheduleMicroTask((/**
+     * @return {?}
+     */
+    () => this._onFinish())); }
     /**
      * @private
      * @return {?}
@@ -1304,9 +1293,7 @@ class NoopAnimationPlayer {
     /**
      * @return {?}
      */
-    finish() {
-        this._onFinish();
-    }
+    finish() { this._onFinish(); }
     /**
      * @return {?}
      */
@@ -1337,9 +1324,7 @@ class NoopAnimationPlayer {
     /**
      * @return {?}
      */
-    getPosition() {
-        return 0;
-    }
+    getPosition() { return 0; }
     /**
      * \@internal
      * @param {?} phaseName
@@ -1456,20 +1441,16 @@ class AnimationGroupPlayer {
     /**
      * @return {?}
      */
-    init() {
-        this.players.forEach((/**
-         * @param {?} player
-         * @return {?}
-         */
-        player => player.init()));
-    }
+    init() { this.players.forEach((/**
+     * @param {?} player
+     * @return {?}
+     */
+    player => player.init())); }
     /**
      * @param {?} fn
      * @return {?}
      */
-    onStart(fn) {
-        this._onStartFns.push(fn);
-    }
+    onStart(fn) { this._onStartFns.push(fn); }
     /**
      * @private
      * @return {?}
@@ -1489,22 +1470,16 @@ class AnimationGroupPlayer {
      * @param {?} fn
      * @return {?}
      */
-    onDone(fn) {
-        this._onDoneFns.push(fn);
-    }
+    onDone(fn) { this._onDoneFns.push(fn); }
     /**
      * @param {?} fn
      * @return {?}
      */
-    onDestroy(fn) {
-        this._onDestroyFns.push(fn);
-    }
+    onDestroy(fn) { this._onDestroyFns.push(fn); }
     /**
      * @return {?}
      */
-    hasStarted() {
-        return this._started;
-    }
+    hasStarted() { return this._started; }
     /**
      * @return {?}
      */
@@ -1522,23 +1497,19 @@ class AnimationGroupPlayer {
     /**
      * @return {?}
      */
-    pause() {
-        this.players.forEach((/**
-         * @param {?} player
-         * @return {?}
-         */
-        player => player.pause()));
-    }
+    pause() { this.players.forEach((/**
+     * @param {?} player
+     * @return {?}
+     */
+    player => player.pause())); }
     /**
      * @return {?}
      */
-    restart() {
-        this.players.forEach((/**
-         * @param {?} player
-         * @return {?}
-         */
-        player => player.restart()));
-    }
+    restart() { this.players.forEach((/**
+     * @param {?} player
+     * @return {?}
+     */
+    player => player.restart())); }
     /**
      * @return {?}
      */
@@ -1553,9 +1524,7 @@ class AnimationGroupPlayer {
     /**
      * @return {?}
      */
-    destroy() {
-        this._onDestroy();
-    }
+    destroy() { this._onDestroy(); }
     /**
      * @private
      * @return {?}
@@ -1722,7 +1691,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_animations__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/animations */ "./node_modules/@angular/animations/__ivy_ngcc__/fesm2015/animations.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
 /**
- * @license Angular v9.1.12
+ * @license Angular v9.0.7
  * (c) 2010-2020 Google LLC. https://angular.io/
  * License: MIT
  */
@@ -1971,9 +1940,7 @@ if (_isNode || typeof Element !== 'undefined') {
      * @param {?} elm2
      * @return {?}
      */
-    (elm1, elm2) => {
-        return (/** @type {?} */ (elm1.contains(elm2)));
-    });
+    (elm1, elm2) => { return (/** @type {?} */ (elm1.contains(elm2))); });
     _matches = ((/**
      * @return {?}
      */
@@ -2108,9 +2075,7 @@ class NoopAnimationDriver {
      * @param {?} prop
      * @return {?}
      */
-    validateStyleProperty(prop) {
-        return validateStyleProperty(prop);
-    }
+    validateStyleProperty(prop) { return validateStyleProperty(prop); }
     /**
      * @param {?} element
      * @param {?} selector
@@ -2124,9 +2089,7 @@ class NoopAnimationDriver {
      * @param {?} elm2
      * @return {?}
      */
-    containsElement(elm1, elm2) {
-        return containsElement(elm1, elm2);
-    }
+    containsElement(elm1, elm2) { return containsElement(elm1, elm2); }
     /**
      * @param {?} element
      * @param {?} selector
@@ -2303,9 +2266,7 @@ function copyObj(obj, destination = {}) {
      * @param {?} prop
      * @return {?}
      */
-    prop => {
-        destination[prop] = obj[prop];
-    }));
+    prop => { destination[prop] = obj[prop]; }));
     return destination;
 }
 /**
@@ -2622,9 +2583,7 @@ function balancePreviousStylesIntoKeyframes(element, keyframes, previousStyles) 
                  * @param {?} prop
                  * @return {?}
                  */
-                function (prop) {
-                    kf[prop] = computeStyle(element, prop);
-                }));
+                function (prop) { kf[prop] = computeStyle(element, prop); }));
             }
         }
     }
@@ -2950,11 +2909,7 @@ class AnimationAstBuilderVisitor {
         }));
         return {
             type: 7 /* Trigger */,
-            name: metadata.name,
-            states,
-            transitions,
-            queryCount,
-            depCount,
+            name: metadata.name, states, transitions, queryCount, depCount,
             options: null
         };
     }
@@ -3001,8 +2956,7 @@ class AnimationAstBuilderVisitor {
             if (missingSubs.size) {
                 /** @type {?} */
                 const missingSubsArr = iteratorToArray(missingSubs.values());
-                context.errors.push(`state("${metadata
-                    .name}", ...) must define default values for all the following style substitutions: ${missingSubsArr.join(', ')}`);
+                context.errors.push(`state("${metadata.name}", ...) must define default values for all the following style substitutions: ${missingSubsArr.join(', ')}`);
             }
         }
         return {
@@ -3198,8 +3152,7 @@ class AnimationAstBuilderVisitor {
             type: 6 /* Style */,
             styles,
             easing: collectedEasing,
-            offset: metadata.offset,
-            containsDynamicStyles,
+            offset: metadata.offset, containsDynamicStyles,
             options: null
         };
     }
@@ -3244,8 +3197,7 @@ class AnimationAstBuilderVisitor {
                 if (collectedEntry) {
                     if (startTime != endTime && startTime >= collectedEntry.startTime &&
                         endTime <= collectedEntry.endTime) {
-                        context.errors.push(`The CSS property "${prop}" that exists between the times of "${collectedEntry.startTime}ms" and "${collectedEntry
-                            .endTime}ms" is also being animated in a parallel animation between the times of "${startTime}ms" and "${endTime}ms"`);
+                        context.errors.push(`The CSS property "${prop}" that exists between the times of "${collectedEntry.startTime}ms" and "${collectedEntry.endTime}ms" is also being animated in a parallel animation between the times of "${startTime}ms" and "${endTime}ms"`);
                         updateCollectedStyle = false;
                     }
                     // we always choose the smaller start time value since we
@@ -3410,9 +3362,7 @@ class AnimationAstBuilderVisitor {
             type: 11 /* Query */,
             selector,
             limit: options.limit || 0,
-            optional: !!options.optional,
-            includeSelf,
-            animation,
+            optional: !!options.optional, includeSelf, animation,
             originalSelector: metadata.selector,
             options: normalizeAnimationOptions(metadata.options)
         };
@@ -3432,8 +3382,7 @@ class AnimationAstBuilderVisitor {
             resolveTiming(metadata.timings, context.errors, true);
         return {
             type: 12 /* Stagger */,
-            animation: visitDslNode(this, normalizeAnimationEntry(metadata.animation), context),
-            timings,
+            animation: visitDslNode(this, normalizeAnimationEntry(metadata.animation), context), timings,
             options: null
         };
     }
@@ -3616,9 +3565,7 @@ function createTimelineInstruction(element, keyframes, preStyleProps, postStyleP
         postStyleProps,
         duration,
         delay,
-        totalTime: duration + delay,
-        easing,
-        subTimeline
+        totalTime: duration + delay, easing, subTimeline
     };
 }
 
@@ -3663,15 +3610,11 @@ class ElementInstructionMap {
      * @param {?} element
      * @return {?}
      */
-    has(element) {
-        return this._map.has(element);
-    }
+    has(element) { return this._map.has(element); }
     /**
      * @return {?}
      */
-    clear() {
-        this._map.clear();
-    }
+    clear() { this._map.clear(); }
 }
 if (false) {}
 
@@ -4133,9 +4076,8 @@ class AnimationTimelineBuilderVisitor {
         const options = (/** @type {?} */ ((ast.options || {})));
         /** @type {?} */
         const delay = options.delay ? resolveTimingValue(options.delay) : 0;
-        if (delay &&
-            (context.previousNode.type === 6 /* Style */ ||
-                (startTime == 0 && context.currentTimeline.getCurrentStyleProperties().length))) {
+        if (delay && (context.previousNode.type === 6 /* Style */ ||
+            (startTime == 0 && context.currentTimeline.getCurrentStyleProperties().length))) {
             context.currentTimeline.snapshotCurrentStyles();
             context.previousNode = DEFAULT_NOOP_PREVIOUS_NODE;
         }
@@ -4259,9 +4201,7 @@ class AnimationTimelineContext {
     /**
      * @return {?}
      */
-    get params() {
-        return this.options.params;
-    }
+    get params() { return this.options.params; }
     /**
      * @param {?} options
      * @param {?=} skipIfExists
@@ -4317,9 +4257,7 @@ class AnimationTimelineContext {
                  * @param {?} name
                  * @return {?}
                  */
-                name => {
-                    params[name] = oldParams[name];
-                }));
+                name => { params[name] = oldParams[name]; }));
             }
         }
         return options;
@@ -4472,15 +4410,11 @@ class TimelineBuilder {
     /**
      * @return {?}
      */
-    getCurrentStyleProperties() {
-        return Object.keys(this._currentKeyframe);
-    }
+    getCurrentStyleProperties() { return Object.keys(this._currentKeyframe); }
     /**
      * @return {?}
      */
-    get currentTime() {
-        return this.startTime + this.duration;
-    }
+    get currentTime() { return this.startTime + this.duration; }
     /**
      * @param {?} delay
      * @return {?}
@@ -4555,9 +4489,7 @@ class TimelineBuilder {
     /**
      * @return {?}
      */
-    allowOnlyTimelineStyles() {
-        return this._currentEmptyStepKeyframe !== this._currentKeyframe;
-    }
+    allowOnlyTimelineStyles() { return this._currentEmptyStepKeyframe !== this._currentKeyframe; }
     /**
      * @param {?} easing
      * @return {?}
@@ -4661,9 +4593,7 @@ class TimelineBuilder {
     /**
      * @return {?}
      */
-    getFinalKeyframe() {
-        return this._keyframes.get(this.duration);
-    }
+    getFinalKeyframe() { return this._keyframes.get(this.duration); }
     /**
      * @return {?}
      */
@@ -4774,9 +4704,7 @@ class SubTimelineBuilder extends TimelineBuilder {
     /**
      * @return {?}
      */
-    containsAnimation() {
-        return this.keyframes.length > 1;
-    }
+    containsAnimation() { return this.keyframes.length > 1; }
     /**
      * @return {?}
      */
@@ -4868,9 +4796,7 @@ function flattenStyles(input, allStyles) {
              * @param {?} prop
              * @return {?}
              */
-            prop => {
-                styles[prop] = _angular_animations__WEBPACK_IMPORTED_MODULE_0__["AUTO_STYLE"];
-            }));
+            prop => { styles[prop] = _angular_animations__WEBPACK_IMPORTED_MODULE_0__["AUTO_STYLE"]; }));
         }
         else {
             copyStyles((/** @type {?} */ (token)), false, styles);
@@ -4897,7 +4823,7 @@ class Animation {
         const ast = buildAnimationAst(_driver, input, errors);
         if (errors.length) {
             /** @type {?} */
-            const errorMessage = `animation validation failed:\n${errors.join('\n')}`;
+            const errorMessage = `animation validation failed:\n${errors.join("\n")}`;
             throw new Error(errorMessage);
         }
         this._animationAst = ast;
@@ -4924,7 +4850,7 @@ class Animation {
         const result = buildAnimationTimelines(this._driver, element, this._animationAst, ENTER_CLASSNAME, LEAVE_CLASSNAME, start, dest, options, subInstructions, errors);
         if (errors.length) {
             /** @type {?} */
-            const errorMessage = `animation building failed:\n${errors.join('\n')}`;
+            const errorMessage = `animation building failed:\n${errors.join("\n")}`;
             throw new Error(errorMessage);
         }
         return result;
@@ -4960,9 +4886,7 @@ class NoopAnimationStyleNormalizer {
      * @param {?} errors
      * @return {?}
      */
-    normalizePropertyName(propertyName, errors) {
-        return propertyName;
-    }
+    normalizePropertyName(propertyName, errors) { return propertyName; }
     /**
      * @param {?} userProvidedProperty
      * @param {?} normalizedProperty
@@ -5163,18 +5087,14 @@ class AnimationTransitionFactory {
         /** @type {?} */
         const animationOptions = { params: Object.assign(Object.assign({}, transitionAnimationParams), nextAnimationParams) };
         /** @type {?} */
-        const timelines = skipAstBuild ?
-            [] :
-            buildAnimationTimelines(driver, element, this.ast.animation, enterClassName, leaveClassName, currentStateStyles, nextStateStyles, animationOptions, subInstructions, errors);
+        const timelines = skipAstBuild ? [] : buildAnimationTimelines(driver, element, this.ast.animation, enterClassName, leaveClassName, currentStateStyles, nextStateStyles, animationOptions, subInstructions, errors);
         /** @type {?} */
         let totalTime = 0;
         timelines.forEach((/**
          * @param {?} tl
          * @return {?}
          */
-        tl => {
-            totalTime = Math.max(tl.duration + tl.delay, totalTime);
-        }));
+        tl => { totalTime = Math.max(tl.duration + tl.delay, totalTime); }));
         if (errors.length) {
             return createTransitionInstruction(element, this._triggerName, currentState, nextState, isRemoval, currentStateStyles, nextStateStyles, [], [], preStyleMap, postStyleMap, totalTime, errors);
         }
@@ -5331,9 +5251,7 @@ class AnimationTrigger {
     /**
      * @return {?}
      */
-    get containsQueries() {
-        return this.ast.queryCount > 0;
-    }
+    get containsQueries() { return this.ast.queryCount > 0; }
     /**
      * @param {?} currentState
      * @param {?} nextState
@@ -5436,7 +5354,7 @@ class TimelineAnimationEngine {
         /** @type {?} */
         const ast = buildAnimationAst(this._driver, metadata, errors);
         if (errors.length) {
-            throw new Error(`Unable to build the animation due to the following errors: ${errors.join('\n')}`);
+            throw new Error(`Unable to build the animation due to the following errors: ${errors.join("\n")}`);
         }
         else {
             this._animations[id] = ast;
@@ -5492,7 +5410,7 @@ class TimelineAnimationEngine {
             instructions = [];
         }
         if (errors.length) {
-            throw new Error(`Unable to create the animation due to the following errors: ${errors.join('\n')}`);
+            throw new Error(`Unable to create the animation due to the following errors: ${errors.join("\n")}`);
         }
         autoStylesMap.forEach((/**
          * @param {?} styles
@@ -5504,9 +5422,7 @@ class TimelineAnimationEngine {
              * @param {?} prop
              * @return {?}
              */
-            prop => {
-                styles[prop] = this._driver.computeStyle(element, prop, _angular_animations__WEBPACK_IMPORTED_MODULE_0__["AUTO_STYLE"]);
-            }));
+            prop => { styles[prop] = this._driver.computeStyle(element, prop, _angular_animations__WEBPACK_IMPORTED_MODULE_0__["AUTO_STYLE"]); }));
         }));
         /** @type {?} */
         const players = instructions.map((/**
@@ -5703,9 +5619,7 @@ class StateValue {
     /**
      * @return {?}
      */
-    get params() {
-        return (/** @type {?} */ (this.options.params));
-    }
+    get params() { return (/** @type {?} */ (this.options.params)); }
     /**
      * @param {?} options
      * @return {?}
@@ -5926,9 +5840,7 @@ class AnimationTransitionNamespace {
             player.onStart((/**
              * @return {?}
              */
-            () => {
-                removeClass(element, QUEUED_CLASSNAME);
-            }));
+            () => { removeClass(element, QUEUED_CLASSNAME); }));
         }
         player.onDone((/**
          * @return {?}
@@ -5964,9 +5876,7 @@ class AnimationTransitionNamespace {
          * @param {?} element
          * @return {?}
          */
-        (stateMap, element) => {
-            delete stateMap[name];
-        }));
+        (stateMap, element) => { delete stateMap[name]; }));
         this._elementListeners.forEach((/**
          * @param {?} listeners
          * @param {?} element
@@ -5977,9 +5887,7 @@ class AnimationTransitionNamespace {
              * @param {?} entry
              * @return {?}
              */
-            entry => {
-                return entry.name != name;
-            })));
+            entry => { return entry.name != name; })));
         }));
     }
     /**
@@ -6202,9 +6110,7 @@ class AnimationTransitionNamespace {
      * @param {?} parent
      * @return {?}
      */
-    insertNode(element, parent) {
-        addClass(element, this._hostClassName);
-    }
+    insertNode(element, parent) { addClass(element, this._hostClassName); }
     /**
      * @param {?} microtaskId
      * @return {?}
@@ -6347,9 +6253,7 @@ class TransitionAnimationEngine {
      * @param {?} context
      * @return {?}
      */
-    _onRemovalComplete(element, context) {
-        this.onRemovalComplete(element, context);
-    }
+    _onRemovalComplete(element, context) { this.onRemovalComplete(element, context); }
     /**
      * @return {?}
      */
@@ -6487,9 +6391,7 @@ class TransitionAnimationEngine {
      * @param {?} id
      * @return {?}
      */
-    _fetchNamespace(id) {
-        return this._namespaceLookup[id];
-    }
+    _fetchNamespace(id) { return this._namespaceLookup[id]; }
     /**
      * @param {?} element
      * @return {?}
@@ -6587,9 +6489,7 @@ class TransitionAnimationEngine {
      * @param {?} element
      * @return {?}
      */
-    collectEnterElement(element) {
-        this.collectedEnterElements.push(element);
-    }
+    collectEnterElement(element) { this.collectedEnterElements.push(element); }
     /**
      * @param {?} element
      * @param {?} value
@@ -6645,8 +6545,11 @@ class TransitionAnimationEngine {
      */
     markElementAsRemoved(namespaceId, element, hasAnimation, context) {
         this.collectedLeaveElements.push(element);
-        element[REMOVAL_FLAG] =
-            { namespaceId, setForRemoval: context, hasAnimation, removedBeforeQueried: false };
+        element[REMOVAL_FLAG] = {
+            namespaceId,
+            setForRemoval: context, hasAnimation,
+            removedBeforeQueried: false
+        };
     }
     /**
      * @param {?} namespaceId
@@ -6852,13 +6755,11 @@ class TransitionAnimationEngine {
                 optimizeGroupPlayer(players).onDone((/**
                  * @return {?}
                  */
-                () => {
-                    quietFns.forEach((/**
-                     * @param {?} fn
-                     * @return {?}
-                     */
-                    fn => fn()));
-                }));
+                () => { quietFns.forEach((/**
+                 * @param {?} fn
+                 * @return {?}
+                 */
+                fn => fn())); }));
             }
             else {
                 quietFns.forEach((/**
@@ -7020,9 +6921,7 @@ class TransitionAnimationEngine {
              * @param {?} element
              * @return {?}
              */
-            element => {
-                this.processLeaveNode(element);
-            }));
+            element => { this.processLeaveNode(element); }));
         }));
         /** @type {?} */
         const allPlayers = [];
@@ -7471,16 +7370,12 @@ class TransitionAnimationEngine {
      * @param {?} callback
      * @return {?}
      */
-    afterFlush(callback) {
-        this._flushFns.push(callback);
-    }
+    afterFlush(callback) { this._flushFns.push(callback); }
     /**
      * @param {?} callback
      * @return {?}
      */
-    afterFlushAnimationsDone(callback) {
-        this._whenQuietFns.push(callback);
-    }
+    afterFlushAnimationsDone(callback) { this._whenQuietFns.push(callback); }
     /**
      * @private
      * @param {?} element
@@ -7694,9 +7589,7 @@ class TransitionAnimationEngine {
          * @param {?} element
          * @return {?}
          */
-        element => {
-            getOrSetAsInMap(skippedPlayersMap, element, []).push(player);
-        }));
+        element => { getOrSetAsInMap(skippedPlayersMap, element, []).push(player); }));
         return player;
     }
     /**
@@ -7762,16 +7655,12 @@ class TransitionAnimationPlayer {
     /**
      * @return {?}
      */
-    getRealPlayer() {
-        return this._player;
-    }
+    getRealPlayer() { return this._player; }
     /**
      * @param {?} totalTime
      * @return {?}
      */
-    overrideTotalTime(totalTime) {
-        ((/** @type {?} */ (this))).totalTime = totalTime;
-    }
+    overrideTotalTime(totalTime) { ((/** @type {?} */ (this))).totalTime = totalTime; }
     /**
      * @param {?} player
      * @return {?}
@@ -7836,39 +7725,27 @@ class TransitionAnimationPlayer {
     /**
      * @return {?}
      */
-    init() {
-        this._player.init();
-    }
+    init() { this._player.init(); }
     /**
      * @return {?}
      */
-    hasStarted() {
-        return this.queued ? false : this._player.hasStarted();
-    }
+    hasStarted() { return this.queued ? false : this._player.hasStarted(); }
     /**
      * @return {?}
      */
-    play() {
-        !this.queued && this._player.play();
-    }
+    play() { !this.queued && this._player.play(); }
     /**
      * @return {?}
      */
-    pause() {
-        !this.queued && this._player.pause();
-    }
+    pause() { !this.queued && this._player.pause(); }
     /**
      * @return {?}
      */
-    restart() {
-        !this.queued && this._player.restart();
-    }
+    restart() { !this.queued && this._player.restart(); }
     /**
      * @return {?}
      */
-    finish() {
-        this._player.finish();
-    }
+    finish() { this._player.finish(); }
     /**
      * @return {?}
      */
@@ -7879,9 +7756,7 @@ class TransitionAnimationPlayer {
     /**
      * @return {?}
      */
-    reset() {
-        !this.queued && this._player.reset();
-    }
+    reset() { !this.queued && this._player.reset(); }
     /**
      * @param {?} p
      * @return {?}
@@ -7894,9 +7769,7 @@ class TransitionAnimationPlayer {
     /**
      * @return {?}
      */
-    getPosition() {
-        return this.queued ? 0 : this._player.getPosition();
-    }
+    getPosition() { return this.queued ? 0 : this._player.getPosition(); }
     /**
      * \@internal
      * @param {?} phaseName
@@ -8293,7 +8166,7 @@ class AnimationEngine {
             /** @type {?} */
             const ast = (/** @type {?} */ (buildAnimationAst(this._driver, (/** @type {?} */ (metadata)), errors)));
             if (errors.length) {
-                throw new Error(`The animation trigger "${name}" has failed to build due to the following errors:\n - ${errors.join('\n - ')}`);
+                throw new Error(`The animation trigger "${name}" has failed to build due to the following errors:\n - ${errors.join("\n - ")}`);
             }
             trigger = buildTrigger(name, ast);
             this._triggerCache[cacheKey] = trigger;
@@ -8382,9 +8255,7 @@ class AnimationEngine {
      * @param {?=} microtaskId
      * @return {?}
      */
-    flush(microtaskId = -1) {
-        this._transitionEngine.flush(microtaskId);
-    }
+    flush(microtaskId = -1) { this._transitionEngine.flush(microtaskId); }
     /**
      * @return {?}
      */
@@ -8395,9 +8266,7 @@ class AnimationEngine {
     /**
      * @return {?}
      */
-    whenRenderingDone() {
-        return this._transitionEngine.whenRenderingDone();
-    }
+    whenRenderingDone() { return this._transitionEngine.whenRenderingDone(); }
 }
 if (false) {}
 
@@ -8602,15 +8471,11 @@ class ElementAnimationStyleHandler {
     /**
      * @return {?}
      */
-    pause() {
-        playPauseAnimation(this._element, this._name, 'paused');
-    }
+    pause() { playPauseAnimation(this._element, this._name, 'paused'); }
     /**
      * @return {?}
      */
-    resume() {
-        playPauseAnimation(this._element, this._name, 'running');
-    }
+    resume() { playPauseAnimation(this._element, this._name, 'running'); }
     /**
      * @param {?} position
      * @return {?}
@@ -8624,9 +8489,7 @@ class ElementAnimationStyleHandler {
     /**
      * @return {?}
      */
-    getPosition() {
-        return this._position;
-    }
+    getPosition() { return this._position; }
     /**
      * @private
      * @param {?} event
@@ -8807,10 +8670,7 @@ const DEFAULT_FILL_MODE = 'forwards';
 const DEFAULT_EASING = 'linear';
 /** @enum {number} */
 const AnimatorControlState = {
-    INITIALIZED: 1,
-    STARTED: 2,
-    FINISHED: 3,
-    DESTROYED: 4,
+    INITIALIZED: 1, STARTED: 2, FINISHED: 3, DESTROYED: 4,
 };
 class CssKeyframesPlayer {
     /**
@@ -8845,23 +8705,17 @@ class CssKeyframesPlayer {
      * @param {?} fn
      * @return {?}
      */
-    onStart(fn) {
-        this._onStartFns.push(fn);
-    }
+    onStart(fn) { this._onStartFns.push(fn); }
     /**
      * @param {?} fn
      * @return {?}
      */
-    onDone(fn) {
-        this._onDoneFns.push(fn);
-    }
+    onDone(fn) { this._onDoneFns.push(fn); }
     /**
      * @param {?} fn
      * @return {?}
      */
-    onDestroy(fn) {
-        this._onDestroyFns.push(fn);
-    }
+    onDestroy(fn) { this._onDestroyFns.push(fn); }
     /**
      * @return {?}
      */
@@ -8926,21 +8780,15 @@ class CssKeyframesPlayer {
      * @param {?} value
      * @return {?}
      */
-    setPosition(value) {
-        this._styler.setPosition(value);
-    }
+    setPosition(value) { this._styler.setPosition(value); }
     /**
      * @return {?}
      */
-    getPosition() {
-        return this._styler.getPosition();
-    }
+    getPosition() { return this._styler.getPosition(); }
     /**
      * @return {?}
      */
-    hasStarted() {
-        return this._state >= 2 /* STARTED */;
-    }
+    hasStarted() { return this._state >= 2 /* STARTED */; }
     /**
      * @return {?}
      */
@@ -9134,9 +8982,7 @@ class CssKeyframesDriver {
      * @param {?} prop
      * @return {?}
      */
-    validateStyleProperty(prop) {
-        return validateStyleProperty(prop);
-    }
+    validateStyleProperty(prop) { return validateStyleProperty(prop); }
     /**
      * @param {?} element
      * @param {?} selector
@@ -9150,9 +8996,7 @@ class CssKeyframesDriver {
      * @param {?} elm2
      * @return {?}
      */
-    containsElement(elm1, elm2) {
-        return containsElement(elm1, elm2);
-    }
+    containsElement(elm1, elm2) { return containsElement(elm1, elm2); }
     /**
      * @param {?} element
      * @param {?} selector
@@ -9435,23 +9279,17 @@ class WebAnimationsPlayer {
      * @param {?} fn
      * @return {?}
      */
-    onStart(fn) {
-        this._onStartFns.push(fn);
-    }
+    onStart(fn) { this._onStartFns.push(fn); }
     /**
      * @param {?} fn
      * @return {?}
      */
-    onDone(fn) {
-        this._onDoneFns.push(fn);
-    }
+    onDone(fn) { this._onDoneFns.push(fn); }
     /**
      * @param {?} fn
      * @return {?}
      */
-    onDestroy(fn) {
-        this._onDestroyFns.push(fn);
-    }
+    onDestroy(fn) { this._onDestroyFns.push(fn); }
     /**
      * @return {?}
      */
@@ -9517,9 +9355,7 @@ class WebAnimationsPlayer {
     /**
      * @return {?}
      */
-    hasStarted() {
-        return this._started;
-    }
+    hasStarted() { return this._started; }
     /**
      * @return {?}
      */
@@ -9543,21 +9379,15 @@ class WebAnimationsPlayer {
      * @param {?} p
      * @return {?}
      */
-    setPosition(p) {
-        this.domPlayer.currentTime = p * this.time;
-    }
+    setPosition(p) { this.domPlayer.currentTime = p * this.time; }
     /**
      * @return {?}
      */
-    getPosition() {
-        return this.domPlayer.currentTime / this.time;
-    }
+    getPosition() { return this.domPlayer.currentTime / this.time; }
     /**
      * @return {?}
      */
-    get totalTime() {
-        return this._delay + this._duration;
-    }
+    get totalTime() { return this._delay + this._duration; }
     /**
      * @return {?}
      */
@@ -9610,9 +9440,7 @@ class WebAnimationsDriver {
      * @param {?} prop
      * @return {?}
      */
-    validateStyleProperty(prop) {
-        return validateStyleProperty(prop);
-    }
+    validateStyleProperty(prop) { return validateStyleProperty(prop); }
     /**
      * @param {?} element
      * @param {?} selector
@@ -9626,9 +9454,7 @@ class WebAnimationsDriver {
      * @param {?} elm2
      * @return {?}
      */
-    containsElement(elm1, elm2) {
-        return containsElement(elm1, elm2);
-    }
+    containsElement(elm1, elm2) { return containsElement(elm1, elm2); }
     /**
      * @param {?} element
      * @param {?} selector
@@ -9651,9 +9477,7 @@ class WebAnimationsDriver {
      * @param {?} supported
      * @return {?}
      */
-    overrideWebAnimationsSupport(supported) {
-        this._isNativeImpl = supported;
-    }
+    overrideWebAnimationsSupport(supported) { this._isNativeImpl = supported; }
     /**
      * @param {?} element
      * @param {?} keyframes
@@ -86497,6 +86321,623 @@ var VERSION = "1.1.4";
 
 /***/ }),
 
+/***/ "./node_modules/ckeditor4-angular/__ivy_ngcc__/fesm2015/ckeditor4-angular.js":
+/*!***********************************************************************************!*\
+  !*** ./node_modules/ckeditor4-angular/__ivy_ngcc__/fesm2015/ckeditor4-angular.js ***!
+  \***********************************************************************************/
+/*! exports provided: CKEditorComponent, CKEditorModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CKEditorComponent", function() { return CKEditorComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CKEditorModule", function() { return CKEditorModule; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/common.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/__ivy_ngcc__/fesm2015/forms.js");
+/* harmony import */ var load_script__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! load-script */ "./node_modules/load-script/index.js");
+/* harmony import */ var load_script__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(load_script__WEBPACK_IMPORTED_MODULE_4__);
+
+
+
+
+
+
+/**
+ * @license Copyright (c) 2003-2020, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md.
+ */
+
+
+function CKEditorComponent_ng_template_0_Template(rf, ctx) { }
+let promise;
+function getEditorNamespace(editorURL) {
+    if (editorURL.length < 1) {
+        throw new TypeError('CKEditor URL must be a non-empty string.');
+    }
+    if ('CKEDITOR' in window) {
+        return Promise.resolve(CKEDITOR);
+    }
+    else if (!promise) {
+        promise = new Promise((scriptResolve, scriptReject) => {
+            load_script__WEBPACK_IMPORTED_MODULE_4___default()(editorURL, err => {
+                if (err) {
+                    scriptReject(err);
+                }
+                else {
+                    scriptResolve(CKEDITOR);
+                    promise = undefined;
+                }
+            });
+        });
+    }
+    return promise;
+}
+
+/**
+ * @license Copyright (c) 2003-2020, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md.
+ */
+var CKEditorComponent_1;
+let CKEditorComponent = CKEditorComponent_1 = class CKEditorComponent {
+    constructor(elementRef, ngZone) {
+        this.elementRef = elementRef;
+        this.ngZone = ngZone;
+        /**
+         * Tag name of the editor component.
+         *
+         * The default tag is `textarea`.
+         */
+        this.tagName = 'textarea';
+        /**
+         * The type of the editor interface.
+         *
+         * By default editor interface will be initialized as `divarea` editor which is an inline editor with fixed UI.
+         * You can change interface type by choosing between `divarea` and `inline` editor interface types.
+         *
+         * See https://ckeditor.com/docs/ckeditor4/latest/guide/dev_uitypes.html
+         * and https://ckeditor.com/docs/ckeditor4/latest/examples/fixedui.html
+         * to learn more.
+         */
+        this.type = "classic" /* CLASSIC */;
+        /**
+         * Fires when the editor is ready. It corresponds with the `editor#instanceReady`
+         * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-instanceReady
+         * event.
+         */
+        this.ready = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+        /**
+         * Fires when the editor data is loaded, e.g. after calling setData()
+         * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-setData
+         * editor's method. It corresponds with the `editor#dataReady`
+         * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-dataReady event.
+         */
+        this.dataReady = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+        /**
+         * Fires when the content of the editor has changed. It corresponds with the `editor#change`
+         * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-change
+         * event. For performance reasons this event may be called even when data didn't really changed.
+         * Please note that this event will only be fired when `undo` plugin is loaded. If you need to
+         * listen for editor changes (e.g. for two-way data binding), use `dataChange` event instead.
+         */
+        this.change = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+        /**
+         * Fires when the content of the editor has changed. In contrast to `change` - only emits when
+         * data really changed thus can be successfully used with `[data]` and two way `[(data)]` binding.
+         *
+         * See more: https://angular.io/guide/template-syntax#two-way-binding---
+         */
+        this.dataChange = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+        /**
+         * Fires when the native drop event occurs. It corresponds with the `editor#dragstart`
+         * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-dragstart
+         * event.
+         */
+        this.dragStart = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+        /**
+         * Fires when the native drop event occurs. It corresponds with the `editor#dragend`
+         * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-dragend
+         * event.
+         */
+        this.dragEnd = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+        /**
+         * Fires when the native drop event occurs. It corresponds with the `editor#drop`
+         * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-drop
+         * event.
+         */
+        this.drop = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+        /**
+         * Fires when the file loader response is received. It corresponds with the `editor#fileUploadResponse`
+         * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-fileUploadResponse
+         * event.
+         */
+        this.fileUploadResponse = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+        /**
+         * Fires when the file loader should send XHR. It corresponds with the `editor#fileUploadRequest`
+         * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-fileUploadRequest
+         * event.
+         */
+        this.fileUploadRequest = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+        /**
+         * Fires when the editing view of the editor is focused. It corresponds with the `editor#focus`
+         * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-focus
+         * event.
+         */
+        this.focus = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+        /**
+         * Fires after the user initiated a paste action, but before the data is inserted.
+         * It corresponds with the `editor#paste`
+         * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-paste
+         * event.
+         */
+        this.paste = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+        /**
+         * Fires after the `paste` event if content was modified. It corresponds with the `editor#afterPaste`
+         * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-afterPaste
+         * event.
+         */
+        this.afterPaste = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+        /**
+         * Fires when the editing view of the editor is blurred. It corresponds with the `editor#blur`
+         * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-blur
+         * event.
+         */
+        this.blur = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+        /**
+         * If the component is read–only before the editor instance is created, it remembers that state,
+         * so the editor can become read–only once it is ready.
+         */
+        this._readOnly = null;
+        this._data = null;
+        this._destroyed = false;
+        /**
+         * CKEditor 4 script url address. Script will be loaded only if CKEDITOR namespace is missing.
+         *
+         * Defaults to 'https://cdn.ckeditor.com/4.14.1/standard-all/ckeditor.js'
+         */
+        this.editorUrl = 'https://cdn.ckeditor.com/4.14.1/standard-all/ckeditor.js';
+    }
+    /**
+     * Keeps track of the editor's data.
+     *
+     * It's also decorated as an input which is useful when not using the ngModel.
+     *
+     * See https://angular.io/api/forms/NgModel to learn more.
+     */
+    set data(data) {
+        if (data === this._data) {
+            return;
+        }
+        if (this.instance) {
+            this.instance.setData(data);
+            // Data may be changed by ACF.
+            this._data = this.instance.getData();
+            return;
+        }
+        this._data = data;
+    }
+    get data() {
+        return this._data;
+    }
+    /**
+     * When set `true`, the editor becomes read-only.
+     * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#property-readOnly
+     * to learn more.
+     */
+    set readOnly(isReadOnly) {
+        if (this.instance) {
+            this.instance.setReadOnly(isReadOnly);
+            return;
+        }
+        // Delay setting read-only state until editor initialization.
+        this._readOnly = isReadOnly;
+    }
+    get readOnly() {
+        if (this.instance) {
+            return this.instance.readOnly;
+        }
+        return this._readOnly;
+    }
+    ngAfterViewInit() {
+        getEditorNamespace(this.editorUrl).then(() => {
+            // Check if component instance was destroyed before `ngAfterViewInit` call (#110).
+            // Here, `this.instance` is still not initialized and so additional flag is needed.
+            if (this._destroyed) {
+                return;
+            }
+            this.ngZone.runOutsideAngular(this.createEditor.bind(this));
+        }).catch(window.console.error);
+    }
+    ngOnDestroy() {
+        this._destroyed = true;
+        this.ngZone.runOutsideAngular(() => {
+            if (this.instance) {
+                this.instance.destroy();
+                this.instance = null;
+            }
+        });
+    }
+    writeValue(value) {
+        this.data = value;
+    }
+    registerOnChange(callback) {
+        this.onChange = callback;
+    }
+    registerOnTouched(callback) {
+        this.onTouched = callback;
+    }
+    createEditor() {
+        const element = document.createElement(this.tagName);
+        this.elementRef.nativeElement.appendChild(element);
+        if (this.type === "divarea" /* DIVAREA */) {
+            this.config = this.ensureDivareaPlugin(this.config || {});
+        }
+        const instance = this.type === "inline" /* INLINE */
+            ? CKEDITOR.inline(element, this.config)
+            : CKEDITOR.replace(element, this.config);
+        instance.once('instanceReady', evt => {
+            this.instance = instance;
+            // Read only state may change during instance initialization.
+            this.readOnly = this._readOnly !== null ? this._readOnly : this.instance.readOnly;
+            this.subscribe(this.instance);
+            const undo = instance.undoManager;
+            if (this.data !== null) {
+                undo && undo.lock();
+                instance.setData(this.data, { callback: () => {
+                        // Locking undoManager prevents 'change' event.
+                        // Trigger it manually to updated bound data.
+                        if (this.data !== instance.getData()) {
+                            undo ? instance.fire('change') : instance.fire('dataReady');
+                        }
+                        undo && undo.unlock();
+                        this.ngZone.run(() => {
+                            this.ready.emit(evt);
+                        });
+                    } });
+            }
+            else {
+                this.ngZone.run(() => {
+                    this.ready.emit(evt);
+                });
+            }
+        });
+    }
+    subscribe(editor) {
+        editor.on('focus', evt => {
+            this.ngZone.run(() => {
+                this.focus.emit(evt);
+            });
+        });
+        editor.on('paste', evt => {
+            this.ngZone.run(() => {
+                this.paste.emit(evt);
+            });
+        });
+        editor.on('afterPaste', evt => {
+            this.ngZone.run(() => {
+                this.afterPaste.emit(evt);
+            });
+        });
+        editor.on('dragend', evt => {
+            this.ngZone.run(() => {
+                this.dragEnd.emit(evt);
+            });
+        });
+        editor.on('dragstart', evt => {
+            this.ngZone.run(() => {
+                this.dragStart.emit(evt);
+            });
+        });
+        editor.on('drop', evt => {
+            this.ngZone.run(() => {
+                this.drop.emit(evt);
+            });
+        });
+        editor.on('fileUploadRequest', evt => {
+            this.ngZone.run(() => {
+                this.fileUploadRequest.emit(evt);
+            });
+        });
+        editor.on('fileUploadResponse', evt => {
+            this.ngZone.run(() => {
+                this.fileUploadResponse.emit(evt);
+            });
+        });
+        editor.on('blur', evt => {
+            this.ngZone.run(() => {
+                if (this.onTouched) {
+                    this.onTouched();
+                }
+                this.blur.emit(evt);
+            });
+        });
+        editor.on('dataReady', this.propagateChange, this);
+        if (this.instance.undoManager) {
+            editor.on('change', this.propagateChange, this);
+        }
+        // If 'undo' plugin is not loaded, listen to 'selectionCheck' event instead. (#54).
+        else {
+            editor.on('selectionCheck', this.propagateChange, this);
+        }
+    }
+    propagateChange(event) {
+        this.ngZone.run(() => {
+            const newData = this.instance.getData();
+            if (event.name === 'change') {
+                this.change.emit(event);
+            }
+            else if (event.name === 'dataReady') {
+                this.dataReady.emit(event);
+            }
+            if (newData === this.data) {
+                return;
+            }
+            this._data = newData;
+            this.dataChange.emit(newData);
+            if (this.onChange) {
+                this.onChange(newData);
+            }
+        });
+    }
+    ensureDivareaPlugin(config) {
+        let { extraPlugins, removePlugins } = config;
+        extraPlugins = this.removePlugin(extraPlugins, 'divarea') || '';
+        extraPlugins = extraPlugins.concat(typeof extraPlugins === 'string' ? ',divarea' : 'divarea');
+        if (removePlugins && removePlugins.includes('divarea')) {
+            removePlugins = this.removePlugin(removePlugins, 'divarea');
+            console.warn('[CKEDITOR] divarea plugin is required to initialize editor using Angular integration.');
+        }
+        return Object.assign({}, config, { extraPlugins, removePlugins });
+    }
+    removePlugin(plugins, toRemove) {
+        if (!plugins) {
+            return null;
+        }
+        const isString = typeof plugins === 'string';
+        if (isString) {
+            plugins = plugins.split(',');
+        }
+        plugins = plugins.filter(plugin => plugin !== toRemove);
+        if (isString) {
+            plugins = plugins.join(',');
+        }
+        return plugins;
+    }
+};
+CKEditorComponent.ɵfac = function CKEditorComponent_Factory(t) { return new (t || CKEditorComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_angular_core__WEBPACK_IMPORTED_MODULE_1__["ElementRef"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgZone"])); };
+CKEditorComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineComponent"]({ type: CKEditorComponent, selectors: [["ckeditor"]], inputs: { tagName: "tagName", type: "type", editorUrl: "editorUrl", data: "data", readOnly: "readOnly", config: "config" }, outputs: { ready: "ready", dataReady: "dataReady", change: "change", dataChange: "dataChange", dragStart: "dragStart", dragEnd: "dragEnd", drop: "drop", fileUploadResponse: "fileUploadResponse", fileUploadRequest: "fileUploadRequest", focus: "focus", paste: "paste", afterPaste: "afterPaste", blur: "blur" }, features: [_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵProvidersFeature"]([
+            {
+                provide: _angular_forms__WEBPACK_IMPORTED_MODULE_3__["NG_VALUE_ACCESSOR"],
+                useExisting: Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["forwardRef"])(() => CKEditorComponent_1),
+                multi: true
+            }
+        ])], decls: 1, vars: 0, template: function CKEditorComponent_Template(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtemplate"](0, CKEditorComponent_ng_template_0_Template, 0, 0, "ng-template");
+    } }, encapsulation: 2 });
+CKEditorComponent.ctorParameters = () => [
+    { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ElementRef"] },
+    { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgZone"] }
+];
+Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])()
+], CKEditorComponent.prototype, "config", void 0);
+Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])()
+], CKEditorComponent.prototype, "tagName", void 0);
+Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])()
+], CKEditorComponent.prototype, "type", void 0);
+Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])()
+], CKEditorComponent.prototype, "data", null);
+Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])()
+], CKEditorComponent.prototype, "readOnly", null);
+Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"])()
+], CKEditorComponent.prototype, "ready", void 0);
+Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"])()
+], CKEditorComponent.prototype, "dataReady", void 0);
+Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"])()
+], CKEditorComponent.prototype, "change", void 0);
+Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"])()
+], CKEditorComponent.prototype, "dataChange", void 0);
+Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"])()
+], CKEditorComponent.prototype, "dragStart", void 0);
+Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"])()
+], CKEditorComponent.prototype, "dragEnd", void 0);
+Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"])()
+], CKEditorComponent.prototype, "drop", void 0);
+Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"])()
+], CKEditorComponent.prototype, "fileUploadResponse", void 0);
+Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"])()
+], CKEditorComponent.prototype, "fileUploadRequest", void 0);
+Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"])()
+], CKEditorComponent.prototype, "focus", void 0);
+Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"])()
+], CKEditorComponent.prototype, "paste", void 0);
+Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"])()
+], CKEditorComponent.prototype, "afterPaste", void 0);
+Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"])()
+], CKEditorComponent.prototype, "blur", void 0);
+Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])()
+], CKEditorComponent.prototype, "editorUrl", void 0);
+
+/**
+ * @license Copyright (c) 2003-2020, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md.
+ */
+
+/**
+ * @license Copyright (c) 2003-2020, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md.
+ */
+let CKEditorModule = class CKEditorModule {
+};
+CKEditorModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineNgModule"]({ type: CKEditorModule });
+CKEditorModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineInjector"]({ factory: function CKEditorModule_Factory(t) { return new (t || CKEditorModule)(); }, imports: [[_angular_forms__WEBPACK_IMPORTED_MODULE_3__["FormsModule"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["CommonModule"]]] });
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵsetClassMetadata"](CKEditorComponent, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"],
+        args: [{
+                selector: 'ckeditor',
+                template: '<ng-template></ng-template>',
+                providers: [
+                    {
+                        provide: _angular_forms__WEBPACK_IMPORTED_MODULE_3__["NG_VALUE_ACCESSOR"],
+                        useExisting: Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["forwardRef"])(() => CKEditorComponent_1),
+                        multi: true
+                    }
+                ]
+            }]
+    }], function () { return [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ElementRef"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgZone"] }]; }, { tagName: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"]
+        }], type: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"]
+        }], ready: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"]
+        }], dataReady: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"]
+        }], change: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"]
+        }], dataChange: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"]
+        }], dragStart: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"]
+        }], dragEnd: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"]
+        }], drop: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"]
+        }], fileUploadResponse: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"]
+        }], fileUploadRequest: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"]
+        }], focus: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"]
+        }], paste: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"]
+        }], afterPaste: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"]
+        }], blur: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"]
+        }], editorUrl: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"]
+        }], data: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"]
+        }], readOnly: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"]
+        }], config: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"]
+        }] }); })();
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵsetNgModuleScope"](CKEditorModule, { declarations: function () { return [CKEditorComponent]; }, imports: function () { return [_angular_forms__WEBPACK_IMPORTED_MODULE_3__["FormsModule"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["CommonModule"]]; }, exports: function () { return [CKEditorComponent]; } }); })();
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵsetClassMetadata"](CKEditorModule, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"],
+        args: [{
+                imports: [_angular_forms__WEBPACK_IMPORTED_MODULE_3__["FormsModule"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["CommonModule"]],
+                declarations: [CKEditorComponent],
+                exports: [CKEditorComponent]
+            }]
+    }], null, null); })();
+
+/**
+ * Generated bundle index. Do not edit.
+ */
+
+
+
+//# sourceMappingURL=ckeditor4-angular.js.map
+
+/***/ }),
+
+/***/ "./node_modules/load-script/index.js":
+/*!*******************************************!*\
+  !*** ./node_modules/load-script/index.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+
+module.exports = function load (src, opts, cb) {
+  var head = document.head || document.getElementsByTagName('head')[0]
+  var script = document.createElement('script')
+
+  if (typeof opts === 'function') {
+    cb = opts
+    opts = {}
+  }
+
+  opts = opts || {}
+  cb = cb || function() {}
+
+  script.type = opts.type || 'text/javascript'
+  script.charset = opts.charset || 'utf8';
+  script.async = 'async' in opts ? !!opts.async : true
+  script.src = src
+
+  if (opts.attrs) {
+    setAttributes(script, opts.attrs)
+  }
+
+  if (opts.text) {
+    script.text = '' + opts.text
+  }
+
+  var onend = 'onload' in script ? stdOnEnd : ieOnEnd
+  onend(script, cb)
+
+  // some good legacy browsers (firefox) fail the 'in' detection above
+  // so as a fallback we always set onload
+  // old IE will ignore this and new IE will set onload
+  if (!script.onload) {
+    stdOnEnd(script, cb);
+  }
+
+  head.appendChild(script)
+}
+
+function setAttributes(script, attrs) {
+  for (var attr in attrs) {
+    script.setAttribute(attr, attrs[attr]);
+  }
+}
+
+function stdOnEnd (script, cb) {
+  script.onload = function () {
+    this.onerror = this.onload = null
+    cb(null, script)
+  }
+  script.onerror = function () {
+    // this.onload = null here is necessary
+    // because even IE9 works not like others
+    this.onerror = this.onload = null
+    cb(new Error('Failed to load ' + this.src), script)
+  }
+}
+
+function ieOnEnd (script, cb) {
+  script.onreadystatechange = function () {
+    if (this.readyState != 'complete' && this.readyState != 'loaded') return
+    this.onreadystatechange = null
+    cb(null, script) // there is no way to catch loading errors in IE8
+  }
+}
+
+
+/***/ }),
+
 /***/ "./node_modules/ngx-print/__ivy_ngcc__/fesm2015/ngx-print.js":
 /*!*******************************************************************!*\
   !*** ./node_modules/ngx-print/__ivy_ngcc__/fesm2015/ngx-print.js ***!
@@ -99181,6 +99622,260 @@ __webpack_require__.r(__webpack_exports__);
 
 
 //# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ "./node_modules/tslib/tslib.es6.js":
+/*!*****************************************!*\
+  !*** ./node_modules/tslib/tslib.es6.js ***!
+  \*****************************************/
+/*! exports provided: __extends, __assign, __rest, __decorate, __param, __metadata, __awaiter, __generator, __createBinding, __exportStar, __values, __read, __spread, __spreadArrays, __await, __asyncGenerator, __asyncDelegator, __asyncValues, __makeTemplateObject, __importStar, __importDefault, __classPrivateFieldGet, __classPrivateFieldSet */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__extends", function() { return __extends; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__assign", function() { return __assign; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__rest", function() { return __rest; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__decorate", function() { return __decorate; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__param", function() { return __param; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__metadata", function() { return __metadata; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__awaiter", function() { return __awaiter; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__generator", function() { return __generator; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__createBinding", function() { return __createBinding; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__exportStar", function() { return __exportStar; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__values", function() { return __values; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__read", function() { return __read; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__spread", function() { return __spread; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__spreadArrays", function() { return __spreadArrays; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__await", function() { return __await; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__asyncGenerator", function() { return __asyncGenerator; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__asyncDelegator", function() { return __asyncDelegator; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__asyncValues", function() { return __asyncValues; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__makeTemplateObject", function() { return __makeTemplateObject; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__importStar", function() { return __importStar; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__importDefault", function() { return __importDefault; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__classPrivateFieldGet", function() { return __classPrivateFieldGet; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__classPrivateFieldSet", function() { return __classPrivateFieldSet; });
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+/* global Reflect, Promise */
+
+var extendStatics = function(d, b) {
+    extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return extendStatics(d, b);
+};
+
+function __extends(d, b) {
+    extendStatics(d, b);
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+}
+
+var __assign = function() {
+    __assign = Object.assign || function __assign(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+        }
+        return t;
+    }
+    return __assign.apply(this, arguments);
+}
+
+function __rest(s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+}
+
+function __decorate(decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+}
+
+function __param(paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+}
+
+function __metadata(metadataKey, metadataValue) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
+}
+
+function __awaiter(thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+}
+
+function __generator(thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+}
+
+function __createBinding(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}
+
+function __exportStar(m, exports) {
+    for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+
+function __values(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+}
+
+function __read(o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+}
+
+function __spread() {
+    for (var ar = [], i = 0; i < arguments.length; i++)
+        ar = ar.concat(__read(arguments[i]));
+    return ar;
+}
+
+function __spreadArrays() {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+};
+
+function __await(v) {
+    return this instanceof __await ? (this.v = v, this) : new __await(v);
+}
+
+function __asyncGenerator(thisArg, _arguments, generator) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var g = generator.apply(thisArg, _arguments || []), i, q = [];
+    return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i;
+    function verb(n) { if (g[n]) i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; }
+    function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
+    function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r); }
+    function fulfill(value) { resume("next", value); }
+    function reject(value) { resume("throw", value); }
+    function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
+}
+
+function __asyncDelegator(o) {
+    var i, p;
+    return i = {}, verb("next"), verb("throw", function (e) { throw e; }), verb("return"), i[Symbol.iterator] = function () { return this; }, i;
+    function verb(n, f) { i[n] = o[n] ? function (v) { return (p = !p) ? { value: __await(o[n](v)), done: n === "return" } : f ? f(v) : v; } : f; }
+}
+
+function __asyncValues(o) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var m = o[Symbol.asyncIterator], i;
+    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
+    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
+    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
+}
+
+function __makeTemplateObject(cooked, raw) {
+    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
+    return cooked;
+};
+
+function __importStar(mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result.default = mod;
+    return result;
+}
+
+function __importDefault(mod) {
+    return (mod && mod.__esModule) ? mod : { default: mod };
+}
+
+function __classPrivateFieldGet(receiver, privateMap) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to get private field on non-instance");
+    }
+    return privateMap.get(receiver);
+}
+
+function __classPrivateFieldSet(receiver, privateMap, value) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to set private field on non-instance");
+    }
+    privateMap.set(receiver, value);
+    return value;
+}
+
 
 /***/ })
 

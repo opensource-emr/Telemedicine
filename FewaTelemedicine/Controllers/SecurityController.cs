@@ -1,4 +1,9 @@
-﻿using System;
+﻿#region This file contains description of Security Controller.
+/* This file contains defnition of Methods related to Security of application like JWT,Doctor Login and Decrypt Password.
+ */
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
@@ -60,11 +65,7 @@ namespace FewaTelemedicine.Controllers
                     return BadRequest();
                 }
                 var doc = _doctorRepository.GetDoctorByUserName(doctor.UserName);
-                /*if(doc.DoctorRoomName == null)
-                doc.DoctorRoomName = "Fewa" + doc.UserName;*/
                 doc.DoctorRoomName = doc.DoctorRoomName.Replace("DoctorName", doctor.UserName);
-                FewaDbContext.DoctorsModels.Update(doc);
-                FewaDbContext.SaveChanges();
                 if (doc == null)
                 {
                     return Unauthorized();
@@ -149,27 +150,6 @@ namespace FewaTelemedicine.Controllers
               signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-        [HttpPost("UpdateProfile")]
-        public IActionResult UpdateProfile([FromBody] DoctorsModel obj)
-        {
-            var doc = _doctorRepository.GetDoctorByUserName(obj.UserName);
-            if (doc is null)
-            {
-                return StatusCode(500);
-            }
-            else
-            {
-                doc.NameTitle = obj.NameTitle;
-                doc.DoctorName = obj.DoctorName;
-                doc.Email = obj.Email;
-                doc.MobileNumber = obj.MobileNumber;
-                doc.Designation = obj.Designation;
-                doc.MedicalDegree = obj.MedicalDegree;
-                doc.Clinic = obj.Clinic;
-                //doc.Password = Cipher.Decrypt(doc.Password, obj.UserName);
-            }
-            return Ok(doc);
         }
     }
     public static class Cipher

@@ -1,0 +1,53 @@
+/* 3/09/2020 - Upload Hospital Logo CSS => Added by Bhavana  Vanjani */
+.row .col-md-5 .profile-pic {
+	position: relative;
+	display: inline-block;
+	width: 100%;
+	overflow: hidden;
+}
+
+.profile-pic:hover .edit {
+	display: block;
+}
+
+.profile-pic .edit {
+	padding-top: 5px;	
+	padding-right: 15px;
+	position: absolute;
+	right: 0;
+	top: 0;
+	display: none;
+}
+
+.profile-pic .edit a {
+	color: #000;
+}
+
+/* 4/09/2020 - Email Template CSS => Added by Bhavana  Vanjani */
+
+.banner-color {  
+    background-color: #eb681f;  
+}  
+
+.title-color {  
+    color: #0066cc;  
+}  
+
+.button-color { 
+    background-color: #0066cc;  
+}  
+
+@media screen and (min-width: 500px) {  
+.banner-color {  
+    background-color: #009688;  
+}  
+
+.title-color {  
+    color: black;  
+}  
+
+.button-color {  
+background-color: #009688;  
+} 
+} 
+
