@@ -5,4 +5,5 @@ export class ParametersModel {
     ParameterValue:string="";
     ValueDataType:string="";
     Description:string="";
+    DoctorId:string="";
   }

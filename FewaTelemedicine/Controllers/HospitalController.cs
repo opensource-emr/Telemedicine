@@ -91,6 +91,7 @@ namespace FewaTelemedicine.Controllers
                 return StatusCode(500, "Patient already logged in");
             }
             obj.LastUpdated = DateTime.Now;
+
             _waitingroom.Patients.Add(obj);
            
 
@@ -362,7 +363,7 @@ namespace FewaTelemedicine.Controllers
             {             
                     foreach (var i in list)
                     {
-                        var c = FewaDbContext.ParametersModels.Where(a => a.ParameterGroupName.Equals(i.ParameterGroupName) && a.ParameterName.Equals(i.ParameterName)).FirstOrDefault();
+                        var c = FewaDbContext.ParametersModels.Where(a => a.ParameterGroupName.Equals(i.ParameterGroupName) && a.ParameterName.Equals(i.ParameterName) && a.DoctorId.Contains(i.DoctorId)).FirstOrDefault();
                         if (c != null)
                         {
                             c.ParameterValue = i.ParameterValue;

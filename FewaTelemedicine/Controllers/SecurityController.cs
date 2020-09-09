@@ -77,6 +77,7 @@ namespace FewaTelemedicine.Controllers
                 if (docPwd== doctor.Password)
                 {
                 doctor.Image = doc.Image;
+                doctor.DoctorId = doc.DoctorId;
                 doctor.NameTitle = doc.NameTitle;
                 doctor.DoctorName = doc.DoctorName;
                 doctor.DoctorRoomName = doc.DoctorRoomName;

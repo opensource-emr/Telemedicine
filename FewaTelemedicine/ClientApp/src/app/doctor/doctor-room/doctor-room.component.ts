@@ -97,6 +97,11 @@ export class DoctorRoomComponent {
       this.cdr.detectChanges();
      //this.scrollBottom.nativeElement.lastElementChild.scrollIntoView(false); // scroll to bottom
     });
+    this.routing.navigate([],
+      { queryParams:{DoctorName:this.global.doctorObj.DoctorId},
+        queryParamsHandling:"merge"
+    },
+      );
   }
 
   ngOnInit() { 
@@ -116,7 +121,7 @@ export class DoctorRoomComponent {
         prejoinPageEnabled:false,
         remoteVideoMenu: {
 	// If set to true the 'Kick out' button will be disabled.
-	disableKick: true
+	      disableKick: true
 	},
       },
       interfaceConfigOverwrite: {
@@ -173,6 +178,7 @@ export class DoctorRoomComponent {
   PatientAttended(attendedPatient: PatientsAttendedModel) {
     this.showPatDetail = false;
     attendedPatient.Medication = this.global.patientObj.Medication;
+    attendedPatient.DoctorId=this.global.doctorObj.DoctorId;
     this.notificationService.PatientAttended(attendedPatient);
     this.global.patientObj=attendedPatient;
     this.routing.navigateByUrl('/Home', { state: this.global.patientObj});

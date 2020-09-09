@@ -162,7 +162,7 @@
                       <th>Email</th> -->
                         </tr>
                       </thead>
-                      <tr *ngFor="let temp of CompletedPatients">
+                      <tr *ngFor="let temp of CompletedPatients ">
                         <td>{{temp.AppointmentDate |  date: 'LLLL dd, yyyy'}}</td>
                         <td>{{Difference(temp.StartTime,temp.EndTime)}}mins </td>
                         <td>{{temp.StartTime| date:'hh:mm:ss a'}}</td>
@@ -479,7 +479,7 @@
                     <thead>
                       <tr *ngFor="let temp of patients">
                         <td cellpadding="0" cellspacing="0" *ngIf="temp.PatientName">&nbsp;{{temp.Id + 1}})&nbsp;&nbsp;{{temp.PatientName}}</td>
-                        <td cellpadding="0" cellspacing="0"><a 
+                        <td cellpadding="0" cellspacing="0"><a href="javascript:;"
                             (click)="CallPatient(temp)" *ngIf="temp.Status==0 && temp.PatientName" class="btn-call"><i
                               class="fa fa-video-camera"></i>Call</a></td>
                         <td cellpadding="0" cellspacing="0" *ngIf="temp.PatientName"><a class="btn-call"><i

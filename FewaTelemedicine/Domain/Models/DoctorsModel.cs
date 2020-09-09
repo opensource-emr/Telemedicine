@@ -34,6 +34,8 @@ namespace FewaTelemedicine.Domain.Models
         public string Message { get; set; }
         [NotMapped]
         public string Subject { get; set; }
+        [Key]
+        public string DoctorId { get; set; }
     }
     public class DoctorCabin
     {

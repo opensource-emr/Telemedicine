@@ -250,6 +250,7 @@ namespace FewaTelemedicine.Services
                
                 p.Status = (int)TeleConstants.PatientCalled;
                 p.DoctorNameAttending = getDoctorByName(Context.User.Identity.Name).UserName;
+
                 p.AppointmentDate = DateTime.Now;
                 p.LastUpdated = DateTime.Now;
                 p.StartTime = DateTime.Now;
@@ -287,8 +288,8 @@ namespace FewaTelemedicine.Services
                     p.Medication = obj.Medication;
                     p.FollowUpNumber = obj.FollowUpNumber;
                     p.FollowUpMeasure = obj.FollowUpMeasure;
-
-
+                    p.DoctorId = obj.DoctorId;
+                    
                     var patient = JsonConvert.SerializeObject(p);
                     await this.Clients.Clients(getPatientbyName(obj.PatientName).SignalRConnectionId)
                       .CompletePatient(patient);

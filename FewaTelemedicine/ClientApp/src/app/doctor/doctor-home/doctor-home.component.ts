@@ -53,6 +53,7 @@ export class DoctorHomeComponent implements OnInit,OnDestroy{
   public ParamsUpdate: boolean = false;
   public ChatSection: boolean = false;
   public CompletedPatients: Array<PatientsAttendedModel> = null;
+  public CompPatients: Array<PatientsAttendedModel> = null;
   doctorObj: DoctorsModel = new DoctorsModel();
   @ViewChild('pcam') video:any; 
   Video:any;
@@ -74,13 +75,14 @@ export class DoctorHomeComponent implements OnInit,OnDestroy{
     private sanitizer: DomSanitizer,private toastr: ToastrService) {
     this.initForm();
     this.LoadPatientsAttended();
+    
     this.patients.push(this.global.patientObj);
     if (this.global.IsPatient) {
 
       this.notificationService.EventCompletePatient
         .subscribe(_patient => {
           this.global.patientObj = _patient;
-          this.patients = _patient;
+          this.patients = _patient.filter(t=>t.DoctorId==this.global.doctorObj.DoctorId);;
           // this.PatientCompleted(_patient);
           this.ChatUserDropDowns = new Array<any>();
         }
@@ -89,7 +91,7 @@ export class DoctorHomeComponent implements OnInit,OnDestroy{
     this.notificationService.Connect();
     this.notificationService.EventGetAllPatients
       .subscribe(_patients => {
-        this.patients = _patients;
+        this.patients = _patients.filter(t=>t.DoctorId==this.global.doctorObj.DoctorId);
         this.ChatUserDropDowns = _patients;
       });
 
@@ -129,7 +131,11 @@ export class DoctorHomeComponent implements OnInit,OnDestroy{
     } else if (this.global.doctorObj.UserName == "") {
       this.routing.navigate(['Login']);
     }
-    //this.RefreshPatients(); 
+    this.routing.navigate([],
+      { queryParams:{DoctorName:this.global.doctorObj.DoctorId},
+        queryParamsHandling:"merge"
+    },
+      );
   }
 
   public showPatDetail: boolean = false;
@@ -137,20 +143,25 @@ export class DoctorHomeComponent implements OnInit,OnDestroy{
 
  
   ngOnInit() {
+  //   this.activatedRoute.queryParams.subscribe(param=>{
+  //     this.doctorObj.DoctorName=param['DoctorName']
+  //    this.global.doctorObj.DoctorName= this.doctorObj.DoctorName;
+  //  })
+
     var params = new HttpParams().set('username',this.global.doctorObj.UserName );
     this.httpClient.
     get<any>(this.global.HospitalUrl + "GetUpdatedDoctor",{params : params})
     .subscribe(res => {
      this.doctorObj = res.User;
      this.parameterArray = res.Parameter;
-     this.HospitalName = this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "Name").ParameterValue;
-     this.HospitalContact = this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "ContactNumber").ParameterValue;
-     this.HospitalEmail = this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "Email").ParameterValue;
-     this.HospitalDesc = this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "Description").ParameterValue;
-     this.SenderEmail = this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "Email").ParameterValue;
-     this.APIKey = this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "ApiKey").ParameterValue;
-     this.EmailName = this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "Name").ParameterValue;
-     this.global.doctorObj.VideoCallPlatform= this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "VideoCallPlatform").ParameterValue;
+     this.HospitalName = this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "Name"&&a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue;
+     this.HospitalContact = this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "ContactNumber"&&a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue;
+     this.HospitalEmail = this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "Email"&&a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue;
+     this.HospitalDesc = this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "Description"&&a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue;
+     this.SenderEmail = this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "Email"&&a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue;
+     this.APIKey = this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "ApiKey" &&a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue;
+     this.EmailName = this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "Name" &&a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue;
+     this.global.doctorObj.VideoCallPlatform= this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "VideoCallPlatform"&&a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue;
      if(this.doctorObj.Image)
      this.retrievedImage = 'data:image/png;base64,' + this.doctorObj.Image;
     });
@@ -301,14 +312,15 @@ export class DoctorHomeComponent implements OnInit,OnDestroy{
   }
 
   UpdateParameters() {
-    this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "Name").ParameterValue = this.HospitalName ;
-    this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "ContactNumber").ParameterValue = this.HospitalContact;
-    this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "Email").ParameterValue = this.HospitalEmail;
-    this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "Description").ParameterValue = this.HospitalDesc;
-    this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "Email").ParameterValue  =  this.SenderEmail;
-    this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "ApiKey").ParameterValue  =  this.APIKey;
-    this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "Name").ParameterValue  = this.EmailName;
-    this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "VideoCallPlatform").ParameterValue= this.global.doctorObj.VideoCallPlatform;
+    this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "Name"&&a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue = this.HospitalName ;
+    this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "ContactNumber"&& a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue = this.HospitalContact;
+    this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "Email"&& a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue = this.HospitalEmail;
+    this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "Description"&& a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue = this.HospitalDesc;
+    this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "Email"&& a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue  =  this.SenderEmail;
+    this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "ApiKey"&& a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue  =  this.APIKey;
+    this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "Name"&& a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue  = this.EmailName;
+    this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "VideoCallPlatform" && a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue= this.global.doctorObj.VideoCallPlatform;
+    this.parameterArray.find(a => a.ParameterName === "DoctorId").ParameterValue  = this.global.doctorObj.DoctorId;
     this.httpClient.
     post<any>(this.global.HospitalUrl  + "UpdateParameters", this.parameterArray)
     .subscribe(res => {
@@ -349,7 +361,7 @@ export class DoctorHomeComponent implements OnInit,OnDestroy{
 
   }
   LoadPatientSuccess(res) {
-    this.CompletedPatients = res;
+    this.CompletedPatients=res.filter(t=>t.DoctorId==this.global.doctorObj.DoctorId);
   }
 
   NextPatient(res) {

@@ -28,6 +28,7 @@ export class PatientRegistrationComponent implements OnInit
       this.notificationService.EventConnectionEstablished.subscribe(() => {
         this.notificationService.LoadActiveDoctors();
       });
+     
     }
     ngOnInit()
     {
@@ -60,7 +61,8 @@ export class PatientRegistrationComponent implements OnInit
 
     }
     LoginPatient() {
-      
+
+      this.patientObj.DoctorId=this.route.snapshot.queryParamMap.get('DoctorName');
         this.patientObj.MeetingId=this.meetingId;
             this.httpClient.
       post<any>(this.global.HospitalUrl + "LoginPatient", this.patientObj)
@@ -69,11 +71,14 @@ export class PatientRegistrationComponent implements OnInit
       this.global.IsDoctor = false;
       this.global.IsPatient = true;
       this.global.patientObj.PatientName = res.Value.User.PatientName;
+      
       sessionStorage.setItem('PatientName', this.global.patientObj.PatientName);
       this.global.patientObj = res.Value.User;
       this.global.patientObj = res.Value;
       this.global.patientObj.Id=res.Value.Id;
       this.global.patientObj.PatientName=res.Value.PatientName;
+      this.global.patientObj.DoctorId = res.Value.User.DoctorId;
+     
         this.routing.navigateByUrl('/Waiting',{state:this.global.patientObj});
       },
         res => {

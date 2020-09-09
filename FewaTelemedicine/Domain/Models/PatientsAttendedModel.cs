@@ -9,6 +9,8 @@ namespace FewaTelemedicine.Domain.Models
 {
     public class PatientsAttendedModel
     {
+        [Key, ForeignKey("DoctorsModel")]
+        public string DoctorId { get; set; }
         [Key]
         public int Id { get; set; }
         [NotMapped]
@@ -17,7 +19,7 @@ namespace FewaTelemedicine.Domain.Models
         public string MeetingId { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
-        public int DoctorId { get; set; }
+       
         [NotMapped]
         public string DoctorNameAttending { get; set; }
         [NotMapped]
@@ -51,6 +53,7 @@ namespace FewaTelemedicine.Domain.Models
         public string Medication { get; set; }
         [NotMapped]
         public string VideoCallPlatform { get; set; }
+        
     }
     public class WaitingRoom
     {
