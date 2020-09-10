@@ -25,6 +25,11 @@ export class PatientUploadFilesComponent {
     tokbox:string='tokbox';
     constructor(private http: HttpClient, public service: UploadDownloadService,public global:GlobalModel,private routing:Router) {
         this.uploadStatus = new EventEmitter<ProgressStatus>();
+        this.routing.navigate([],
+            { queryParams:{DoctorName:this.global.patientObj.DoctorId},
+              queryParamsHandling:"merge"
+          },
+            );
     }
 
     public uploadFile = (files) => {

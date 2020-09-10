@@ -97,6 +97,11 @@ export class DoctorRoomTokboxComponent {
       this.cdr.detectChanges();
      //this.scrollBottom.nativeElement.lastElementChild.scrollIntoView(false); // scroll to bottom
     });
+    this.routing.navigate([],
+      { queryParams:{DoctorName:this.global.doctorObj.DoctorId},
+        queryParamsHandling:"merge"
+    },
+      );
   }
 
   ngOnInit() { 
@@ -144,6 +149,7 @@ export class DoctorRoomTokboxComponent {
   PatientAttended(attendedPatient: PatientsAttendedModel) {
     this.showPatDetail = false;
     attendedPatient.Medication = this.global.patientObj.Medication;
+    attendedPatient.DoctorId=this.global.doctorObj.DoctorId;
     this.notificationService.PatientAttended(attendedPatient);
     this.global.patientObj=attendedPatient;
 

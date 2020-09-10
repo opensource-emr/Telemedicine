@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { GlobalModel } from 'src/Common/global.model';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -17,14 +17,34 @@ export class LoginComponent implements OnInit {
   hospitalDetails = { description: '', contactNo: '', email: '', logoPath: '' };
   patients: Array<PatientsAttendedModel> = new Array<PatientsAttendedModel>();
   getAllPatients: any;
+  meetingId:any;
+  paramCheck:any;
 
 
   constructor(private httpClient: HttpClient,
     private routing: Router,
     public global: GlobalModel,
     private formBuilder: FormBuilder,
-     private notificationService: NotificationService
+     private notificationService: NotificationService,
+     private route: ActivatedRoute
   ) {
+    this.paramCheck=this.route.snapshot.queryParamMap.get('DoctorName');
+   if(this.paramCheck==null)
+   {
+    this.routing.navigate([],
+  { queryParams:{DoctorName:"DefaultDoctor"},
+    queryParamsHandling:"merge"
+},
+  );
+ }
+ else
+ {
+  this.routing.navigate([],
+    { queryParams:{DoctorName:"DefaultDoctor"},
+      queryParamsHandling:"preserve"
+  },
+    );
+ }
    // this.notificationService.Connect();
     this.notificationService.EventGetAllPatients
     .subscribe(_patients => {
@@ -42,11 +62,12 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-   
+  
+   this.global.doctorObj.DoctorId=this.route.snapshot.queryParamMap.get('DoctorName');
     this.httpClient.get<any>(this.global.HospitalUrl+"CurrentPatients").subscribe(res=>{
       if(res)
       {
-      this.getAllPatients=res;
+      this.getAllPatients=res.filter(t=>t.DoctorId==this.global.doctorObj.DoctorId);;
       console.log(this.getAllPatients);
       }
       else
@@ -54,30 +75,19 @@ export class LoginComponent implements OnInit {
      
     });
     
-   // this.notificationService.Connect();
-    // this.notificationService.EventGetAllPatients
-    //   .subscribe(_patients => {
-    //     this.patients = _patients;
-    //     console.log(this.patients);
-       
-    //   });
-
-    // this.notificationService.EventCallPatient.subscribe(_patient => {
-    //   this.global.patientObj = _patient;
-    //   console.log(this.global.doctorObj);
-    // }
-    // );
     this.LoadHospitalParams();
   }
 
   LoadHospitalParams() {
     this.httpClient.get<any>(this.global.HospitalUrl + 'GetHospitalParams').subscribe(res => {
-      if (res && res.Value && res.Value.length > 0) {
+      if (res && res.Value && res.Value.length > 0 ) {
         const params = res.Value;
-        this.hospitalDetails.description = params.find(a => a.ParameterName === 'Description') ? params.find(a => a.ParameterName === 'Description').ParameterValue : '';
-        this.hospitalDetails.contactNo = params.find(a => a.ParameterName === 'ContactNumber') ? params.find(a => a.ParameterName === 'ContactNumber').ParameterValue : '';
-        this.hospitalDetails.email = params.find(a => a.ParameterName === 'Email') ? params.find(a => a.ParameterName === 'Email').ParameterValue : '';
-        this.hospitalDetails.logoPath = params.find(a => a.ParameterName === 'LogoPath') ? params.find(a => a.ParameterName === 'LogoPath').ParameterValue : '';
+        // const myName = params.filter(Url =>Url.includes(this.doctorObj.Url));
+        // console.log(myName)
+        this.hospitalDetails.description = params.find(a => a.ParameterName === 'Description') ? params.find(a => a.ParameterName === 'Description'&& a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue : '';
+        this.hospitalDetails.contactNo = params.find(a => a.ParameterName === 'ContactNumber') ? params.find(a => a.ParameterName === 'ContactNumber'&& a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue : '';
+        this.hospitalDetails.email = params.find(a => a.ParameterName === 'Email') ? params.find(a => a.ParameterName === 'Email'&& a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue : '';
+        this.hospitalDetails.logoPath = params.find(a => a.ParameterName === 'LogoPath') ? params.find(a => a.ParameterName === 'LogoPath'&& a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue : '';
       }
     }, err => {
       alert('Can not connect please talk with admin.');
@@ -103,6 +113,7 @@ export class LoginComponent implements OnInit {
     if (this.doctorFrm.invalid) {
       return;
     }
+    this.doctorObj.DoctorId=this.global.doctorObj.DoctorId;
     this.doctorObj.UserName = this.doctorFrm.value.docUsrName;
     this.doctorObj.Password = this.doctorFrm.value.docPassword;
     this.global.doctorObj = this.doctorObj;

@@ -171,7 +171,7 @@
                       <th>Email</th> -->
                         </tr>
                       </thead>
-                      <tr *ngFor="let temp of CompletedPatients">
+                      <tr *ngFor="let temp of CompletedPatients ">
                         <td>{{temp.AppointmentDate |  date: 'LLLL dd, yyyy'}}</td>
                         <td>{{Difference(temp.StartTime,temp.EndTime)}}mins </td>
                         <td>{{temp.StartTime| date:'hh:mm:ss a'}}</td>

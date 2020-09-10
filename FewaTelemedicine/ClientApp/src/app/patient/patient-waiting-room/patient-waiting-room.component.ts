@@ -71,6 +71,11 @@ export class PatientWaitingRoomComponent implements OnDestroy {
     this.notificationService.EventConnectionEstablished.subscribe(() => {
       this.notificationService.LoadActiveDoctors();
     });
+    this.routing.navigate([],
+      { queryParams:{DoctorName:this.global.patientObj.DoctorId},
+        queryParamsHandling:"merge"
+    },
+      );
   }
   ngOnDestroy() {
     const mediaStream = this.Video.srcObject;

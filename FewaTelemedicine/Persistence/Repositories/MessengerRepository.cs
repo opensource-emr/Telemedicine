@@ -56,7 +56,7 @@ namespace FewaTelemedicine.Persistence.Repositories
                 var plainTextContent = paramEmail.Find(a => a.ParameterName == "EmailPlainBody").ParameterValue;
                 var htmlContent = paramEmail.Find(a => a.ParameterName == "EmailHTMLBody").ParameterValue;
                 htmlContent = htmlContent.Replace("{ImageUrl}", ServerName + LogoPath);
-                htmlContent = htmlContent.Replace("{Join}", ServerName + "#/Join");
+                htmlContent = htmlContent.Replace("{Join}", ServerName + "#/Join?DoctorName="+doctor.DoctorId);
                 htmlContent = htmlContent.Replace("DoctorNameTitle", doctor.NameTitle);
                 htmlContent= htmlContent.Replace("DoctorName", doctor.DoctorName);
                 htmlContent= htmlContent.Replace("HospitalName", HospitalName);

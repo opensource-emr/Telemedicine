@@ -70,7 +70,11 @@ export class PatientRoomTokboxComponent {
       }
       console.log(this.doctors);
     });
-    
+    this.routing.navigate([],
+      { queryParams:{DoctorName:this.global.patientObj.DoctorId},
+        queryParamsHandling:"merge"
+    },
+      );
     // gets doctor list
     // this.notificationService.LoadActiveDoctors();
   }

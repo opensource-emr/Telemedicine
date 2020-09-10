@@ -11,9 +11,15 @@ export class PatientReportSummaryComponent
     constructor(public httpClient:HttpClient , 
         public routing:Router ,
         public global:GlobalModel){ 
+          this.routing.navigate([],
+            { queryParams:{DoctorName:this.global.patientObj.DoctorId},
+              queryParamsHandling:"preserve"
+          },
+            );
         } 
          SuccessTestDone(res){
            this.global.patientObj=res;
           alert(res);
+      
         }
 }
