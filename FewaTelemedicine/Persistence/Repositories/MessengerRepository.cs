@@ -44,17 +44,10 @@ namespace FewaTelemedicine.Persistence.Repositories
                 var username = accessor.HttpContext.Session.GetString("Name");
                 var doctor = _doctorRepository.GetDoctorByUserName(username);
                 var TodaysDate =DateTime.Now.ToString("MM-dd-yyyy HH:mm:ss");
-                //var imageURL = "https://source.unsplash.com/QAB-WJcbgJk/60x60";
                 var HospitalName = paramHospital.Find(a => a.ParameterName == "Name").ParameterValue;
                 var LogoPath = paramHospital.Find(a => a.ParameterName == "LogoPath").ParameterValue;
                 var HospitalContact = paramHospital.Find(a => a.ParameterName == "ContactNumber").ParameterValue;
-                //var doctor = FewaDbContext.DoctorsModels.FirstOrDefault(a => a.UserName == username);
                 var apiKey = paramEmail.Find(a => a.ParameterName == "ApiKey").ParameterValue;
-                //if (doctor.Image != null)
-                //{
-                //    string base64Data = Convert.ToBase64String(doctor.Image);
-                //    imageURL = string.Format("data:image/png;base64,{0}", base64Data);
-                //}
                 var email = paramEmail.Find(a => a.ParameterName == "Email").ParameterValue;
                 var name = paramEmail.Find(a => a.ParameterName == "Name").ParameterValue;
                 var client = new SendGridClient(apiKey);
@@ -62,8 +55,6 @@ namespace FewaTelemedicine.Persistence.Repositories
                 var to = new EmailAddress(receiverEmail);
                 var plainTextContent = paramEmail.Find(a => a.ParameterName == "EmailPlainBody").ParameterValue;
                 var htmlContent = paramEmail.Find(a => a.ParameterName == "EmailHTMLBody").ParameterValue;
-                //var HtmlContent = paramEmail.Find(a => a.ParameterName == "EmailHTMLBody").ParameterValue;
-
                 htmlContent = htmlContent.Replace("{ImageUrl}", ServerName + LogoPath);
                 htmlContent = htmlContent.Replace("{Join}", ServerName + "#/Join?DoctorName="+doctor.DoctorId);
                 htmlContent = htmlContent.Replace("DoctorNameTitle", doctor.NameTitle);

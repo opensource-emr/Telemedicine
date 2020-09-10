@@ -1,4 +1,14 @@
 ﻿
+#region Hospital Controller Description 
+/* This file contains Definition of  Methods for Login Patient, Get and Add Waiting Room,Doctor Cabin,Updated Doctor,
+ * ProfileUpdate and Update Parameter.
+ */
+#endregion
+#region Log History
+/* #39 6/9/2020 - Bhavana => Added Email Template Changes in Get Updated Doctor.
+*  #40 6/9/2020 - Bhavana => Updated  Added Upload Option to update for Doctor Logo.
+ */
+#endregion 
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -16,6 +26,7 @@ using FewaTelemedicine.Domain.Repositories;
 using FewaTelemedicine.Domain.Services;
 using FewaTelemedicine.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -37,6 +48,7 @@ namespace FewaTelemedicine.Controllers
         private int idletime = 0;
         private readonly IHubContext<NotificationHub, INotificationHub> _notify;
         private readonly IConfiguration _config;
+        private IWebHostEnvironment _hostingEnvironment;
         private  FewaDbContext FewaDbContext = null;
         public IConfiguration Configuration { get; }
 
@@ -49,6 +61,7 @@ namespace FewaTelemedicine.Controllers
             IHubContext<NotificationHub, INotificationHub> notify,
             IConfiguration config,IPatientRepository patientRepository,
              IDoctorRepository doctorRepository,
+             IWebHostEnvironment hostEnvironment,
             FewaDbContext  fewaDbContext)
         {
             FewaDbContext = fewaDbContext;
@@ -62,6 +75,7 @@ namespace FewaTelemedicine.Controllers
             idletime = Convert.ToInt32(configuration["IdleTime"]);
             _notify = notify;
             _config = config;
+            _hostingEnvironment= hostEnvironment;
         }
         public IActionResult Index()
         {
@@ -174,20 +188,31 @@ namespace FewaTelemedicine.Controllers
 
         public IActionResult GetUpdatedDoctor(string username)
         {
-            //string username = HttpContext.Session.GetString("Name");       
+
             var parameter = FewaDbContext.ParametersModels.ToList();
-            var doctorProfile = (from temp in FewaDbContext.DoctorsModels
+            var doctor = (from temp in FewaDbContext.DoctorsModels
                                  where temp.UserName == username
                                  select temp).FirstOrDefault();
-             doctorProfile.Password= Cipher.Decrypt(doctorProfile.Password,doctorProfile.UserName);
+            doctor.DoctorRoomName = doctor.DoctorRoomName.Replace("DoctorName", doctor.UserName);
+            var TodaysDate = DateTime.Now.ToString("MM-dd-yyyy HH:mm:ss");
+            var ServerName = parameter.Find(a => a.ParameterGroupName == "Server").ParameterValue;
+            var LogoPath = parameter.Find(a => a.ParameterGroupName == "Hospital" && a.ParameterName == "LogoPath").ParameterValue;
+            var HospitalName = parameter.Find(a => a.ParameterName == "Name").ParameterValue;
+            var htmlContent = parameter.Find(a => a.ParameterGroupName == "EmailAPI" && a.ParameterName == "EmailHTMLBody").ParameterValue;
+            htmlContent = htmlContent.Replace("{ImageUrl}", ServerName + LogoPath);
+            htmlContent = htmlContent.Replace("{Join}", ServerName + "#/Join");
+            htmlContent = htmlContent.Replace("DoctorNameTitle", doctor.NameTitle);
+            htmlContent = htmlContent.Replace("DoctorName", doctor.DoctorName);
+            htmlContent = htmlContent.Replace("HospitalName", HospitalName);
+            htmlContent = htmlContent.Replace("TodaysDate", TodaysDate);
+            doctor.Password = Cipher.Decrypt(doctor.Password, doctor.UserName);
             var data = new
             {
-
-                User = doctorProfile,
-                Parameter = parameter,             
+                User = doctor,
+                Parameter = parameter,
+                EmailHTMLBody = htmlContent
             };
             return Ok(data);
-
         }
         public IActionResult GetDoctorCabin()
         {
@@ -378,7 +403,25 @@ namespace FewaTelemedicine.Controllers
             }
         }
 
-        public async Task<IActionResult> UploadImage()
+        public IActionResult UploadHospitalLogo()
+        {
+            string logoPath = null;
+            var file = Request.Form.Files[0];
+            if (file != null)
+            {
+                string folderName = "img";
+                string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, folderName);
+                logoPath = Path.Combine(folderName, file.FileName);
+                string filePath = Path.Combine(uploadsFolder, file.FileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    file.CopyTo(fileStream);
+                }
+            }
+            return Ok(logoPath);
+        }
+
+        public  IActionResult UploadProfileImage()
         {
             try
             {
@@ -393,7 +436,7 @@ namespace FewaTelemedicine.Controllers
 
                 using (var memoryStream = new MemoryStream())
                 {
-                    await file.CopyToAsync(memoryStream);
+                    file.CopyTo(memoryStream);
 
                     // Upload the file if less than 2 MB
                     if (memoryStream.Length < 2097152)
@@ -415,17 +458,23 @@ namespace FewaTelemedicine.Controllers
             }
         }
 
-        public IActionResult GetImage()
+        public IActionResult GetProfileImage()
         {
-            string username = HttpContext.Session.GetString("Name");
-            var doc = _doctorRepository.GetDoctorByUserName(username);
-            if (doc.Image != null)
+            try
             {
-                //string base64Data = Convert.ToBase64String(doc.Image);
-                //var imageURL = string.Format("data:image/png;base64,{0}", base64Data);
-                return Ok(doc);
+                string username = HttpContext.Session.GetString("Name");
+                var doc = _doctorRepository.GetDoctorByUserName(username);
+                if (doc.Image != null)
+                {
+                    return Ok(doc.Image);
+                }
+                return Ok(doc.Image);
             }
-            return StatusCode(500);
+            catch(Exception ex)
+            {
+                return Ok("Unable to fetch Image " + ex.Message);
+            }
+            
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
