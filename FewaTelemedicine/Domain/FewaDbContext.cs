@@ -60,7 +60,7 @@ namespace FewaTelemedicine.Domain
             // Default user name and password
             modelBuilder.Entity<DoctorsModel>().HasData(new DoctorsModel { Id = 1, UserName = "doctor", Password = "ajNJkHEqM5bu0szpIIhwzw==", DoctorRoomName = Guid.NewGuid().ToString() + "-" + "DoctorName",DoctorId = "DefaultDoctor" },
                                                         new DoctorsModel { Id = 2, UserName = "doctor1",Password = "n5J6FQcRx5weMX9aHi5VMA==", DoctorRoomName = Guid.NewGuid().ToString() + "-" + "DoctorName",DoctorId="doc1"},
-                                                        new DoctorsModel { Id = 3, UserName = "doctor2",Password = "l1F7gwOSJWmin7N+0ECzrw==", DoctorRoomName = Guid.NewGuid().ToString() + "-" + "DoctorName",DoctorId="doct2" }
+                                                        new DoctorsModel { Id = 3, UserName = "doctor2",Password = "l1F7gwOSJWmin7N+0ECzrw==", DoctorRoomName = Guid.NewGuid().ToString() + "-" + "DoctorName",DoctorId="doc2" }
             );
             //modelBuilder.Entity<PatientsAttendedModel>().HasData(new PatientsAttendedModel { Url= "abc/1" }
             //);
