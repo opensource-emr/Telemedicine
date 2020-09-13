@@ -54,6 +54,7 @@ export class DoctorHomeComponent implements OnInit,OnDestroy{
   public InvitationSuccess: boolean = false;
   public InvitationFailure: boolean = false;
   public SendInvitation: boolean = true;
+  public AdminScreen: boolean = false;
   public CompletedAppointments: boolean = false;
   public AccountSettings: boolean = false;
   public ProfileUpdate: boolean = true;
@@ -62,7 +63,9 @@ export class DoctorHomeComponent implements OnInit,OnDestroy{
   public ChatSection: boolean = false;
   public CompletedPatients: Array<PatientsAttendedModel> = null;
   public CompPatients: Array<PatientsAttendedModel> = null;
+  public AddedDoctors: Array<DoctorsModel> = null;
   doctorObj: DoctorsModel = new DoctorsModel();
+  docObj: DoctorsModel = new DoctorsModel();
   @ViewChild('pcam') video:any; 
   Video:any;
   tokbox:string='Tokbox';
@@ -220,13 +223,30 @@ export class DoctorHomeComponent implements OnInit,OnDestroy{
       this.CompletedAppointments = false;
       this.AccountSettings = false;
       this.ChatSection = false;
+      this.AdminScreen=false;
       this.LoadPatientsAttended();
+
     }
+    else if (data == 'Admin') {
+      this.SendInvitation = false;
+      this.CompletedAppointments = false;
+      this.AccountSettings = false;
+      this.ChatSection = false;
+      if(this.global.doctorObj.UserName=="doctor"&&this.global.doctorObj.Password=="doctor")
+      {
+      this.AdminScreen=true;
+      }
+      else
+      alert("only admin can  new add doctor");
+
+    }
+
     else if (data == 'completedList') {
       this.SendInvitation = false;
       this.CompletedAppointments = true;
       this.AccountSettings = false;
       this.ChatSection = false;
+      this.AdminScreen=false;
       this.LoadPatientsAttended();
     }
 
@@ -235,12 +255,14 @@ export class DoctorHomeComponent implements OnInit,OnDestroy{
       this.CompletedAppointments = false;
       this.AccountSettings = true;
       this.ChatSection = false;
+      this.AdminScreen=false;
     }
     else if (data == 'chatSection') {
       this.SendInvitation = false;
       this.CompletedAppointments = false;
       this.AccountSettings = false;
       this.ChatSection = true;
+      this.AdminScreen=false;
     }
     else if (data == 'updateProfile') {
       this.SendInvitation = false;
@@ -251,6 +273,7 @@ export class DoctorHomeComponent implements OnInit,OnDestroy{
       this.ParamsUpdate = false;
       this.EmailTemplateUpdate = false;
       this.ChatSection = false;
+      this.AdminScreen=false;
     }
     else if (data == 'updateParams') {
       this.SendInvitation = false;
@@ -261,6 +284,7 @@ export class DoctorHomeComponent implements OnInit,OnDestroy{
       this.EmailTemplateUpdate = false;
       this.activeTab = data;
       this.ChatSection = false;
+      this.AdminScreen=false;
     }
     else if (data == 'updateEmailTemplate') {
       this.SendInvitation = false;
@@ -271,6 +295,7 @@ export class DoctorHomeComponent implements OnInit,OnDestroy{
       this.activeTab = data;
       this.ChatSection = false;
       this.EmailTemplateUpdate = true;
+      this.AdminScreen=false;
     }
   }
 
@@ -399,6 +424,20 @@ export class DoctorHomeComponent implements OnInit,OnDestroy{
     //this.httpClient.post("Messenger/SendSMS",data).subscribe(res=>this.SMSInvitationSuccess(res),err=>this.Error(err));
     this.httpClient.post("Messenger/SendEmail", this.global.doctorObj).subscribe(res => this.EmailInvitationSuccess(res), err => this.Error(err));
     this.invitationForm.reset();
+  }
+  AddNewDoctor()
+  {
+    this.docObj.DoctorId=this.docObj.UserName;
+    this.httpClient.
+    post<any>(this.global.HospitalUrl  + "AddNewDoctor", this.docObj)
+    .subscribe(res => {
+      this.AddedDoctors = res;
+     alert("You have successfully added new doctor");
+    },
+      err => { console.log(err);
+        alert("Unsuccessful");
+       })
+    
   }
 
   CallPatient(callPatient: PatientsAttendedModel) {
@@ -542,4 +581,5 @@ export class DoctorHomeComponent implements OnInit,OnDestroy{
       this.AllUserChats[user].push(messageObj);
     } catch (e) { }
   }
+
 }

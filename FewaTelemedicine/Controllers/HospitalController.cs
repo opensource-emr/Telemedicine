@@ -15,6 +15,8 @@ using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
+using System.Reflection.Metadata;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
@@ -29,7 +31,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
@@ -200,7 +204,7 @@ namespace FewaTelemedicine.Controllers
             var HospitalName = parameter.Find(a => a.ParameterName == "Name").ParameterValue;
             var htmlContent = parameter.Find(a => a.ParameterGroupName == "EmailAPI" && a.ParameterName == "EmailHTMLBody").ParameterValue;
             htmlContent = htmlContent.Replace("{ImageUrl}", ServerName + LogoPath);
-            htmlContent = htmlContent.Replace("{Join}", ServerName + "#/Join");
+            htmlContent = htmlContent.Replace("{Join}", ServerName + "#/Join?DoctorName=" + doctor.DoctorId);
             htmlContent = htmlContent.Replace("DoctorNameTitle", doctor.NameTitle);
             htmlContent = htmlContent.Replace("DoctorName", doctor.DoctorName);
             htmlContent = htmlContent.Replace("HospitalName", HospitalName);
@@ -476,6 +480,41 @@ namespace FewaTelemedicine.Controllers
             }
             
         }
+        public IActionResult AddNewDoctor([FromBody]DoctorsModel obj)
+        {
+            try
+            { 
+                List<ParametersModel> list = (from param in FewaDbContext.ParametersModels
+                                              where param.DoctorId == "DefaultDoctor"
+                                              select new ParametersModel
+                                              {
+                                                  DoctorId = obj.DoctorId,
+                                                  ParameterGroupName = param.ParameterGroupName,
+                                                  ParameterName = param.ParameterName,
+                                                  ParameterValue = param.ParameterValue
+                                              }).ToList();
+               
+                foreach (var p in list)
+                {
+                    FewaDbContext.ParametersModels.Add(p);
+                    FewaDbContext.SaveChanges();
+                }
+                obj.DoctorRoomName = Guid.NewGuid().ToString();
+                obj.Password = Cipher.Encrypt(obj.Password,obj.UserName);
+                FewaDbContext.DoctorsModels.Add(obj);
+                FewaDbContext.SaveChanges();
+
+                List<DoctorsModel> doc= FewaDbContext.DoctorsModels.ToList();
+               
+                return Ok(doc);
+            }
+            catch (Exception ex)
+            {
+                return Ok("Unsucessfull" + ex.Message);
+            }
+
+        }
+      
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
