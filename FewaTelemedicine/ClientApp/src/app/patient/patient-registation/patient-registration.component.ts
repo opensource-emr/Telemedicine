@@ -32,33 +32,6 @@ export class PatientRegistrationComponent implements OnInit
     }
     ngOnInit()
     {
-      this.httpClient.
-      get<any>(this.global.ApiUrl + "Security")
-      .subscribe(res => {
-        if(res)
-        {
-        this.getAlldoctors = res;
-        this.global.doctorObj=res[0];
-        console.log(this.getAlldoctors);
-        }
-        else
-        alert('please wait until doctor comes in');
-        
-       
-      },
-        res => {
-         
-        });
-
-      // this.httpClient.get<any>(this.global.HospitalUrl+"GetUpdatedDoctor").subscribe(p=>{
-      //   this.getAlldoctors=p;
-      //   console.log(this.getAlldoctors);
-      // });
-      this.route.queryParams.subscribe(param=>{
-         this.meetingId=param['MeetingId']
-        this.global.patientObj.MeetingId=this.meetingId;
-      })
-
     }
     LoginPatient() {
 

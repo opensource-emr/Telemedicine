@@ -98,12 +98,12 @@
                   <!-- <a class="nav-item nav-link btn btn-success btn-sm" id="nav-profile-tab" data-toggle="tab"
                     href="javascript:;" role="tab" aria-controls="nav-profile" aria-selected="false"
                     (click)="Check('completedList')"><i class="fa fa-check-square"></i>Completed Appointments</a> -->
-                  <!-- <a class="nav-item nav-link btn btn-success btn-sm" id="nav-contact-tab" data-toggle="tab"
-                    href="javascript:;" role="tab" aria-controls="nav-contact" aria-selected="false"
-                    (click)="Check('accSett')"><i class="fa fa-lock"></i>Account Settings</a> -->
                   <a class="nav-item nav-link btn btn-success btn-sm" id="nav-contact-tab" data-toggle="tab"
                     href="javascript:;" role="tab" aria-controls="nav-contact" aria-selected="false"
-                    (click)="Check('chatSection')" (click)="count=0"><i class="fa fa-lock"></i>Chat Section</a>
+                    (click)="Check('Admin')"><i class="fa fa-lock"></i>Admin Screen</a>
+                  <a class="nav-item nav-link btn btn-success btn-sm" id="nav-contact-tab" data-toggle="tab"
+                    href="javascript:;" role="tab" aria-controls="nav-contact" aria-selected="false"
+                    (click)="Check('chatSection')" (click)="count=0">Chat Section</a>
                     <span class="e-badge e-badge-info e-badge-overlap e-badge-notification e-badge-circle" style="position:inherit;display:inline-block;margin: -9px 0px 0px -6px;" *ngIf="count>0">{{count}}</span>
                 </div>
 
@@ -460,6 +460,40 @@
 
                 </div>
               </div>
+
+              <div *ngIf="AdminScreen">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold">Add new doctor</h6>
+                </div>
+                <form class="user p-3" [formGroup]="invitationForm">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <input type="email" class="form-control form-control-user" placeholder="Please input Username"
+                        formControlName="email" [(ngModel)]="docObj.UserName" />
+                    </div>
+                    <div class="col-md-4">
+                      <input type="text" class="form-control form-control-user" placeholder="please input Password"
+                        formControlName="mobileno" [(ngModel)]="docObj.Password" />
+                    </div>
+                    <div class="col-md-2">
+                      <button href="javascript:;" class="btn btn-primary btn-user btn-block" (click)="AddNewDoctor()">
+                        Add
+                      </button>
+                    </div>
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                      <h6 class="m-0 font-weight-bold">Doctor list</h6>
+                    </div>
+                    <div>
+                      <table>
+                        <tr *ngFor="let temp of AddedDoctors">
+                          <td>{{temp.UserName}}</td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </form>
+              </div>
+
               <div *ngIf="ChatSection">
 
                 <!-- Card Header - Dropdown -->

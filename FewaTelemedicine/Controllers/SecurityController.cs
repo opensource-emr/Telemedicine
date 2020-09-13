@@ -83,7 +83,7 @@ namespace FewaTelemedicine.Controllers
                 doctor.DoctorName = doc.DoctorName;
                 doctor.DoctorRoomName = doc.DoctorRoomName;
                 HttpContext.Session.SetString("Name", doctor.UserName);
-                    var token = GenerateJSONWebToken(doctor.UserName, "doctor");
+                var token = GenerateJSONWebToken(doctor.UserName, "doctor");
                     AddDoctorCabin(doc.UserName);
                     var data = new
                     {
@@ -155,30 +155,30 @@ namespace FewaTelemedicine.Controllers
     }
     public static class Cipher
     {
-       
-        //public static string Encrypt(string plainText, string password)
-        //{
-        //    if (plainText == null)
-        //    {
-        //        return null;
-        //    }
 
-        //    if (password == null)
-        //    {
-        //        password = String.Empty;
-        //    }
+        public static string Encrypt(string plainText, string password)
+        {
+            if (plainText == null)
+            {
+                return null;
+            }
 
-        //    // Get the bytes of the string
-        //    var bytesToBeEncrypted = Encoding.UTF8.GetBytes(plainText);
-        //    var passwordBytes = Encoding.UTF8.GetBytes(password);
+            if (password == null)
+            {
+                password = String.Empty;
+            }
 
-        //    // Hash the password with SHA256
-        //    passwordBytes = SHA256.Create().ComputeHash(passwordBytes);
+            // Get the bytes of the string
+            var bytesToBeEncrypted = Encoding.UTF8.GetBytes(plainText);
+            var passwordBytes = Encoding.UTF8.GetBytes(password);
 
-        //    var bytesEncrypted = Encrypt(bytesToBeEncrypted, passwordBytes);
+            // Hash the password with SHA256
+            passwordBytes = SHA256.Create().ComputeHash(passwordBytes);
 
-        //    return Convert.ToBase64String(bytesEncrypted);
-        //}
+            var bytesEncrypted = Encrypt(bytesToBeEncrypted, passwordBytes);
+
+            return Convert.ToBase64String(bytesEncrypted);
+        }
 
         public static string Decrypt(string encryptedText, string password)
         {
@@ -203,39 +203,39 @@ namespace FewaTelemedicine.Controllers
             return Encoding.UTF8.GetString(bytesDecrypted);
         }
 
-        //private static byte[] Encrypt(byte[] bytesToBeEncrypted, byte[] passwordBytes)
-        //{
-        //    byte[] encryptedBytes = null;
+        private static byte[] Encrypt(byte[] bytesToBeEncrypted, byte[] passwordBytes)
+        {
+            byte[] encryptedBytes = null;
 
-        //    // Set your salt here, change it to meet your flavor:
-        //    // The salt bytes must be at least 8 bytes.
-        //    var saltBytes = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 };
+            // Set your salt here, change it to meet your flavor:
+            // The salt bytes must be at least 8 bytes.
+            var saltBytes = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 };
 
-        //    using (MemoryStream ms = new MemoryStream())
-        //    {
-        //        using (RijndaelManaged AES = new RijndaelManaged())
-        //        {
-        //            var key = new Rfc2898DeriveBytes(passwordBytes, saltBytes, 1000);
+            using (MemoryStream ms = new MemoryStream())
+            {
+                using (RijndaelManaged AES = new RijndaelManaged())
+                {
+                    var key = new Rfc2898DeriveBytes(passwordBytes, saltBytes, 1000);
 
-        //            AES.KeySize = 256;
-        //            AES.BlockSize = 128;
-        //            AES.Key = key.GetBytes(AES.KeySize / 8);
-        //            AES.IV = key.GetBytes(AES.BlockSize / 8);
+                    AES.KeySize = 256;
+                    AES.BlockSize = 128;
+                    AES.Key = key.GetBytes(AES.KeySize / 8);
+                    AES.IV = key.GetBytes(AES.BlockSize / 8);
 
-        //            AES.Mode = CipherMode.CBC;
+                    AES.Mode = CipherMode.CBC;
 
-        //            using (var cs = new CryptoStream(ms, AES.CreateEncryptor(), CryptoStreamMode.Write))
-        //            {
-        //                cs.Write(bytesToBeEncrypted, 0, bytesToBeEncrypted.Length);
-        //                cs.Close();
-        //            }
+                    using (var cs = new CryptoStream(ms, AES.CreateEncryptor(), CryptoStreamMode.Write))
+                    {
+                        cs.Write(bytesToBeEncrypted, 0, bytesToBeEncrypted.Length);
+                        cs.Close();
+                    }
 
-        //            encryptedBytes = ms.ToArray();
-        //        }
-        //    }
+                    encryptedBytes = ms.ToArray();
+                }
+            }
 
-        //    return encryptedBytes;
-        //}
+            return encryptedBytes;
+        }
 
         private static byte[] Decrypt(byte[] bytesToBeDecrypted, byte[] passwordBytes)
         {
