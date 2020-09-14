@@ -187,18 +187,22 @@ namespace FewaTelemedicine.Controllers
         }
 
         public IActionResult GetUpdatedDoctor(string username)
-        {
-
-            var parameter = FewaDbContext.ParametersModels.ToList();
+        {         
             var doctor = (from temp in FewaDbContext.DoctorsModels
                                  where temp.UserName == username
                                  select temp).FirstOrDefault();
+            var parameter = FewaDbContext.ParametersModels.Where(a => a.DoctorId == doctor.DoctorId).ToList();
             doctor.DoctorRoomName = doctor.DoctorRoomName.Replace("DoctorName", doctor.UserName);
             var TodaysDate = DateTime.Now.ToString("MM-dd-yyyy HH:mm:ss");
             var ServerName = parameter.Find(a => a.ParameterGroupName == "Server").ParameterValue;
             var LogoPath = parameter.Find(a => a.ParameterGroupName == "Hospital" && a.ParameterName == "LogoPath").ParameterValue;
             var HospitalName = parameter.Find(a => a.ParameterName == "Name").ParameterValue;
+            var emailContent = parameter.Find(a => a.ParameterGroupName == "EmailAPI" && a.ParameterName == "EmailAdditionalContent").ParameterValue;
             var htmlContent = parameter.Find(a => a.ParameterGroupName == "EmailAPI" && a.ParameterName == "EmailHTMLBody").ParameterValue;
+            if (!string.IsNullOrEmpty(emailContent))
+            {
+                htmlContent = htmlContent.Replace("EmailAdditionalContent", emailContent);
+            }        
             htmlContent = htmlContent.Replace("{ImageUrl}", ServerName + LogoPath);
             htmlContent = htmlContent.Replace("{Join}", ServerName + "#/Join");
             htmlContent = htmlContent.Replace("DoctorNameTitle", doctor.NameTitle);
@@ -387,7 +391,7 @@ namespace FewaTelemedicine.Controllers
             if (ModelState.IsValid)
             {             
                     foreach (var i in list)
-                    {
+                    {                  
                         var c = FewaDbContext.ParametersModels.Where(a => a.ParameterGroupName.Equals(i.ParameterGroupName) && a.ParameterName.Equals(i.ParameterName) && a.DoctorId.Contains(i.DoctorId)).FirstOrDefault();
                         if (c != null)
                         {
@@ -400,6 +404,38 @@ namespace FewaTelemedicine.Controllers
             else
             {
                 return Ok("Update Failed");
+            }
+        }
+
+        public IActionResult PreviewEmailTemplate([FromBody]List<ParametersModel> list)
+        {
+            if (ModelState.IsValid)
+            {
+                var emailParam = list.Where(a => a.ParameterGroupName == "EmailAPI" && a.ParameterName == "EmailAdditionalContent").FirstOrDefault();
+                var newEmailContent = emailParam.ParameterValue;
+                var DoctorId = emailParam.DoctorId;              
+                var oldEmailContent = FewaDbContext.ParametersModels.Where(a => a.ParameterGroupName == "EmailAPI" && a.ParameterName == "EmailAdditionalContent" && a.DoctorId.Equals(DoctorId)).FirstOrDefault().ParameterValue;
+                var htmlContent = FewaDbContext.ParametersModels.Where(a => a.ParameterGroupName == "EmailAPI" && a.ParameterName == "EmailHTMLBody" && a.DoctorId.Equals(DoctorId)).FirstOrDefault().ParameterValue;      
+                    if (!(string.IsNullOrEmpty(oldEmailContent)) && htmlContent.Contains(oldEmailContent))
+                    {
+                        htmlContent = htmlContent.Replace(oldEmailContent, newEmailContent);
+                    }                  
+                    else if (htmlContent.Contains("EmailAdditionalContent"))
+                    {
+                        htmlContent = htmlContent.Replace("EmailAdditionalContent", newEmailContent);
+                    }                       
+                  
+                var data = new
+                {
+                    EmailHTMLBody = htmlContent,
+                    PreviewEmailContent = newEmailContent
+                };
+
+                return Ok(data);
+            }
+            else
+            {
+                return Ok("Cannot Load Preview.");
             }
         }
 
@@ -431,7 +467,7 @@ namespace FewaTelemedicine.Controllers
                 var doc = _doctorRepository.GetDoctorByUserName(username);
                 if (doc is null)
                 {
-                    return StatusCode(500);
+                    return NotFound("Doctor Not Found.");
                 }
 
                 using (var memoryStream = new MemoryStream())

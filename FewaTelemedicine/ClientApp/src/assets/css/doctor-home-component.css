@@ -39,15 +39,15 @@
 
 @media screen and (min-width: 500px) {  
 .banner-color {  
-    background-color: #009688;  
+    background-color: #eb681f  
 }  
 
 .title-color {  
-    color: black;  
+    color: #0066cc;  
 }  
 
 .button-color {  
-background-color: #009688;  
+background-color: #0066cc;  
 } 
 } 
 

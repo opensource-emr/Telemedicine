@@ -14,22 +14,23 @@ import { ToastrService } from 'ngx-toastr';
 import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 import { ParametersModel } from 'src/models/parameters.model';
 
-
-
 @Component({
   templateUrl: './doctor-home.component.html',
   template: `<pre>{{ state | async | json }}</pre>`,
   styleUrls: ['../../../assets/css/doctor-home-component.css']
-
 })
+
 export class DoctorHomeComponent implements OnInit,OnDestroy{
   private state: Observable<object>;
   public LogoToUpload:File = null;
   public selectedFile: File;
   public progress: number;
+  public logoUploadProgress: number;
   public message: string;
+  public logoUploadMessage: string;
   count:number=0;
   receivedImageData: any;
+  receivedLogoImage: any;
   retrievedImage: any;
   retrieveResponse: any;
   activeTab = 'updateProfile';
@@ -40,7 +41,9 @@ export class DoctorHomeComponent implements OnInit,OnDestroy{
   EmailSubject:string = "";
   EmailPlainBody:string = "";
   EmailHTMLBody :string = "";
+  EmailAdditionalContent : string = "";
   HospitalDesc: string = "";
+  PreviewEmailContent: string = " ";
   showChat: boolean = true;
   AllUserChats: any = {};
   ChatMessages: Array<any> = new Array<any>();
@@ -48,6 +51,7 @@ export class DoctorHomeComponent implements OnInit,OnDestroy{
   ChatUserDropDowns: Array<any> = new Array<any>();
   ChatForm: FormGroup;
   parameterArray: Array<ParametersModel> = null;
+  showPreview: boolean = false;
   
   @ViewChild('scrollBtm', { static: false }) private scrollBottom: ElementRef;
   public InvitationButton: boolean = true;
@@ -151,16 +155,12 @@ export class DoctorHomeComponent implements OnInit,OnDestroy{
 
  
   ngOnInit() {
-
-
-
     var params = new HttpParams().set('username',this.global.doctorObj.UserName );
     this.httpClient.
     get<any>(this.global.HospitalUrl + "GetUpdatedDoctor",{params : params})
     .subscribe(res => {
      this.doctorObj = res.User;
      this.parameterArray = res.Parameter;
-
      this.HospitalName = this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "Name"&&a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue;
      this.HospitalContact = this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "ContactNumber"&&a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue;
      this.HospitalEmail = this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "Email"&&a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue;
@@ -169,6 +169,7 @@ export class DoctorHomeComponent implements OnInit,OnDestroy{
      this.HospitalLogo = this.parameterArray.find(a => a.ParameterName === 'LogoPath' && a.ParameterGroupName === "Hospital"&&a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue;
      this.EmailSubject = this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "EmailSubject"&&a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue;
      this.EmailPlainBody = this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "EmailPlainBody"&&a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue;
+     this.EmailAdditionalContent = this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "EmailAdditionalContent"&&a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue;
      this.EmailHTMLBody = res.EmailHTMLBody;
      if(this.doctorObj.Image)
      this.retrievedImage = 'data:image/png;base64,' + this.doctorObj.Image;
@@ -187,6 +188,9 @@ export class DoctorHomeComponent implements OnInit,OnDestroy{
   }
   Transform() {
     return this.sanitizer.bypassSecurityTrustResourceUrl(this.retrievedImage);
+  }
+  EmailTemplateUrl(){
+    return this.sanitizer.bypassSecurityTrustHtml(this.EmailHTMLBody);
   }
 
   private initForm() {
@@ -292,14 +296,14 @@ export class DoctorHomeComponent implements OnInit,OnDestroy{
     this.httpClient.post(this.global.HospitalUrl + "UploadHospitalLogo", formData, { reportProgress: true, observe: 'events', responseType: 'text'})
       .subscribe(event => {
         if (event.type === HttpEventType.UploadProgress)
-          this.progress = Math.round(100 * event.loaded / event.total);
+          this.logoUploadProgress = Math.round(100 * event.loaded / event.total);
         else if (event.type === HttpEventType.Response) {
-          this.receivedImageData = event;
-          this.message = 'Upload Success.';
-          this.HospitalLogo = this.receivedImageData.body;
+          this.receivedLogoImage = event;
+          this.logoUploadMessage = 'Upload Success.';
+          this.HospitalLogo = this.receivedLogoImage.body;
         }
         else {
-          this.message = 'Upload Failed.';
+          this.logoUploadMessage = 'Upload Failed.';
         }
       });
   }
@@ -362,34 +366,56 @@ export class DoctorHomeComponent implements OnInit,OnDestroy{
   }
 
   UpdateParameters() {
-
     this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "Name"&&a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue = this.HospitalName ;
     this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "ContactNumber"&& a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue = this.HospitalContact;
     this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "Email"&& a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue = this.HospitalEmail;
     this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "Description"&& a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue = this.HospitalDesc;
     this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "VideoCallPlatform" && a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue= this.global.doctorObj.VideoCallPlatform;
-    this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "EmailSubject" && a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue  =  this.EmailSubject;
-    this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "EmailPlainBody" && a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue  =  this.EmailPlainBody;
     this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "LogoPath" && a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue  = this.HospitalLogo;
     this.parameterArray.find(a => a.ParameterGroupName === "Hospital" && a.ParameterName === "VideoCallPlatform" && a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue= this.global.doctorObj.VideoCallPlatform;
-    this.parameterArray.find(a => a.ParameterName === "DoctorId").ParameterValue  = this.global.doctorObj.DoctorId;
-    
+    //this.parameterArray.find(a => a.DoctorId).ParameterValue  = this.global.doctorObj.DoctorId;
     this.httpClient.
-    post<any>(this.global.HospitalUrl  + "UpdateParameters", this.parameterArray)
+    post<any>(this.global.HospitalUrl  + "UpdateParameters",this.parameterArray)
     .subscribe(res => {
       this.parameterArray= res;
-      alert("parameters updated");
+      alert("Hospital Parameters updated");
     },
       err => { console.log(err); });
   }
 
   UpdateEmailTemplate() {
+    this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "EmailSubject" && a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue  =  this.EmailSubject;
+    this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "EmailPlainBody" && a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue  =  this.EmailPlainBody;
     this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "EmailHTMLBody").ParameterValue  = this.EmailHTMLBody;
     this.httpClient.
     post<any>(this.global.HospitalUrl  + "UpdateParameters", this.parameterArray)
     .subscribe(res => {
       this.parameterArray= res;
-      alert("Email Template Updated");
+      alert("Email Parameters Updated");
+    },
+      err => { console.log(err); });
+  }
+
+  PreviewEmailTemplate(){
+    this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "EmailAdditionalContent"&&a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue = this.EmailAdditionalContent;
+    this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "EmailSubject" && a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue  =  this.EmailSubject;
+    this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "EmailPlainBody" && a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue  =  this.EmailPlainBody;
+    this.parameterArray.find(a => a.ParameterGroupName === "EmailAPI" && a.ParameterName === "EmailHTMLBody"&& a.DoctorId==this.global.doctorObj.DoctorId).ParameterValue = this.EmailHTMLBody;
+    // var params = new HttpParams();
+    // var paramArray = Array<ParametersModel>();
+    // var paramPreview = " ";
+
+    //  let data = {
+    //   paramArray : this.parameterArray,
+    //   paramPreview : this.PreviewEmailContent 
+    // } 
+
+    this.httpClient.
+    post<any>(this.global.HospitalUrl  + "PreviewEmailTemplate",this.parameterArray)
+    .subscribe(res => {
+      this.EmailHTMLBody= res.EmailHTMLBody; 
+      this.PreviewEmailContent = res.PreviewEmailContent;
+      this.showPreview = true;  
     },
       err => { console.log(err); });
   }
@@ -426,6 +452,7 @@ export class DoctorHomeComponent implements OnInit,OnDestroy{
       .subscribe(res => this.LoadPatientSuccess(res), err => this.Error(err));
 
   }
+
   LoadPatientSuccess(res) {
     this.CompletedPatients=res.filter(t=>t.DoctorId==this.global.doctorObj.DoctorId);
   }
@@ -445,11 +472,10 @@ export class DoctorHomeComponent implements OnInit,OnDestroy{
       this.routing.navigateByUrl('/DoctorRoomTokbox', { state: this.global.patientObj });
     }
     else
-    this.routing.navigateByUrl('/DoctorRoom', { state: this.global.patientObj });
-      
-     
+    this.routing.navigateByUrl('/DoctorRoom', { state: this.global.patientObj });   
     }
   }
+
   EmailInvitationSuccess(res) {
     console.log(res);
     if (res)
