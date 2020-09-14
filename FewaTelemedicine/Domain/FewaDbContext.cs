@@ -1,4 +1,13 @@
-﻿using FewaTelemedicine.Domain.Models;
+﻿#region  FewaDbContext Description
+/* This File contains Description about tables and Columns Values in Fewa Telemedicine.
+ */
+#endregion
+#region Log History 
+/* #38 14/9/2020 - Bhavana => Added Parameter "EmailAdditionalContent" in EmailAPI.
+*  #38 14/9/2020 - Bhavana => Updated Email HTML Body Parameter.
+ */
+#endregion
+using FewaTelemedicine.Domain.Models;
 using FewaTelemedicine.Domain.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;

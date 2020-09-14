@@ -1,5 +1,9 @@
-<head>
+ <!-- Log History -->
+ <!-- #49 11/9/2020 - Added by Bhavana =>  Changes in Update Parameter. -->
+ <!-- #38 13/9/2020 - Added by Bhavana =>  Changes in Email Template to display email parameters. -->
+ <!-- #19 8/9/2020 - Added by Bhavana =>  Changes Send Invitation to display message in page. -->
 
+<head>
   <link href="//cdn.syncfusion.com/ej2/ej2-notifications/styles/material.css" rel="stylesheet" />
   <script src="../../../vendor/ckeditor/ckeditor.js"></script>
 </head>
@@ -139,6 +143,7 @@
                           Send
                         </button>
                       </div>
+                     <!-- Start: #19  8/9/2020 - Added by Bhavana -->
                       <div class="col-md-2" *ngIf="!(this.InvitationButton)">
                         Sending Invitation...
                       </div>
@@ -148,6 +153,7 @@
                       <div class="col-md-2" *ngIf="this.InvitationFailure">
                         Sending Failed.
                       </div>
+                      <!-- End: #19  8/9/2020 - Added by Bhavana -->
                     </div>
                   </form>
                 </div>

@@ -1,3 +1,9 @@
+/* #38 13/9/2020 - Bhavana => 1) Added PreviewEmailTemplate Method to Preview Email HTML Content .
+ *                             2) Added UpdateParameter Method to update all parameters.
+ * #49  13/9/2020 - Bhavana => 1) Added  Upload Hospital Logo Method to update Hospital Logo.
+ * #19  10/9/2020 - Bhavana => 1) Updated send invitation method to display nvitation message on page. 
+ */
+
 import { Component, OnInit, ViewChild, ChangeDetectorRef, ElementRef, OnDestroy, AfterViewInit } from "@angular/core";
 import { Router, NavigationStart, ActivatedRoute, Data } from '@angular/router';
 import { NotificationService } from 'src/Common/notification.service';

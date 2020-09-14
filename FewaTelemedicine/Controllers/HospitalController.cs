@@ -5,8 +5,10 @@
  */
 #endregion
 #region Log History
-/* #39 6/9/2020 - Bhavana => Added Email Template Changes in Get Updated Doctor.
-*  #40 6/9/2020 - Bhavana => Updated  Added Upload Option to update for Doctor Logo.
+/* #38 6/9/2020 - Bhavana => Added Email Template Changes in Get Updated Doctor.
+*  #48 6/9/2020 - Bhavana => Added Upload Method to change/edit Doctor Logo.
+*  #38 14/9/2020 - Bhavana => Added Preview Email Template Method to Preview Email HTML Content,
+*                             Updated GetUpdatedDoctor Method.         
  */
 #endregion 
 using System;
@@ -431,6 +433,7 @@ namespace FewaTelemedicine.Controllers
                     PreviewEmailContent = newEmailContent
                 };
 
+                
                 return Ok(data);
             }
             else
