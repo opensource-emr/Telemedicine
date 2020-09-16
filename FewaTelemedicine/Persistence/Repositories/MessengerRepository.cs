@@ -23,13 +23,13 @@ namespace FewaTelemedicine.Persistence.Repositories
         private ILoggerService _logger;
         private FewaDbContext FewaDbContext = null;
         private readonly IHttpContextAccessor accessor;
-        private readonly IDoctorRepository _doctorRepository;
-        public MessengerRepository(ILoggerService logger, FewaDbContext fewaDbContext, IHttpContextAccessor HttpContextAccessor, IDoctorRepository doctorRepository)
+        private readonly IProviderRepository _providerRepository;
+        public MessengerRepository(ILoggerService logger, FewaDbContext fewaDbContext, IHttpContextAccessor HttpContextAccessor, IProviderRepository providerRepository)
         {
             _logger = logger;
             FewaDbContext = fewaDbContext;
             accessor = HttpContextAccessor;
-            _doctorRepository = doctorRepository;
+            _providerRepository = providerRepository;
         }
 
         public async Task<bool> SendEmailAsync(string subject, string message, string receiverEmail)
@@ -38,36 +38,36 @@ namespace FewaTelemedicine.Persistence.Repositories
 
             try
             {
-                List<ParametersModel> paramEmail = FewaDbContext.ParametersModels.Where(a => a.ParameterGroupName == "EmailAPI").ToList();
-                List<ParametersModel> paramHospital = FewaDbContext.ParametersModels.Where(a => a.ParameterGroupName == "Hospital").ToList();
-                var ServerName = FewaDbContext.ParametersModels.FirstOrDefault(a => a.ParameterGroupName == "Server").ParameterValue;
+
+                List<Practice> practice = FewaDbContext.practices.ToList();
+                var ServerName = practice.Select(a => a.serverName);
                 var username = accessor.HttpContext.Session.GetString("Name");
-                var doctor = _doctorRepository.GetDoctorByUserName(username);
+                var doctor = _providerRepository.getProviderByUserName(username);
                 var TodaysDate =DateTime.Now.ToString("MM-dd-yyyy HH:mm:ss");
-                var HospitalName = paramHospital.Find(a => a.ParameterName == "Name").ParameterValue;
-                var LogoPath = paramHospital.Find(a => a.ParameterName == "LogoPath").ParameterValue;
-                var HospitalContact = paramHospital.Find(a => a.ParameterName == "ContactNumber").ParameterValue;
-                var apiKey = paramEmail.Find(a => a.ParameterName == "ApiKey").ParameterValue;
-                var email = paramEmail.Find(a => a.ParameterName == "Email").ParameterValue;
-                var name = paramEmail.Find(a => a.ParameterName == "Name").ParameterValue;
-                var client = new SendGridClient(apiKey);
-                var from = new EmailAddress(email, name);
+                var HospitalName = practice.Select(a => a.name);
+                var LogoPath = practice.Select(a => a.logoPath);
+                var HospitalContact = practice.Select(a => a.contactNumber);
+                var apiKey = practice.Select(a => a.emailApiKey);
+                var email = practice.Select(a => a.email);
+                var name = practice.Select(a => a.name);
+                //var client = new SendGridClient(apiKey);
+                //var from = new EmailAddress(email, name);
                 var to = new EmailAddress(receiverEmail);
-                var plainTextContent = paramEmail.Find(a => a.ParameterName == "EmailPlainBody").ParameterValue;
-                var htmlContent = paramEmail.Find(a => a.ParameterName == "EmailHTMLBody").ParameterValue;
-                htmlContent = htmlContent.Replace("{ImageUrl}", ServerName + LogoPath);
-                htmlContent = htmlContent.Replace("{Join}", ServerName + "#/Join?DoctorName="+doctor.DoctorId);
-                htmlContent = htmlContent.Replace("DoctorNameTitle", doctor.NameTitle);
-                htmlContent= htmlContent.Replace("DoctorName", doctor.DoctorName);
-                htmlContent= htmlContent.Replace("HospitalName", HospitalName);
-                htmlContent = htmlContent.Replace("TodaysDate", TodaysDate);
-                subject = paramEmail.Find(a => a.ParameterName == "EmailSubject").ParameterValue;
-                var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
-                var res = await client.SendEmailAsync(msg);
-                if (res.StatusCode == System.Net.HttpStatusCode.OK || res.StatusCode == System.Net.HttpStatusCode.Accepted)
-                {
-                    bResponse = true;
-                }
+                var plainTextContent = practice.Select(a => a.emailPlainBody);
+                var htmlContent = practice.Select(a => a.emailHtmlBody);
+                //htmlContent = htmlContent.Replace("{ImageUrl}", ServerName + LogoPath);
+                //htmlContent = htmlContent.Replace("{Join}", ServerName + "#/Join?DoctorName="+doctor.DoctorId);
+                //htmlContent = htmlContent.Replace("DoctorNameTitle", doctor.NameTitle);
+                //htmlContent= htmlContent.Replace("DoctorName", doctor.DoctorName);
+                //htmlContent= htmlContent.Replace("HospitalName", HospitalName);
+                //htmlContent = htmlContent.Replace("TodaysDate", TodaysDate);
+                //subject = practice.Select(a => a.emailSubject);
+                //var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+                //var res = await client.SendEmailAsync(msg);
+                //if (res.StatusCode == System.Net.HttpStatusCode.OK || res.StatusCode == System.Net.HttpStatusCode.Accepted)
+                //{
+                //    bResponse = true;
+                //}
             }
             catch (Exception ex)
             {

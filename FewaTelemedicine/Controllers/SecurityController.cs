@@ -27,67 +27,67 @@ namespace FewaTelemedicine.Controllers
     public class SecurityController : ControllerBase
     {
         private FewaDbContext FewaDbContext = null;
-        private readonly IDoctorRepository _doctorRepository;
-        List<DoctorCabin> _doctorcabins = null;
-        List<DoctorsModel> _doctors = null;
+        private readonly IProviderRepository _providerRepository;
+        List<ProviderCabin> _providerCabins = null;
+        List<Provider> _providers = null;
         private readonly IConfiguration _config;
 
         public SecurityController(
-            IDoctorRepository doctorRepository,
-            List<DoctorCabin> doctorcabins, IConfiguration config, List<DoctorsModel> doctors,
+            IProviderRepository providerRepository,
+            List<ProviderCabin> providerCabins, IConfiguration config, List<Provider> providers,
             FewaDbContext fewaDbContext
             )
         {
-            _doctorRepository = doctorRepository;
+            _providerRepository = providerRepository;
             FewaDbContext = fewaDbContext;
-            _doctorcabins = doctorcabins;
-            _doctors = doctors;
+            _providerCabins = providerCabins;
+            _providers = providers;
             _config = config;
         }
 
         [HttpGet]
-        public ActionResult GetDoctors()
+        public ActionResult GetProviders()
         {
-            return Ok(_doctorRepository.GetDoctorsList());
+            return Ok(_providerRepository.getProvidersList());
         }
 
         [HttpPost("Login")]
-        public ActionResult Login(DoctorsModel doctor)
+        public ActionResult Login(Provider provider)
         {
             try
             {
-                if (doctor == null)
+                if (provider == null)
                 {
                     return BadRequest();
                 }
-                if (string.IsNullOrEmpty(doctor.UserName))
+                if (string.IsNullOrEmpty(provider.userName))
                 {
                     return BadRequest();
                 }
-                var doc = _doctorRepository.GetDoctorByUserName(doctor.UserName);
-                doc.DoctorRoomName = doc.DoctorRoomName.Replace("DoctorName", doctor.UserName);
-                if (doc == null)
+                var pro = _providerRepository.getProviderByUserName(provider.userName);
+                pro.roomName = provider.roomName.Replace("name", provider.userName);
+                if (pro == null)
                 {
                     return Unauthorized();
                 }
-                var docPwd = Cipher.Decrypt(doc.Password, doctor.UserName);
-                if (doctor.Password != docPwd)
+                var providerPwd = Cipher.Decrypt(pro.password, provider.userName);
+                if (provider.password != providerPwd)
                 {
                     return Unauthorized();
                 }
-                if (docPwd== doctor.Password)
+                if (providerPwd == provider.password)
                 {
-                doctor.Image = doc.Image;
-                doctor.DoctorId = doc.DoctorId;
-                doctor.NameTitle = doc.NameTitle;
-                doctor.DoctorName = doc.DoctorName;
-                doctor.DoctorRoomName = doc.DoctorRoomName;
-                HttpContext.Session.SetString("Name", doctor.UserName);
-                var token = GenerateJSONWebToken(doctor.UserName, "doctor");
-                    AddDoctorCabin(doc.UserName);
+                    provider.image = pro.image;
+                    provider.providerId = pro.providerId;
+                    provider.nameTitle = pro.nameTitle;
+                    provider.name = pro.name;
+                    provider.roomName = pro.roomName;
+                    HttpContext.Session.SetString("name", provider.userName);
+                    var token = GenerateJSONWebToken(provider.userName, "provider");
+                    AddProviderCabin(pro.userName);
                     var data = new
                     {
-                        User = doctor,                  
+                        User = provider,                  
                         Token = token
                     };
                     return Ok(data);
@@ -99,41 +99,24 @@ namespace FewaTelemedicine.Controllers
                 return StatusCode(500, ex);
             }
         }
-        //public bool CheckDoctor(string name, string password)
-        //{
-        //    foreach (var item in _doctors)
-        //    {
-        //        if (item.UserName == name)
-        //        {
-        //            if (item.Password == password)
-        //            {
-        //                return true;
-        //            }
-        //            else
-        //            {
-        //                return false;
-        //            }
-        //        }
-        //    }
-        //    return false;
-        //}
-        private void AddDoctorCabin(string DoctorName)
+
+        private void AddProviderCabin(string name)
         {
-            foreach (var item in _doctorcabins)
+            foreach (var item in _providerCabins)
             {
-                if (item.DoctorsModel.UserName == DoctorName)
+                if (item.provider.userName == name)
                 {
-                    _doctorcabins.Remove(item);
-                    _doctorcabins.Add(new DoctorCabin()
-                    { DoctorsModel = new DoctorsModel() { UserName = DoctorName } });
+                    _providerCabins.Remove(item);
+                    _providerCabins.Add(new ProviderCabin()
+                    { provider = new Provider() { userName = name } });
                     return;
                 }
             }
-            _doctorcabins.Add(new DoctorCabin()
-            { DoctorsModel = new DoctorsModel() { UserName = DoctorName } });
+            _providerCabins.Add(new ProviderCabin()
+            { provider = new Provider() { userName = name } });
 
         }
-     
+
         private string GenerateJSONWebToken(string username, string usertype)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));

@@ -17,18 +17,18 @@ namespace FewaTelemedicine.Persistence.Repositories
             _context = context;
         }
 
-        public List<PatientsAttendedModel> GetPatientList()
+        public List<Patient> getPatientList()
         {
-            return _context.PatientsAttendedModels.ToList();
+            return _context.patients.ToList();
         }
 
-        public PatientsAttendedModel GetPatientByUserName(string username)
+        public Patient GetPatientByUserName(string username)
         {
-            return _context.PatientsAttendedModels.Where(d => d.PatientName == username).FirstOrDefault();
+            return _context.patients.Where(d => d.name == username).FirstOrDefault();
         }
-        public PatientsAttendedModel AddNewPatient(PatientsAttendedModel patient)
+        public Patient AddNewPatient(Patient patient)
         {
-            _context.PatientsAttendedModels.Add(patient);
+            _context.patients.Add(patient);
             _context.SaveChanges();
             return patient;
         }

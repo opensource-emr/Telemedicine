@@ -8,8 +8,8 @@ namespace FewaTelemedicine.Domain.Repositories
 {
     public interface IPatientRepository
     {
-        List<PatientsAttendedModel> GetPatientList();
-        PatientsAttendedModel GetPatientByUserName(string username);
-        PatientsAttendedModel AddNewPatient(PatientsAttendedModel patient);
+        List<Patient> getPatientList();
+        Patient GetPatientByUserName(string username);
+        Patient AddNewPatient(Patient patient);
     }
 }

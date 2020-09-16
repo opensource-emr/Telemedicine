@@ -8,23 +8,23 @@ using System.Threading.Tasks;
 
 namespace FewaTelemedicine.Persistence.Repositories
 {
-    public class DoctorRepository : IDoctorRepository
+    public class ProviderRepository : IProviderRepository
     {
         private readonly FewaDbContext _context;
 
-        public DoctorRepository(FewaDbContext context)
+        public ProviderRepository(FewaDbContext context)
         {
             _context = context;
         }
 
-        public List<DoctorsModel> GetDoctorsList()
+        public List<Provider> getProvidersList()
         {
-            return _context.DoctorsModels.ToList();
+            return _context.providers.ToList();
         }
 
-        public DoctorsModel GetDoctorByUserName(string username)
+        public Provider getProviderByUserName(string username)
         {
-            return _context.DoctorsModels.Where(d => d.UserName == username).FirstOrDefault();
+            return _context.providers.Where(d => d.userName == username).FirstOrDefault();
         }
     }
 }

@@ -33,14 +33,14 @@ namespace FewaTelemedicine
 
         public IConfiguration Configuration { get; }
 
-        private List<DoctorsModel> LoadDoctors( )
+        private List<Provider> loadProviders( )
         {
             
             var optionsBuilder = new DbContextOptionsBuilder<FewaDbContext>();
             optionsBuilder.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
 
             FewaDbContext db = new FewaDbContext(optionsBuilder.Options);
-            return db.DoctorsModels.ToList<DoctorsModel>();
+            return db.providers.ToList<Provider>();
         }
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -50,13 +50,13 @@ namespace FewaTelemedicine
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
             });
             services.AddSession(); // add session
-            List<DoctorsModel> doctors = null;
-            doctors = LoadDoctors();
-            services.AddSingleton<List<DoctorCabin>>();
+            List<Provider> providers = null;
+            providers = loadProviders();
+            services.AddSingleton<List<ProviderCabin>>();
             services.AddSingleton<WaitingRoom>();
-            services.AddSingleton<List<DoctorsModel>>(doctors);
+            services.AddSingleton<List<Provider>>(providers);
       
-            services.AddTransient<IDoctorRepository, DoctorRepository>();
+            services.AddTransient<IProviderRepository, ProviderRepository>();
             services.AddTransient<IPatientRepository, PatientRepository>();
 
             services.AddSingleton<ILoggerService, LoggerRepository>();

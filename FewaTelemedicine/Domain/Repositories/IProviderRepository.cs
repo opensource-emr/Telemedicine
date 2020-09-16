@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace FewaTelemedicine.Domain.Repositories
 {
-    public interface IDoctorRepository
+    public interface IProviderRepository
     {
-        List<DoctorsModel> GetDoctorsList();
-        DoctorsModel GetDoctorByUserName(string username);
+        List<Provider> getProvidersList();
+        Provider getProviderByUserName(string username);
        
     }
 }

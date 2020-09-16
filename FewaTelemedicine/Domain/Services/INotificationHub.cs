@@ -19,6 +19,6 @@ namespace FewaTelemedicine.Domain.Services
         Task CompletePatient(string payLoad);
 
         Task ChatMessage(string message);
-        Task GetAllDoctors(string payLoad);
+        Task GetAllProviders(string payLoad);
     }
 }
