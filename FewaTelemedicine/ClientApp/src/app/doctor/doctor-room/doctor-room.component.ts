@@ -137,7 +137,10 @@ export class DoctorRoomComponent {
         DISPLAY_WELCOME_PAGE_TOOLBAR_ADDITIONAL_CONTENT:false,
         DEFAULT_REMOTE_DISPLAY_NAME:this.global.patientObj.PatientName,
         disable1On1Mode: false,
-        REMOTE_THUMBNAIL_RATIO: 0, // 1:1
+        REMOTE_THUMBNAIL_RATIO_HEIGHT: 0,
+        REMOTE_THUMBNAIL_RATIO_WIDTH: 0,
+        REMOTE_THUMBNAIL_RATIO: 0,
+        LOCAL_THUMBNAIL_RATIO: 1,// 1:1
         filmStripOnly: false,
         TOOLBAR_BUTTONS: ['microphone', 'camera','videoquality']
       }

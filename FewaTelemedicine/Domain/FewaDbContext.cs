@@ -516,7 +516,7 @@ namespace FewaTelemedicine.Domain
                                                  "                     <td align='center'>  " +
                                                  "                        <center style='width:100%'>  " +
                                                  "                           <table bgcolor='#FFFFFF' border='0' cellspacing='0' cellpadding='0' style='margin:0 auto;max-width:512px;font-weight:200;width:inherit;font-family:Helvetica,Arial,sans-serif' width='512'>  " +
-                                                 "                              <tbody style='top:21%;position:absolute'>  " +
+                                                 "                              <tbody style='position:absolute'>  " +
                                                  "                                 <tr>  " +
                                                  "                                    <td bgcolor='#F3F3F3' width='100%' style='background-color:#f3f3f3;padding:12px;border-bottom:1px solid #ececec'>  " +
                                                  "                                       <table border='0' cellspacing='0' cellpadding='0' style='font-weight:200;width:100%!important;font-family:Helvetica,Arial,sans-serif;min-width:100%!important' width='100%'>  " +
@@ -805,7 +805,7 @@ namespace FewaTelemedicine.Domain
                                                  "                     <td align='center'>  " +
                                                  "                        <center style='width:100%'>  " +
                                                  "                           <table bgcolor='#FFFFFF' border='0' cellspacing='0' cellpadding='0' style='margin:0 auto;max-width:512px;font-weight:200;width:inherit;font-family:Helvetica,Arial,sans-serif' width='512'>  " +
-                                                 "                              <tbody style='top:21%;position:absolute'>  " +
+                                                 "                              <tbody style='position:absolute'>  " +
                                                  "                                 <tr>  " +
                                                  "                                    <td bgcolor='#F3F3F3' width='100%' style='background-color:#f3f3f3;padding:12px;border-bottom:1px solid #ececec'>  " +
                                                  "                                       <table border='0' cellspacing='0' cellpadding='0' style='font-weight:200;width:100%!important;font-family:Helvetica,Arial,sans-serif;min-width:100%!important' width='100%'>  " +

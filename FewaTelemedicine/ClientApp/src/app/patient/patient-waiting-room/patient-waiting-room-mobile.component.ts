@@ -9,9 +9,9 @@ import { ToastrService } from 'ngx-toastr';
 import { ParametersModel } from 'src/models/parameters.model';
 
 @Component({
-  templateUrl: './patient-waiting-room.component.html'
+  templateUrl: './patient-waiting-room-mobile.component.html'
 })
-export class PatientWaitingRoomComponent implements OnDestroy {
+export class PatientWaitingRoomMobileComponent implements OnDestroy {
   @ViewChild('pcam') video: any;
   Video: any;
   showChat: boolean = true;
@@ -34,6 +34,7 @@ export class PatientWaitingRoomComponent implements OnDestroy {
         })
     }
   }
+
   constructor(
     public httpClient: HttpClient, private notificationService: NotificationService,
     public routing: Router, private formBuilder: FormBuilder,
@@ -45,23 +46,23 @@ export class PatientWaitingRoomComponent implements OnDestroy {
       this.GotoDoctorRoom(patient);
     });
 
-    this.notificationService.EventChatMessage.subscribe(chatData => {
-      if (this.ChatForm.controls['selUser'].value != chatData.Name) {
-        this.ChatForm.controls['selUser'].setValue(chatData.Name);
-        this.OnChatUserChange();
-      }
-      if (!this.showChat) {
-        this.showChat = true;
-      }
-      const chatMsg = { Name: chatData.Name, Message: chatData.Message, Class: 'receiver-msg' };
-      this.ChatMessages.push(chatMsg);
-      // this.toastr.success(chatMsg.Message, chatMsg.Name,
-      //   {timeOut: 5000});
-      this.pushChatMsgUserwise(chatData.Name, chatMsg);
+    // this.notificationService.EventChatMessage.subscribe(chatData => {
+    //   if (this.ChatForm.controls['selUser'].value != chatData.Name) {
+    //     this.ChatForm.controls['selUser'].setValue(chatData.Name);
+    //     this.OnChatUserChange();
+    //   }
+    //   if (!this.showChat) {
+    //     this.showChat = true;
+    //   }
+    //   const chatMsg = { Name: chatData.Name, Message: chatData.Message, Class: 'receiver-msg' };
+    //   this.ChatMessages.push(chatMsg);
+    //   // this.toastr.success(chatMsg.Message, chatMsg.Name,
+    //   //   {timeOut: 5000});
+    //   this.pushChatMsgUserwise(chatData.Name, chatMsg);
 
-      this.cdr.detectChanges();
-      // this.scrollBottom.nativeElement.lastElementChild.scrollIntoView(false); // scroll to bottom
-    });
+    //   this.cdr.detectChanges();
+    //   // this.scrollBottom.nativeElement.lastElementChild.scrollIntoView(false); // scroll to bottom
+    // });
 
     this.notificationService.EventGetAllDoctors.subscribe(_doctors => {
       this.doctors = _doctors;
@@ -111,81 +112,81 @@ export class PatientWaitingRoomComponent implements OnDestroy {
             .subscribe(res => {
           this.global.doctorObj = res.User;
           console.log(this.global.doctorObj);
-          this.global.patientObj.VideoCallPlatform = res.VideoCallPlatform;
+          var VideoCallPlatform = res.Parameter.find(a => a.ParameterName == "VideoCallPlatform").ParameterValue;
+          this.global.patientObj.VideoCallPlatform = VideoCallPlatform;
           var url: string = this.global.config.videourl.replace("DOCTORNAME", this.global.patientObj.DoctorNameAttending);
           this.global.config.videourl = url;
-          if (res.VideoCallPlatform == this.tokbox) {
-            this.routing.navigateByUrl('/PatientRoomTokbox', { state: this.global.patientObj });
+          if (VideoCallPlatform == this.tokbox) {
+            this.routing.navigateByUrl('/PatientRoomTokbox-Mobile', { state: this.global.patientObj });
           }
           else {
-            this.routing.navigateByUrl('/PatientRoom', { state: this.global.patientObj });
+            this.routing.navigateByUrl('/PatientRoom-Mobile', {state: this.global.patientObj });
           }
         });
       }
- 
   }
 
   Error(res) {
     console.log(res);
   }
 
-  SendChatMsg() {
-    try {
-      for (const i in this.ChatForm.controls) {
-        this.ChatForm.controls[i].markAsDirty();
-        this.ChatForm.controls[i].updateValueAndValidity();
-      }
+//   SendChatMsg() {
+//     try {
+//       for (const i in this.ChatForm.controls) {
+//         this.ChatForm.controls[i].markAsDirty();
+//         this.ChatForm.controls[i].updateValueAndValidity();
+//       }
 
-      if (this.ChatForm.valid) {
-        const chatMsg = {
-          IsDoctor: this.global.IsDoctor ? false : true,
-          Name: this.ChatForm.controls['selUser'].value,
-          Message: this.ChatForm.controls['chatMessage'].value
-        };
-        const chatmsgObj = { Name: 'Me', Message: chatMsg.Message, Class: 'sender-msg' };
-        this.ChatMessages.push(chatmsgObj);
-        this.pushChatMsgUserwise(this.ChatForm.controls['selUser'].value, chatmsgObj);
+//       if (this.ChatForm.valid) {
+//         const chatMsg = {
+//           IsDoctor: this.global.IsDoctor ? false : true,
+//           Name: this.ChatForm.controls['selUser'].value,
+//           Message: this.ChatForm.controls['chatMessage'].value
+//         };
+//         const chatmsgObj = { Name: 'Me', Message: chatMsg.Message, Class: 'sender-msg' };
+//         this.ChatMessages.push(chatmsgObj);
+//         this.pushChatMsgUserwise(this.ChatForm.controls['selUser'].value, chatmsgObj);
 
-        this.cdr.detectChanges();
-        this.scrollBottom.nativeElement.lastElementChild.scrollIntoView(); // scroll to bottom
+//         this.cdr.detectChanges();
+//         this.scrollBottom.nativeElement.lastElementChild.scrollIntoView(); // scroll to bottom
 
-        this.notificationService.SendChatMessage(chatMsg);
+//         this.notificationService.SendChatMessage(chatMsg);
 
-        this.ChatForm.reset();
-        this.ChatForm.controls['selUser'].setValue(chatMsg.Name);
-      }
-    } catch (e) { }
-  }
+//         this.ChatForm.reset();
+//         this.ChatForm.controls['selUser'].setValue(chatMsg.Name);
+//       }
+//     } catch (e) { }
+//   }
 
-  OnChatUserChange() {
-    try {
-      const selUser = this.ChatForm.controls['selUser'].value;
-      if (this.AllUserChats.hasOwnProperty(selUser)) {
-        this.ChatMessages = this.AllUserChats[selUser].slice();
-      } else {
-        this.ChatMessages = new Array<any>();
-      }
-    } catch (e) { }
-  }
+//   OnChatUserChange() {
+//     try {
+//       const selUser = this.ChatForm.controls['selUser'].value;
+//       if (this.AllUserChats.hasOwnProperty(selUser)) {
+//         this.ChatMessages = this.AllUserChats[selUser].slice();
+//       } else {
+//         this.ChatMessages = new Array<any>();
+//       }
+//     } catch (e) { }
+//   }
 
-  OnShowHideChat() {
-    try {
-      this.showChat = !this.showChat;
-    } catch (e) { }
-  }
+//   OnShowHideChat() {
+//     try {
+//       this.showChat = !this.showChat;
+//     } catch (e) { }
+//   }
 
-  onChatEnter(event) {
-    if (event.keyCode === 13) {
-      this.SendChatMsg();
-    }
-  }
+//   onChatEnter(event) {
+//     if (event.keyCode === 13) {
+//       this.SendChatMsg();
+//     }
+//   }
 
-  pushChatMsgUserwise(user, messageObj) {
-    try {
-      if (!this.AllUserChats.hasOwnProperty(user)) {
-        this.AllUserChats[user] = new Array<any>();
-      }
-      this.AllUserChats[user].push(messageObj);
-    } catch (e) { }
-  }
+//   pushChatMsgUserwise(user, messageObj) {
+//     try {
+//       if (!this.AllUserChats.hasOwnProperty(user)) {
+//         this.AllUserChats[user] = new Array<any>();
+//       }
+//       this.AllUserChats[user].push(messageObj);
+//     } catch (e) { }
+//   }
 }

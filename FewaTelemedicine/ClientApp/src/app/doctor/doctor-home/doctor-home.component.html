@@ -339,11 +339,11 @@
                     </div>
                     <div *ngIf="ParamsUpdate"><br>
                       <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <h6 class="m-0 font-weight-bold">Update Parameters</h6>
+                        <h6 class="m-0 font-weight-bold">Update Configuration</h6>
                       </div>
                       <div class="card-body">
                         <form action="" class="user">
-                          <h6 class="m-0 font-weight-bold">Hospital Parameters :</h6><br>
+                          <h6 class="m-0 font-weight-bold">Hospital Configuration :</h6><br>
                           <div class="row form-group">
                             <label for="" class="col-md-3 control-label">Hospital Name</label>
                             <div class="col-md-9">
@@ -445,8 +445,8 @@
                           <div class="row form-group">
                               <label for="" class="col-md-3 control-label">Email Additional Content</label>
                               <div class="col-md-9">
-                                <input type="text" class="form-control" name="EmailAdditionalContent" [(ngModel)]="EmailAdditionalContent"
-                                  placeholder="Email Additional Content">
+                                <textarea  style="overflow:hidden;min-height:80px;" class="form-control" name="EmailAdditionalContent" [(ngModel)]="EmailAdditionalContent"
+                                  placeholder="Email Additional Content"></textarea>
                               </div>
                             </div>  
                             

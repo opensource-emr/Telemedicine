@@ -1,0 +1,139 @@
+<head>
+	<style>
+		html,body {
+			border: solid black;
+    		border-width: thin;
+    		overflow:auto;
+    		display:block;
+    		box-sizing: border-box;
+		}
+		
+		#page-top {
+			max-width:100%;
+			margin:auto;
+			background-color: white !important;
+		}
+
+		#content{
+			max-width:100%;
+			margin:auto;
+		}
+
+		@media screen and (max-width:300px) {
+			.custom-checkbox {
+				display: none;
+			}
+
+			h4 {
+				font-size: 17px;
+				margin-top: 0% !important;
+			}
+
+			footer {
+				margin-top: 5% !important;
+				margin-bottom: 0% !important;
+			}
+
+			.text-black {
+				font-size: 12px;
+			}
+
+			nav .sidebar-brand .sidebar-brand-text img {
+				max-width: 70% !important;
+			}
+
+			.card-body {
+				margin: none !important;
+				padding-top: 1% !important;
+			}
+
+			input[type="text"] {
+				height: 10%;
+			}
+		}
+	</style>
+</head>
+
+<body id="page-top">
+	<!-- Page Wrapper -->
+	<div>
+		<!-- Content Wrapper -->
+		<div>
+			<!-- Main Content -->
+			<div id="content">
+
+				<!-- Topbar -->
+				<nav style="max-width:100%;height:auto;"
+					class=" col-md-12 col-sm-12 col-xs-12 navbar navbar-expand-sm navbar-expand-xs  navbar-light justify-content-center  bg-white topbar mb-4 static-top shadow">
+					<!-- Sidebar Toggle (Topbar) -->
+					<!-- <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+						<i class="fa fa-bars"></i>
+					</button> -->
+					<!-- Topbar Navbar -->
+					<a class="sidebar-brand d-flex align-items-center justify-content-center">
+						<div class="sidebar-brand-text mx-3 align-items-center justify-content-center"><img
+								src="img/logo.png" style="float:none;margin:0 auto;height:auto;width:50%;"
+								class="img-fluid rounded mx-auto d-block" alt=""></div>
+					</a>
+				</nav>
+				<!-- End of Topbar -->
+
+				<!-- Begin Page Content -->
+				<div class="container-fluid" style="max-width:100%;margin:auto;height:100%;">
+					<div class="row">
+						<div class="col-md-6 col-sm-12 col-xs-12 m-auto text-center">
+							<!-- <h4 class="mt-2">Welcome -->
+							<!-- <span class="d-block mt-1 mb-4" style="font-size: 13px;"><i class="fa fa-info-circle"></i>Please check in here to join your doctor if you consent for this secure video visit.</span> -->
+							<!-- </h4> -->
+							<div class="card">
+								<div class="card-body pt-5 pb-5">
+									<form action="" class="user" autocomplete="off">
+										<div class="row">
+											<div class="col-sm-12 col-xs-12">
+												<input type="text" class="form-control"
+													placeholder="Enter Your Name" [(ngModel)]="patientObj.PatientName"
+													name="PatientName" />
+											</div>
+										</div>
+										<div class="custom-control custom-checkbox mt-4 d-xs-none">
+											<input type="checkbox" class="custom-control-input" id="customCheck"
+												checked />
+											<label class="custom-control-label font-weight-normal" for="customCheck">By
+												clicking you will accept our <a href="">Terms and Conditions</a></label>
+										</div>
+										<button type="submit" class="btn btn-primary  btn-sm d-inline  mt-4"
+											href="javascrpt:;" (click)="LoginPatient()">Check In</button>
+										<!-- <a href="" class="text-gray-400 d-block mt-4 d-inline">Cancel</a> -->
+									</form>
+								</div>
+								<!-- <h6 class="m-0 font-weight-bold"><i class="fa fa-users"></i>logged Doctors</h6> -->
+								<!-- <div style="overflow-y: scroll;height: 40px;display: block;">
+									<table class="table table-striped">
+										<thead>
+										   <tr *ngFor="let temp of this.getAlldoctors;">
+											<td style="padding: 0%;">&nbsp;{{temp.Id}}.&nbsp;{{temp.NameTitle}}&nbsp;{{temp.DoctorName}}</td>
+										   </tr>
+										 </thead>
+									</table>
+								</div> -->
+							</div>
+						</div>
+						<!-- <div class="col-xl-4 col-lg-5"> -->
+						<!-- </div> -->
+					</div>
+				</div>
+			</div>
+			<footer class="bg-white" style="max-width:100%;height:auto;position:relative;margin-top:13%;">
+				<div class="container my-auto mx-auto">
+					<div class="copyright text-center">
+						<span class="text-black"><img src="img/logo-cap.png"
+								style="float:none;margin:0 auto;height:auto;max-width:30%;"
+								class="img-fluid powered-footer-logo d-sm-block d-xs-block">
+							<br>Powered by &copy;
+							Danphe Telehealth 2020 </span>
+					</div>
+				</div>
+			</footer>
+		</div>
+	</div>
+</body>

@@ -1,0 +1,93 @@
+<head>
+  <style>
+    html,body {
+        border: solid black;
+    		border-width: thin;
+        overflow: hidden;
+    		display:block;
+    		box-sizing: border-box;
+        box-sizing: border-box;
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none; 
+    }
+
+    html,body ::-webkit-scrollbar {
+        display: none;  /* Chrome */
+    }
+
+    #page-top {
+      padding:2%;
+      border:1px solid;
+    }
+
+  .patient-camera-mobile{
+  border: 2px solid;
+  background: #ccc;
+  border-radius: 1px;
+  width: auto;
+  display: inline-block;
+  box-shadow: none;
+  }
+
+  @media (orientation: portrait) {
+    .patient-camera-mobile { height: 92vh !important; }
+  }
+
+  @media (orientation: landscape) {
+    .patient-camera-mobile { height: 85vh !important; }
+    .patient-camera-mobile video { min-height: 100%;   min-width: 95vw;  max-height:100%;}
+  }
+
+  .patient-camera-mobile video{
+    max-height:100%;
+    max-width:100%;
+    min-width: 95vw;
+    min-height: 100%;
+    padding:2%;
+    object-fit: cover;
+  }
+
+  </style>
+</head>
+<body  id="page-top">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="loading-container">
+          <div>
+          
+            <!-- Patient camera settlement -->
+            <div class="patient-camera-mobile">
+              <video  #pcam  autoplay autoplay="true"> </video>       
+            </div>
+            <!-- Patient camera sattlement end -->
+           
+            <div class="waiting-infon mx-auto">
+              <h6 class="for-info mt-2 mb-5 text-align-center justify-content-center"><i class="fa fa-info-circle"></i>Please wait! Your Doctor will join you soon. </h6>
+              <!-- <p class="for-info mb-3"><i class="fa fa-info-circle"></i>Till then you can check your video for smooth communication when you talk with doctor. </p> -->
+            </div>
+        
+               
+          </div>
+        </div>
+      </div>
+      </div>
+  </body>
+  <script src="js/vendor.bundle.base.js"></script>
+  <!-- <script src="js/vendor.bundle.addons.js"></script> -->
+  <!-- <script src="js/jquery.dataTables.min.js"></script> -->
+  <!-- Js for camera -->
+  <script>
+    var video = document.querySelector("#p-cam");
+  
+    if (navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then(function (stream) {
+          video.srcObject = stream;
+        })
+        .catch(function (err0r) {
+          console.log("Something went wrong!");
+        });
+    }
+  </script>
+  <!-- JS for camera end -->
+  <!-- </html> -->

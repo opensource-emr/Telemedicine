@@ -1,0 +1,239 @@
+<style>  
+html,body {
+    border:1px solid black;
+    border-width: thin;
+    overflow:auto;
+    display:block;
+    box-sizing: border-box;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none; 
+}
+
+html,body ::-webkit-scrollbar {
+        display: none;  /* Chrome */
+ }
+
+#page-top {
+    max-width:100%;
+    margin:auto;
+    background-color: white !important;
+}
+
+  @media (orientation: portrait) {
+    .row{
+        width:100vw;
+    }
+    .video-frame,.col-size{
+        padding:3%;
+    }
+
+    #meet{
+        width:100vw;
+        height:50vh;  
+        padding-left:5%;  
+      }
+
+    .right-panel {
+        width:100vw;
+        height:50vh;
+        padding:5%;
+        margin:3%;
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  
+    }
+
+    .my-doc {
+        margin-left:6%;
+    }
+
+    .drop{
+        margin-left:6%;
+    }
+
+    .right-panel::-webkit-scrollbar {
+        display: none;  /* Chrome */
+      }
+
+  }
+
+  @media (orientation: landscape) {   
+        .row {
+          width:100vw;
+        }
+
+        #meet{
+        width:100vw;
+        height:50vh; 
+        padding-left:3%;      
+      }
+
+      .video-frame,.col-size{
+        padding:3%;
+        }
+      
+       .right-panel::-webkit-scrollbar {
+        display: none;  /* Chrome */
+        }
+
+      .right-panel {
+        width:100vw;
+        height:50vh;
+        padding-left:5%;
+        /* margin:3%; */
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  
+       }
+
+       .my-doc {
+        margin-left:6%;
+        }
+
+        .drop{
+        margin-left:3%;
+       }
+    
+  }
+</style>
+<body id="page-top">
+    <div class="row m-w100">
+            <div  class="col-size col-md-9  col-sm-12 col-xs-12 p-0">
+                    <div class="video-frame">
+                        <div id="meet">
+              
+                          </div>
+                    </div>
+            </div>
+            <div class="col-md-3 col-sm-12 col-xs-12 p-0 right-panel">
+                <!-- My doctor Info -->
+                <div class="my-doc">
+                  <!-- <img *ngIf="retrievedImage" class="img-profile rounded-circle" [src]="Transform()">
+                  <img *ngIf="!retrievedImage"  src="img/doc.svg" alt="" class="doc-img-p"> -->
+                  <h6>Attending Doctor </h6> 
+                  <p class="mt-2">{{doctorObj.NameTitle}} &nbsp;&nbsp;{{doctorObj.DoctorName}} </p>
+                  <span class="d-block mt-1"><i class="fa fa-user-md"></i>{{doctorObj.Designation}} </span>
+                  <p class=""><i class="fa fa-hospital-o"></i>{{doctorObj.Clinic}} </p>
+                </div>
+                <!-- End My doc info -->
+                <!-- Text Accrodian -->
+                <!-- <div class="card mb-4 br-0 b-0 accordionItem open"> -->
+                  <!-- Card Header - Dropdown -->
+                  <!-- <div
+                    class="card-header accordionItemHeading py-3 d-flex flex-row align-items-center justify-content-between br-0">
+                    <h6 class="m-0 font-weight-bold"><i class="fa fa-comments"></i>Send Message</h6>
+                  </div> -->
+                  <!-- Card Body -->
+                  <!-- <div class="card-body p-0 accordionItemContent">
+                    <div class="chatbox-holder">
+                      <div class="chatbox"> -->
+                        <!-- <form [formGroup]="ChatForm">
+                          <div class="chat-messages">
+                            <label  for="selPatient" style="float: left;">Doctor: </label>
+          
+                            <select  id="selPatient" style="float: left;" formControlName="selUser"
+                              (change)="OnChatUserChange()">
+                              <option disabled value="null">Select Doctor</option>
+                              <option *ngFor="let dr of doctors"> {{ dr.UserName }} </option>
+                            </select>
+                            <div *ngIf="hasError('required','selUser') && showChat" style="color: red;display: inline;">
+                              {{ global.IsDoctor ? 'Patient' : 'Doctor' }} is required
+                            </div>
+          
+                            <div #scrollBtm class="message-box-holder" *ngFor="let msg of ChatMessages">
+                              <div class="message-sender">
+                              <b> {{ msg.Name }} :-</b> {{ msg.Message }}
+                              </div>
+                              </div>   
+                            </div>  
+                          <div class="chat-input-holder">
+                            <textarea class="chat-input" placeholder="Type your message here.." formControlName="chatMessage"
+                              (keyup)="onChatEnter($event)"></textarea>
+                            <div *ngIf="hasError('required','chatMessage')" style="color: red;"> Chat message is required </div>
+                            <input type="button" value="Send" class="message-send btn-primary" (click) ="SendChatMsg()"/>
+                          </div>
+          
+                        </form> -->
+                      <!-- </div>
+                    </div>
+                  </div>
+                </div> -->
+                <!-- Texts Accrodian End -->
+                <!-- upload  -->
+                <!-- <div class="drop droped-files" style="height: auto;">
+                  <div class="cont">
+                    <div class="uploaded-files">
+                      <img src="img/1.jpg" alt="" class="up-img" data-toggle="modal" data-target="#myModalpdf">
+                      <img src="img/7.jpg" alt="" class="up-img" data-toggle="modal" data-target="#myModalimg">
+                      <img src="img/8.jpg" alt="" class="up-img" data-toggle="modal" data-target="#myModalpdf">
+                      <img src="img/1.jpg" alt="" class="up-img" data-toggle="modal" data-target="#myModalimg">
+                      <img src="img/7.jpg" alt="" class="up-img" data-toggle="modal" data-target="#myModalpdf">
+                    </div>
+                  </div>
+                </div> -->
+                <!-- See File On popup click  -->
+                <!-- <div id="myModalpdf" class="modal fade uploads" role="dialog">
+                  <div class="modal-dialog modal-lg"> -->
+          
+                    <!-- Modal content-->
+                    <!-- <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      </div>
+                      <div class="modal-body"> -->
+                        <!-- Inorder to load PDF -->
+                        <!-- <embed src="img/Telemedicine.pdf" target="_blank"> -->
+                        <!-- END -->
+          
+                      <!-- </div>
+          
+                    </div>
+                  </div>
+                </div> -->
+                <!-- End See File On popup click  -->
+                <!-- See File On popup click  -->
+                <!-- <div id="myModalimg" class="modal fade uploads" role="dialog">
+                  <div class="modal-dialog modal-lg">
+           -->
+                    <!-- Modal content-->
+                    <!-- <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      </div>
+                      <div class="modal-body"> -->
+                        <!-- Inorder to load PDF -->
+                        <!-- <img src="img/1.jpg" alt=""> -->
+                        <!-- END -->
+          
+                      <!-- </div>
+          
+                    </div>
+                  </div>
+                </div> -->
+                <!-- End See File On popup click  -->
+                <!-- <div class="drop">
+                  <div class="cont"> -->
+                    <!-- <i class="fa fa-cloud-upload"></i> -->
+                    <!-- <button type="button" class="btn btn-primary btn-user btn-block" [routerLink]='["/Upload"]'>Upload File</button> -->
+                  <!-- <li [routerLinkActive]='["link-active"]'>
+                    <a [routerLink]='["/Upload"]' [state]="this.global.patientObj" (click)='collapse()'>
+                     <span class='glyphicon glyphicon-upload'></span> Upload
+                  </a>  -->
+                <!-- </li> -->
+                    <!-- <div class="tit">
+                      Drag & Drop
+                    </div> -->
+                    <!-- <div class="desc">
+                      your files to Assets, or
+                    </div>
+                    <div class="btn btn-sm btn-primary" [routerLink]='["/Upload"]'>
+                      click here to browse
+                    </div>
+                  </div> -->
+                  <!-- <output id="list"></output><input id="files" multiple="true" name="files[]" type="file" /> -->
+                <!-- </div> -->
+                <!-- Upload end -->
+              </div>     
+    </div>
+     <script src="js/vendor.bundle.base.js"></script>
+     <script src="https://meet.jit.si/external_api.js"></script>
+    <!-- <script src="js/vendor.bundle.addons.js"></script> -->
+</body>

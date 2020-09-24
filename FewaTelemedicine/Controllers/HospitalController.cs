@@ -43,7 +43,6 @@ namespace FewaTelemedicine.Controllers
         private readonly ILogger<HospitalController> _logger;
         private readonly IDoctorRepository _doctorRepository;
         List<DoctorCabin> _doctorcabins = null;
-
         WaitingRoom _waitingroom = null;
         private readonly IPatientRepository _patientRepository;
         List<DoctorsModel> _doctorsmodels = null;
