@@ -28,7 +28,26 @@ export class LoginComponent implements OnInit {
      private notificationService: NotificationService,
      private route: ActivatedRoute
   ) {
-    this.paramCheck=this.route.snapshot.queryParamMap.get('DoctorName');
+    // this.paramCheck=this.route.snapshot.queryParamMap.get('Practice');
+    //             if(this.paramCheck==null)
+    //             {
+    //               this.routing.navigate([],
+    //               { 
+    //                   queryParamsHandling:"merge",
+    //                   queryParams:{Practice:"DefaultPractice",Provider:"DefaultProvider"}
+                     
+    //               });
+    //             }
+    //             else
+    //             {
+    //               this.routing.navigate([],
+    //               { 
+    //                 queryParamsHandling:"preserve",
+    //                 queryParams:{Practice:"DefaultPractice",Provider:"DefaultProvider"}
+                
+    //               });
+    //             }
+   this.paramCheck=this.route.snapshot.queryParamMap.get('DoctorName');
    if(this.paramCheck==null)
    {
     this.routing.navigate([],

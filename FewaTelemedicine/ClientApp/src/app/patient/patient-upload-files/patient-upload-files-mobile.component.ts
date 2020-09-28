@@ -73,10 +73,10 @@ export class PatientUploadFilesMobileComponent {
 backToCall()
 {
     if(this.global.patientObj.VideoCallPlatform=this.tokbox)
-    { this.routing.navigateByUrl('/PatientRoomTokbox-Mobile', { state: this.global.patientObj });
+    { this.routing.navigateByUrl('/PatientRoomTokbox', { state: this.global.patientObj });
 }
 else{
-this.routing.navigateByUrl('/PatientRoom-Mobile', { state: this.global.patientObj });
+this.routing.navigateByUrl('/PatientRoom', { state: this.global.patientObj });
 }
     
 }

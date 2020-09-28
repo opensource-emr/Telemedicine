@@ -216,7 +216,7 @@ class NotificationService {
         this._hubConnection = new _aspnet_signalr__WEBPACK_IMPORTED_MODULE_1__["HubConnectionBuilder"]()
             .withUrl(window.location.origin + '/NotificationHub?token=' + this.global.token)
             .build();
-        this._hubConnection.serverTimeoutInMilliseconds = 500000; // 100 second
+        this._hubConnection.serverTimeoutInMilliseconds = 50000000; // 100 second
     }
     startConnection() {
         this._hubConnection
@@ -407,6 +407,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _doctor_doctor_room_tokbox_doctor_room_tokbox_component__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./doctor/doctor-room-tokbox/doctor-room-tokbox.component */ "./src/app/doctor/doctor-room-tokbox/doctor-room-tokbox.component.ts");
 /* harmony import */ var _patient_patient_room_tokbox_patient_room_tokbox_component__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./patient/patient-room-tokbox/patient-room-tokbox.component */ "./src/app/patient/patient-room-tokbox/patient-room-tokbox.component.ts");
 /* harmony import */ var _patient_patient_room_tokbox_patient_room_tokbox_mobile_component__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./patient/patient-room-tokbox/patient-room-tokbox-mobile.component */ "./src/app/patient/patient-room-tokbox/patient-room-tokbox-mobile.component.ts");
+/* #43 Added by Bhavana 28/09/2020 : Smart phone compatibility - Updated Route for Mobile View. */
 
 
 
@@ -428,31 +429,63 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const routes = [
-    { path: '', pathMatch: 'full', redirectTo: 'Login' },
-    { path: 'Login', component: _security_login_login_component__WEBPACK_IMPORTED_MODULE_2__["LoginComponent"] },
-    { path: 'ForgotPassword', component: _security_forgot_password_forgot_password_component__WEBPACK_IMPORTED_MODULE_4__["ForgotPasswordComponent"] },
-    { path: 'Home', component: _doctor_doctor_home_doctor_home_component__WEBPACK_IMPORTED_MODULE_3__["DoctorHomeComponent"] },
-    { path: 'Join', component: _patient_patient_registation_patient_registration_component__WEBPACK_IMPORTED_MODULE_12__["PatientRegistrationComponent"] },
-    // #43 Added by Bhavana : Smart phone compatibility - Patient Room for Mobile.
-    { path: 'Join-Mobile', component: _patient_patient_registation_patient_registration_mobile_component__WEBPACK_IMPORTED_MODULE_13__["PatientRegistrationMobileComponent"] },
-    { path: 'Waiting', component: _patient_patient_waiting_room_patient_waiting_room_component__WEBPACK_IMPORTED_MODULE_5__["PatientWaitingRoomComponent"] },
-    // #43 Added by Bhavana : Smart phone compatibility - Waiting Room for Mobile.
-    { path: 'Waiting-Mobile', component: _patient_patient_waiting_room_patient_waiting_room_mobile_component__WEBPACK_IMPORTED_MODULE_6__["PatientWaitingRoomMobileComponent"] },
-    { path: 'DoctorRoom', component: _doctor_doctor_room_doctor_room_component__WEBPACK_IMPORTED_MODULE_7__["DoctorRoomComponent"] },
-    { path: 'ReportSummary', component: _patient_patient_report_summary_patient_report_summary_component__WEBPACK_IMPORTED_MODULE_10__["PatientReportSummaryComponent"] },
-    // #43 Added by Bhavana : Smart phone compatibility - Patient Report Summary for Mobile.
-    { path: 'ReportSummary-Mobile', component: _patient_patient_report_summary_patient_report_summary_mobile_component__WEBPACK_IMPORTED_MODULE_11__["PatientReportSummaryMobileComponent"] },
-    { path: 'PatientRoom', component: _patient_patient_room_patient_room_component__WEBPACK_IMPORTED_MODULE_8__["PatientRoomComponent"] },
-    // #43 Added by Bhavana : Smart phone compatibility - Patient Room for Mobile.
-    { path: 'PatientRoom-Mobile', component: _patient_patient_room_patient_room_mobile_component__WEBPACK_IMPORTED_MODULE_9__["PatientRoomMobileComponent"] },
-    { path: 'Upload', component: _patient_patient_upload_files_patient_upload_files_component__WEBPACK_IMPORTED_MODULE_14__["PatientUploadFilesComponent"] },
-    // #43 Added by Bhavana : Smart phone compatibility - Patient File Upload for Mobile.
-    { path: 'Upload-Mobile', component: _patient_patient_upload_files_patient_upload_files_mobile_component__WEBPACK_IMPORTED_MODULE_15__["PatientUploadFilesMobileComponent"] },
-    { path: 'DoctorRoomTokbox', component: _doctor_doctor_room_tokbox_doctor_room_tokbox_component__WEBPACK_IMPORTED_MODULE_16__["DoctorRoomTokboxComponent"] },
-    { path: 'PatientRoomTokbox', component: _patient_patient_room_tokbox_patient_room_tokbox_component__WEBPACK_IMPORTED_MODULE_17__["PatientRoomTokboxComponent"] },
-    { path: 'PatientRoomTokbox-Mobile', component: _patient_patient_room_tokbox_patient_room_tokbox_mobile_component__WEBPACK_IMPORTED_MODULE_18__["PatientRoomTokboxMobileComponent"] }
-];
+var isMobile = /iPhone|webOS|mobile|CriOS|iPad|iPod|BlackBerry|IEMobile|'Android' + 'Chrome'|Opera Mini|Android/i.test(window.navigator.userAgent);
+let routes = [];
+if (isMobile) {
+    /* your code here */
+    routes = [
+        { path: '', pathMatch: 'full', redirectTo: 'Login' },
+        { path: 'Login', component: _security_login_login_component__WEBPACK_IMPORTED_MODULE_2__["LoginComponent"] },
+        { path: 'ForgotPassword', component: _security_forgot_password_forgot_password_component__WEBPACK_IMPORTED_MODULE_4__["ForgotPasswordComponent"] },
+        { path: 'Home', component: _doctor_doctor_home_doctor_home_component__WEBPACK_IMPORTED_MODULE_3__["DoctorHomeComponent"] },
+        //{path:'Join',component:PatientRegistrationComponent},
+        // #43 Added by Bhavana : Smart phone compatibility - Patient Room for Mobile.
+        { path: 'Join', component: _patient_patient_registation_patient_registration_mobile_component__WEBPACK_IMPORTED_MODULE_13__["PatientRegistrationMobileComponent"] },
+        //{path:'Waiting',component:PatientWaitingRoomComponent},
+        // #43 Added by Bhavana : Smart phone compatibility - Waiting Room for Mobile.
+        { path: 'Waiting', component: _patient_patient_waiting_room_patient_waiting_room_mobile_component__WEBPACK_IMPORTED_MODULE_6__["PatientWaitingRoomMobileComponent"] },
+        { path: 'DoctorRoom', component: _doctor_doctor_room_doctor_room_component__WEBPACK_IMPORTED_MODULE_7__["DoctorRoomComponent"] },
+        //{path:'ReportSummary',component:PatientReportSummaryComponent},
+        // #43 Added by Bhavana : Smart phone compatibility - Patient Report Summary for Mobile.
+        { path: 'ReportSummary', component: _patient_patient_report_summary_patient_report_summary_mobile_component__WEBPACK_IMPORTED_MODULE_11__["PatientReportSummaryMobileComponent"] },
+        //{path:'PatientRoom',component:PatientRoomComponent},
+        // #43 Added by Bhavana : Smart phone compatibility - Patient Room for Mobile.
+        { path: 'PatientRoom', component: _patient_patient_room_patient_room_mobile_component__WEBPACK_IMPORTED_MODULE_9__["PatientRoomMobileComponent"] },
+        //{path:'Upload',component:PatientUploadFilesComponent},
+        // #43 Added by Bhavana : Smart phone compatibility - Patient File Upload for Mobile.
+        { path: 'Upload', component: _patient_patient_upload_files_patient_upload_files_mobile_component__WEBPACK_IMPORTED_MODULE_15__["PatientUploadFilesMobileComponent"] },
+        { path: 'DoctorRoomTokbox', component: _doctor_doctor_room_tokbox_doctor_room_tokbox_component__WEBPACK_IMPORTED_MODULE_16__["DoctorRoomTokboxComponent"] },
+        //{path:'PatientRoomTokbox',component:PatientRoomTokboxComponent},
+        { path: 'PatientRoomTokbox', component: _patient_patient_room_tokbox_patient_room_tokbox_mobile_component__WEBPACK_IMPORTED_MODULE_18__["PatientRoomTokboxMobileComponent"] }
+    ];
+}
+else {
+    routes = [
+        { path: '', pathMatch: 'full', redirectTo: 'Login' },
+        { path: 'Login', component: _security_login_login_component__WEBPACK_IMPORTED_MODULE_2__["LoginComponent"] },
+        { path: 'ForgotPassword', component: _security_forgot_password_forgot_password_component__WEBPACK_IMPORTED_MODULE_4__["ForgotPasswordComponent"] },
+        { path: 'Home', component: _doctor_doctor_home_doctor_home_component__WEBPACK_IMPORTED_MODULE_3__["DoctorHomeComponent"] },
+        { path: 'Join', component: _patient_patient_registation_patient_registration_component__WEBPACK_IMPORTED_MODULE_12__["PatientRegistrationComponent"] },
+        // #43 Added by Bhavana : Smart phone compatibility - Patient Room for Mobile.
+        { path: 'Join-Mobile', component: _patient_patient_registation_patient_registration_mobile_component__WEBPACK_IMPORTED_MODULE_13__["PatientRegistrationMobileComponent"] },
+        { path: 'Waiting', component: _patient_patient_waiting_room_patient_waiting_room_component__WEBPACK_IMPORTED_MODULE_5__["PatientWaitingRoomComponent"] },
+        // #43 Added by Bhavana : Smart phone compatibility - Waiting Room for Mobile.
+        { path: 'Waiting-Mobile', component: _patient_patient_waiting_room_patient_waiting_room_mobile_component__WEBPACK_IMPORTED_MODULE_6__["PatientWaitingRoomMobileComponent"] },
+        { path: 'DoctorRoom', component: _doctor_doctor_room_doctor_room_component__WEBPACK_IMPORTED_MODULE_7__["DoctorRoomComponent"] },
+        { path: 'ReportSummary', component: _patient_patient_report_summary_patient_report_summary_component__WEBPACK_IMPORTED_MODULE_10__["PatientReportSummaryComponent"] },
+        // #43 Added by Bhavana : Smart phone compatibility - Patient Report Summary for Mobile.
+        { path: 'ReportSummary-Mobile', component: _patient_patient_report_summary_patient_report_summary_mobile_component__WEBPACK_IMPORTED_MODULE_11__["PatientReportSummaryMobileComponent"] },
+        { path: 'PatientRoom', component: _patient_patient_room_patient_room_component__WEBPACK_IMPORTED_MODULE_8__["PatientRoomComponent"] },
+        // #43 Added by Bhavana : Smart phone compatibility - Patient Room for Mobile.
+        { path: 'PatientRoom-Mobile', component: _patient_patient_room_patient_room_mobile_component__WEBPACK_IMPORTED_MODULE_9__["PatientRoomMobileComponent"] },
+        { path: 'Upload', component: _patient_patient_upload_files_patient_upload_files_component__WEBPACK_IMPORTED_MODULE_14__["PatientUploadFilesComponent"] },
+        // #43 Added by Bhavana : Smart phone compatibility - Patient File Upload for Mobile.
+        { path: 'Upload-Mobile', component: _patient_patient_upload_files_patient_upload_files_mobile_component__WEBPACK_IMPORTED_MODULE_15__["PatientUploadFilesMobileComponent"] },
+        { path: 'DoctorRoomTokbox', component: _doctor_doctor_room_tokbox_doctor_room_tokbox_component__WEBPACK_IMPORTED_MODULE_16__["DoctorRoomTokboxComponent"] },
+        { path: 'PatientRoomTokbox', component: _patient_patient_room_tokbox_patient_room_tokbox_component__WEBPACK_IMPORTED_MODULE_17__["PatientRoomTokboxComponent"] },
+        { path: 'PatientRoomTokbox-Mobile', component: _patient_patient_room_tokbox_patient_room_tokbox_mobile_component__WEBPACK_IMPORTED_MODULE_18__["PatientRoomTokboxMobileComponent"] }
+    ];
+}
 class AppRoutingModule {
 }
 AppRoutingModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineNgModule"]({ type: AppRoutingModule });
@@ -3283,6 +3316,7 @@ class DoctorRoomComponent {
                 enableWelcomePage: false,
                 disableRemoteMute: true,
                 prejoinPageEnabled: false,
+                disableDeepLinking: true,
                 remoteVideoMenu: {
                     // If set to true the 'Kick out' button will be disabled.
                     disableKick: true
@@ -3707,7 +3741,7 @@ class PatientRegistrationMobileComponent {
             this.global.patientObj.Id = res.Value.Id;
             this.global.patientObj.PatientName = res.Value.PatientName;
             this.global.patientObj.DoctorId = res.Value.User.DoctorId;
-            this.routing.navigateByUrl('/Waiting-Mobile', { state: this.global.patientObj });
+            this.routing.navigateByUrl('/Waiting', { state: this.global.patientObj });
         }, res => {
             alert('User Already logged in');
         });
@@ -4017,7 +4051,7 @@ class PatientReportSummaryMobileComponent {
     }
 }
 PatientReportSummaryMobileComponent.ɵfac = function PatientReportSummaryMobileComponent_Factory(t) { return new (t || PatientReportSummaryMobileComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](src_Common_global_model__WEBPACK_IMPORTED_MODULE_3__["GlobalModel"])); };
-PatientReportSummaryMobileComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: PatientReportSummaryMobileComponent, selectors: [["ng-component"]], decls: 60, vars: 13, consts: [["id", "page-top"], ["id", "wrapper"], ["id", "content-wrapper", 1, "d-flex", "flex-column"], ["id", "content"], [1, "col-md-12", "col-sm-12", "col-xs-12", "navbar", "navbar-expand-sm", "navbar-expand-xs", "navbar-light", "justify-content-center", "bg-white", "topbar", "mb-4", "static-top", "shadow", 2, "max-width", "100%", "height", "auto", "min-width", "100vw"], [1, "sidebar-brand", "d-flex", "align-items-center", "justify-content-center"], [1, "sidebar-brand-text", "mx-3", "align-items-center", "justify-content-center"], ["src", "img/logo.png", "alt", "", 1, "img-fluid", "rounded", "mx-auto", "d-block", 2, "float", "none", "margin", "0 auto", "height", "auto", "width", "50%"], [1, "container-fluid"], ["id", "print-section", 1, "row", "m-w100"], [1, "col-md-12", "col-sm-12", "col-xs-12"], [1, "card"], [1, "card-body"], [1, "table-responsive", 2, "width", "100%", "text-align", "center", "font-size", "13px", "font-family", "Verdana"], [1, "table-responsive", 2, "border", "1px solid #000", "font-family", "Verdana", "font-size", "13px", "width", "100%", "border-collapse", "inherit !important"], [2, "border", "1px solid #fff"], [2, "padding", "8px"], [2, "border", "1px solid #fff", "border-bottom", "none"], [2, "border", "1px solid #fff", "border-top", "none"], [2, "padding", "8px", "padding-top", "0"], [1, "row"], [1, "col-md-12", "text-center", "mt-4", "mb-4"], ["href", "", 1, "btn", "btn-primary"], ["printSectionId", "print-section", "ngxPrint", "", 1, "btn", "btn-primary", 3, "useExistingCss"]], template: function PatientReportSummaryMobileComponent_Template(rf, ctx) { if (rf & 1) {
+PatientReportSummaryMobileComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: PatientReportSummaryMobileComponent, selectors: [["ng-component"]], decls: 60, vars: 13, consts: [["id", "page-top"], ["id", "wrapper"], ["id", "content-wrapper", 1, "d-flex", "flex-column"], ["id", "content"], [1, "col-md-12", "col-sm-12", "col-xs-12", "navbar", "navbar-expand-sm", "navbar-expand-xs", "navbar-light", "justify-content-center", "bg-white", "topbar", "mb-4", "static-top", "shadow", 2, "max-width", "100%"], [1, "sidebar-brand", "d-flex", "align-items-center", "justify-content-center"], [1, "sidebar-brand-text", "mx-3", "align-items-center", "justify-content-center"], ["src", "img/logo.png", "alt", "", 1, "img-fluid", "rounded", "mx-auto", "d-block", 2, "float", "none", "margin", "0 auto", "height", "auto", "width", "50%"], [1, "container-fluid"], ["id", "print-section", 1, "row", "m-w100"], [1, "col-md-12", "col-sm-12", "col-xs-12"], [1, "card"], [1, "card-body"], [1, "table-responsive", 2, "width", "100%", "text-align", "center", "font-size", "13px", "font-family", "Verdana"], [1, "table-responsive", 2, "border", "1px solid #000", "font-family", "Verdana", "font-size", "13px", "width", "100%", "border-collapse", "inherit !important"], [2, "border", "1px solid #fff"], [2, "padding", "8px"], [2, "border", "1px solid #fff", "border-bottom", "none"], [2, "border", "1px solid #fff", "border-top", "none"], [2, "padding", "8px", "padding-top", "0"], [1, "row"], [1, "col-md-12", "text-center", "mt-4", "mb-4"], ["href", "", 1, "btn", "btn-primary"], ["printSectionId", "print-section", "ngxPrint", "", 1, "btn", "btn-primary", 3, "useExistingCss"]], template: function PatientReportSummaryMobileComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "body", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "div", 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](2, "div", 2);
@@ -4134,7 +4168,7 @@ PatientReportSummaryMobileComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODU
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", ctx.global.patientObj == null ? null : ctx.global.patientObj.FollowUpMeasure, "");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](6);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("useExistingCss", true);
-    } }, directives: [ngx_print__WEBPACK_IMPORTED_MODULE_4__["NgxPrintDirective"]], pipes: [src_Common_yes_no_pipe__WEBPACK_IMPORTED_MODULE_5__["YesNoPipe"]], styles: ["html[_ngcontent-%COMP%], body[_ngcontent-%COMP%] {\n    border: solid black;\n    border-width: thin;\n    overflow:auto;\n    display:block;\n    box-sizing: border-box;\n    -ms-overflow-style: none;  \n    scrollbar-width: none; \n}\n\nhtml[_ngcontent-%COMP%]::-webkit-scrollbar {\n        display: none;  \n } \n\n#page-top[_ngcontent-%COMP%] {\n    max-width:100%;\n    padding:2%;\n    background-color: white !important;\n}\n\n#content[_ngcontent-%COMP%]{\n    max-width:100%;\n    margin:auto;\n}", "table[_ngcontent-%COMP%]{\n                        font-family: 'Verdana';\n                      }\n                      @media Print{\n                        table[_ngcontent-%COMP%]{\n                          font-family: 'Verdana';\n                        }\n                      }"] });
+    } }, directives: [ngx_print__WEBPACK_IMPORTED_MODULE_4__["NgxPrintDirective"]], pipes: [src_Common_yes_no_pipe__WEBPACK_IMPORTED_MODULE_5__["YesNoPipe"]], styles: ["html[_ngcontent-%COMP%], body[_ngcontent-%COMP%] {\n    border: solid black;\n    border-width: thin;\n    overflow:auto;\n    display:block;\n    box-sizing: border-box;\n    -ms-overflow-style: none;  \n    scrollbar-width: none; \n}\n\nhtml[_ngcontent-%COMP%], body[_ngcontent-%COMP%]   [_ngcontent-%COMP%]::-webkit-scrollbar {\n        display: none;  \n }\n\n#page-top[_ngcontent-%COMP%] {\n    max-width:100%;\n    padding:2%;\n    background-color: white !important;\n}\n\n#content[_ngcontent-%COMP%]{\n    max-width:100%;\n    margin:auto;\n}\n\n@media (orientation: portrait) {\n}\n\n@media (orientation: landscape) {\n  nav[_ngcontent-%COMP%] {\n    height:auto;\n    width:100vw;\n  }\n\n  html[_ngcontent-%COMP%], body[_ngcontent-%COMP%]   [_ngcontent-%COMP%]::-webkit-scrollbar {\n        display: none;  \n }\n\n}", "table[_ngcontent-%COMP%]{\n                        font-family: 'Verdana';\n                      }\n                      @media Print{\n                        table[_ngcontent-%COMP%]{\n                          font-family: 'Verdana';\n                        }\n                      }"] });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](PatientReportSummaryMobileComponent, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
         args: [{
@@ -4447,7 +4481,7 @@ class PatientRoomTokboxMobileComponent {
     }
     SuccessTestDone(res) {
         this.global.patientObj = res;
-        this.routing.navigate(['ReportSummary-Mobile']);
+        this.routing.navigate(['ReportSummary']);
     }
 }
 PatientRoomTokboxMobileComponent.ɵfac = function PatientRoomTokboxMobileComponent_Factory(t) { return new (t || PatientRoomTokboxMobileComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](src_Common_notification_service__WEBPACK_IMPORTED_MODULE_3__["NotificationService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](src_Common_global_model__WEBPACK_IMPORTED_MODULE_4__["GlobalModel"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormBuilder"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_platform_browser__WEBPACK_IMPORTED_MODULE_6__["DomSanitizer"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](ngx_toastr__WEBPACK_IMPORTED_MODULE_7__["ToastrService"])); };
@@ -4966,7 +5000,7 @@ class PatientRoomMobileComponent {
                 configOverwrite: {
                     doNotStoreRoom: true,
                     disableInviteFunctions: true,
-                    // startWithVideoMuted: true,
+                    startWithVideoMuted: false,
                     startWithAudioMuted: true,
                     disableRemoteMute: true,
                     enableWelcomePage: false,
@@ -4981,17 +5015,18 @@ class PatientRoomMobileComponent {
                     GENERATE_ROOMNAMES_ON_WELCOME_PAGE: false,
                     DISPLAY_WELCOME_PAGE_CONTENT: false,
                     DISPLAY_WELCOME_PAGE_TOOLBAR_ADDITIONAL_CONTENT: false,
+                    OPEN_IN_MOBILE_BROWSER: false,
                     DEFAULT_REMOTE_DISPLAY_NAME: this.global.doctorObj.NameTitle + " " + this.global.doctorObj.DoctorName,
-                    disable1On1Mode: false,
+                    // disable1On1Mode: false,
                     MOBILE_APP_PROMO: false,
                     SHOW_JITSI_WATERMARK: false,
                     SHOW_WATERMARK_FOR_GUESTS: false,
-                    DEFAULT_LOGO_URL: null,
-                    JITSI_WATERMARK_LINK: null,
+                    DEFAULT_LOGO_URL: '',
+                    JITSI_WATERMARK_LINK: '',
                     SHOW_BRAND_WATERMARK: false,
-                    REMOTE_THUMBNAIL_RATIO: null,
+                    REMOTE_THUMBNAIL_RATIO: '',
                     DISABLE_TRANSCRIPTION_SUBTITLES: true,
-                    RECENT_LIST_ENABLED: false,
+                    // RECENT_LIST_ENABLED: false,
                     TOOLBAR_BUTTONS: ['microphone', 'camera', , 'videoquality']
                 }
             };
@@ -5003,7 +5038,7 @@ class PatientRoomMobileComponent {
     }
     SuccessTestDone(res) {
         this.global.patientObj = res;
-        this.routing.navigate(['ReportSummary-Mobile']);
+        this.routing.navigate(['ReportSummary']);
     }
 }
 PatientRoomMobileComponent.ɵfac = function PatientRoomMobileComponent_Factory(t) { return new (t || PatientRoomMobileComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](src_Common_notification_service__WEBPACK_IMPORTED_MODULE_4__["NotificationService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](src_Common_global_model__WEBPACK_IMPORTED_MODULE_5__["GlobalModel"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_6__["Router"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_forms__WEBPACK_IMPORTED_MODULE_7__["FormBuilder"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_platform_browser__WEBPACK_IMPORTED_MODULE_8__["DomSanitizer"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](ngx_toastr__WEBPACK_IMPORTED_MODULE_9__["ToastrService"])); };
@@ -5559,10 +5594,10 @@ class PatientUploadFilesMobileComponent {
     }
     backToCall() {
         if (this.global.patientObj.VideoCallPlatform = this.tokbox) {
-            this.routing.navigateByUrl('/PatientRoomTokbox-Mobile', { state: this.global.patientObj });
+            this.routing.navigateByUrl('/PatientRoomTokbox', { state: this.global.patientObj });
         }
         else {
-            this.routing.navigateByUrl('/PatientRoom-Mobile', { state: this.global.patientObj });
+            this.routing.navigateByUrl('/PatientRoom', { state: this.global.patientObj });
         }
     }
 }
@@ -6009,10 +6044,10 @@ class PatientWaitingRoomMobileComponent {
                 var url = this.global.config.videourl.replace("DOCTORNAME", this.global.patientObj.DoctorNameAttending);
                 this.global.config.videourl = url;
                 if (VideoCallPlatform == this.tokbox) {
-                    this.routing.navigateByUrl('/PatientRoomTokbox-Mobile', { state: this.global.patientObj });
+                    this.routing.navigateByUrl('/PatientRoomTokbox', { state: this.global.patientObj });
                 }
                 else {
-                    this.routing.navigateByUrl('/PatientRoom-Mobile', { state: this.global.patientObj });
+                    this.routing.navigateByUrl('/PatientRoom', { state: this.global.patientObj });
                 }
             });
         }
@@ -6590,6 +6625,13 @@ function LoginComponent_div_36_Template(rf, ctx) { if (rf & 1) {
 } }
 class LoginComponent {
     constructor(httpClient, routing, global, formBuilder, notificationService, route) {
+        // this.paramCheck=this.route.snapshot.queryParamMap.get('Practice');
+        //             if(this.paramCheck==null)
+        //             {
+        //               this.routing.navigate([],
+        //               { 
+        //                   queryParamsHandling:"merge",
+        //                   queryParams:{Practice:"DefaultPractice",Provider:"DefaultProvider"}
         this.httpClient = httpClient;
         this.routing = routing;
         this.global = global;
@@ -6600,6 +6642,16 @@ class LoginComponent {
         this.clicked = false;
         this.hospitalDetails = { description: '', contactNo: '', email: '', logoPath: '' };
         this.patients = new Array();
+        //               });
+        //             }
+        //             else
+        //             {
+        //               this.routing.navigate([],
+        //               { 
+        //                 queryParamsHandling:"preserve",
+        //                 queryParams:{Practice:"DefaultPractice",Provider:"DefaultProvider"}
+        //               });
+        //             }
         this.paramCheck = this.route.snapshot.queryParamMap.get('DoctorName');
         if (this.paramCheck == null) {
             this.routing.navigate([], { queryParams: { DoctorName: "DefaultDoctor" },

@@ -117,10 +117,10 @@ export class PatientWaitingRoomMobileComponent implements OnDestroy {
           var url: string = this.global.config.videourl.replace("DOCTORNAME", this.global.patientObj.DoctorNameAttending);
           this.global.config.videourl = url;
           if (VideoCallPlatform == this.tokbox) {
-            this.routing.navigateByUrl('/PatientRoomTokbox-Mobile', { state: this.global.patientObj });
+            this.routing.navigateByUrl('/PatientRoomTokbox', { state: this.global.patientObj });
           }
           else {
-            this.routing.navigateByUrl('/PatientRoom-Mobile', {state: this.global.patientObj });
+            this.routing.navigateByUrl('/PatientRoom', {state: this.global.patientObj });
           }
         });
       }

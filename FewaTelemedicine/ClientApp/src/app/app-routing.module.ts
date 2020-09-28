@@ -1,3 +1,4 @@
+/* #43 Added by Bhavana 28/09/2020 : Smart phone compatibility - Updated Route for Mobile View. */
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './security/login/login.component';
@@ -18,34 +19,71 @@ import { DoctorRoomTokboxComponent } from './doctor/doctor-room-tokbox/doctor-ro
 import { PatientRoomTokboxComponent } from './patient/patient-room-tokbox/patient-room-tokbox.component';
 import { PatientRoomTokboxMobileComponent } from './patient/patient-room-tokbox/patient-room-tokbox-mobile.component';
 
-const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'Login' },
-  { path: 'Login', component: LoginComponent },
-  { path: 'ForgotPassword', component: ForgotPasswordComponent },
-  { path: 'Home', component: DoctorHomeComponent },
-  {path:'Join',component:PatientRegistrationComponent},
-   // #43 Added by Bhavana : Smart phone compatibility - Patient Room for Mobile.
-  {path:'Join-Mobile',component:PatientRegistrationMobileComponent},
-  {path:'Waiting',component:PatientWaitingRoomComponent},
-  // #43 Added by Bhavana : Smart phone compatibility - Waiting Room for Mobile.
-  {path:'Waiting-Mobile',component:PatientWaitingRoomMobileComponent},
-  {path:'DoctorRoom',component:DoctorRoomComponent},
-  {path:'ReportSummary',component:PatientReportSummaryComponent},
-   // #43 Added by Bhavana : Smart phone compatibility - Patient Report Summary for Mobile.
-  {path:'ReportSummary-Mobile',component:PatientReportSummaryMobileComponent},
-  {path:'PatientRoom',component:PatientRoomComponent},
-  // #43 Added by Bhavana : Smart phone compatibility - Patient Room for Mobile.
-  {path:'PatientRoom-Mobile',component:PatientRoomMobileComponent},
-  {path:'Upload',component:PatientUploadFilesComponent},
-   // #43 Added by Bhavana : Smart phone compatibility - Patient File Upload for Mobile.
-  {path:'Upload-Mobile',component:PatientUploadFilesMobileComponent},
-  {path:'DoctorRoomTokbox',component:DoctorRoomTokboxComponent},
-  {path:'PatientRoomTokbox',component:PatientRoomTokboxComponent},
-  {path:'PatientRoomTokbox-Mobile',component:PatientRoomTokboxMobileComponent}
-];
+var isMobile = /iPhone|webOS|mobile|CriOS|iPad|iPod|BlackBerry|IEMobile|'Android' + 'Chrome'|Opera Mini|Android/i.test(window.navigator.userAgent);
+let routes: Routes = [];
+if (isMobile) {
+  /* your code here */
+  routes = [
+    { path: '', pathMatch: 'full', redirectTo: 'Login' },
+    { path: 'Login', component: LoginComponent },
+    { path: 'ForgotPassword', component: ForgotPasswordComponent },
+    { path: 'Home', component: DoctorHomeComponent },
+    //{path:'Join',component:PatientRegistrationComponent},
+     // #43 Added by Bhavana : Smart phone compatibility - Patient Room for Mobile.
+    {path:'Join',component:PatientRegistrationMobileComponent},
+    //{path:'Waiting',component:PatientWaitingRoomComponent},
+    // #43 Added by Bhavana : Smart phone compatibility - Waiting Room for Mobile.
+    {path:'Waiting',component:PatientWaitingRoomMobileComponent},
+    {path:'DoctorRoom',component:DoctorRoomComponent},
+    //{path:'ReportSummary',component:PatientReportSummaryComponent},
+     // #43 Added by Bhavana : Smart phone compatibility - Patient Report Summary for Mobile.
+    {path:'ReportSummary',component:PatientReportSummaryMobileComponent},
+    //{path:'PatientRoom',component:PatientRoomComponent},
+    // #43 Added by Bhavana : Smart phone compatibility - Patient Room for Mobile.
+    {path:'PatientRoom',component:PatientRoomMobileComponent},
+    //{path:'Upload',component:PatientUploadFilesComponent},
+     // #43 Added by Bhavana : Smart phone compatibility - Patient File Upload for Mobile.
+    {path:'Upload',component:PatientUploadFilesMobileComponent},
+    {path:'DoctorRoomTokbox',component:DoctorRoomTokboxComponent},
+    //{path:'PatientRoomTokbox',component:PatientRoomTokboxComponent},
+    {path:'PatientRoomTokbox',component:PatientRoomTokboxMobileComponent}
+  ];
+
+}
+  
+else {
+   routes =  [
+    { path: '', pathMatch: 'full', redirectTo: 'Login' },
+    { path: 'Login', component: LoginComponent },
+    { path: 'ForgotPassword', component: ForgotPasswordComponent },
+    { path: 'Home', component: DoctorHomeComponent },
+    {path:'Join',component:PatientRegistrationComponent},
+     // #43 Added by Bhavana : Smart phone compatibility - Patient Room for Mobile.
+    {path:'Join-Mobile',component:PatientRegistrationMobileComponent},
+    {path:'Waiting',component:PatientWaitingRoomComponent},
+    // #43 Added by Bhavana : Smart phone compatibility - Waiting Room for Mobile.
+    {path:'Waiting-Mobile',component:PatientWaitingRoomMobileComponent},
+    {path:'DoctorRoom',component:DoctorRoomComponent},
+    {path:'ReportSummary',component:PatientReportSummaryComponent},
+     // #43 Added by Bhavana : Smart phone compatibility - Patient Report Summary for Mobile.
+    {path:'ReportSummary-Mobile',component:PatientReportSummaryMobileComponent},
+    {path:'PatientRoom',component:PatientRoomComponent},
+    // #43 Added by Bhavana : Smart phone compatibility - Patient Room for Mobile.
+    {path:'PatientRoom-Mobile',component:PatientRoomMobileComponent},
+    {path:'Upload',component:PatientUploadFilesComponent},
+     // #43 Added by Bhavana : Smart phone compatibility - Patient File Upload for Mobile.
+    {path:'Upload-Mobile',component:PatientUploadFilesMobileComponent},
+    {path:'DoctorRoomTokbox',component:DoctorRoomTokboxComponent},
+    {path:'PatientRoomTokbox',component:PatientRoomTokboxComponent},
+    {path:'PatientRoomTokbox-Mobile',component:PatientRoomTokboxMobileComponent}
+  ];
+
+}
+
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
+

@@ -120,6 +120,7 @@ export class DoctorRoomComponent {
         enableWelcomePage:false,
         disableRemoteMute:true,
         prejoinPageEnabled:false,
+        disableDeepLinking:true,
         remoteVideoMenu: {
 	// If set to true the 'Kick out' button will be disabled.
 	      disableKick: true

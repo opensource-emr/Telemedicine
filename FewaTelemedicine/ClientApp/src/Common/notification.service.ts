@@ -63,7 +63,7 @@ export class NotificationService {
     this._hubConnection = new HubConnectionBuilder()
       .withUrl(window.location.origin + '/NotificationHub?token=' + this.global.token)
       .build();
-    this._hubConnection.serverTimeoutInMilliseconds = 500000; // 100 second
+    this._hubConnection.serverTimeoutInMilliseconds = 50000000; // 100 second
 
   }
 

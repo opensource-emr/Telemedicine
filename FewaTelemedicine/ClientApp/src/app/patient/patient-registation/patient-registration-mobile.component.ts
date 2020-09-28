@@ -32,6 +32,7 @@ export class PatientRegistrationMobileComponent implements OnInit
       });
      
     }
+
     ngOnInit()
     {
       this.httpClient.
@@ -51,7 +52,6 @@ export class PatientRegistrationMobileComponent implements OnInit
         res => {
          
         });
-
       // this.httpClient.get<any>(this.global.HospitalUrl+"GetUpdatedDoctor").subscribe(p=>{
       //   this.getAlldoctors=p;
       //   console.log(this.getAlldoctors);
@@ -80,7 +80,7 @@ export class PatientRegistrationMobileComponent implements OnInit
       this.global.patientObj.PatientName=res.Value.PatientName;
       this.global.patientObj.DoctorId = res.Value.User.DoctorId;
      
-        this.routing.navigateByUrl('/Waiting-Mobile',{state:this.global.patientObj});
+        this.routing.navigateByUrl('/Waiting',{state:this.global.patientObj});
       },
         res => {
           alert('User Already logged in');

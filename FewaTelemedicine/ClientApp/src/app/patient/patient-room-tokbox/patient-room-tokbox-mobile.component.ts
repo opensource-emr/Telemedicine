@@ -106,7 +106,7 @@ export class PatientRoomTokboxMobileComponent {
 
   SuccessTestDone(res) {
     this.global.patientObj = res;
-    this.routing.navigate(['ReportSummary-Mobile']);
+    this.routing.navigate(['ReportSummary']);
   }
 
 //   SendChatMsg() {

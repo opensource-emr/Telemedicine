@@ -61,7 +61,7 @@ export class PatientRoomMobileComponent {
           configOverwrite: {
             doNotStoreRoom: true,
             disableInviteFunctions: true,
-            // startWithVideoMuted: true,
+            startWithVideoMuted: false,
             startWithAudioMuted: true,
             disableRemoteMute: true,
             enableWelcomePage: false,
@@ -76,17 +76,18 @@ export class PatientRoomMobileComponent {
             GENERATE_ROOMNAMES_ON_WELCOME_PAGE: false,
             DISPLAY_WELCOME_PAGE_CONTENT: false,
             DISPLAY_WELCOME_PAGE_TOOLBAR_ADDITIONAL_CONTENT: false,
+            OPEN_IN_MOBILE_BROWSER:false,
             DEFAULT_REMOTE_DISPLAY_NAME: this.global.doctorObj.NameTitle + " " + this.global.doctorObj.DoctorName,
-            disable1On1Mode: false,
+            // disable1On1Mode: false,
             MOBILE_APP_PROMO: false,
             SHOW_JITSI_WATERMARK: false,
             SHOW_WATERMARK_FOR_GUESTS: false,
-            DEFAULT_LOGO_URL: null,
-            JITSI_WATERMARK_LINK: null,
+            DEFAULT_LOGO_URL:'',
+            JITSI_WATERMARK_LINK: '',
             SHOW_BRAND_WATERMARK: false,
-            REMOTE_THUMBNAIL_RATIO: null,
+            REMOTE_THUMBNAIL_RATIO: '',
             DISABLE_TRANSCRIPTION_SUBTITLES: true,
-            RECENT_LIST_ENABLED: false,
+            // RECENT_LIST_ENABLED: false,
             TOOLBAR_BUTTONS: ['microphone', 'camera', , 'videoquality']
           }
         }
@@ -101,7 +102,7 @@ export class PatientRoomMobileComponent {
 
   SuccessTestDone(res) {
     this.global.patientObj = res;
-    this.routing.navigate(['ReportSummary-Mobile']);
+    this.routing.navigate(['ReportSummary']);
   }
 }
 

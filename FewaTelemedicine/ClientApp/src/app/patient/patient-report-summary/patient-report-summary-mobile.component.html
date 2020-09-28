@@ -9,9 +9,9 @@ html,body {
     scrollbar-width: none; 
 }
 
-html::-webkit-scrollbar {
+html,body ::-webkit-scrollbar {
         display: none;  /* Chrome */
- } 
+ }
 
 #page-top {
     max-width:100%;
@@ -23,6 +23,22 @@ html::-webkit-scrollbar {
     max-width:100%;
     margin:auto;
 }
+
+@media (orientation: portrait) {
+}
+
+@media (orientation: landscape) {
+  nav {
+    height:auto;
+    width:100vw;
+  }
+
+  html,body ::-webkit-scrollbar {
+        display: none;  /* Chrome */
+ }
+
+}
+
 </style>
 
 <body id="page-top">
@@ -33,7 +49,7 @@ html::-webkit-scrollbar {
         <!-- Main Content -->
         <div id="content">
             <!-- Topbar -->
-                <nav style="max-width:100%;height:auto;min-width:100vw;"
+                <nav style="max-width:100%;"
                 class=" col-md-12 col-sm-12 col-xs-12 navbar navbar-expand-sm navbar-expand-xs  navbar-light justify-content-center  bg-white topbar mb-4 static-top shadow">
                 <!-- Topbar Navbar -->
                 <a class="sidebar-brand d-flex align-items-center justify-content-center">
