@@ -114,7 +114,7 @@ export class PatientRoomComponent {
         SHOW_JITSI_WATERMARK: false,
         SHOW_WATERMARK_FOR_GUESTS: false,
         SHOW_BRAND_WATERMARK: false,
-        TOOLBAR_BUTTONS: ['microphone', 'camera', 'tileview']
+        TOOLBAR_BUTTONS: ['microphone', 'camera', ,'videoquality']
       }
     } 
     this.api = new JitsiMeetExternalAPI(this.domain, this.options); 

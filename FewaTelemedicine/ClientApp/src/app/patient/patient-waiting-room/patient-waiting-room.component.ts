@@ -65,7 +65,7 @@ export class PatientWaitingRoomComponent implements OnDestroy {
 
     this.notificationService.EventGetAllDoctors.subscribe(_doctors => {
       this.doctors = _doctors;
-      //this.global.doctorObj=_doctors[0];
+      this.global.doctorObj=_doctors[0];
     });
 
     this.notificationService.EventConnectionEstablished.subscribe(() => {

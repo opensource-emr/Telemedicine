@@ -13,7 +13,7 @@ import { HttpInterceptorService } from 'src/Common/http-interceptor.service';
 import { DoctorHomeComponent } from './doctor/doctor-home/doctor-home.component';
 import { ForgotPasswordComponent } from './security/forgot-password/forgot-password.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { PatientInvitationComponent } from './patient/patient-invitation/patient-invitation.component';
+// import { PatientInvitationComponent } from './patient/patient-invitation/patient-invitation.component';
 import { DoctorRoomComponent } from './doctor/doctor-room/doctor-room.component';
 import { PatientRoomComponent } from './patient/patient-room/patient-room.component';
 import { PatientRegistrationComponent } from './patient/patient-registation/patient-registration.component';
@@ -22,6 +22,7 @@ import { PatientReportSummaryComponent } from './patient/patient-report-summary/
 import { SafePipe } from 'src/Common/safe.pipe';
 import { PatientWaitingRoomComponent } from './patient/patient-waiting-room/patient-waiting-room.component';
 import { PatientUploadFilesComponent } from './patient/patient-upload-files/patient-upload-files.component';
+import { PatientUploadFilesMobileComponent } from './patient/patient-upload-files/patient-upload-files-mobile.component';
 import { UploadDownloadService } from 'src/Common/upload-download.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
@@ -29,6 +30,13 @@ import {NgxPrintModule} from 'ngx-print';
 import { CKEditorModule } from 'ckeditor4-angular';
 import { DoctorRoomTokboxComponent } from './doctor/doctor-room-tokbox/doctor-room-tokbox.component';
 import { PatientRoomTokboxComponent } from './patient/patient-room-tokbox/patient-room-tokbox.component';
+import { PatientRoomTokboxMobileComponent } from './patient/patient-room-tokbox/patient-room-tokbox-mobile.component';
+import { PatientReportSummaryMobileComponent } from './patient/patient-report-summary/patient-report-summary-mobile.component';
+import { PatientRegistrationMobileComponent } from './patient/patient-registation/patient-registration-mobile.component';
+import { PatientWaitingRoomMobileComponent } from './patient/patient-waiting-room/patient-waiting-room-mobile.component';
+import { PatientRoomMobileComponent } from './patient/patient-room/patient-room-mobile.component';
+
+
 const initializerConfigFn = (config: ConfigService) => {
   return () => {
     var ret: any = config.loadAppConfig();
@@ -42,17 +50,23 @@ const initializerConfigFn = (config: ConfigService) => {
     LoginComponent,
     ForgotPasswordComponent,
     DoctorHomeComponent,
-    PatientInvitationComponent,
+    // PatientInvitationComponent,
     DoctorHomeComponent,
     DoctorRoomComponent,
-    PatientInvitationComponent,
+    // PatientInvitationComponent,
     PatientRegistrationComponent,
+    PatientRegistrationMobileComponent,
     PatientRoomComponent,
+    PatientRoomMobileComponent,
     PatientReportSummaryComponent,
+    PatientReportSummaryMobileComponent,
     PatientWaitingRoomComponent,
+    PatientWaitingRoomMobileComponent,
     PatientUploadFilesComponent,
     DoctorRoomTokboxComponent,
     PatientRoomTokboxComponent,
+    PatientRoomTokboxMobileComponent,
+    PatientUploadFilesMobileComponent,
     YesNoPipe ,
     SafePipe
   ],

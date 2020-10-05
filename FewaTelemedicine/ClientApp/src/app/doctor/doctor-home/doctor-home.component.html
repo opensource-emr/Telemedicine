@@ -1,8 +1,11 @@
-<head>
+ <!-- Log History -->
+ <!-- #49 11/9/2020 - Added by Bhavana =>  Changes in Update Parameter. -->
+ <!-- #38 13/9/2020 - Added by Bhavana =>  Changes in Email Template to display email parameters. -->
+ <!-- #19 8/9/2020 - Added by Bhavana =>  Changes Send Invitation to display message in page. -->
 
+<head>
   <link href="//cdn.syncfusion.com/ej2/ej2-notifications/styles/material.css" rel="stylesheet" />
   <script src="../../../vendor/ckeditor/ckeditor.js"></script>
-
 </head>
 
 <body id="page-top">
@@ -140,6 +143,7 @@
                           Send
                         </button>
                       </div>
+                     <!-- Start: #19  8/9/2020 - Added by Bhavana -->
                       <div class="col-md-2" *ngIf="!(this.InvitationButton)">
                         Sending Invitation...
                       </div>
@@ -149,6 +153,7 @@
                       <div class="col-md-2" *ngIf="this.InvitationFailure">
                         Sending Failed.
                       </div>
+                      <!-- End: #19  8/9/2020 - Added by Bhavana -->
                     </div>
                   </form>
                 </div>
@@ -334,11 +339,11 @@
                     </div>
                     <div *ngIf="ParamsUpdate"><br>
                       <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <h6 class="m-0 font-weight-bold">Update Parameters</h6>
+                        <h6 class="m-0 font-weight-bold">Update Configuration</h6>
                       </div>
                       <div class="card-body">
                         <form action="" class="user">
-                          <h6 class="m-0 font-weight-bold">Hospital Parameters :</h6><br>
+                          <h6 class="m-0 font-weight-bold">Hospital Configuration :</h6><br>
                           <div class="row form-group">
                             <label for="" class="col-md-3 control-label">Hospital Name</label>
                             <div class="col-md-9">
@@ -386,36 +391,17 @@
                             </div>
                                 <div class="col-md-6">
                                     <label *ngIf="LogoToUpload"> {{LogoToUpload.name}}</label>
-                                  <span class="upload" *ngIf="progress > 0">
-                                    {{progress}}%
+                                  <span class="upload" *ngIf="logoUploadProgress > 0">
+                                    {{logoUploadProgress}}%
                                   </span>
-                                  <span class="upload" *ngIf="message">
-                                    {{message}}
+                                  <span class="upload" *ngIf="logoUploadMessage">
+                                    {{logoUploadMessage}}
                                   </span>
-                                </div>
-                           
-                          </div>
-                          <h6 class="m-0 font-weight-bold">Email Parameters :</h6><br>
+                                </div>                         
+                          </div>     
+
                           <div class="row form-group">
-                            <label for="" class="col-md-3 control-label">Email Subject</label>
-                            <div class="col-md-9">
-                              <input type="email" placeholder="Email Subject" class="form-control" name="EmailSubject"
-                                [(ngModel)]="EmailSubject">
-                            </div>
-                          </div>
-    
-                          <div class="row form-group">
-                            <label for="" class="col-md-3 control-label">Email Plain Body</label>
-                            <div class="col-md-9">
-                              <input type="text" class="form-control" name="EmailPlainBody" [(ngModel)]="EmailPlainBody"
-                                placeholder="Email Plain Body">
-                            </div>
-                          </div>
-    
-                         
-                         
-                          <div class="row form-group">
-                            <label for="" class="col-md-3 control-label">video call platform</label>
+                            <label for="" class="col-md-3 control-label">Video call platform</label>
                             <div class="col-md-9">
                               <input type="radio" name="VideoCallPlatform" value="Jitsi" [(ngModel)]="this.global.doctorObj.VideoCallPlatform" checked>Jitsi
                               <input type="radio" name="VideoCallPlatform" value="Tokbox" [(ngModel)]="this.global.doctorObj.VideoCallPlatform">Tokbox
@@ -435,23 +421,65 @@
                     </div>
                     <div *ngIf="EmailTemplateUpdate"><br>
                       <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <h6 class="m-0 font-weight-bold">Update Email Template: </h6>
+                        <h6 class="m-0 font-weight-bold">Update Email Configuration : </h6>
                       </div>
                       <div class="card-body">
                         <form action="" class="user">
+                            <h6 class="m-0 font-weight-bold">Email Parameters :</h6><br>
                           <div class="row form-group">
-                            <!-- <label for="" class="col-md-3 control-label">Email Template </label> -->
-                            <div class="col-md-12">
-                              <ckeditor [(ngModel)]="EmailHTMLBody" name="EmailHTMLBody"   [config]="{extraPlugins:'stylesheetparser', height:'700px',fullPage: true,allowedContent: true}"></ckeditor>
+                            <label for="" class="col-md-3 control-label">Email Subject</label>
+                            <div class="col-md-9">
+                              <input type="email" placeholder="Email Subject" class="form-control" name="EmailSubject"
+                                [(ngModel)]="EmailSubject">
                             </div>
                           </div>
+    
+                          <div class="row form-group">
+                            <label for="" class="col-md-3 control-label">Email Plain Body</label>
+                            <div class="col-md-9">
+                              <input type="text" class="form-control" name="EmailPlainBody" [(ngModel)]="EmailPlainBody"
+                                placeholder="Email Plain Body">
+                            </div>
+                          </div>
+
+                          <div class="row form-group">
+                              <label for="" class="col-md-3 control-label">Email Additional Content</label>
+                              <div class="col-md-9">
+                                <textarea  style="overflow:hidden;min-height:80px;" class="form-control" name="EmailAdditionalContent" [(ngModel)]="EmailAdditionalContent"
+                                  placeholder="Email Additional Content"></textarea>
+                              </div>
+                            </div>  
+                            
+                            <div class="row form-group" *ngIf="showPreview"> 
+                                <label for="" class="col-md-3 control-label">Preview Template</label>
+                                <div class="col-md-9">
+                                 <p  style="height:600px;pointer-events: none;" id="content" [innerHTML]="EmailTemplateUrl()"></p>
+                                  <!-- <iframe [srcdoc]='EmailHTMLBody'
+                                  marginheight="0"
+                                  marginwidth="0" 
+                                  width="100%" 
+                                  height="100%" 
+                                  scrolling="auto" allowfullscreen></iframe> -->
+                                </div>
+                              </div>  
+
                           <div class="row mt-4">
                             <div class="col-md-5"></div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                               <input type="button" name="Submit" (click)="UpdateEmailTemplate()" value="Submit"
                                 class="btn btn-sm btn-primary">
                             </div>
+                            <div class="col-md-2">
+                                <input type="button" name="Preview" (click)="PreviewEmailTemplate()" value="Preview"
+                                  class="btn btn-sm btn-primary">
+                            </div>
                           </div>
+
+                       
+                          <!-- <div class="row mt-4">
+                              <div class="col-md-5"></div>
+                             
+                            </div> -->
                         </form>
                       </div>
                     </div>

@@ -11582,6 +11582,23 @@ background: linear-gradient(to bottom, #f8f8f8, #e1e0de); /* W3C, IE 10+/ Edge, 
     margin-top: 10px;
     display: inline-block;
 }
+
+.drop-mob {
+  width: 100%;
+  height: 100px;
+  overflow: hidden;
+  text-align: center;
+  background: #DADFE3;
+  -webkit-transition: all 0.5s ease-out;
+  -moz-transition: all 0.5s ease-out;
+  transition: all 0.5s ease-out;
+  margin: auto;
+  position: relative;
+  margin-top: 10px;
+  display: inline-block;
+}
+
+
 .drop .cont {
   color: #555;
   -webkit-transition: all 0.5s ease-out;
@@ -11867,7 +11884,7 @@ padding-left: 0px;
     margin: 10px auto;
 }
 .patient-camera{
-height: 200px;
+    height: 200px;
     border: none;
     padding: 10px;
     background: #ccc;
@@ -11876,6 +11893,22 @@ height: 200px;
     display: inline-block;
     box-shadow: none;
 }
+/* Added by Bhavna */
+.patient-camera-mobile{
+  height: 70vh !important;
+  border: 1px solid;
+  padding: 10px;
+  background: #ccc;
+  border-radius: 1px;
+  width: auto;
+  display: inline-block;
+  box-shadow: none;
+  }
+
+  .patient-camera-mobile video {
+    height:100%;
+  }
+
 .patient-camera video{
   height: 100%;
 }
