@@ -63,6 +63,8 @@ namespace FewaTelemedicine
             services.AddScoped<IMessengerRepository, MessengerRepository>();
             services.AddScoped<IMessengerService, MessengerServ>();
 
+            services.AddSingleton<RouteTransformer>();
+
             services.AddHttpContextAccessor();
 
 
@@ -143,10 +145,11 @@ namespace FewaTelemedicine
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
-                    
+                //endpoints.MapControllerRoute(
+                //    name: "default",
+                //    pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapDynamicControllerRoute<RouteTransformer>("{controller=Home}/{action=Index}/{id?}");
+
             });
             app.UseEndpoints(endpoints =>
             {
