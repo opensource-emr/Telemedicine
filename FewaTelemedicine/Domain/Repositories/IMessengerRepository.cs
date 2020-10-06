@@ -8,7 +8,7 @@ namespace FewaTelemedicine.Domain.Repositories
     public interface IMessengerRepository
     {
         bool SendSMS(string message, string receiverContact);
-        Task<bool> SendEmailAsync(string subject, string message, string receiverEmail);
+        Task<bool> SendEmailAsync(string receiverEmail);
     }
 }
         

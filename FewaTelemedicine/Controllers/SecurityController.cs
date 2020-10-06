@@ -81,10 +81,12 @@ namespace FewaTelemedicine.Controllers
                     provider.image = pro.image;
                     provider.providerId = pro.providerId;
                     provider.nameTitle = pro.nameTitle;
-                    provider.url=pro.url;
+                    provider.url = pro.url;
+                    provider.practice=pro.practice;
                     provider.name = pro.name;
                     provider.roomName = pro.roomName;
                     HttpContext.Session.SetString("name", provider.userName);
+                    HttpContext.Session.SetString("practice", provider.practice);
                     var token = GenerateJSONWebToken(provider.userName, "provider");
                     AddProviderCabin(pro.userName);
                     var data = new

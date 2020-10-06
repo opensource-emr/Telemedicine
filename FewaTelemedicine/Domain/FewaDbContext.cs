@@ -56,8 +56,8 @@ namespace FewaTelemedicine.Domain
             //  Seeding for provider and practice
             var providerSeed = CreateProvider(1, "provider", "FHBsjQhfB78CnRY7uVquqA==", "provider","practice");
             var providerSeed1 = CreateProvider(2, "doctor", "ajNJkHEqM5bu0szpIIhwzw==", "provider1", "practice1");
-            var practiceSeed = CreatePractice(1, "practice", "1234567890", "abc@gmail.com", "Jitsi", "/img/logo.png", "https://localhost:44304/", "Welcome to the demo of Fewa. This is the place where you can put your hospital description. Fewa is a application which helps to connect doctors and patient using video. Patient can print advice , share documents with doctor and doctor also knows how much time he has given to attend the patient. To start using the demo login as username-provider,password provider , send a invitation to the patient and then both can communicate");
-            var practiceSeed1 = CreatePractice(2, "practice1", "0987654321", "pqr@gmail.com", "Jitsi", "/img/logo.png", "https://localhost:44304/", "Welcome to the demo of Fewa. This is the place where you can put your hospital description. Fewa is a application which helps to connect doctors and patient using video. Patient can print advice , share documents with doctor and doctor also knows how much time he has given to attend the patient. To start using the demo login as username-doctor,password doctor , send a invitation to the patient and then both can communicate");
+            var practiceSeed = CreatePractice(1, "practice", "1234567890", "abc@gmail.com", "Jitsi", "/img/logo.png", "https://localhost:44304/", "Welcome to the demo of Fewa. This is the place where you can put your hospital description. Fewa is a application which helps to connect doctors and patient using video. Patient can print advice , share documents with provider and provider also knows how much time he has given to attend the patient. To start using the demo login as username-provider,password provider , send a invitation to the patient and then both can communicate", "fewa Telemedicine call today schedule", "Please attend the provider","");
+            var practiceSeed1= CreatePractice(2, "practice1", "0987654321", "pqr@gmail.com", "Jitsi", "/img/logo.png", "https://localhost:44304/", "Welcome to the demo of Fewa. This is the place where you can put your hospital description. Fewa is a application which helps to connect doctors and patient using video. Patient can print advice , share documents with provider and provider also knows how much time he has given to attend the patient. To start using the demo login as username-doctor,password doctor , send a invitation to the patient and then both can communicate", "fewa Telemedicine call today schedule", "Please attend the provider", "");
             modelBuilder.Entity<Provider>().ToTable("Provider");
             modelBuilder.Entity<Patient>().ToTable("Patient");
             modelBuilder.Entity<Practice>().ToTable("Practice");
@@ -94,7 +94,10 @@ namespace FewaTelemedicine.Domain
                                string _callingPlatform,
                                string _logoPath,
                                string _serverName,
-                               string _description
+                               string _description,
+                               string _emailSubject,
+                               string _emailPlainBody,
+                               string _emailAdditionalContent
                                )
         {
             var _emailHtmlBody = "   <html>  " +
@@ -158,7 +161,7 @@ namespace FewaTelemedicine.Domain
                                                "                                                                  <tbody>  " +
                                                "                                                                     <tr>  " +
                                                "                                                                        <td align='center' width='100%'>  " +
-                                               "   																		<h1 style='padding:0;margin:0;color:#ffffff;font-weight:500;font-size:20px;line-height:24px'>Invitation from HospitalName</h1>  " +
+                                               "   																		<h1 style='padding:0;margin:0;color:#ffffff;font-weight:500;font-size:20px;line-height:24px'>Invitation from PracticeName</h1>  " +
                                                "                                                                        </td>  " +
                                                "                                                                     </tr>  " +
                                                "                                                                  </tbody>  " +
@@ -172,7 +175,7 @@ namespace FewaTelemedicine.Domain
                                                "                                                                     <tr>  " +
                                                "   																		<td align='center' width='100%' style='padding: 0 15px;text-align: justify;color: rgb(76, 76, 76);font-size: 12px;line-height: 18px;'>  " +
                                                "   																		<tr _ngcontent-kfm-c50<td _ngcontent-kfm-c50=''><img _ngcontent-kfm-c50='' src='{ImageUrl}' style='height: 80px;'></td></tr>  " +
-                                               "   																		<h3 style='font-weight: 600; padding: 0px; margin: 0px; font-size: 16px; line-height: 24px; text-align: center;' class='title-color'>Hi, This is <strong>DoctorNameTitle &nbsp;&nbsp;DoctorName</strong></h3>  " +
+                                               "   																		<h3 style='font-weight: 600; padding: 0px; margin: 0px; font-size: 16px; line-height: 24px; text-align: center;' class='title-color'>Hi, This is <strong>ProviderNameTitle &nbsp;&nbsp;ProviderName</strong></h3>  " +
                                                "                                                                           <p style='margin: 20px 0 30px 0;font-size: 15px;text-align: center;'>EmailAdditionalContent &nbsp;</p>" +
                                                "                                                                           <p style='margin: 20px 0 30px 0;font-size: 15px;text-align: center;'>Please click this following button to join me for a secure video meeting <b>Join now</b>!</p>  " +
                                                "                                                                           <div style='font-weight: 200; text-align: center; margin: 25px;'><a style='padding:0.6em 1em;border-radius:600px;color:#ffffff;font-size:14px;text-decoration:none;font-weight:bold' class='button-color' href='{Join}'>Join the conference</a></div>  " +
@@ -225,6 +228,7 @@ namespace FewaTelemedicine.Domain
                                                "         </div>  " +
                                                "      </body>  " +
                                                "  </html>  ";
+
             var practice = new Practice
             {
                 practiceId = _id,
@@ -235,7 +239,11 @@ namespace FewaTelemedicine.Domain
                 logoPath = _logoPath,
                 serverName = _serverName,
                 description = _description,
-                emailHtmlBody = _emailHtmlBody
+                emailHtmlBody = _emailHtmlBody,
+                emailSubject=_emailSubject,
+                emailPlainBody=_emailPlainBody,
+                emailAdditionalContent= _emailAdditionalContent
+
             };
             
             return practice;

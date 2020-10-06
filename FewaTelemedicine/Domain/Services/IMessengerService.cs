@@ -9,6 +9,6 @@ namespace FewaTelemedicine.Domain.Services
     {
 
         bool SendSMS(string message, string receiverContact);
-        Task<bool> SendEmailAsync(string subject, string message, string receiverEmail);
+        Task<bool> SendEmailAsync(string receiverEmail);
     }
 }

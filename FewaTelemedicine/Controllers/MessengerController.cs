@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FewaTelemedicine.Domain;
 using FewaTelemedicine.Domain.Models;
 using FewaTelemedicine.Domain.Services;
 using Microsoft.AspNetCore.Http;
@@ -50,7 +51,7 @@ namespace FewaTelemedicine.Controllers
 
         [Route("SendEmail")]
         [HttpPost]
-        public async Task<bool> SendEmail([FromBody] Practice email)
+        public async Task<bool> SendEmail([FromBody] Patient email)
         { 
            
             try
@@ -59,11 +60,11 @@ namespace FewaTelemedicine.Controllers
                 {
                     return false;
                 }
-                if (string.IsNullOrEmpty(email.emailSubject) || string.IsNullOrEmpty(email.emailMessage) || string.IsNullOrEmpty(email.email))
+                if (string.IsNullOrEmpty(email.email))
                 {
                     return false;
                 }
-                return await _messengerService.SendEmailAsync(email.emailSubject, email.emailMessage, email.email);
+                return await _messengerService.SendEmailAsync(email.email);
             }
             catch (Exception ex)
             {

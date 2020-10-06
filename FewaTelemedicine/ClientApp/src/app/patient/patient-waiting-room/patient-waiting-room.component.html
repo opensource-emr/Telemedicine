@@ -35,17 +35,20 @@
               <div class="chatbox-holder">
                 <div class="chatbox">    
                   <form [formGroup]="ChatForm">
-                  <div class="chat-messages" width="500px">
-                    <label *ngIf="showChat" for="selPatient" >Provider: </label>
-                    <select  id="selPatient" formControlName="selUser" (change)="OnChatUserChange()">
+                  <div class="chat-messages" width="500px" >
+                    <label *ngIf="showChat" for="selPatient"  style="float: left;">Provider: </label>
+                    <select  id="selPatient" formControlName="selUser" (change)="OnChatUserChange()"  style="float: left;">
                       <option disabled value="null">Select Provider</option>
-                      <option *ngFor="let provider of providers"> {{ provider.userName }}  </option>
+                      <option *ngFor="let pr of providers"> {{ pr.userName }}  </option>
                     </select>
-                     <div #scrollBtm class="message-box-holder" *ngFor="let msg of ChatMessages">
-                     <div class="message-sender">
+                    <br><br>
+                     <div #scrollBtm class="message-box-holder" *ngFor="let msg of ChatMessages"  >
+                     <div class="message-sender" style="float: left;" >
                      <b> {{ msg.name }} :-</b> {{ msg.message }}
                      </div>
-                     </div>               
+                    <br>
+                     </div>      
+                     <br>         
                   </div>
                   
                   <div class="chat-input-holder">
