@@ -131,7 +131,7 @@ namespace FewaTelemedicine.Services
         private Boolean IsProvider()
         {
             var claims = Context.User.Claims;
-            string usertype = claims.FirstOrDefault(c => c.Type == "UserType").Value;
+            string usertype = claims.FirstOrDefault(c => c.Type == "UserType")?.Value;
             if (usertype == "provider") { return true; }
             return false;
         }

@@ -13,25 +13,25 @@ import { ProviderRoomTokboxComponent } from './provider/provider-room-tokbox/pro
 import { PatientRoomTokboxComponent } from './patient/patient-room-tokbox/patient-room-tokbox.component';
 
 
-console.log(window.location);
+//console.log(window.location);
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'Login' },
   { path: 'Login', component: LoginComponent },
   { path: 'ForgotPassword', component: ForgotPasswordComponent },
   { path: 'Home', component: ProviderHomeComponent },
-  {path:'Join',component:PatientRegistrationComponent},
-  {path:'Waiting',component:PatientWaitingRoomComponent},
-  {path:'ProviderRoom',component:ProviderRoomComponent},
-  {path:'ReportSummary',component:PatientReportSummaryComponent},
-  {path:'PatientRoom',component:PatientRoomComponent},
-  {path:'Upload',component:PatientUploadFilesComponent},
-  {path:'ProviderRoomTokbox',component:ProviderRoomTokboxComponent},
-  {path:'PatientRoomTokbox',component:PatientRoomTokboxComponent}
+  { path: 'Join', component: PatientRegistrationComponent },
+  { path: 'Waiting', component: PatientWaitingRoomComponent },
+  { path: 'ProviderRoom', component: ProviderRoomComponent },
+  { path: 'ReportSummary', component: PatientReportSummaryComponent },
+  { path: 'PatientRoom', component: PatientRoomComponent },
+  { path: 'Upload', component: PatientUploadFilesComponent },
+  { path: 'ProviderRoomTokbox', component: ProviderRoomTokboxComponent },
+  { path: 'PatientRoomTokbox', component: PatientRoomTokboxComponent }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule]
 })
-export class AppRoutingModule { 
+export class AppRoutingModule {
 }

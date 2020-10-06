@@ -15,10 +15,12 @@ namespace FewaTelemedicine.Controllers
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
+            ViewBag.BaseHref = "/";
         }
 
         public IActionResult Index()
         {
+            ViewBag.BaseHref = HttpContext.Request.Path;
             return View();
         }
     }

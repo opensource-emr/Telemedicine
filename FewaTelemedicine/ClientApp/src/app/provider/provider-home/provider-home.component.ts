@@ -2,13 +2,13 @@ import { Component, OnInit, ViewChild, ChangeDetectorRef, ElementRef, OnDestroy,
 import { Router, NavigationStart, ActivatedRoute, Data } from '@angular/router';
 import { NotificationService } from 'src/Common/notification.service';
 import { Global } from 'src/Common/global.model'
-import { HttpClient, HttpEventType , HttpEvent, HttpParams} from '@angular/common/http';
+import { HttpClient, HttpEventType, HttpEvent, HttpParams } from '@angular/common/http';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { SMSModel } from 'src/models/SMS.model';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Message } from '@angular/compiler/src/i18n/i18n_ast';
-import {Provider, Patient, Practice } from 'src/models/DomainModels';
+import { Provider, Patient, Practice } from 'src/models/DomainModels';
 
 @Component({
   templateUrl: './provider-home.component.html',
@@ -16,24 +16,24 @@ import {Provider, Patient, Practice } from 'src/models/DomainModels';
   styleUrls: ['../../../assets/css/doctor-home-component.css']
 
 })
-export class ProviderHomeComponent implements OnInit,AfterViewInit{
+export class ProviderHomeComponent implements OnInit, AfterViewInit {
   public state: Observable<object>;
-  public LogoToUpload:File = null;
+  public LogoToUpload: File = null;
   public selectedFile: File;
   public progress: number;
   public message: string;
-  count:number=0;
+  count: number = 0;
   receivedImageData: any;
   retrievedImage: any;
   retrieveResponse: any;
   activeTab = 'updateProfile';
-  HospitalName:string ="";
+  HospitalName: string = "";
   HospitalContact: string = "";
-  HospitalEmail:string = "";
+  HospitalEmail: string = "";
   HospitalLogo: string = "";
-  EmailSubject:string = "";
-  EmailPlainBody:string = "";
-  EmailHTMLBody :string = "";
+  EmailSubject: string = "";
+  EmailPlainBody: string = "";
+  EmailHTMLBody: string = "";
   HospitalDesc: string = "";
   showChat: boolean = true;
   AllUserChats: any = {};
@@ -41,8 +41,8 @@ export class ProviderHomeComponent implements OnInit,AfterViewInit{
   ChatReceivedMessages: Array<any> = new Array<any>();
   ChatUserDropDowns: Array<any> = new Array<any>();
   ChatForm: FormGroup;
-  usrname:string;
-  
+  usrname: string;
+
   @ViewChild('scrollBtm', { static: false }) private scrollBottom: ElementRef;
   public InvitationButton: boolean = true;
   public InvitationSuccess: boolean = false;
@@ -58,160 +58,139 @@ export class ProviderHomeComponent implements OnInit,AfterViewInit{
   public CompletedPatients: Array<Patient> = null;
   public CompPatients: Array<Patient> = null;
   public AddedDoctors: Array<Provider> = null;
-  providerObj:Provider=new Provider();
-  practiceObj:Practice=new Practice();
-  patientObj:Patient=new Patient();
- 
+  providerObj: Provider = new Provider();
+  practiceObj: Practice = new Practice();
+  patientObj: Patient = new Patient();
+
   public showPatDetail: boolean = false;
   patients: Array<Patient> = new Array<Patient>();
 
-  @ViewChild('pcam') video:any; 
-  Video:any;
-  tokbox:string='Tokbox';
-  showPreview:boolean=false;
+  @ViewChild('pcam') video: any;
+  Video: any;
+  tokbox: string = 'Tokbox';
+  showPreview: boolean = false;
   public invitationForm: FormGroup;
-  ngAfterViewInit()
-  {
-    let _video=this.video.nativeElement;
-    this.Video=_video;
-     if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-       navigator.mediaDevices.getUserMedia({ video: true })
-                             .then(stream => {
-                               _video.srcObject = stream;
-                               _video.play();
-                              })
-     }
-   }
+  ngAfterViewInit() {
+    let _video = this.video.nativeElement;
+    this.Video = _video;
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+          _video.srcObject = stream;
+          _video.play();
+        })
+    }
+  }
   constructor(private routing: Router,
-              private notificationService: NotificationService,
-              public global: Global,
-              public httpClient: HttpClient, 
-              private formBuilder: FormBuilder,
-              private activatedRoute: ActivatedRoute,
-              private cdr: ChangeDetectorRef,
-              private sanitizer: DomSanitizer)
-              {
-               
-                  this.initForm();
-                  this.LoadPatientsAttended();
-                  this.practiceObj=this.global.practiceObj;
-                  this.providerObj=this.global.providerObj;
-                  if (this.global.isPatient) 
-                  {
-                    this.notificationService.EventCompletePatient
-                        .subscribe(_patient => 
-                        {
-                          // this.global.patientObj = _patient;
-                          this.patients = _patient;
-                           // this.patients = _patient;
-                          // this.PatientCompleted(_patient);
-                          this.ChatUserDropDowns = new Array<any>();
-                        });
-                   }
+    private notificationService: NotificationService,
+    public global: Global,
+    public httpClient: HttpClient,
+    private formBuilder: FormBuilder,
+    private activatedRoute: ActivatedRoute,
+    private cdr: ChangeDetectorRef,
+    private sanitizer: DomSanitizer) {
 
-                   this.notificationService.Connect();
-                   this.notificationService.EventGetAllPatients
-                        .subscribe(_patients =>
-                        {
-                          this.patients = _patients;
-                           // this.patients = _patients;
-                          this.ChatUserDropDowns = _patients;
-                        });
-
-                  this.notificationService.EventCallPatient
-                      .subscribe(_patient => 
-                      {
-                        this.global.patientObj = _patient;
-                      });
-
-                  this.notificationService.EventChatMessage
-                      .subscribe(data =>
-                      {
-                         if (this.ChatForm.controls['selUser'].value != data.name) 
-                         {
-                            this.ChatForm.controls['selUser'].setValue(data.name);
-                            this.OnChatUserChange();
-                          }
-                          if (!this.showChat) 
-                          {
-                             this.showChat = true;
-                          }
-                          const chatMsg = { name: data.name, message: data.message, Class: 'receiver-msg' };
-                          this.ChatMessages.push(chatMsg);
-                          this.count=this.count+1;
-                          this.pushChatMsgUserwise(data.Name, chatMsg);
-
-                          this.cdr.detectChanges();
-                          // this.scrollBottom.nativeElement.lastElementChild.scrollIntoView(false); // scroll to bottom
-                      });
-
-                      this.invitationForm = this.formBuilder.group(
-                      {
-                        email: ['', Validators.email],
-                        mobileno: ['', Validators.required],
-                       })
-                       if (!this.providerObj) 
-                       {
-                         this.routing.navigate(['Login']);
-                        } 
-                        else if (this.providerObj.userName == "") 
-                        {
-                          this.routing.navigate(['Login']);
-                        }
-                 }
- 
-  ngOnInit() 
-  {
-    var config = new HttpParams().set('username',this.global.providerObj.userName );
-    this.httpClient.get<any>(this.global.practiceUrl + "GetUpdatedProvider",{params : config})
-        .subscribe(res =>
-        {
-            this.providerObj=res.User;
-           if(this.providerObj.image)
-           {
-             this.retrievedImage = 'data:image/png;base64,' + this.providerObj.image;
-            }
+    this.initForm();
+    this.LoadPatientsAttended();
+    this.practiceObj = this.global.practiceObj;
+    this.providerObj = this.global.providerObj;
+    if (this.global.isPatient) {
+      this.notificationService.EventCompletePatient
+        .subscribe(_patient => {
+          // this.global.patientObj = _patient;
+          this.patients = _patient;
+          // this.patients = _patient;
+          // this.PatientCompleted(_patient);
+          this.ChatUserDropDowns = new Array<any>();
         });
+    }
+
+    this.notificationService.Connect();
+    this.notificationService.EventGetAllPatients
+      .subscribe(_patients => {
+        this.patients = _patients;
+        // this.patients = _patients;
+        this.ChatUserDropDowns = _patients;
+      });
+
+    this.notificationService.EventCallPatient
+      .subscribe(_patient => {
+        this.global.patientObj = _patient;
+      });
+
+    this.notificationService.EventChatMessage
+      .subscribe(data => {
+        if (this.ChatForm.controls['selUser'].value != data.name) {
+          this.ChatForm.controls['selUser'].setValue(data.name);
+          this.OnChatUserChange();
+        }
+        if (!this.showChat) {
+          this.showChat = true;
+        }
+        const chatMsg = { name: data.name, message: data.message, Class: 'receiver-msg' };
+        this.ChatMessages.push(chatMsg);
+        this.count = this.count + 1;
+        this.pushChatMsgUserwise(data.Name, chatMsg);
+
+        this.cdr.detectChanges();
+        // this.scrollBottom.nativeElement.lastElementChild.scrollIntoView(false); // scroll to bottom
+      });
+
+    this.invitationForm = this.formBuilder.group(
+      {
+        email: ['', Validators.email],
+        mobileno: ['', Validators.required],
+      })
+    if (!this.providerObj) {
+      this.routing.navigate(['Login']);
+    }
+    else if (this.providerObj.userName == "") {
+      this.routing.navigate(['Login']);
+    }
+  }
+
+  ngOnInit() {
+    var config = new HttpParams().set('username', this.global.providerObj.userName);
+    this.httpClient.get<any>(this.global.practiceUrl + "GetUpdatedProvider", { params: config })
+      .subscribe(res => {
+        this.providerObj = res.User;
+        if (this.providerObj.image) {
+          this.retrievedImage = 'data:image/png;base64,' + this.providerObj.image;
+        }
+      });
 
   }
- 
-  ngOnDestroy() 
-  { 
-    const mediaStream = this.Video.srcObject;
-    if(mediaStream==null)
-    {
+
+  ngOnDestroy() {
+    const mediaStream = this.Video?.srcObject;
+    if (mediaStream == null) {
       return;
     }
-    (<MediaStream>mediaStream).getTracks().forEach( stream => stream.stop());
+    (<MediaStream>mediaStream).getTracks().forEach(stream => stream.stop());
   }
-  Transform() 
-  {
+  Transform() {
     return this.sanitizer.bypassSecurityTrustResourceUrl(this.retrievedImage);
   }
 
-  private initForm() 
-  {
+  private initForm() {
     this.ChatForm = this.formBuilder.group({
       selUser: [null, Validators.required],
       chatMessage: ['', Validators.required]
     });
   }
 
-  hasError(typeofvalidator: string, controlname: string): boolean 
-  {
+  hasError(typeofvalidator: string, controlname: string): boolean {
     const control = this.ChatForm.controls[controlname];
     return control.hasError(typeofvalidator) && control.dirty;
   }
 
-  Difference(start: Date, end: Date): number
-   {
+  Difference(start: Date, end: Date): number {
     start = new Date(start);
     end = new Date(end);
     var startminutes = start.getMinutes();
     var endminutes = end.getMinutes();
     var diff = 0;
-    if (endminutes > startminutes)
-    {
+    if (endminutes > startminutes) {
       diff = endminutes - startminutes;
     }
     return diff;
@@ -286,11 +265,11 @@ export class ProviderHomeComponent implements OnInit,AfterViewInit{
     }
   }
 
-  updatePracticeLogo(file:FileList) {
+  updatePracticeLogo(file: FileList) {
     this.LogoToUpload = file.item(0);
     //show image preview
     var reader = new FileReader();
-    reader.onload = (event :any) => {
+    reader.onload = (event: any) => {
       this.HospitalLogo = event.target.result;
     }
     reader.readAsDataURL(this.LogoToUpload);
@@ -301,7 +280,7 @@ export class ProviderHomeComponent implements OnInit,AfterViewInit{
     //var filename = "hospitallogo" + new Date().getTime() + fileExtension;
     formData.append('image', this.LogoToUpload, this.LogoToUpload.name);
     //call to server
-    this.httpClient.post(this.global.practiceUrl + "UploadPracticeLogo", formData, { reportProgress: true, observe: 'events', responseType: 'text'})
+    this.httpClient.post(this.global.practiceUrl + "UploadPracticeLogo", formData, { reportProgress: true, observe: 'events', responseType: 'text' })
       .subscribe(event => {
         if (event.type === HttpEventType.UploadProgress)
           this.progress = Math.round(100 * event.loaded / event.total);
@@ -345,15 +324,14 @@ export class ProviderHomeComponent implements OnInit,AfterViewInit{
       .subscribe(
         res => {
           this.retrieveResponse = res;
-          if(this.retrieveResponse)
-          this.retrievedImage = 'data:image/png;base64,' + this.retrieveResponse;
+          if (this.retrieveResponse)
+            this.retrievedImage = 'data:image/png;base64,' + this.retrieveResponse;
         }
       );
   }
-  UpdatePracticeConfiguration()
-  {
+  UpdatePracticeConfiguration() {
     this.httpClient.
-      post<any>(this.global.practiceUrl  + "UpdatePracticeConfiguration", this.global.practiceObj)
+      post<any>(this.global.practiceUrl + "UpdatePracticeConfiguration", this.global.practiceObj)
       .subscribe(res => {
         this.practiceObj = res;
         alert("Practice Configuration updated");
@@ -364,7 +342,7 @@ export class ProviderHomeComponent implements OnInit,AfterViewInit{
   UpdateProfile() {
     console.log(this.providerObj);
     this.httpClient.
-      post<any>(this.global.practiceUrl  + "UpdateProfile", this.providerObj)
+      post<any>(this.global.practiceUrl + "UpdateProfile", this.providerObj)
       .subscribe(res => {
         this.providerObj = res;
         //this.global.doctorObj = res;
@@ -374,28 +352,28 @@ export class ProviderHomeComponent implements OnInit,AfterViewInit{
       },
         err => { console.log(err); });
   }
-  EmailTemplateUrl(){
+  EmailTemplateUrl() {
     return this.sanitizer.bypassSecurityTrustHtml(this.practiceObj.emailHtmlBody);
   }
-  PreviewEmailTemplate(){
+  PreviewEmailTemplate() {
 
     this.httpClient.
-    post<any>(this.global.practiceUrl  + "PreviewEmailTemplate",this.practiceObj)
-    .subscribe(res => {
-      this.practiceObj.emailHtmlBody= res.EmailHTMLBody; 
-      // this.PreviewEmailContent = res.PreviewEmailContent;
-      this.showPreview = true;  
-    },
-      err => { console.log(err); });
+      post<any>(this.global.practiceUrl + "PreviewEmailTemplate", this.practiceObj)
+      .subscribe(res => {
+        this.practiceObj.emailHtmlBody = res.EmailHTMLBody;
+        // this.PreviewEmailContent = res.PreviewEmailContent;
+        this.showPreview = true;
+      },
+        err => { console.log(err); });
   }
   UpdateEmailTemplate() {
     this.httpClient.
-    post<any>(this.global.practiceUrl  + "UpdatePracticeConfiguration", this.practiceObj.emailHtmlBody)
-    .subscribe(res => {
-      this.practiceObj= res;
-      alert("Email Template Updated");
-    },
-      err => { console.log(err); });
+      post<any>(this.global.practiceUrl + "UpdatePracticeConfiguration", this.practiceObj.emailHtmlBody)
+      .subscribe(res => {
+        this.practiceObj = res;
+        alert("Email Template Updated");
+      },
+        err => { console.log(err); });
   }
 
   Invitation() {
@@ -406,7 +384,7 @@ export class ProviderHomeComponent implements OnInit,AfterViewInit{
 
   CallPatient(callPatient: Patient) {
     if (this.patientObj.status == 1) {
-      this.patientObj=new Patient;
+      this.patientObj = new Patient;
     }
     console.log(this.providerObj);
     this.showPatDetail = true;
@@ -414,23 +392,22 @@ export class ProviderHomeComponent implements OnInit,AfterViewInit{
     this.patientObj.appointmentDate = dateTime;
     this.patientObj.name = callPatient.name;
     this.notificationService.CallPatient(callPatient);
-  
-    if(this.practiceObj.callingPlatform==this.tokbox)
-    {
+
+    if (this.practiceObj.callingPlatform == this.tokbox) {
       this.routing.navigateByUrl('/ProviderRoomTokbox', { state: this.global });
     }
     else
-    this.routing.navigateByUrl('/ProviderRoom', { state: this.global });
+      this.routing.navigateByUrl('/ProviderRoom', { state: this.global });
 
   }
 
   LoadPatientsAttended() {
-    this.httpClient.get( this.global.practiceUrl+"GetPatientsAttended")
+    this.httpClient.get(this.global.practiceUrl + "GetPatientsAttended")
       .subscribe(res => this.LoadPatientSuccess(res), err => this.Error(err));
 
   }
   LoadPatientSuccess(res) {
-    this.CompletedPatients=res.filter(t=>t.url==this.global.providerObj.url);
+    this.CompletedPatients = res.filter(t => t.url == this.global.providerObj.url);
     // this.CompletedPatients=res;
   }
 
@@ -444,21 +421,19 @@ export class ProviderHomeComponent implements OnInit,AfterViewInit{
         }
       })
       this.patientObj = res;
+    }
   }
-}
   EmailInvitationSuccess(res) {
     console.log(res);
-    if (res)
-    {
-      this.InvitationButton=true;
-      this.InvitationSuccess=true;
-      
+    if (res) {
+      this.InvitationButton = true;
+      this.InvitationSuccess = true;
+
       //alert("Email Invitation Sent has been sent ");
     }
-    else
-    {
-      this.InvitationButton=true;
-      this.InvitationFailure=true;
+    else {
+      this.InvitationButton = true;
+      this.InvitationFailure = true;
       //alert("Sending failed!");
     }
   }
