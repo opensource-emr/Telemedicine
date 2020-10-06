@@ -32,42 +32,35 @@ namespace FewaTelemedicine.Persistence.Repositories
             _providerRepository = providerRepository;
         }
 
-        public async Task<bool> SendEmailAsync(string subject, string message, string receiverEmail)
+        public async Task<bool> SendEmailAsync(string receiverEmail)
         {
             var bResponse = false;
-
             try
             {
-
-                List<Practice> practice = FewaDbContext.practices.ToList();
-                var ServerName = practice.Select(a => a.serverName);
-                var username = accessor.HttpContext.Session.GetString("Name");
-                var doctor = _providerRepository.getProviderByUserName(username);
+                var pra = accessor.HttpContext.Session.GetString("practice");
+                var username = accessor.HttpContext.Session.GetString("name");
+                Practice practice = FewaDbContext.practices.Where(a => a.url == pra).FirstOrDefault();
+ 
+               
+                var provider = _providerRepository.getProviderByUserName(username);
                 var TodaysDate =DateTime.Now.ToString("MM-dd-yyyy HH:mm:ss");
-                var HospitalName = practice.Select(a => a.name);
-                var LogoPath = practice.Select(a => a.logoPath);
-                var HospitalContact = practice.Select(a => a.contactNumber);
-                var apiKey = practice.Select(a => a.emailApiKey);
-                var email = practice.Select(a => a.email);
-                var name = practice.Select(a => a.name);
-                //var client = new SendGridClient(apiKey);
-                //var from = new EmailAddress(email, name);
+                var client = new SendGridClient(practice.emailApiKey);
+                var from = new EmailAddress(practice.email);
                 var to = new EmailAddress(receiverEmail);
-                var plainTextContent = practice.Select(a => a.emailPlainBody);
-                var htmlContent = practice.Select(a => a.emailHtmlBody);
-                //htmlContent = htmlContent.Replace("{ImageUrl}", ServerName + LogoPath);
-                //htmlContent = htmlContent.Replace("{Join}", ServerName + "#/Join?DoctorName="+doctor.DoctorId);
-                //htmlContent = htmlContent.Replace("DoctorNameTitle", doctor.NameTitle);
-                //htmlContent= htmlContent.Replace("DoctorName", doctor.DoctorName);
-                //htmlContent= htmlContent.Replace("HospitalName", HospitalName);
-                //htmlContent = htmlContent.Replace("TodaysDate", TodaysDate);
-                //subject = practice.Select(a => a.emailSubject);
-                //var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
-                //var res = await client.SendEmailAsync(msg);
-                //if (res.StatusCode == System.Net.HttpStatusCode.OK || res.StatusCode == System.Net.HttpStatusCode.Accepted)
-                //{
-                //    bResponse = true;
-                //}
+                var htmlContent = practice.emailHtmlBody;
+                htmlContent = htmlContent.Replace("{ImageUrl}", practice.serverName + practice.logoPath);
+                htmlContent = htmlContent.Replace("{Join}", practice.serverName+provider.practice+"/"+provider.url + "/#/Join");
+                htmlContent = htmlContent.Replace("ProviderNameTitle", provider.nameTitle);
+                htmlContent = htmlContent.Replace("ProviderName", provider.name);
+                htmlContent= htmlContent.Replace("PracticeName", practice.name);
+                htmlContent = htmlContent.Replace("TodaysDate", TodaysDate);
+                htmlContent = htmlContent.Replace("EmailAdditionalContent", practice.emailAdditionalContent);
+                var msg = MailHelper.CreateSingleEmail(from, to, practice.emailSubject, practice.emailPlainBody, htmlContent);
+                var res = await client.SendEmailAsync(msg);
+                if (res.StatusCode == System.Net.HttpStatusCode.OK || res.StatusCode == System.Net.HttpStatusCode.Accepted)
+                {
+                    bResponse = true;
+                }
             }
             catch (Exception ex)
             {

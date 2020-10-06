@@ -400,7 +400,7 @@ export class ProviderHomeComponent implements OnInit,AfterViewInit{
 
   Invitation() {
     this.InvitationButton = false;
-    // this.httpClient.post("Messenger/SendEmail", this.global.parameterObj).subscribe(res => this.EmailInvitationSuccess(res), err => this.Error(err));
+    this.httpClient.post("/Messenger/SendEmail", this.patientObj).subscribe(res => this.EmailInvitationSuccess(res), err => this.Error(err));
     this.invitationForm.reset();
   }
 
