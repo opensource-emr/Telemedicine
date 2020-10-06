@@ -1,24 +1,26 @@
 import { Component } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { GlobalModel } from 'src/Common/global.model';
+import {Global } from 'src/Common/global.model';
+import { Patient } from 'src/models/DomainModels';
 
 @Component({
     templateUrl:'./patient-report-summary.component.html'
 })
 export class PatientReportSummaryComponent
 {
+  patientObj:Patient=null;
     constructor(public httpClient:HttpClient , 
         public routing:Router ,
-        public global:GlobalModel){ 
+        public global:Global){ 
           this.routing.navigate([],
-            { queryParams:{DoctorName:this.global.patientObj.DoctorId},
+            { queryParams:{ProviderId:this.global.patientObj.url},
               queryParamsHandling:"preserve"
           },
             );
         } 
          SuccessTestDone(res){
-           this.global.patientObj=res;
+           this.patientObj=res;
           alert(res);
       
         }

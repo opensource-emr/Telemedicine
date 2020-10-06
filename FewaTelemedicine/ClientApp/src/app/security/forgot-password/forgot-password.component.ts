@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { GlobalModel } from 'src/Common/global.model';
+import { Global } from 'src/Common/global.model';
 
 @Component({
     templateUrl: './forgot-password.component.html'
@@ -10,7 +10,7 @@ export class ForgotPasswordComponent {
     mobno;
     verifyotp;
     constructor(public httpClient:HttpClient ,public routing: Router,
-      public global: GlobalModel)
+      public global: Global)
     {
     }
     GenerateOTP()
@@ -31,7 +31,7 @@ export class ForgotPasswordComponent {
     }
     Success(res)
     {
-      this.global.doctorObj=res;
+      this.global.providerObj=res;
         var otp=res.Otp;
         alert(otp);
     }

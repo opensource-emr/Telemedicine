@@ -1,58 +1,51 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Provider } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NotificationService } from 'src/Common/notification.service';
-import { GlobalModel } from 'src/Common/global.model';
+import { Global } from 'src/Common/global.model';
 import { FormBuilder } from '@angular/forms';
-import { PatientsAttendedModel } from 'src/models/patients-attended.model';
-import { DoctorsModel } from 'src/models/doctors.model';
+import { Patient } from 'src/models/DomainModels';
+import { Observable } from 'rxjs';
 
 @Component({
     templateUrl:'./patient-registration.component.html'
 })
 export class PatientRegistrationComponent implements OnInit
 {
-  meetingId:any;
-    patientObj: PatientsAttendedModel = new PatientsAttendedModel();
-    doctors: Array<DoctorsModel> = new Array<DoctorsModel>();
-    getAlldoctors:any;
+
+    patientObj: Patient = new Patient();
+    providers: Array<Provider> = new Array<Provider>();
+    public state: Observable<object>;
     constructor(public httpClient: HttpClient,
         public routing: Router,
-        public global: GlobalModel,
+        public global: Global,
         private formBuilder: FormBuilder, private notificationService: NotificationService,private route: ActivatedRoute)
     {
-      this.notificationService.EventGetAllDoctors.subscribe(_doctors => {
-        this.doctors = _doctors;
-      });
-  
-      this.notificationService.EventConnectionEstablished.subscribe(() => {
-        this.notificationService.LoadActiveDoctors();
-      });
      
     }
     ngOnInit()
     {
+      this.state = history.state;
     }
     LoginPatient() {
-
-      this.patientObj.DoctorId=this.route.snapshot.queryParamMap.get('DoctorName');
-        this.patientObj.MeetingId=this.meetingId;
+      var splitted=window.location.pathname.split("/",3);
+      console.log(splitted);
+      this.patientObj.url=splitted[2];
+      this.global.practiceObj.url=splitted[1];
             this.httpClient.
-      post<any>(this.global.HospitalUrl + "LoginPatient", this.patientObj)
+      post<any>(this.global.practiceUrl + "LoginPatient", this.patientObj)
       .subscribe(res => {
-         this.global.token = res.Value.Token;
-      this.global.IsDoctor = false;
-      this.global.IsPatient = true;
-      this.global.patientObj.PatientName = res.Value.User.PatientName;
+      this.global.token = res.Value.Token;
+      this.global.isProvider = false;
+      this.global.isPatient = true;
+      this.global.patientObj.name = res.Value.User.name;
       
-      sessionStorage.setItem('PatientName', this.global.patientObj.PatientName);
+      sessionStorage.setItem('PatientName', this.global.patientObj.name);
       this.global.patientObj = res.Value.User;
-      this.global.patientObj = res.Value;
-      this.global.patientObj.Id=res.Value.Id;
-      this.global.patientObj.PatientName=res.Value.PatientName;
-      this.global.patientObj.DoctorId = res.Value.User.DoctorId;
-     
-        this.routing.navigateByUrl('/Waiting',{state:this.global.patientObj});
+      this.global.patientObj.patientId=res.Value.patientId;
+      this.global.patientObj.name=res.Value.name;
+      // this.global.patientObj.url = res.Value.User.url;
+        this.routing.navigateByUrl('/Waiting',{state:this.global});
       },
         res => {
           alert('User Already logged in');

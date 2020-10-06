@@ -1,22 +1,21 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable, EventEmitter, Provider } from '@angular/core';
 import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
-import { PatientsAttendedModel } from 'src/models/patients-attended.model';
-import { GlobalModel } from './global.model';
-import { DoctorsModel } from 'src/models/doctors.model';
+import { Global } from './global.model';
+import { Patient } from 'src/models/DomainModels';
 @Injectable({
     providedIn: 'root'
 })
 export class NotificationService {
   EventConnectionEstablished = new EventEmitter<Boolean>();
-  EventGetAllPatients = new EventEmitter<Array<PatientsAttendedModel>>();
-  EventCallPatient = new EventEmitter<PatientsAttendedModel>();
-  EventCompletePatient = new EventEmitter<PatientsAttendedModel>();
+  EventGetAllPatients = new EventEmitter<Array<Patient>>();
+  EventCallPatient = new EventEmitter<Patient>();
+  EventCompletePatient = new EventEmitter<Patient>();
   EventChatMessage = new EventEmitter<string>();
-  EventGetAllDoctors = new EventEmitter<DoctorsModel>();
+  EventGetAllProviders = new EventEmitter<Provider>();
   private connectionIsEstablished = false;
   private _hubConnection: HubConnection;
 
-  constructor(public global: GlobalModel) {
+  constructor(public global: Global) {
   }
   public GetAllPatients() {
     this._hubConnection.invoke("GetPatientAll")
@@ -25,7 +24,7 @@ export class NotificationService {
       });
   }
 
-  public CallPatient(callPatient: PatientsAttendedModel) {
+  public CallPatient(callPatient: Patient) {
     console.log(callPatient);
     this._hubConnection.invoke('PatientCall', callPatient)
       .catch(function (err) {
@@ -33,7 +32,7 @@ export class NotificationService {
       });
   }
 
-  public PatientAttended(attendPatient: PatientsAttendedModel) {
+  public PatientAttended(attendPatient: Patient) {
     console.log(attendPatient);
     this._hubConnection.invoke('PatientAttended', attendPatient)
       .catch(function (err) {
@@ -49,7 +48,7 @@ export class NotificationService {
   }
 
   public LoadActiveDoctors() {
-    this._hubConnection.invoke('GetActiveDoctors').catch(err => {
+    this._hubConnection.invoke('GetActiveProviders').catch(err => {
       console.log(err);
     });
   }
@@ -63,7 +62,7 @@ export class NotificationService {
     this._hubConnection = new HubConnectionBuilder()
       .withUrl(window.location.origin + '/NotificationHub?token=' + this.global.token)
       .build();
-    this._hubConnection.serverTimeoutInMilliseconds = 50000000; // 100 second
+    this._hubConnection.serverTimeoutInMilliseconds = 500000; // 100 second
 
   }
 
@@ -83,8 +82,6 @@ export class NotificationService {
 
     this._hubConnection.onclose(function (e) {
       alert('Connection Closed');
-      //setTimeout(function () { this.startConnection(); }, 5000);
-
     });
 
   }
@@ -115,9 +112,9 @@ export class NotificationService {
       this.EventChatMessage.emit(msg);
     });
 
-    this._hubConnection.on('GetAllDoctors', (data: any) => {
+    this._hubConnection.on('GetAllProviders', (data: any) => {
       const jsonData: any = JSON.parse(data);
-      this.EventGetAllDoctors.emit(jsonData);
+      this.EventGetAllProviders.emit(jsonData);
     });
 
   }

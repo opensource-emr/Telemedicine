@@ -26,30 +26,7 @@
               
               <!-- Nav Item - User Information -->
               <li class="nav-item dropdown no-arrow">
-                <!-- <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <span class="mr-2 d-none d-lg-inline text-gray-600 small">Manoj Adhikari</span>
-                  <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
-                </a> -->
-                <!-- Dropdown - User Information -->
-                <!-- <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                  <a class="dropdown-item" href="#">
-                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Profile
-                  </a>
-                  <a class="dropdown-item" href="#">
-                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Settings
-                  </a>
-                  <a class="dropdown-item" href="#">
-                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Activity Log
-                  </a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Logout
-                  </a>
-                </div> -->
+               
               </li>
   
             </ul>
@@ -78,7 +55,7 @@
                     <table style="width: 100%; text-align: center; margin: 45px 0; font-size: 13px; font-family: Verdana;">
                       <tr>
                         <td>
-                          <img src="img/logo.png" style="height: 80px;">
+                          <img src="/img/logo.png" style="height: 80px;">
                         </td>
                       </tr>
                       <tr>
@@ -99,23 +76,23 @@
                     <table style="border:1px solid #000; font-family: Verdana; font-size: 13px; width: 100%;border-collapse: inherit !important;">
   
                       <tr style="border: 1px solid #fff">
-                        <td style="padding: 8px;" ><strong>Lab Orders Sent:</strong>{{global.patientObj?.LabOrdersSent| yesNoPipe}}</td>
+                        <td style="padding: 8px;" ><strong>Lab Orders Sent:</strong>{{patientObj?.labOrdersSent| yesNoPipe}}</td>
                       </tr>
                       <tr style="border: 1px solid #fff">
-                        <td style="padding: 8px;"><strong>New prescriptions sent to your pharmacy:</strong> {{global.patientObj?.NewPrescriptionsSentToYourPharmacy| yesNoPipe}}</td>
+                        <td style="padding: 8px;"><strong>New prescriptions sent to your pharmacy:</strong> {{patientObj?.newPrescriptionsSentToYourPharmacy| yesNoPipe}}</td>
                       </tr>
                       <tr style="border: 1px solid #fff">
-                        <td style="padding: 8px;"><strong>New prescriptions mailed to you:</strong>{{global.patientObj?.NewPrescriptionsMailedToYou| yesNoPipe}}</td>
+                        <td style="padding: 8px;"><strong>New prescriptions mailed to you:</strong>{{patientObj?.newPrescriptionsMailedToYou| yesNoPipe}}</td>
                       </tr>
   
                       <tr style="border: 1px solid #fff; border-bottom: none;">
                         <td style="padding: 8px;"><strong><u>Advice</u></strong></td>
                       </tr>
                       <tr style="border: 1px solid #fff; border-top: none">
-                        <td style="padding: 8px; padding-top: 0">{{global.patientObj?.Medication}}</td>
+                        <td style="padding: 8px; padding-top: 0">{{patientObj?.medication}}</td>
                       </tr>
                       <tr>
-                        <td style="padding: 8px; "><strong>Follow up in:</strong> <span>{{global.patientObj?.FollowUpNumber}}</span> {{global.patientObj?.FollowUpMeasure}}</td>
+                        <td style="padding: 8px; "><strong>Follow up in:</strong> <span>{{patientObj?.followUpNumber}}</span> {{patientObj?.followUpMeasure}}</td>
                       </tr>
                     </table>
                     <!-- Report Printable area end -->
@@ -125,7 +102,7 @@
             </div>
             <div class="row">
               <div class="col-md-12 text-center mt-4 mb-4">
-                <a href="" class="btn btn-primary">Email</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="javascript:;" class="btn btn-primary">Email</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <button  class="btn btn-primary" [useExistingCss]="true" printSectionId="print-section" ngxPrint>print</button>
               </div>
             </div>

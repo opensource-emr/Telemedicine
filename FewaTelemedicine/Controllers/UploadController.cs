@@ -108,43 +108,6 @@ namespace FewaTelemedicine.Controllers
                 return Ok("file doesnot exists: " + ex.Message);
             }
         }
-        //[HttpGet]
-        //[Route("download")]
-        //[Obsolete]
-        //public IActionResult Download([FromQuery] string file)
-        //{
-        //    try
-        //    {
-        //        string folderName = "Upload";
-        //        string webRootPath = _hostingEnvironment.WebRootPath;
-        //        string newPath = Path.Combine(webRootPath, folderName);
-        //        var filePath = Path.Combine(newPath, file);
-        //        if (!System.IO.File.Exists(filePath))
-        //            return NotFound();
-
-        //        var memory = new MemoryStream();
-        //        using (var stream = new FileStream(filePath, FileMode.Open))
-        //        {
-        //            stream.CopyToAsync(memory);
-        //        }
-        //        memory.Position = 0;
-
-        //        return File(memory, GetContentType(filePath), file);
-        //    }
-        //    catch (System.Exception ex)
-        //    {
-        //        return Ok("download Failed: " + ex.Message);
-        //    }
-        //}
-        //private string GetContentType(string path)
-        //{
-        //    var provider = new FileExtensionContentTypeProvider();
-        //    string contentType;
-        //    if (!provider.TryGetContentType(path, out contentType))
-        //    {
-        //        contentType = "application/octet-stream";
-        //    }
-        //    return contentType;
-        //}
+        
     }
 }

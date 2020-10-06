@@ -1,20 +1,19 @@
 import { BrowserModule} from '@angular/platform-browser';
-import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { NgModule, APP_INITIALIZER,Inject } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './security/login/login.component';
 import { APP_BASE_HREF, CommonModule } from '@angular/common';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 
 import { ConfigService } from 'src/Common/config.service';
-import { GlobalModel } from 'src/Common/global.model';
+import { Global } from 'src/Common/global.model';
 import { HttpInterceptorService } from 'src/Common/http-interceptor.service';
-import { DoctorHomeComponent } from './doctor/doctor-home/doctor-home.component';
+import {ProviderHomeComponent } from './provider/provider-home/provider-home.component';
 import { ForgotPasswordComponent } from './security/forgot-password/forgot-password.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-// import { PatientInvitationComponent } from './patient/patient-invitation/patient-invitation.component';
-import { DoctorRoomComponent } from './doctor/doctor-room/doctor-room.component';
+import {ProviderRoomComponent } from './provider/provider-room/provider-room.component';
 import { PatientRoomComponent } from './patient/patient-room/patient-room.component';
 import { PatientRegistrationComponent } from './patient/patient-registation/patient-registration.component';
 import { YesNoPipe } from 'src/Common/yes-no.pipe';
@@ -22,20 +21,18 @@ import { PatientReportSummaryComponent } from './patient/patient-report-summary/
 import { SafePipe } from 'src/Common/safe.pipe';
 import { PatientWaitingRoomComponent } from './patient/patient-waiting-room/patient-waiting-room.component';
 import { PatientUploadFilesComponent } from './patient/patient-upload-files/patient-upload-files.component';
-import { PatientUploadFilesMobileComponent } from './patient/patient-upload-files/patient-upload-files-mobile.component';
 import { UploadDownloadService } from 'src/Common/upload-download.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ToastrModule } from 'ngx-toastr';
 import {NgxPrintModule} from 'ngx-print';
 import { CKEditorModule } from 'ckeditor4-angular';
-import { DoctorRoomTokboxComponent } from './doctor/doctor-room-tokbox/doctor-room-tokbox.component';
+import { ProviderRoomTokboxComponent } from './provider/provider-room-tokbox/provider-room-tokbox.component';
 import { PatientRoomTokboxComponent } from './patient/patient-room-tokbox/patient-room-tokbox.component';
-import { PatientRoomTokboxMobileComponent } from './patient/patient-room-tokbox/patient-room-tokbox-mobile.component';
-import { PatientReportSummaryMobileComponent } from './patient/patient-report-summary/patient-report-summary-mobile.component';
-import { PatientRegistrationMobileComponent } from './patient/patient-registation/patient-registration-mobile.component';
-import { PatientWaitingRoomMobileComponent } from './patient/patient-waiting-room/patient-waiting-room-mobile.component';
-import { PatientRoomMobileComponent } from './patient/patient-room/patient-room-mobile.component';
 
+// gets the path of the currently type URL
+// var p=window.location.hash.split('/',3);
+// var s='/'+p[1]+'/'+p[2]+'/';
+// console.log(p);
+// window['base-href'] =s;
 
 const initializerConfigFn = (config: ConfigService) => {
   return () => {
@@ -49,24 +46,15 @@ const initializerConfigFn = (config: ConfigService) => {
     AppComponent,
     LoginComponent,
     ForgotPasswordComponent,
-    DoctorHomeComponent,
-    // PatientInvitationComponent,
-    DoctorHomeComponent,
-    DoctorRoomComponent,
-    // PatientInvitationComponent,
+    ProviderHomeComponent,
+    ProviderRoomComponent,
     PatientRegistrationComponent,
-    PatientRegistrationMobileComponent,
     PatientRoomComponent,
-    PatientRoomMobileComponent,
     PatientReportSummaryComponent,
-    PatientReportSummaryMobileComponent,
     PatientWaitingRoomComponent,
-    PatientWaitingRoomMobileComponent,
     PatientUploadFilesComponent,
-    DoctorRoomTokboxComponent,
+    ProviderRoomTokboxComponent,
     PatientRoomTokboxComponent,
-    PatientRoomTokboxMobileComponent,
-    PatientUploadFilesMobileComponent,
     YesNoPipe ,
     SafePipe
   ],
@@ -78,16 +66,14 @@ const initializerConfigFn = (config: ConfigService) => {
     ReactiveFormsModule,
     CommonModule,
     BrowserAnimationsModule, // required animations module
-    ToastrModule.forRoot(), // ToastrModule added
     NgxPrintModule,
     CKEditorModule
-
   ],
   providers: [
     UploadDownloadService,
     {
       provide: APP_BASE_HREF,
-      useValue: '/' + (window.location.pathname.split('/')[1] || '')
+      useValue: window['base-href'] // from base href we set it to app
     },
     {
       provide: APP_INITIALIZER,
@@ -95,8 +81,13 @@ const initializerConfigFn = (config: ConfigService) => {
       multi: true,
       deps: [ConfigService],
     },
-    GlobalModel,
+    Global,
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true }],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule 
+{ 
+  
+}
+
+

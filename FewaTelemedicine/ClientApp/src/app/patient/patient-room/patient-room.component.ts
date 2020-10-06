@@ -1,14 +1,14 @@
 import { Component, ViewChild, ElementRef, ChangeDetectorRef } from "@angular/core";
 import { NotificationService } from 'src/Common/notification.service';
-import { GlobalModel } from 'src/Common/global.model';
+import { Global } from 'src/Common/global.model';
 import { SubjectSubscriber } from 'rxjs/internal/Subject';
 import { Router } from '@angular/router';
-import { DoctorsModel } from 'src/models/doctors.model';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ToastrService } from 'ngx-toastr';
-import { HttpParams } from '@angular/common/http';
+import { HttpParams, HttpClient } from '@angular/common/http';
 import 'src/vendor/jitsi/external_api.js';
+import { Provider } from 'src/models/DomainModels';
+import { Observable } from 'rxjs';
 declare var JitsiMeetExternalAPI : any;
 
 @Component({
@@ -16,8 +16,7 @@ declare var JitsiMeetExternalAPI : any;
 })
 export class PatientRoomComponent {
   showChat: boolean = false;
-  doctors: Array<DoctorsModel> = new Array<DoctorsModel>();
-  doctorObj: DoctorsModel = new DoctorsModel();
+  providers: Array<Provider> = new Array<Provider>();
   retrievedImage:any;
   ChatMessages: Array<any> = new Array<any>();
   ChatReceivedMessages: Array<any> = new Array<any>();
@@ -26,15 +25,19 @@ export class PatientRoomComponent {
   options: {};
   domain:string;
   api:any;
+  public state: Observable<object>;
+  providerObj:Provider=new Provider();
 
   @ViewChild('scrollBtm', { static: false }) private scrollBottom: ElementRef;
   constructor(private notificationService: NotificationService,
-    public global: GlobalModel,
+    public global: Global,
     public routing: Router,
     private formBuilder: FormBuilder,
     private cdr: ChangeDetectorRef,
-    private sanitizer: DomSanitizer,private toastr: ToastrService) {
+    private sanitizer: DomSanitizer,
+    public httpClient: HttpClient) {
     this.initForm();
+    this.providerObj=this.global.providerObj;
     this.notificationService.EventCompletePatient
       .subscribe(_patient => {
         this.global.patientObj = _patient;
@@ -42,19 +45,16 @@ export class PatientRoomComponent {
       }
       );
     this.notificationService.EventChatMessage.subscribe(chatData => {
-      if (this.ChatForm.controls['selUser'].value != chatData.Name) {
-        this.ChatForm.controls['selUser'].setValue(chatData.Name);
+      if (this.ChatForm.controls['selUser'].value != chatData.name) {
+        this.ChatForm.controls['selUser'].setValue(chatData.name);
         this.OnChatUserChange();
       }
       if (!this.showChat) {
         this.showChat = true;
       }
-      const chatMsg = { Name: chatData.Name, Message: chatData.Message, Class: 'receiver-msg' };
+      const chatMsg = { name: chatData.name, message: chatData.message, Class: 'receiver-msg' };
       this.ChatMessages.push(chatMsg);
-      // this.toastr.success(chatMsg.Message, chatMsg.Name,
-      //   {timeOut: 5000});
-      //this.ChatReceivedMessages.push(chatMsg);
-      this.pushChatMsgUserwise(chatData.Name, chatMsg);
+      this.pushChatMsgUserwise(chatData.name, chatMsg);
 
        this.cdr.detectChanges();
       //this.scrollBottom.nativeElement.lastElementChild.scrollIntoView(false); // scroll to bottom
@@ -63,20 +63,18 @@ export class PatientRoomComponent {
     this.notificationService.EventConnectionEstablished.subscribe(() => {
       this.notificationService.LoadActiveDoctors();
     });
-    this.notificationService.EventGetAllDoctors.subscribe(_doctors => {
-      this.doctors = _doctors;
-      this.doctorObj=_doctors[0];
-      this.global.doctorObj=_doctors[0];
-      if (this.global.doctorObj.Image) {
-        this.retrievedImage = 'data:image/png;base64,' + this.global.doctorObj.Image;
+    this.notificationService.EventGetAllProviders.subscribe(_providers => {
+     this.providers= _providers;
+      // this.doctorObj=_doctors[0];
+      // this.global.providerObj=_providers[0];
+      if (this.global.providerObj.image) {
+        this.retrievedImage = 'data:image/png;base64,' + this.providerObj.image;
       }
-      console.log(this.doctors);
+      // console.log(this.doctors);
     });
-    this.routing.navigate([],
-      { queryParams:{DoctorName:this.global.patientObj.DoctorId},
-        queryParamsHandling:"merge"
-    },
-      );
+    if (this.global.providerObj.image) {
+      this.retrievedImage = 'data:image/png;base64,' + this.providerObj.image;
+    }
     // gets doctor list
     // this.notificationService.LoadActiveDoctors();
   }
@@ -86,9 +84,10 @@ export class PatientRoomComponent {
   }
 
   ngOnInit() {
+    this.state = history.state;
     this.domain = "meet.jit.si";
     this.options = {
-      roomName:this.global.doctorObj.DoctorRoomName,
+      roomName:this.global.providerObj.roomName,
       width: 950,
       height: 570,
       parentNode: document.querySelector('#meet'),
@@ -110,11 +109,11 @@ export class PatientRoomComponent {
         GENERATE_ROOMNAMES_ON_WELCOME_PAGE:false,
         DISPLAY_WELCOME_PAGE_CONTENT:false,
         DISPLAY_WELCOME_PAGE_TOOLBAR_ADDITIONAL_CONTENT:false,
-        DEFAULT_REMOTE_DISPLAY_NAME:this.global.doctorObj.NameTitle + " " + this.global.doctorObj.DoctorName,
+        DEFAULT_REMOTE_DISPLAY_NAME:this.global.providerObj.nameTitle + " " + this.global.providerObj.name,
         SHOW_JITSI_WATERMARK: false,
         SHOW_WATERMARK_FOR_GUESTS: false,
         SHOW_BRAND_WATERMARK: false,
-        TOOLBAR_BUTTONS: ['microphone', 'camera', ,'videoquality']
+        TOOLBAR_BUTTONS: ['microphone', 'camera', 'tileview']
       }
     } 
     this.api = new JitsiMeetExternalAPI(this.domain, this.options); 
@@ -143,11 +142,11 @@ export class PatientRoomComponent {
 
       if (this.ChatForm.valid) {
         const chatMsg = {
-          IsDoctor: this.global.IsDoctor ? false : true,
-          Name: this.ChatForm.controls['selUser'].value,
-          Message: this.ChatForm.controls['chatMessage'].value
+          isProvider: this.global.isProvider ? false : true,
+          name: this.ChatForm.controls['selUser'].value,
+          message: this.ChatForm.controls['chatMessage'].value
         };
-        const chatmsgObj = { Name: 'Me', Message: chatMsg.Message, Class: 'sender-msg' };
+        const chatmsgObj = { name: 'Me', message: chatMsg.message, Class: 'sender-msg' };
         this.ChatMessages.push(chatmsgObj);
         this.pushChatMsgUserwise(this.ChatForm.controls['selUser'].value, chatmsgObj);
 
@@ -155,7 +154,7 @@ export class PatientRoomComponent {
         this.notificationService.SendChatMessage(chatMsg);
 
         this.ChatForm.reset();
-        this.ChatForm.controls['selUser'].setValue(chatMsg.Name);
+        this.ChatForm.controls['selUser'].setValue(chatMsg.name);
         this.cdr.detectChanges();
 
         this.scrollBottom.nativeElement.lastElementChild.scrollIntoView(); // scroll to bottom

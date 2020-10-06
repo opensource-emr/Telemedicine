@@ -1,0 +1,303 @@
+
+<body id="page-top">
+    <div class="row m-w100">
+      <div class="col-9 col-md-9  col-sm-12 col-xs-12 p-0">
+        <div class="video-frame" style="padding:3%;">
+            <div id="meet">
+
+              </div>
+          <!-- <iframe width="560" height="315" [src]="global.config.videourl | safe"
+          frameborder="0" allow="microphone; camera" allowfullscreen></iframe> -->
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-12 col-xs-12 p-0 right-panel">
+        <!-- Patients Accrodian -->
+        <div class="card mb-4 br-0 b-0 accordionItem close">
+          <!-- Card Header - Dropdown -->
+          <div class="card-header accordionItemHeading py-3 d-flex flex-row align-items-center justify-content-between br-0">
+            <h6 class="m-0 font-weight-bold"><i class="fa fa-users"></i>Other Patients
+              <a href="javascript:;" routerLink='/Home' [state]="this.global.patientObj" class="btn btn-primary btn-sm p-rm10">
+                <i class="fa fa-home"></i>Dashboard
+              </a>
+            </h6>                  
+          </div>
+		  
+          <div class="card-header accordionItemHeading py-3 d-flex flex-row align-items-center justify-content-between br-0">
+            <h6 class="m-0 font-weight-bold"><i class="fa fa-users"></i>Uploaded Documents
+              <a href="javascript:;" (click)="getFiles()" class="btn btn-primary btn-sm p-rm10">
+                <i class="fa fa-home"></i>Documents
+              </a>
+            </h6>            
+            <div class="tab-content card shadow">
+              <div >
+              </div>
+            </div>
+          </div>
+          <div class="card-header accordionItemHeading py-3 d-flex flex-row align-items-center justify-content-between br-0" *ngFor="let temp of documentArray">
+            <h6 class="m-0 font-weight-bold"><i class="fa fa-calendar"></i><a href="{{temp.fileAdr}}" download>{{temp.filename}}</a></h6>
+          </div>
+          <!-- Card Body -->
+          <div class="card-body p-0 accordionItemContent">
+            <table class="table">          
+              <tr>
+                <td align="right" style="padding-right: 0"><span class="online"></span></td>
+                <td>Adam Smith<span class="d-block joined-time"><i class="fa fa-clock-o"></i>15 mins ago</span></td>
+                <td align="right">
+                  <a href="#" class="btn btn-success btn-sm">
+                    <i class="fa fa-video-camera"></i>Call
+                  </a>
+                  <a href="#" class="btn btn-success btn-sm">
+                    <i class="fa fa-comments"></i>Chat
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td align="right" style="padding-right: 0"><span class="online"></span></td>
+                <td>Nethan<span class="d-block joined-time"><i class="fa fa-clock-o"></i>15 mins ago</span></td>
+                <td align="right">
+                  <a class="btn btn-success btn-sm">
+                    <i class="fa fa-video-camera"></i>Call
+                  </a>
+                  <a href="#" class="btn btn-success btn-sm">
+                    <i class="fa fa-comments"></i>Chat
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td align="right" style="padding-right: 0"><span class="online"></span></td>
+                <td>Wes Brown<span class="d-block joined-time"><i class="fa fa-clock-o"></i>15 mins ago</span></td>
+                <td align="right">
+                  <a href="#" class="btn btn-success btn-sm">
+                    <i class="fa fa-video-camera"></i>Call
+                  </a>
+                  <a href="#" class="btn btn-success btn-sm">
+                    <i class="fa fa-comments"></i>Chat
+                  </a>
+                </td>
+              </tr>
+              
+            </table>
+          </div>
+        </div>
+        <!-- Patient Accrodian End -->
+    <!-- Text Accrodian -->
+    <div class="card mb-4 br-0 b-0 accordionItem open">
+      <!-- Card Header - Dropdown -->
+      <div class="card-header accordionItemHeading py-3 d-flex flex-row align-items-center justify-content-between br-0">
+        <h6 class="m-0 font-weight-bold"><i class="fa fa-comments"></i>Send Message</h6>                  
+      </div>
+      <!-- Card Body -->
+      <div class="card-body p-0 accordionItemContent">
+        <div class="chatbox-holder">
+  <div class="chatbox">    
+    <form [formGroup]="ChatForm">
+    <div class="chat-messages">
+      <label *ngIf="showChat" for="selPatient">{{ global.isProvider ? 'Patient' : 'Provider' }}:
+      </label>
+      <select *ngIf="showChat" id="selPatient" formControlName="selUser" (change)="OnChatUserChange()">
+        <option disabled value="null">Select {{ global.isProvider ? 'Patient' : 'Provider' }} </option>
+        <option *ngFor="let user of ChatUserDropDowns"> {{ user.name }} </option>
+      </select>
+      <div *ngIf="hasError('required','selUser') && showChat" style="color: red;display: inline;">
+        {{ global.isProvider ? 'Patient' : 'Provider' }} is required
+      </div>
+
+      <div #scrollBtm class="message-box-holder" *ngFor="let msg of ChatMessages">
+        <div class="message-sender">
+        <b> {{ msg.name }} :-</b> {{ msg.message }}
+        </div>
+        </div>  
+         
+    </div>
+    
+    <div class="chat-input-holder" *ngIf="showChat">
+      <textarea class="chat-input" placeholder="Type your message here.."  formControlName="chatMessage" (keyup)="onChatEnter($event)"></textarea>
+      <div *ngIf="hasError('required','chatMessage')" style="color: red;"> Chat message is required </div>
+      <input type="button" value="Send" class="message-send btn-primary" (click)="SendChatMsg()" />
+    </div>
+    
+  </form>
+  </div>
+</div>
+      </div>
+    </div>
+       <div id="myModalpdf" class="modal fade uploads" role="dialog">
+                <div class="modal-dialog modal-lg">
+    
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Inorder to load PDF -->
+                            <embed src="img/Telemedicine.pdf" target="_blank">
+                            <!-- END -->
+                            
+                        </div>
+    
+                    </div>
+                </div>
+            </div>
+      <!-- End See File On popup click  -->
+      <!-- See File On popup click  -->
+       <div id="myModalimg" class="modal fade uploads" role="dialog">
+                <div class="modal-dialog modal-lg">
+    
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Inorder to load PDF -->
+                            <img src="img/1.jpg" alt="">
+                            <!-- END -->
+                            
+                        </div>
+    
+                    </div>
+                </div>
+            </div>
+              <!-- End See File On popup click  -->
+            
+                <!-- Upload end -->
+                <!-- Visit Summary -->
+                <div *ngIf="(this.global.isProvider)" class="card mb-4 br-0 b-0 accordionItem open">
+                  <div class="card-header accordionItemHeading py-3 d-flex flex-row align-items-center justify-content-between br-0">
+                    <h6 class="m-0 font-weight-bold"><i class="fa fa-list"></i>After visit summary</h6>                  
+                  </div>
+                  <!-- Card Body -->
+                  <div class="after-visit-summary card-body p-0 accordionItemContent">
+                        <form action="">
+                            <div class="form-group row"><label for="" class="col-md-12 control-label">What we did today?</label></div>
+                            <div class="form-group row">
+                                <label for="" class="col-md-12 control-label">
+                                    <div class="custom-control custom-checkbox small d-inline">
+                                    <input type="checkbox" class="custom-control-input" id="customChecklo" [(ngModel)]="global.patientObj.labOrdersSent" name="labOrdersSent">
+                                       <label class="custom-control-label" for="customChecklo"></label>
+                                  </div>
+                                    &nbsp;Lab Orders Sent
+                                </label>
+                            </div>
+                            <div class="form-group row">
+                                <label for="" class="col-md-12 control-label">
+                                    <div class="custom-control custom-checkbox small d-inline">
+                                    <input type="checkbox" class="custom-control-input" id="customChecknp" [(ngModel)]="global.patientObj.newPrescriptionsSentToYourPharmacy" name="newPrescriptionsSentToYourPharmacy">
+                                       <label class="custom-control-label" for="customChecknp"></label>
+                                  </div>
+                                    &nbsp;New prescriptions sent to your pharmacy
+                                </label>
+                              </div>
+                            <div class="form-group row">
+                                <label for="" class="col-md-12 control-label">
+                                    <div class="custom-control custom-checkbox small d-inline">
+                                    <input type="checkbox" class="custom-control-input" id="customChecknm" [(ngModel)]="global.patientObj.newPrescriptionsMailedToYou" name="newPrescriptionsMailedToYou">
+                                       <label class="custom-control-label" for="customChecknm"></label>
+                                  </div>
+                                    &nbsp;New prescriptions mailed to you
+                                </label>
+                            </div>
+                            <div class="form-group row"><label for="" class="col-md-12 control-label">Advice</label>
+                                <textarea name="Advice" id="" cols="30" rows="10" class="form-control" style="height: 100px !important;" [(ngModel)]="global.patientObj.medication"></textarea>
+                            </div>
+                            <div class="form-group row"><label for="" class="col-md-4 control-label" style="position: relative;top: 5px;">Follow Up in</label>
+                            <div class="col-md-3 p-0" >
+                                <input type="text" class="form-control" name="followUpNumber" [(ngModel)]="global.patientObj.followUpNumber" >
+                            </div>
+                            <div class="col-md-4" >
+                                <select class="form-control" name="followUpMeasure"  [(ngModel)]="global.patientObj.followUpMeasure">
+                                    <option value="Weeks" >Weeks</option>
+                                    <option value="Days">Days</option>
+                                    <option value="Months">Months</option>
+                                </select>
+                            </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-md-12 p-0">
+                                    <input value="Complete visit" *ngIf="(this.global.isProvider)" type="button" name="" class="btn btn-lg btn-primary btn-block" style="font-size: 14px;"  href="javascript:;" (click)="PatientAttended(global.patientObj)" routerLink='/Home' [state]="this.global.patientObj">
+                                </div>
+                            </div>
+                            
+                        </form>
+                  </div>      
+            </div>
+                <!-- Visit summary end -->
+              </div>
+    
+            </div>
+    <script src="js/vendor.bundle.base.js"></script>
+    
+       <script src="js/vendor.bundle.addons.js"></script> 
+    <script>
+        var accItem = document.getElementsByClassName('accordionItem');
+        var accHD = document.getElementsByClassName('accordionItemHeading');
+        for (i = 0; i < accHD.length; i++) {
+            accHD[i].addEventListener('click', toggleItem, false);
+        }
+        function toggleItem() {
+            var itemClass = this.parentNode.className;
+            for (i = 0; i < accItem.length; i++) {
+                accItem[i].className = 'accordionItem close';
+            }
+            if (itemClass == 'accordionItem close') {
+                this.parentNode.className = 'accordionItem open';
+            }
+        }
+    
+    </script>
+    <script type="text/javascript">
+      var drop = $("input");
+    drop.on('dragenter', function (e) {
+      $(".drop").css({
+        "border": "2px dashed #09f",
+        "background": "#f4f1f1"
+      });
+      $(".cont").css({
+        "color": "#09f"
+      });
+    }).on('dragleave dragend mouseout drop', function (e) {
+      $(".drop").css({
+        "border": "3px dashed #DADFE3",
+        "background": "#f4f1f1 "
+      });
+      $(".cont").css({
+        "color": "#555"
+      });
+    });
+    
+    
+    
+    function handleFileSelect(evt) {
+      var files = evt.target.files; // FileList object
+    
+      // Loop through the FileList and render image files as thumbnails.
+      for (var i = 0, f; f = files[i]; i++) {
+    
+        // Only process image files.
+        if (!f.type.match('image.*')) {
+          continue;
+        }
+    
+        var reader = new FileReader();
+    
+        // Closure to capture the file information.
+        reader.onload = (function(theFile) {
+          return function(e) {
+            // Render thumbnail.
+            var span = document.createElement('span');
+            span.innerHTML = ['<img class="thumb" src="', e.target.result,
+                              '" title="', escape(theFile.name), '"/>'].join('');
+            document.getElementById('list').insertBefore(span, null);
+          };
+        })(f);
+    
+        // Read in the image file as a data URL.
+        reader.readAsDataURL(f);
+      }
+    }
+    
+    $('#files').change(handleFileSelect);
+    </script>
+    
+</body>

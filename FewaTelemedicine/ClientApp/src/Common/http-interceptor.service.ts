@@ -1,12 +1,12 @@
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { GlobalModel } from './global.model';
+import { Global } from './global.model';
 
 @Injectable()
 export class HttpInterceptorService implements HttpInterceptor {
 
-    constructor(private global: GlobalModel) {
+    constructor(private global: Global) {
 
     }
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {

@@ -12,11 +12,11 @@
     <div class="col-md-3 col-sm-12 col-xs-12 p-0 right-panel">
       <!-- My doctor Info -->
       <div class="my-doc">
-        <img *ngIf="retrievedImage" class="img-profile rounded-circle" [src]="Transform()" height="50%" width="50%">
-        <img *ngIf="!retrievedImage"  src="img/doc.svg" alt="" class="doc-img-p">
-        <h5 class="mt-4">{{doctorObj.NameTitle}} &nbsp;&nbsp;{{doctorObj.DoctorName}} </h5>
-        <span class="d-block mt-2"><i class="fa fa-user-md"></i>{{doctorObj.Designation}} </span>
-        <p class=""><i class="fa fa-hospital-o"></i>{{doctorObj.Clinic}} </p>
+        <img *ngIf="retrievedImage" class="img-profile rounded-circle" [src]="Transform()"   width="25%;" >
+        <img *ngIf="!retrievedImage"  src="/img/doc.svg" alt="" class="doc-img-p">
+        <h5 class="mt-4">{{providerObj.nameTitle}} &nbsp;&nbsp;{{providerObj.name}} </h5>
+        <span class="d-block mt-2"><i class="fa fa-user-md"></i>{{providerObj.designation}} </span>
+        <p class=""><i class="fa fa-hospital-o"></i>{{providerObj.clinic}} </p>
       </div>
       <!-- End My doc info -->
       <!-- Text Accrodian -->
@@ -32,20 +32,20 @@
             <div class="chatbox">
               <form [formGroup]="ChatForm">
                 <div class="chat-messages">
-                  <label  for="selPatient" style="float: left;">Doctor: </label>
+                  <label  for="selPatient" style="float: left;">Provider: </label>
 
                   <select  id="selPatient" style="float: left;" formControlName="selUser"
                     (change)="OnChatUserChange()">
-                    <option disabled value="null">Select Doctor</option>
-                    <option *ngFor="let dr of doctors"> {{ dr.UserName }} </option>
+                    <option disabled value="null">Select Provider</option>
+                    <option *ngFor="let provider of providers"> {{ provider.userName }} </option>
                   </select>
                   <div *ngIf="hasError('required','selUser') && showChat" style="color: red;display: inline;">
-                    {{ global.IsDoctor ? 'Patient' : 'Doctor' }} is required
+                    {{ global.isProvider ? 'Patient' : 'Provider' }} is required
                   </div>
 
                   <div #scrollBtm class="message-box-holder" *ngFor="let msg of ChatMessages">
                     <div class="message-sender">
-                    <b> {{ msg.Name }} :-</b> {{ msg.Message }}
+                    <b> {{ msg.name }} :-</b> {{ msg.message }}
                     </div>
                     </div>   
                   </div>  
@@ -62,18 +62,7 @@
         </div>
       </div>
       <!-- Texts Accrodian End -->
-      <!-- upload  -->
-      <!-- <div class="drop droped-files" style="height: auto;">
-        <div class="cont">
-          <div class="uploaded-files">
-            <img src="img/1.jpg" alt="" class="up-img" data-toggle="modal" data-target="#myModalpdf">
-            <img src="img/7.jpg" alt="" class="up-img" data-toggle="modal" data-target="#myModalimg">
-            <img src="img/8.jpg" alt="" class="up-img" data-toggle="modal" data-target="#myModalpdf">
-            <img src="img/1.jpg" alt="" class="up-img" data-toggle="modal" data-target="#myModalimg">
-            <img src="img/7.jpg" alt="" class="up-img" data-toggle="modal" data-target="#myModalpdf">
-          </div>
-        </div>
-      </div> -->
+     
       <!-- See File On popup click  -->
       <div id="myModalpdf" class="modal fade uploads" role="dialog">
         <div class="modal-dialog modal-lg">
@@ -85,7 +74,7 @@
             </div>
             <div class="modal-body">
               <!-- Inorder to load PDF -->
-              <embed src="img/Telemedicine.pdf" target="_blank">
+              <embed src="/img/Telemedicine.pdf" target="_blank">
               <!-- END -->
 
             </div>
@@ -105,7 +94,7 @@
             </div>
             <div class="modal-body">
               <!-- Inorder to load PDF -->
-              <img src="img/1.jpg" alt="">
+              <img src="/img/1.jpg" alt="">
               <!-- END -->
 
             </div>
@@ -116,16 +105,6 @@
       <!-- End See File On popup click  -->
       <div class="drop">
         <div class="cont">
-          <!-- <i class="fa fa-cloud-upload"></i> -->
-          <!-- <button type="button" class="btn btn-primary btn-user btn-block" [routerLink]='["/Upload"]'>Upload File</button> -->
-        <!-- <li [routerLinkActive]='["link-active"]'>
-          <a [routerLink]='["/Upload"]' [state]="this.global.patientObj" (click)='collapse()'>
-           <span class='glyphicon glyphicon-upload'></span> Upload
-        </a>  -->
-      <!-- </li> -->
-          <!-- <div class="tit">
-            Drag & Drop
-          </div> -->
           <div class="desc">
             your files to Assets, or
           </div>
@@ -133,7 +112,6 @@
             click here to browse
           </div>
         </div>
-        <!-- <output id="list"></output><input id="files" multiple="true" name="files[]" type="file" /> -->
       </div>
       <!-- Upload end -->
     </div>

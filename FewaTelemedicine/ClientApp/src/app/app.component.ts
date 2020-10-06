@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { Global } from 'src/Common/global.model';
 
 @Component({
   selector: 'app-root',
@@ -8,11 +10,10 @@ import { Router } from '@angular/router';
 })
 export class AppComponent implements OnInit {
 
-  constructor(private router: Router) {
+  constructor() {
   }
 
   ngOnInit() {
-   // this.router.navigate(['Login']);
    window.addEventListener("beforeunload", function (e) {
     var confirmationMessage = "\o/";
     console.log("cond");
@@ -21,4 +22,5 @@ export class AppComponent implements OnInit {
 });
   
   }
+   
 }

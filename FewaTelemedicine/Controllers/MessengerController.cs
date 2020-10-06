@@ -50,21 +50,20 @@ namespace FewaTelemedicine.Controllers
 
         [Route("SendEmail")]
         [HttpPost]
-        public async Task<bool> SendEmail([FromBody] DoctorsModel email)
-        {
-            string meetingId = email.Id.ToString() + DateTime.Now.ToString("MMddHHmmss");
-            email.MeetingId = meetingId;
+        public async Task<bool> SendEmail([FromBody] Practice email)
+        { 
+           
             try
             {
                 if (email is null)
                 {
                     return false;
                 }
-                if (string.IsNullOrEmpty(email.Subject) || string.IsNullOrEmpty(email.Message) || string.IsNullOrEmpty(email.Email))
+                if (string.IsNullOrEmpty(email.emailSubject) || string.IsNullOrEmpty(email.emailMessage) || string.IsNullOrEmpty(email.email))
                 {
                     return false;
                 }
-                return await _messengerService.SendEmailAsync(email.Subject, email.Message, email.Email);
+                return await _messengerService.SendEmailAsync(email.emailSubject, email.emailMessage, email.email);
             }
             catch (Exception ex)
             {

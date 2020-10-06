@@ -1,5 +1,8 @@
 ﻿@{
     Layout = null;
+    string defaultProvider = "provider";
+    string defaultPractice = "practice";
+    // we will write some code to parse the URL
 }
 
 <!doctype html>
@@ -7,7 +10,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <base href="/">
+    <base href="./@defaultPractice/@defaultProvider/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <meta name="description" content="">
@@ -19,18 +22,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Muli:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <!-- Custom styles for this template-->
-    <link href="./assets/css/style.css" rel="stylesheet">
-    <link href="./assets/css/bootstrap.css" rel="stylesheet">
+    <link href="/ClientApp/assets/css/style.css" rel="stylesheet">
+    <link href="/ClientApp/assets/css/bootstrap.css" rel="stylesheet">
 </head>
-<body>
-
+<body class="bg-gradient-primary">
     <app-root></app-root>
-    <script src="~/ClientApp/runtime.js" type="module"></script>
-    <script src="~/ClientApp/polyfills.js" type="module"></script>
-    <script src="~/ClientApp/styles.js" type="module"></script>
-    <script src="~/ClientApp/scripts.js" defer></script>
-    <script src="~/ClientApp/vendor.js" type="module"></script>
-    <script src="~/ClientApp/main.js" type="module"></script>
+    <script src="/ClientApp/runtime.js" type="module"></script>
+    <script src="/ClientApp/polyfills.js" type="module"></script>
+    <script src="/ClientApp/styles.js" type="module"></script>
+    <script src="/ClientApp/scripts.js" defer></script>
+    <script src="/ClientApp/vendor.js" type="module"></script>
+    <script src="/ClientApp/main.js" type="module"></script>
 </body>
 </html>
-

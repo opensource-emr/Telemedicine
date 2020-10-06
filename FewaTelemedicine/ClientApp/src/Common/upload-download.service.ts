@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpRequest, HttpEvent, HttpResponse } from '@angular/common/http';
 import { of, Observable,Subject } from 'rxjs';
-import { GlobalModel } from './global.model';
+import { Global } from './global.model';
 
 @Injectable()
 export class UploadDownloadService {
@@ -11,11 +11,11 @@ export class UploadDownloadService {
   public apiFileUrl: string;
   public FileName: string;
   
-  constructor(private httpClient: HttpClient,private global:GlobalModel) {
+  constructor(private httpClient: HttpClient,private global:Global) {
     //this.baseApiUrl=window.location.origin+window.location.pathname+this.global.ApiUrl;
-    this.global.ServerUrl=window.location.origin;
-   this.DownloadUrl = this.global.ServerUrl + '/upload/';
-   this.apiUploadUrl = this.global.ServerUrl+"/"+this.global.ApiUrl + 'upload';
+    this.global.serverUrl=window.location.origin;
+   this.DownloadUrl = this.global.serverUrl + '/upload/';
+   this.apiUploadUrl = this.global.serverUrl+"/"+this.global.apiUrl + 'upload';
   // this.apiFileUrl = this.baseApiUrl +this.global.UploadUrl+ 'files';
   this.apiFileUrl=this.apiUploadUrl+'/files';
   }
