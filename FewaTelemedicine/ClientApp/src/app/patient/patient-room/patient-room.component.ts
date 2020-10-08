@@ -27,6 +27,7 @@ export class PatientRoomComponent {
   api:any;
   public state: Observable<object>;
   providerObj:Provider=new Provider();
+  proObj:Provider=new Provider();
 
   @ViewChild('scrollBtm', { static: false }) private scrollBottom: ElementRef;
   constructor(private notificationService: NotificationService,
@@ -64,9 +65,16 @@ export class PatientRoomComponent {
       this.notificationService.LoadActiveDoctors();
     });
     this.notificationService.EventGetAllProviders.subscribe(_providers => {
-     this.providers= _providers;
-      // this.doctorObj=_doctors[0];
-      // this.global.providerObj=_providers[0];
+     for(let p of _providers)
+     {
+       if(p.url==this.global.currentProvider&&p.practice==this.global.currentPractice)
+      {
+       this.proObj=p;
+       this.ChatForm.controls['selUser'].setValue( this.proObj.userName);
+      }
+      
+     }
+      
       if (this.global.providerObj.image) {
         this.retrievedImage = 'data:image/png;base64,' + this.providerObj.image;
       }

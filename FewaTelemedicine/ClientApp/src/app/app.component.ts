@@ -10,7 +10,10 @@ import { Global } from 'src/Common/global.model';
 })
 export class AppComponent implements OnInit {
 
-  constructor() {
+  constructor(private global:Global) {
+    var p=location.pathname.split('/');
+    this.global.currentPractice=p[1];
+    this.global.currentProvider=p[2];
   }
 
   ngOnInit() {

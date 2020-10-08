@@ -94,10 +94,11 @@
     <div class="chat-messages">
       <label *ngIf="showChat" for="selPatient">{{ global.isProvider ? 'Patient' : 'Provider' }}:
       </label>
-      <select *ngIf="showChat" id="selPatient" formControlName="selUser" (change)="OnChatUserChange()">
+      <label>{{patientObj.name}}</label>
+      <!-- <select *ngIf="showChat" id="selPatient" formControlName="selUser" (change)="OnChatUserChange()">
         <option disabled value="null">Select {{ global.isProvider ? 'Patient' : 'Provider' }} </option>
         <option *ngFor="let user of ChatUserDropDowns"> {{ user.name }} </option>
-      </select>
+      </select> -->
       <div *ngIf="hasError('required','selUser') && showChat" style="color: red;display: inline;">
         {{ global.isProvider ? 'Patient' : 'Provider' }} is required
       </div>
@@ -110,10 +111,11 @@
          
     </div>
     
-    <div class="chat-input-holder" *ngIf="showChat">
+    <div class="chat-input-holder" *ngIf="showChat" style="padding-bottom: 15px;">
       <textarea class="chat-input" placeholder="Type your message here.."  formControlName="chatMessage" (keyup)="onChatEnter($event)"></textarea>
-      <div *ngIf="hasError('required','chatMessage')" style="color: red;"> Chat message is required </div>
+     
       <input type="button" value="Send" class="message-send btn-primary" (click)="SendChatMsg()" />
+      <small *ngIf="hasError('required','chatMessage')" style="color: red;position:absolute;bottom: 0px;left:25px;"> Chat message is required </small>
     </div>
     
   </form>

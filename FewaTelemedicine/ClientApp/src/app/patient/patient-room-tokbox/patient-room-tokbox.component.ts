@@ -24,6 +24,7 @@ export class PatientRoomTokboxComponent {
   domain:string;
   api:any;
   public state: Observable<object>;
+  proObj:Provider=new Provider();
 
   @ViewChild('scrollBtm', { static: false }) private scrollBottom: ElementRef;
   constructor(private notificationService: NotificationService,
@@ -61,16 +62,27 @@ export class PatientRoomTokboxComponent {
       this.notificationService.LoadActiveDoctors();
     });
     this.notificationService.EventGetAllProviders.subscribe(_providers => {
-      this.providers = _providers;
-      if (this.global.providerObj.image) {
-        this.retrievedImage = 'data:image/png;base64,' + this.providerObj.image;
+      for(let p of _providers)
+      {
+        if(p.url==this.global.currentProvider&&p.practice==this.global.currentPractice)
+       {
+        this.proObj=p;
+        this.ChatForm.controls['selUser'].setValue( this.proObj.userName);
+       }
+       
       }
-      // console.log(this.doctors);
-    });
-      this.state = history.state;
-    // gets doctor list
-    // this.notificationService.LoadActiveDoctors();
-  }
+       
+       if (this.global.providerObj.image) {
+         this.retrievedImage = 'data:image/png;base64,' + this.providerObj.image;
+       }
+       // console.log(this.doctors);
+     });
+     if (this.global.providerObj.image) {
+       this.retrievedImage = 'data:image/png;base64,' + this.providerObj.image;
+     }
+     // gets doctor list
+     // this.notificationService.LoadActiveDoctors();
+   }
 
   Transform() {
     return this.sanitizer.bypassSecurityTrustResourceUrl(this.retrievedImage);
