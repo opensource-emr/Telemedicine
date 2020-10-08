@@ -14,6 +14,8 @@ export class Global{
     serverUrl:string;
     config: any = null;
     token: string;
+    currentPractice:string="";
+    currentProvider:string="";
     constructor() {
        
         this.providerObj = new Provider();

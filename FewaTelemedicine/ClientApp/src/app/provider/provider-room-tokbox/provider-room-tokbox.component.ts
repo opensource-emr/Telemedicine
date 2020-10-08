@@ -74,6 +74,7 @@ export class ProviderRoomTokboxComponent {
 
       this.notificationService.EventCallPatient.subscribe(_patient => {
         this.patientObj = _patient;
+        this.ChatForm.controls['selUser'].setValue(this.patientObj.name);
       }
       );
     }

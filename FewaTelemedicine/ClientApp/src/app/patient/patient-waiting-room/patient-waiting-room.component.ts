@@ -67,6 +67,15 @@ export class PatientWaitingRoomComponent implements OnDestroy {
 
     this.notificationService.EventGetAllProviders.subscribe(_providers => {
       this.providers = _providers;
+      for(let p of _providers)
+      {
+        if(p.url==this.global.currentProvider&&p.practice==this.global.currentPractice)
+       {
+        this.providerObj=p;
+        this.ChatForm.controls['selUser'].setValue(this.providerObj.userName);
+       }
+       
+      }
       //this.global.doctorObj=_doctors[0];
     });
 

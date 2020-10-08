@@ -77,11 +77,12 @@ export class NotificationService {
       })
       .catch(err => {
         console.log('Error while establishing connection, retrying...');
-        setTimeout(function () { this.startConnection(); }, 5000000);
+        setTimeout(function () { this.startConnection(); }, 1000);
       });
 
     this._hubConnection.onclose(function (e) {
-      alert('Connection Closed');
+      console.log('Connection Closed unexpectedy, connecting again...');
+      setTimeout(function () { this.startConnection(); }, 1000);
     });
 
   }

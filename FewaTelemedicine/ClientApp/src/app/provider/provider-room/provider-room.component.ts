@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, ElementRef, ViewChild,EventEmitter ,Output, Provider} from "@angular/core";
+import { Component, ChangeDetectorRef, ElementRef, ViewChild,EventEmitter ,Output} from "@angular/core";
 import { Router } from '@angular/router';
 import { NotificationService } from 'src/Common/notification.service';
 import { Global } from 'src/Common/global.model';
@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 import { UploadDownloadService } from 'src/Common/upload-download.service';
 import { ProgressStatus, ProgressStatusEnum } from 'src/models/progress-status.model';
 import 'src/vendor/jitsi/external_api.js';
-import { Patient } from 'src/models/DomainModels';
+import { Patient, Provider } from 'src/models/DomainModels';
 declare var JitsiMeetExternalAPI : any;
 @Component({
     templateUrl:'./provider-room.component.html'
@@ -36,8 +36,9 @@ export class ProviderRoomComponent {
   options: {};
   domain:string;
   api:any;
-  patientObj:Patient=null;
-  providerObj:Provider=null;
+  proObj:Provider=new Provider();
+  patientObj:Patient=new Patient();
+  providerObj:Provider=new Provider();
   @ViewChild('scrollBtm', { static: false }) private scrollBottom: ElementRef;
   
 
@@ -57,24 +58,39 @@ export class ProviderRoomComponent {
         }
         );
 
-      this.notificationService.EventGetAllProviders.subscribe(_providers => {
-        this.ChatUserDropDowns = _providers;
-      });
+      // this.notificationService.EventGetAllProviders.subscribe(_providers => {
+      //   for(let p of _providers)
+      //   {
+      //     if(p.url==this.global.currentProvider&&p.practice==this.global.currentPractice)
+      //    {
+      //     this.proObj=p;
+      //    }
+         
+      //   }
+      // });
 
       // gets doctor list
       this.notificationService.LoadActiveDoctors();
     }
     else {
       this.notificationService.Connect();
-      this.notificationService.EventGetAllPatients
-        .subscribe(_patients => {
-          this.patients = _patients;
-          this.ChatUserDropDowns = _patients;
-          console.log(this.ChatUserDropDowns);
-        });
+      // this.notificationService.EventGetAllPatients
+      //   .subscribe(_patients => {
+         
+      //     for(let p of _patients)
+      //     {
+      //       if(p.url==this.global.currentProvider)
+      //       {
+      //         this.patients=p;
+      //       }
+      //     }
+      //     this.ChatUserDropDowns = _patients;
+      //     console.log(this.ChatUserDropDowns);
+      //   });
 
       this.notificationService.EventCallPatient.subscribe(_patient => {
         this.patientObj = _patient;
+        this.ChatForm.controls['selUser'].setValue(this.patientObj.name);
       }
       );
     }

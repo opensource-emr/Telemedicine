@@ -88,7 +88,8 @@ export class ProviderHomeComponent implements OnInit, AfterViewInit {
     private formBuilder: FormBuilder,
     private activatedRoute: ActivatedRoute,
     private cdr: ChangeDetectorRef,
-    private sanitizer: DomSanitizer) {
+    private sanitizer: DomSanitizer,
+      ) {
 
     this.initForm();
     this.LoadPatientsAttended();
@@ -108,9 +109,16 @@ export class ProviderHomeComponent implements OnInit, AfterViewInit {
     this.notificationService.Connect();
     this.notificationService.EventGetAllPatients
       .subscribe(_patients => {
-        this.patients = _patients;
         // this.patients = _patients;
-        this.ChatUserDropDowns = _patients;
+        for(let p of _patients)
+        {
+          if(p.url==this.global.currentProvider)
+          {
+            this.patients.push(p);
+            this.ChatUserDropDowns.push(p);
+          }
+        }
+       
       });
 
     this.notificationService.EventCallPatient
@@ -402,12 +410,15 @@ export class ProviderHomeComponent implements OnInit, AfterViewInit {
   }
 
   LoadPatientsAttended() {
+    this.CompletedPatients=[];
     this.httpClient.get(this.global.practiceUrl + "GetPatientsAttended")
       .subscribe(res => this.LoadPatientSuccess(res), err => this.Error(err));
 
   }
   LoadPatientSuccess(res) {
+
     this.CompletedPatients = res.filter(t => t.url == this.global.providerObj.url);
+    this.cdr.detectChanges();
     // this.CompletedPatients=res;
   }
 

@@ -14,11 +14,13 @@
           <div class="waiting-info">
             <p class="for-info mb-4"><i class="fa fa-info-circle"></i>Please wait! Your Doctor will join you soon. </p>
             <p class="for-info mb-4"><i class="fa fa-info-circle"></i>Till then you can check your video for smooth communication when you talk with doctor. </p>
-            <p style="text-align: left;" class="for-info mb-4">
-              1) Open Chrome and select the Chrome menu,<br> 2)represented by three vertical dots in the top-right corner.
-              3) Select Settings. ...Scroll down and select Advanced. <br>
-              4) Under the Privacy and security section, select Site settings.<br>
-              5) Select either Camera or Microphone to access either setting.</p>
+            <ol style="text-align: left;" class="for-info mb-4">
+              <li>Open Chrome and select the Chrome menu,</li>
+              <li>Represented by three vertical dots in the top-right corner.</li>
+              <li>Select Settings. ...Scroll down and select Advanced..</li>
+              <li>Under the Privacy and security section, select Site settings.</li> 
+              <li>Select either Camera or Microphone to access either setting.</li>
+            </ol>
           </div>
           <!-- chat modal  -->
           <!-- <div class="modal fade" >
@@ -37,10 +39,11 @@
                   <form [formGroup]="ChatForm">
                   <div class="chat-messages" width="500px" >
                     <label *ngIf="showChat" for="selPatient"  style="float: left;">Provider: </label>
-                    <select  id="selPatient" formControlName="selUser" (change)="OnChatUserChange()"  style="float: left;">
+                    <label style="float: left;">{{providerObj.userName}}</label>
+                    <!-- <select  id="selPatient" formControlName="selUser" (change)="OnChatUserChange()"  style="float: left;">
                       <option disabled value="null">Select Provider</option>
                       <option *ngFor="let pr of providers"> {{ pr.userName }}  </option>
-                    </select>
+                    </select> -->
                     <br><br>
                      <div #scrollBtm class="message-box-holder" *ngFor="let msg of ChatMessages"  >
                      <div class="message-sender" style="float: left;" >
