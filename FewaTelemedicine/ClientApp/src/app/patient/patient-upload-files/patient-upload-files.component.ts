@@ -1,7 +1,7 @@
-import { Component,EventEmitter} from '@angular/core';
-import { HttpClient, HttpEventType} from '@angular/common/http'
+import { Component, EventEmitter, Output } from '@angular/core';
+import { HttpClient, HttpEventType } from '@angular/common/http'
 import { UploadDownloadService } from 'src/Common/upload-download.service';
-import { ProgressStatus} from 'src/models/progress-status.model';
+import { ProgressStatus } from 'src/models/progress-status.model';
 import { Global } from 'src/Common/global.model';
 import { Router } from '@angular/router';
 import { Patient } from 'src/models/DomainModels';
@@ -9,30 +9,30 @@ import { Observable } from 'rxjs';
 
 @Component({
     templateUrl: './patient-upload-files.component.html',
+    selector: "pat-upload-files"
 })
 
 export class PatientUploadFilesComponent {
+    @Output("closeModal")
+    closeModal:EventEmitter<boolean>=new EventEmitter<boolean>();
     public baseApiUrl: string;
     public progress: number;
     public message: string;
     public FileName: string;
     public fileInDownload: string;
+
     public percentage: number;
     public showProgress: boolean;
     public showUploadError: boolean;
     public uploadStatus = new EventEmitter<ProgressStatus>();
     patients: Array<Patient> = new Array<Patient>();
     public docArray: any[] = [];
-    tokbox:string='tokbox';
+    tokbox: string = 'tokbox';
     public state: Observable<object>;
-    constructor(private http: HttpClient, public service: UploadDownloadService,public global:Global,private routing:Router) {
+    constructor(private http: HttpClient, public service: UploadDownloadService, public global: Global, private routing: Router) {
         this.uploadStatus = new EventEmitter<ProgressStatus>();
-        this.routing.navigate([],
-            { queryParams:{Practice:this.global.practiceObj.url},
-              queryParamsHandling:"merge"
-          },
-            );
-            this.state = history.state;
+
+        this.state = history.state;
     }
 
     public uploadFile = (files) => {
@@ -72,15 +72,15 @@ export class PatientUploadFilesComponent {
                 }
             );
     }
-backToCall()
-{
-if(this.global.patientObj.callingPlatform==this.tokbox)
-{ this.routing.navigateByUrl('/PatientRoomTokbox', { state: this.global });
-}
-else{
-this.routing.navigateByUrl('/PatientRoom', { state: this.global });
-}
-    
-}
-    
+    backToCall() {
+        this.closeModal.emit(true);
+        // if (this.global.patientObj.callingPlatform == this.tokbox) {
+        //     this.routing.navigateByUrl('/PatientRoomTokbox', { state: this.global });
+        // }
+        // else {
+        //     this.routing.navigateByUrl('/PatientRoom', { state: this.global });
+        // }
+
+    }
+
 }

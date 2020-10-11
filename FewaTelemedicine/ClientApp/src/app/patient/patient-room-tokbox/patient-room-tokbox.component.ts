@@ -25,6 +25,7 @@ export class PatientRoomTokboxComponent {
   api:any;
   public state: Observable<object>;
   proObj:Provider=new Provider();
+  showUploadModal:boolean=false;
 
   @ViewChild('scrollBtm', { static: false }) private scrollBottom: ElementRef;
   constructor(private notificationService: NotificationService,
@@ -164,5 +165,10 @@ export class PatientRoomTokboxComponent {
       }
       this.AllUserChats[user].push(messageObj);
     } catch (e) { }
+  }
+  
+  openUploadModal()
+  {
+    this.showUploadModal=true;
   }
 }

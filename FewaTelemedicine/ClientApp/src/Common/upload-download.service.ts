@@ -15,7 +15,7 @@ export class UploadDownloadService {
     //this.baseApiUrl=window.location.origin+window.location.pathname+this.global.ApiUrl;
     this.global.serverUrl=window.location.origin;
    this.DownloadUrl = this.global.serverUrl + '/upload/';
-   this.apiUploadUrl = this.global.serverUrl+"/"+this.global.apiUrl + 'upload';
+   this.apiUploadUrl = this.global.serverUrl+this.global.apiUrl + 'upload';
   // this.apiFileUrl = this.baseApiUrl +this.global.UploadUrl+ 'files';
   this.apiFileUrl=this.apiUploadUrl+'/files';
   }
