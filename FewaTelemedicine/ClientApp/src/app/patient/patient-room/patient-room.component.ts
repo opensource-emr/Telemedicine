@@ -12,7 +12,7 @@ import { Observable } from 'rxjs';
 declare var JitsiMeetExternalAPI : any;
 
 @Component({
-  templateUrl: './patient-room.component.html'
+  templateUrl: './patient-room.component.html',
 })
 export class PatientRoomComponent {
   showChat: boolean = false;
@@ -28,6 +28,7 @@ export class PatientRoomComponent {
   public state: Observable<object>;
   providerObj:Provider=new Provider();
   proObj:Provider=new Provider();
+  showUploadModal:boolean=false;
 
   @ViewChild('scrollBtm', { static: false }) private scrollBottom: ElementRef;
   constructor(private notificationService: NotificationService,
@@ -201,5 +202,10 @@ export class PatientRoomComponent {
       }
       this.AllUserChats[user].push(messageObj);
     } catch (e) { }
+  }
+  
+  openUploadModal()
+  {
+    this.showUploadModal=true;
   }
 }

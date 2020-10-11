@@ -369,7 +369,6 @@ export class ProviderHomeComponent implements OnInit, AfterViewInit {
       post<any>(this.global.practiceUrl + "PreviewEmailTemplate", this.practiceObj)
       .subscribe(res => {
         this.practiceObj.emailHtmlBody = res.EmailHTMLBody;
-        // this.PreviewEmailContent = res.PreviewEmailContent;
         this.showPreview = true;
       },
         err => { console.log(err); });
@@ -416,7 +415,6 @@ export class ProviderHomeComponent implements OnInit, AfterViewInit {
 
   }
   LoadPatientSuccess(res) {
-
     this.CompletedPatients = res.filter(t => t.url == this.global.providerObj.url);
     this.cdr.detectChanges();
     // this.CompletedPatients=res;
