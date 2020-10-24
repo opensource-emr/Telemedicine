@@ -57,7 +57,7 @@ export class ProviderRoomTokboxComponent {
         );
 
       this.notificationService.EventGetAllProviders.subscribe(_providers => {
-        this.ChatUserDropDowns = _providers;
+        this.ChatUserDropDowns = _providers.filter(t=>t.practice==this.global.practiceObj.url);;
       });
 
       // gets doctor list
@@ -67,9 +67,9 @@ export class ProviderRoomTokboxComponent {
       this.notificationService.Connect();
       this.notificationService.EventGetAllPatients
         .subscribe(_patients => {
-          this.patients = _patients;
+          this.patients = _patients.filter(t=>t.url==this.global.providerObj.url);;
           this.ChatUserDropDowns = _patients;
-          console.log(this.ChatUserDropDowns);
+          //console.log(this.ChatUserDropDowns);
         });
 
       this.notificationService.EventCallPatient.subscribe(_patient => {

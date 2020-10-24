@@ -1,0 +1,104 @@
+<style>
+    html,
+    body {
+        border: solid black;
+        border-width: thin;
+        overflow: auto;
+        display: block;
+        box-sizing: border-box;
+    }
+
+    #page-top {
+        max-width: 100%;
+        margin: auto;
+        background-color: white !important;
+    }
+
+    #content {
+        max-width: 100%;
+        margin: auto;
+    }
+
+    @media screen and (max-width:300px) {
+        .custom-checkbox {
+            display: none;
+        }
+
+        h4 {
+            font-size: 17px;
+            margin-top: 0% !important;
+        }
+
+        footer {
+            margin-top: 5% !important;
+            margin-bottom: 0% !important;
+        }
+
+        .text-black {
+            font-size: 12px;
+        }
+
+        nav .sidebar-brand .sidebar-brand-text img {
+            max-width: 70% !important;
+        }
+
+        .card-body {
+            margin: none !important;
+            padding-top: 1% !important;
+        }
+
+        input[type="text"] {
+            height: 10%;
+        }
+    }
+</style>
+
+<!-- Main Content -->
+<div id="content">
+    <!-- Topbar -->
+    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow justify-content-center">
+        <!-- Topbar Navbar -->
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
+            <div class="sidebar-brand-text mx-3"><img src="/img/logo.png" alt="logo"></div>
+        </a>
+    </nav>
+    <!-- End of Topbar -->
+
+    <!-- Begin Page Content -->
+    <div class="container-fluid" style="max-width:100%;margin:auto;height:100%;">
+        <div class="row">
+            <div class="col-md-6 col-sm-12 col-xs-12 m-auto text-center">
+                <div class="card">
+                    <div class="card-body pt-5 pb-5">
+                        <form action="" class="user" autocomplete="off">
+                            <div class="row">
+                                <div class="col-sm-12 col-xs-12">
+                                    <input type="text" class="form-control" placeholder="Enter Your Name"
+                                        [(ngModel)]="patientObj.name" name="PatientName" />
+                                </div>
+                            </div>
+                            <div class="custom-control custom-checkbox mt-4 d-xs-none">
+                                <input type="checkbox" class="custom-control-input" id="customCheck" checked />
+                                <label class="custom-control-label font-weight-normal" for="customCheck">By
+                                    clicking you will accept our <a href="">Terms and Conditions</a></label>
+                            </div>
+                            <button type="submit" class="btn btn-primary  btn-sm d-inline  mt-4" href="javascrpt:;"
+                                (click)="LoginPatient()">Check In</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer class="bg-white" style="max-width:100%;height:auto;position: fixed;bottom: 0px;">
+    <div class="container my-auto mx-auto">
+        <div class="copyright text-center">
+            <span class="text-black"><img src="/img/logo-cap.png"
+                    style="float:none;margin:0 auto;height:auto;max-width:30%;"
+                    class="img-fluid powered-footer-logo d-sm-block d-xs-block">
+                <br>Powered by &copy;
+                Danphe Telehealth 2020 </span>
+        </div>
+    </div>
+</footer>

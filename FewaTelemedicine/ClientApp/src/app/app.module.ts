@@ -1,5 +1,5 @@
-import { BrowserModule} from '@angular/platform-browser';
-import { NgModule, APP_INITIALIZER,Inject } from '@angular/core';
+import { BrowserModule, Title } from '@angular/platform-browser';
+import { NgModule, APP_INITIALIZER, Inject } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -10,10 +10,10 @@ import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common
 import { ConfigService } from 'src/Common/config.service';
 import { Global } from 'src/Common/global.model';
 import { HttpInterceptorService } from 'src/Common/http-interceptor.service';
-import {ProviderHomeComponent } from './provider/provider-home/provider-home.component';
+import { ProviderHomeComponent } from './provider/provider-home/provider-home.component';
 import { ForgotPasswordComponent } from './security/forgot-password/forgot-password.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {ProviderRoomComponent } from './provider/provider-room/provider-room.component';
+import { ProviderRoomComponent } from './provider/provider-room/provider-room.component';
 import { PatientRoomComponent } from './patient/patient-room/patient-room.component';
 import { PatientRegistrationComponent } from './patient/patient-registation/patient-registration.component';
 import { YesNoPipe } from 'src/Common/yes-no.pipe';
@@ -23,10 +23,15 @@ import { PatientWaitingRoomComponent } from './patient/patient-waiting-room/pati
 import { PatientUploadFilesComponent } from './patient/patient-upload-files/patient-upload-files.component';
 import { UploadDownloadService } from 'src/Common/upload-download.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {NgxPrintModule} from 'ngx-print';
+import { NgxPrintModule } from 'ngx-print';
 import { CKEditorModule } from 'ckeditor4-angular';
 import { ProviderRoomTokboxComponent } from './provider/provider-room-tokbox/provider-room-tokbox.component';
 import { PatientRoomTokboxComponent } from './patient/patient-room-tokbox/patient-room-tokbox.component';
+import { PatientRegistrationMobileComponent } from './patient/patient-registation/patient-registration-mobile.component';
+import { PatientWaitingRoomMobileComponent } from './patient/patient-waiting-room/patient-waiting-room-mobile.component';
+import { PatientRoomMobileComponent } from './patient/patient-room/patient-room-mobile.component';
+import { PatientReportSummaryMobileComponent } from './patient/patient-report-summary/patient-report-summary-mobile.component';
+import { PatientRoomTokboxMobileComponent } from './patient/patient-room-tokbox/patient-room-tokbox-mobile.component';
 
 // gets the path of the currently type URL
 // var p=window.location.hash.split('/',3);
@@ -49,13 +54,18 @@ const initializerConfigFn = (config: ConfigService) => {
     ProviderHomeComponent,
     ProviderRoomComponent,
     PatientRegistrationComponent,
+    PatientRegistrationMobileComponent,
     PatientRoomComponent,
+    PatientRoomMobileComponent,
     PatientReportSummaryComponent,
+    PatientReportSummaryMobileComponent,
     PatientWaitingRoomComponent,
+    PatientWaitingRoomMobileComponent,
     PatientUploadFilesComponent,
     ProviderRoomTokboxComponent,
     PatientRoomTokboxComponent,
-    YesNoPipe ,
+    PatientRoomTokboxMobileComponent,
+    YesNoPipe,
     SafePipe
   ],
   imports: [
@@ -70,6 +80,7 @@ const initializerConfigFn = (config: ConfigService) => {
     CKEditorModule
   ],
   providers: [
+    Title,
     UploadDownloadService,
     {
       provide: APP_BASE_HREF,
@@ -85,9 +96,7 @@ const initializerConfigFn = (config: ConfigService) => {
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true }],
   bootstrap: [AppComponent]
 })
-export class AppModule 
-{ 
-  
+export class AppModule {
 }
 
 

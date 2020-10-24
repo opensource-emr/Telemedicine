@@ -3,7 +3,7 @@ import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
 import { Global } from './global.model';
 import { Patient } from 'src/models/DomainModels';
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class NotificationService {
   EventConnectionEstablished = new EventEmitter<Boolean>();
@@ -33,7 +33,7 @@ export class NotificationService {
   }
 
   public PatientAttended(attendPatient: Patient) {
-    console.log(attendPatient);
+    //console.log(attendPatient);
     this._hubConnection.invoke('PatientAttended', attendPatient)
       .catch(function (err) {
         console.log(err);
@@ -63,28 +63,30 @@ export class NotificationService {
       .withUrl(window.location.origin + '/NotificationHub?token=' + this.global.token)
       .build();
     this._hubConnection.serverTimeoutInMilliseconds = 500000; // 100 second
-
   }
 
   private startConnection(): void {
-
     this._hubConnection
       .start()
       .then(() => {
         this.connectionIsEstablished = true;
-        console.log('Hub connection started');
+        console.info('Hub connection started');
         this.EventConnectionEstablished.emit(true);
       })
       .catch(err => {
-        console.log('Error while establishing connection, retrying...');
-        setTimeout(function () { this.startConnection(); }, 1000);
+        console.error('Error while establishing connection, retrying...');
+        setTimeout(() => {
+          this.Connect();
+        }, 1000);
       });
 
-    this._hubConnection.onclose(function (e) {
-      console.log('Connection Closed unexpectedy, connecting again...');
-      setTimeout(function () { this.startConnection(); }, 1000);
+    this._hubConnection.onclose((e) => {
+      console.error('Connection Closed unexpectedy, connecting again...');
+      //alert("Connection lost!")
+      setTimeout(() => {
+        this.Connect();
+      }, 1000);
     });
-
   }
 
   private registerOnServerEvents(): void {
@@ -117,6 +119,5 @@ export class NotificationService {
       const jsonData: any = JSON.parse(data);
       this.EventGetAllProviders.emit(jsonData);
     });
-
   }
 }

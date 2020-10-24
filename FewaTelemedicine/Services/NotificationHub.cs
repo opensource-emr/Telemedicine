@@ -231,9 +231,16 @@ namespace FewaTelemedicine.Services
 
         public async Task GetActiveProviders()
         {
-            var activeDr = providers.Where(a => a.signalRConnectionId != null).ToList();
-            var jsonStr = JsonConvert.SerializeObject(activeDr);
-            await this.Clients.Client(GetPatientbyName(Context.User.Identity.Name).signalRConnectionId).GetAllProviders(jsonStr);
+            var activeDr = providers?.Where(a => a.signalRConnectionId != null).ToList();
+            if (activeDr != null)
+            {
+                var jsonStr = JsonConvert.SerializeObject(activeDr);
+                var patConId = GetPatientbyName(Context.User.Identity.Name)?.signalRConnectionId;
+                if (!string.IsNullOrEmpty(patConId))
+                {
+                    await this.Clients.Client(patConId).GetAllProviders(jsonStr);
+                }
+            }
         }
 
         public async Task PatientCall(Patient obj)

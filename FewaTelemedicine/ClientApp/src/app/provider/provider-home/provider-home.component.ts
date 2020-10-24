@@ -88,8 +88,7 @@ export class ProviderHomeComponent implements OnInit, AfterViewInit {
     private formBuilder: FormBuilder,
     private activatedRoute: ActivatedRoute,
     private cdr: ChangeDetectorRef,
-    private sanitizer: DomSanitizer,
-      ) {
+    private sanitizer: DomSanitizer) {
 
     this.initForm();
     this.LoadPatientsAttended();
@@ -109,16 +108,9 @@ export class ProviderHomeComponent implements OnInit, AfterViewInit {
     this.notificationService.Connect();
     this.notificationService.EventGetAllPatients
       .subscribe(_patients => {
+        this.patients = _patients.filter(t => t.url == this.global.currentProvider);
         // this.patients = _patients;
-        for(let p of _patients)
-        {
-          if(p.url==this.global.currentProvider)
-          {
-            this.patients.push(p);
-            this.ChatUserDropDowns.push(p);
-          }
-        }
-       
+        this.ChatUserDropDowns = _patients;
       });
 
     this.notificationService.EventCallPatient
@@ -169,13 +161,15 @@ export class ProviderHomeComponent implements OnInit, AfterViewInit {
 
   }
 
-  ngOnDestroy() {
-    const mediaStream = this.Video?.srcObject;
-    if (mediaStream == null) {
-      return;
-    }
-    (<MediaStream>mediaStream).getTracks().forEach(stream => stream.stop());
-  }
+   ngOnDestroy() 
+   { 
+     const mediaStream = this.Video.srcObject;
+     if(mediaStream==null)
+     {
+       return;
+     }
+     (<MediaStream>mediaStream).getTracks().forEach( stream => stream.stop());
+   }
   Transform() {
     return this.sanitizer.bypassSecurityTrustResourceUrl(this.retrievedImage);
   }
@@ -364,7 +358,6 @@ export class ProviderHomeComponent implements OnInit, AfterViewInit {
     return this.sanitizer.bypassSecurityTrustHtml(this.practiceObj.emailHtmlBody);
   }
   PreviewEmailTemplate() {
-
     this.httpClient.
       post<any>(this.global.practiceUrl + "PreviewEmailTemplate", this.practiceObj)
       .subscribe(res => {
@@ -393,7 +386,7 @@ export class ProviderHomeComponent implements OnInit, AfterViewInit {
     if (this.patientObj.status == 1) {
       this.patientObj = new Patient;
     }
-    console.log(this.providerObj);
+    //console.log(this.providerObj);
     this.showPatDetail = true;
     let dateTime = new Date();
     this.patientObj.appointmentDate = dateTime;
@@ -405,15 +398,14 @@ export class ProviderHomeComponent implements OnInit, AfterViewInit {
     }
     else
       this.routing.navigateByUrl('/ProviderRoom', { state: this.global });
-
   }
 
   LoadPatientsAttended() {
-    this.CompletedPatients=[];
+    this.CompletedPatients = [];
     this.httpClient.get(this.global.practiceUrl + "GetPatientsAttended")
       .subscribe(res => this.LoadPatientSuccess(res), err => this.Error(err));
-
   }
+
   LoadPatientSuccess(res) {
     this.CompletedPatients = res.filter(t => t.url == this.global.providerObj.url);
     this.cdr.detectChanges();
@@ -522,5 +514,4 @@ export class ProviderHomeComponent implements OnInit, AfterViewInit {
       this.AllUserChats[user].push(messageObj);
     } catch (e) { }
   }
-
 }

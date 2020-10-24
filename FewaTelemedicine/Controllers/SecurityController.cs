@@ -56,7 +56,7 @@ namespace FewaTelemedicine.Controllers
         {
             try
             {
-                
+
                 if (provider == null)
                 {
                     return BadRequest();
@@ -82,7 +82,7 @@ namespace FewaTelemedicine.Controllers
                     provider.providerId = pro.providerId;
                     provider.nameTitle = pro.nameTitle;
                     provider.url = pro.url;
-                    provider.practice=pro.practice;
+                    provider.practice = pro.practice;
                     provider.name = pro.name;
                     provider.roomName = pro.roomName;
                     HttpContext.Session.SetString("name", provider.userName);
@@ -91,7 +91,7 @@ namespace FewaTelemedicine.Controllers
                     AddProviderCabin(pro.userName);
                     var data = new
                     {
-                        User = provider,                  
+                        User = provider,
                         Token = token
                     };
                     return Ok(data);

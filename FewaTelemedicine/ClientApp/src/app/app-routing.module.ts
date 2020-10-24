@@ -12,8 +12,6 @@ import { PatientUploadFilesComponent } from './patient/patient-upload-files/pati
 import { ProviderRoomTokboxComponent } from './provider/provider-room-tokbox/provider-room-tokbox.component';
 import { PatientRoomTokboxComponent } from './patient/patient-room-tokbox/patient-room-tokbox.component';
 
-
-//console.log(window.location);
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'Login' },
   { path: 'Login', component: LoginComponent },

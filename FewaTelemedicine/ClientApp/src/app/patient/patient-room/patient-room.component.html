@@ -30,8 +30,8 @@
   }
 </style>
 
-<body id="page-top">
-  <div class="row m-w100">
+<body *ngIf="!isMobile" id="page-top">
+  <div class="row m-w100" style="background-color: white;">
     <div class="col-md-9  col-sm-12 col-xs-12 p-0">
       <div class="video-frame" style="padding:3%;">
         <div id="meet">
@@ -43,16 +43,15 @@
     </div>
     <div class="col-md-3 col-sm-12 col-xs-12 p-0 right-panel">
       <!-- My doctor Info -->
-      <div class="my-doc">
-        <img *ngIf="retrievedImage" class="img-profile rounded-circle" [src]="Transform()" width="25%;">
-        <img *ngIf="!retrievedImage" src="/img/doc.svg" alt="" class="doc-img-p">
+      <div class="my-doc" *ngIf="providerObj">
+        <img *ngIf="retrievedImage" class="img-profile rounded-circle" [src]="Transform()"   width="25%;" >
+        <img *ngIf="!retrievedImage"  src="/img/doc.svg" alt="" class="doc-img-p">
         <h5 class="mt-4">{{providerObj.nameTitle}} &nbsp;&nbsp;{{providerObj.name}} </h5>
         <span class="d-block mt-2"><i class="fa fa-user-md"></i>{{providerObj.designation}} </span>
         <p class=""><i class="fa fa-hospital-o"></i>{{providerObj.clinic}} </p>
       </div>
       <!-- End My doc info -->
       <!-- Text Accrodian -->
-
       <div class="card mb-4 br-0 b-0 accordionItem open">
         <!-- Card Header - Dropdown -->
         <div
@@ -65,23 +64,23 @@
             <div class="chatbox">
               <form [formGroup]="ChatForm">
                 <div class="chat-messages">
-                  <label for="selPatient">Provider:
+                  <label for="selPatient">
+                    Provider:
                   </label>
-                  <label>{{proObj.userName}}</label>
-                  <!-- <select  id="selPatient" formControlName="selUser" (change)="OnChatUserChange()">
-          <option disabled value="null">Select Provider</option>
-          <option *ngFor="let user of providers"> {{ user.userName }} </option>
-        </select> -->
-                  <div *ngIf="hasError('required','selUser') && showChat" style="color: red;display: inline;">
-                    {{ global.isProvider ? 'Patient' : 'Provider' }} is required
-                  </div>
+                  <label *ngIf="providerObj">{{providerObj.userName}}</label>
+                  <!--<select id="selPatient" formControlName="selUser" (change)="OnChatUserChange()">
+                  <option disabled value="null">Select Provider</option>
+                  <option *ngFor="let user of providers"> {{ user.userName }} </option>
+                </select>
+                <div *ngIf="hasError('required','selUser') && showChat" style="color: red;display: inline;">
+                  {{ global.isProvider ? 'Patient' : 'Provider' }} is required
+                </div>-->
 
                   <div #scrollBtm class="message-box-holder" *ngFor="let msg of ChatMessages">
                     <div class="message-sender">
                       <b> {{ msg.name }} :-</b> {{ msg.message }}
                     </div>
                   </div>
-
                 </div>
 
                 <div class="chat-input-holder" style="padding-bottom: 15px;">
@@ -98,7 +97,6 @@
         </div>
       </div>
       <!-- Texts Accrodian End -->
-
       <!-- See File On popup click  -->
       <div id="myModalpdf" class="modal fade uploads" role="dialog">
         <div class="modal-dialog modal-lg">
@@ -226,6 +224,9 @@
     $('#files').change(handleFileSelect);
   </script>
 </body>
+
+<pat-room *ngIf="isMobile"></pat-room>
+
 <div class="modal-pat" *ngIf="showUploadModal">
   <pat-upload-files (closeModal)="showUploadModal=false"></pat-upload-files>
 </div>

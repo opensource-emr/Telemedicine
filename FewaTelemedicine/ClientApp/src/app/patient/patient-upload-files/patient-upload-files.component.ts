@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { HttpClient, HttpEventType } from '@angular/common/http'
+import { Component, EventEmitter, Output} from '@angular/core';
+import { HttpClient, HttpEventType } from '@angular/common/http';
 import { UploadDownloadService } from 'src/Common/upload-download.service';
 import { ProgressStatus } from 'src/models/progress-status.model';
 import { Global } from 'src/Common/global.model';
@@ -31,8 +31,7 @@ export class PatientUploadFilesComponent {
     public state: Observable<object>;
     constructor(private http: HttpClient, public service: UploadDownloadService, public global: Global, private routing: Router) {
         this.uploadStatus = new EventEmitter<ProgressStatus>();
-
-        this.state = history.state;
+            this.state = history.state;
     }
 
     public uploadFile = (files) => {
@@ -69,9 +68,9 @@ export class PatientUploadFilesComponent {
                         }
                         this.message = 'Upload success.';
                     }
-                }
-            );
+                });
     }
+
     backToCall() {
         this.closeModal.emit(true);
         // if (this.global.patientObj.callingPlatform == this.tokbox) {
@@ -80,7 +79,5 @@ export class PatientUploadFilesComponent {
         // else {
         //     this.routing.navigateByUrl('/PatientRoom', { state: this.global });
         // }
-
-    }
-
+    }    
 }

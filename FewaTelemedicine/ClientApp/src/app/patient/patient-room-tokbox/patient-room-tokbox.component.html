@@ -1,34 +1,4 @@
-<style>
-  .modal-pat {
-    display: block;
-    position: fixed;
-    /* Stay in place */
-    z-index: 9999;
-    /* Sit on top */
-    padding-top: 100px;
-    /* Location of the box */
-    left: 0;
-    top: 0;
-    width: 100%;
-    /* Full width */
-    height: 100%;
-    /* Full height */
-    overflow: auto;
-    /* Enable scroll if needed */
-    background-color: rgb(0, 0, 0);
-    /* Fallback color */
-    background-color: rgba(0, 0, 0, 0.4);
-    /* Black w/ opacity */
-  }
-  .modal-content {
-    background-color: #fefefe;
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-  }
-</style>
-<body id="page-top">
+<body id="page-top" *ngIf="!isMobile">
   <div class="row m-w100">
     <div class="col-md-9  col-sm-12 col-xs-12 p-0">
       <div class="video-frame">
@@ -49,40 +19,40 @@
       <!-- Text Accrodian -->
       <div class="card mb-4 br-0 b-0 accordionItem open">
         <!-- Card Header - Dropdown -->
-        <div class="card-header accordionItemHeading py-3 d-flex flex-row align-items-center justify-content-between br-0">
-          <h6 class="m-0 font-weight-bold"><i class="fa fa-comments"></i>Send Message</h6>                  
+        <div
+          class="card-header accordionItemHeading py-3 d-flex flex-row align-items-center justify-content-between br-0">
+          <h6 class="m-0 font-weight-bold"><i class="fa fa-comments"></i>Send Message</h6>
         </div>
         <!-- Card Body -->
         <div class="card-body p-0 accordionItemContent">
           <div class="chatbox-holder">
-            <div class="chatbox">    
+            <div class="chatbox">
               <form [formGroup]="ChatForm">
-               <div class="chat-messages">
-                <label for="selPatient">Provider:
-                </label>
-                <label >{{proObj.userName}}</label>
-                <!-- <select  id="selPatient" formControlName="selUser" (change)="OnChatUserChange()">
-                  <option disabled value="null">Select Provider</option>
-                  <option *ngFor="let user of providers"> {{ user.userName }} </option>
-                </select> -->
-                <div *ngIf="hasError('required','selUser') && showChat" style="color: red;display: inline;">
-                  {{ global.isProvider ? 'Patient' : 'Provider' }} is required
-                </div>
-          
-                <div #scrollBtm class="message-box-holder" *ngFor="let msg of ChatMessages">
-                  <div class="message-sender">
-                  <b> {{ msg.name }} :-</b> {{ msg.message }}
-                  </div>
+                <div class="chat-messages">
+                  <label  for="selPatient" style="float: left;">Provider: </label>
+                  <label >{{providerObj.userName}}</label>
+                  <!--<select  id="selPatient" style="float: left;" formControlName="selUser"
+                    (change)="OnChatUserChange()">
+                    <option disabled value="null">Select Provider</option>
+                    <option *ngFor="let provider of providers"> {{ provider.userName }} </option>
+                  </select>
+                  <div *ngIf="hasError('required','selUser') && showChat" style="color: red;display: inline;">
+                    {{ global.isProvider ? 'Patient' : 'Provider' }} is required
+                  </div>-->
+
+                  <div #scrollBtm class="message-box-holder" *ngFor="let msg of ChatMessages">
+                    <div class="message-sender">
+                    <b> {{ msg.name }} :-</b> {{ msg.message }}
+                    </div>
+                    </div>   
                   </div>  
-                   
-                 </div>
-              
-              <div class="chat-input-holder" style="padding-bottom: 15px;" >
-                <textarea class="chat-input" placeholder="Type your message here.."  formControlName="chatMessage" (keyup)="onChatEnter($event)"></textarea>
-                <input type="button" value="Send" class="message-send btn-primary" (click)="SendChatMsg()" />
-                <small *ngIf="hasError('required','chatMessage')" style="color: red;position:absolute;bottom: 0px;left:25px;"> Chat message is required </small>
-              </div>
-            </form>
+                <div class="chat-input-holder" style="padding-bottom: 15px;">
+                  <textarea class="chat-input" placeholder="Type your message here.." formControlName="chatMessage" (keyup)="onChatEnter($event)"></textarea>
+                  <input type="button" value="Send" class="message-send btn-primary" (click)="SendChatMsg()" />
+                  <small *ngIf="hasError('required','chatMessage')" style="color: red;position:absolute;bottom: 0px;left:25px;"> Chat message is required </small>
+                </div>
+
+              </form>
             </div>
           </div>
         </div>
@@ -216,6 +186,9 @@
   </script>
 
 </body>
+
+<pat-room-tokbox *ngIf="isMobile"></pat-room-tokbox>
+
 <div class="modal-pat" *ngIf="showUploadModal">
   <pat-upload-files (closeModal)="showUploadModal=false"></pat-upload-files>
 </div>

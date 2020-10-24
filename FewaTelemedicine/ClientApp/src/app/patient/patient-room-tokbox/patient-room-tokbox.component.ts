@@ -3,7 +3,7 @@ import { NotificationService } from 'src/Common/notification.service';
 import { Global } from 'src/Common/global.model';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, Title } from '@angular/platform-browser';
 import { HttpParams, HttpClient } from '@angular/common/http';
 import { Provider } from 'src/models/DomainModels';
 import { Observable } from 'rxjs';
@@ -24,17 +24,23 @@ export class PatientRoomTokboxComponent {
   domain:string;
   api:any;
   public state: Observable<object>;
-  proObj:Provider=new Provider();
   showUploadModal:boolean=false;
 
   @ViewChild('scrollBtm', { static: false }) private scrollBottom: ElementRef;
+  isMobile: boolean = false;
   constructor(private notificationService: NotificationService,
     public global: Global,
     public routing: Router,
     private formBuilder: FormBuilder,
     private cdr: ChangeDetectorRef,
     private sanitizer: DomSanitizer,
-    public httpClient: HttpClient) {
+    public httpClient: HttpClient,
+    private title: Title) {
+    this.title.setTitle('Fewa Telemedicine')
+    this.isMobile = this.global.isMobile.test(window.navigator.userAgent);
+    window.onresize = () => {
+      this.isMobile = this.global.isMobile.test(window.navigator.userAgent);
+    }
     this.initForm();
     this.providerObj=this.global.providerObj;
     this.notificationService.EventCompletePatient
@@ -63,27 +69,19 @@ export class PatientRoomTokboxComponent {
       this.notificationService.LoadActiveDoctors();
     });
     this.notificationService.EventGetAllProviders.subscribe(_providers => {
-      for(let p of _providers)
-      {
-        if(p.url==this.global.currentProvider&&p.practice==this.global.currentPractice)
-       {
-        this.proObj=p;
-        this.ChatForm.controls['selUser'].setValue( this.proObj.userName);
-       }
-       
+      this.providerObj = _providers.filter(a => a.url == this.global.currentProvider && a.practice == this.global.currentPractice);
+      if (this.providerObj) {
+        this.ChatForm.controls['selUser'].setValue(this.providerObj.userName);
       }
-       
-       if (this.global.providerObj.image) {
-         this.retrievedImage = 'data:image/png;base64,' + this.providerObj.image;
-       }
-       // console.log(this.doctors);
-     });
-     if (this.global.providerObj.image) {
-       this.retrievedImage = 'data:image/png;base64,' + this.providerObj.image;
-     }
-     // gets doctor list
-     // this.notificationService.LoadActiveDoctors();
-   }
+      if (this.global.providerObj.image) {
+        this.retrievedImage = 'data:image/png;base64,' + this.providerObj.image;
+      }
+      // console.log(this.doctors);
+    });
+      this.state = history.state;
+    // gets doctor list
+    // this.notificationService.LoadActiveDoctors();
+  }
 
   Transform() {
     return this.sanitizer.bypassSecurityTrustResourceUrl(this.retrievedImage);
@@ -165,10 +163,9 @@ export class PatientRoomTokboxComponent {
       }
       this.AllUserChats[user].push(messageObj);
     } catch (e) { }
-  }
-  
-  openUploadModal()
-  {
-    this.showUploadModal=true;
-  }
+    }
+
+    openUploadModal() {
+        this.showUploadModal = true;
+    }
 }
