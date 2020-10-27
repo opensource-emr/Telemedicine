@@ -30,7 +30,7 @@ export class PatientWaitingRoomComponent implements OnDestroy {
       let _video = this.video.nativeElement;
       this.Video = _video;
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+        navigator.mediaDevices.getUserMedia({ video: true, audio: false })
           .then(stream => {
             _video.srcObject = stream;
             _video.play();

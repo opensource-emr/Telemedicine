@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 
 namespace FewaTelemedicine.Controllers
 {
@@ -120,7 +121,74 @@ namespace FewaTelemedicine.Controllers
             { provider = new Provider() { userName = name } });
 
         }
+        [HttpPost("VerifyOTP")]
+        public ActionResult VerifyOTP([FromBody] Provider obj)
+        {
+            try
+            {
+                if (obj == null)
+                {
+                    return BadRequest();
+                }
+                if (string.IsNullOrEmpty(obj.email) && (string.IsNullOrEmpty(obj.email) || string.IsNullOrEmpty(obj.userName)))
+                {
+                    return BadRequest();
+                }
+                var otp = HttpContext.Session.GetString("otp");
+                if (string.IsNullOrEmpty(otp))
+                {
+                    return NotFound("Otp is not generated");
+                }
+                Provider provider = JsonConvert.DeserializeObject<Provider>(otp);
+                if (provider == null)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "provider is not found");
+                }
+                if (provider.otp == obj.otp && (provider.email == obj.email || provider.userName == obj.email))
+                {
+                    return Ok(new { Message = "otp verified" });
+                }
+                else
+                {
+                    return Unauthorized(new { Message = "invalid otp" });
+                }
 
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+
+        }
+        [HttpPost("ResetPassword")]
+        public ActionResult ResetPassword([FromBody] Provider obj)
+        {
+            try
+            {
+                if (obj == null)
+                {
+                    return BadRequest();
+                }
+                if (string.IsNullOrEmpty(obj.email) && (string.IsNullOrEmpty(obj.email) || string.IsNullOrEmpty(obj.userName)))
+                {
+                    return BadRequest();
+                }
+                Provider provider = FewaDbContext.providers.Where(a => a.email == obj.email || a.userName == obj.email).FirstOrDefault();
+                if (provider == null)
+                {
+                    return Unauthorized(new { Message = "provider not found" });
+                }
+                provider.password = Cipher.Encrypt(obj.newPassword, provider.userName);
+                FewaDbContext.providers.Update(provider);
+                FewaDbContext.SaveChanges();
+                return Ok(new { Message = "password has been changed successfully" });
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+        }
         private string GenerateJSONWebToken(string username, string usertype)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));

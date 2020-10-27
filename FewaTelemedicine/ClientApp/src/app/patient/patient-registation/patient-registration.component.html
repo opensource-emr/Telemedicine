@@ -14,7 +14,7 @@
 				</button>
 				<!-- Topbar Navbar -->
 				<a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
-					<div class="sidebar-brand-text mx-3"><img src="/img/logo.png" alt="logo"></div>
+					<div class="sidebar-brand-text mx-3"><img src="{{practiceObj.logoPath}}" alt="logo"></div>
 				</a>
 			</nav>
 			<!-- End of Topbar -->
@@ -23,24 +23,27 @@
 
 			<div class="container-fluid">
 				<div class="row m-w100">
-					<div class="col-md-5 col-sm-12 col-xs-12 m-auto text-center">
-						<h3 class="mt-4">Welcome<span class="d-block mt-1 mb-4" style="font-size: 13px;"><i
+					<div class="col-md-5 col-sm-12 col-xs-12 m-auto">
+						<h3 class="mt-4 text-center">Welcome<span class="d-block mt-1 mb-4" style="font-size: 13px;"><i
 									class="fa fa-info-circle"></i>Please check in here to join your doctor if you
 								consent for this secure video visit.</span></h3>
 						<div class="card">
 							<div class="card-body pt-5 pb-5">
-								<form action="" class="user">
+								<form action="" class="user" [formGroup]="patRegForm">
 									<input type="text" class="form-control post-invitation"
-										placeholder="Enter Your Name" [(ngModel)]="patientObj.name" name="name" />
-									<div class="custom-control custom-checkbox mt-4">
-										<input type="checkbox" class="custom-control-input" id="customCheck" checked />
+										placeholder="Enter Your Name" name="name" formControlName="patientName" />
+									<small style="color: red;" *ngIf="isControlHasError('patientName','required')">Enter
+										Your Name</small>
+									<div class="custom-control custom-checkbox mt-4 text-center">
+										<input type="checkbox" class="custom-control-input" id="customCheck" checked
+											formControlName="acceptTerms" />
 										<label class="custom-control-label font-weight-normal" for="customCheck">By
 											clicking you will accept our <a href="">Terms and Conditions</a></label>
 
 									</div>
-									<button type="submit" class="btn btn-primary d-inline  mt-5" style="width: 150px;"
-										href="javascrpt:;" (click)="LoginPatient()">Check
-										In</button>
+									<button type="submit" class="btn btn-primary d-inline mt-5 text-center"
+										style="width: 100%;" href="javascript:;" (click)="LoginPatient()"
+										[disabled]="!disableCheckInBtn">Check In</button>
 									<!-- <a href="" class="text-gray-400 d-block mt-4 d-inline">Cancel</a> -->
 								</form>
 							</div>

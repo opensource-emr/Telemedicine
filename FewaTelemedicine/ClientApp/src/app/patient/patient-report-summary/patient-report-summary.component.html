@@ -1,3 +1,35 @@
+<style>
+  .modal-pat {
+    display: block;
+    position: fixed;
+    /* Stay in place */
+    z-index: 9999;
+    /* Sit on top */
+    padding-top: 100px;
+    /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+  }
+
+  .modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+  }
+</style>
+
 <!-- Page Wrapper -->
 <div id="wrapper" *ngIf="!isMobile">
   <!-- Content Wrapper -->
@@ -15,7 +47,7 @@
         <!-- Topbar Navbar -->
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
 
-          <div class="sidebar-brand-text mx-3"><img src="/img/logo.png" alt=""></div>
+          <div class="sidebar-brand-text mx-3"><img src="{{global.practiceObj.logoPath}}" alt=""></div>
         </a>
         <ul class="navbar-nav ml-auto">
 
@@ -53,16 +85,17 @@
                 <table style="width: 100%; text-align: center; margin: 45px 0; font-size: 13px; font-family: Verdana;">
                   <tr>
                     <td>
-                      <img src="/img/logo.png" style="height: 80px;">
+                      <img src="{{global.practiceObj.logoPath}}" style="height: 80px;">
                     </td>
                   </tr>
                   <tr>
                     <td>
                       <h3 style="margin-top: 15px; margin-bottom: 5px;"><span
-                          style="display: block; margin-top: 15px;">John Doe International Hospital</span></h3>
-                      <h5 style="margin-top: 5px; margin-bottom: 15px;"><span style="display: block;">Hospital Address
-                          two</span></h5>
-                      <span style="display: block; margin-top: 5px;">Phone No. *********, Fax: **********</span>
+                          style="display: block; margin-top: 15px;">{{global.practiceObj.name}}</span></h3>
+                      <h5 style="margin-top: 5px; margin-bottom: 15px;"><span
+                          style="display: block;">{{global.practiceObj.address}}</span></h5>
+                      <span style="display: block; margin-top: 5px;">Phone No.{{global.practiceObj.contactNumber}},
+                        Email:{{global.practiceObj.email}}</span>
                     </td>
                   </tr>
                 </table>
@@ -78,7 +111,8 @@
 
                   <tr style="border: 1px solid #fff">
                     <td style="padding: 8px;"><strong>Lab Orders
-                        Sent:</strong>{{global.patientObj?.labOrdersSent| yesNoPipe}}</td>
+                        Sent:</strong>{{global.patientObj?.labOrdersSent| yesNoPipe}}
+                    </td>
                   </tr>
                   <tr style="border: 1px solid #fff">
                     <td style="padding: 8px;"><strong>New prescriptions sent to your pharmacy:</strong>
@@ -97,7 +131,7 @@
                   </tr>
                   <tr>
                     <td style="padding: 8px; "><strong>Follow up in:</strong>
-                      <span>{{global.patientObj?.followUpNumber}}</span> {{patientObj?.followUpMeasure}}</td>
+                      <span>{{global.patientObj?.followUpNumber}}</span> {{global.patientObj?.followUpMeasure}}</td>
                   </tr>
                 </table>
                 <!-- Report Printable area end -->
@@ -107,7 +141,8 @@
         </div>
         <div class="row">
           <div class="col-md-12 text-center mt-4 mb-4">
-            <a href="javascript:;" class="btn btn-primary">Email</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="javascript:;" class="btn btn-primary"
+              (click)="openEmailModal()">Email</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <button class="btn btn-primary" [useExistingCss]="true" printSectionId="print-section"
               ngxPrint>print</button>
           </div>
@@ -117,5 +152,8 @@
   </div>
 </div>
 
+<div class="modal-pat" *ngIf="showEmailModal">
+  <pat-send-email (closeModal)="showEmailModal=false"></pat-send-email>
+</div>
 
 <pat-summery-report *ngIf="isMobile"></pat-summery-report>

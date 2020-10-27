@@ -3,8 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NotificationService } from 'src/Common/notification.service';
 import { Global } from 'src/Common/global.model';
-import { FormBuilder } from '@angular/forms';
-import { Patient } from 'src/models/DomainModels';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Patient, Practice } from 'src/models/DomainModels';
 import { Observable } from 'rxjs';
 import { Title } from '@angular/platform-browser';
 
@@ -12,10 +12,13 @@ import { Title } from '@angular/platform-browser';
   templateUrl: './patient-registration.component.html'
 })
 export class PatientRegistrationComponent implements OnInit {
+  practiceObj: Practice = new Practice();
   patientObj: Patient = new Patient();
   providers: Array<Provider> = new Array<Provider>();
   public state: Observable<object>;
   isMobile: boolean;
+  patRegForm: FormGroup;
+  disableCheckInBtn = true;
   constructor(public httpClient: HttpClient,
     public routing: Router,
     public global: Global,
@@ -28,15 +31,38 @@ export class PatientRegistrationComponent implements OnInit {
     window.onresize = () => {
       this.isMobile = this.global.isMobile.test(window.navigator.userAgent);
     }
+    this.patRegForm = this.formBuilder.group({
+      patientName: ['', Validators.required],
+      acceptTerms: [true, Validators.required]
+    });
+    this.patRegForm.get('acceptTerms').valueChanges.subscribe(x => {
+      this.disableCheckInBtn = x;
+    });
   }
   ngOnInit() {
+    this.httpClient.get<any>(this.global.practiceUrl + 'GetPracticeConfiguration')
+      .subscribe(res => {
+        if (res && res.Value && res.Value.length > 0) {
+          for (let temp of res.Value) {
+            if (temp.url == this.global.currentPractice) {
+              this.practiceObj = temp;
+            }
+          }
+        }
+      }, err => {
+        alert('Can not load configuration please talk with admin.');
+      });
     this.state = history.state;
   }
   LoginPatient() {
-    var splitted = window.location.pathname.split("/", 3);
-    //console.log(splitted);
-    this.patientObj.url = splitted[2];
-    this.global.practiceObj.url = splitted[1];
+    if (this.patRegForm.invalid) {
+      this.patRegForm.get('patientName').markAsTouched();
+      return;
+    }
+    this.patientObj.url = this.global.currentProvider;
+    this.patientObj.providerNameAttending = this.global.currentProvider;
+    this.patientObj.name = this.patRegForm.get('patientName').value;
+    this.global.practiceObj.url = this.global.currentPractice;
     this.httpClient.
       post<any>(this.global.practiceUrl + "LoginPatient", this.patientObj)
       .subscribe(res => {
@@ -49,11 +75,19 @@ export class PatientRegistrationComponent implements OnInit {
         this.global.patientObj = res.Value.User;
         this.global.patientObj.patientId = res.Value.patientId;
         this.global.patientObj.name = res.Value.name;
+        this.global.patientObj.providerNameAttending = res.Value.providerNameAttending;
         // this.global.patientObj.url = res.Value.User.url;
         this.routing.navigateByUrl('/Waiting', { state: this.global });
       },
         res => {
           alert('User Already logged in');
         });
+  }
+  isControlHasError(contolName, validator): boolean {
+    const control = this.patRegForm.controls[contolName];
+    if (!control) {
+      return;
+    }
+    return control.touched && control.hasError(validator);
   }
 }

@@ -1,22 +1,30 @@
-
+<style>
+  .p-top {
+    padding-top: 0px !important;
+  }
+</style>
 <div class="container">
-
   <!-- Outer Row -->
   <div class="row justify-content-center">
-
     <div class="col-xl-10 col-lg-12 col-md-9">
-
       <div class="card o-hidden border-0 shadow-lg my-5">
         <div class="card-body p-0">
+          <div class="modal-header">
+            <button type="button" class="close" aria-label="Close" (click)="backToCall()">
+              <span aria-hidden="true">
+                x
+              </span>
+            </button>
+          </div>
           <!-- Nested Row within Card Body -->
           <div class="row">
             <div class="d-flex col-lg-6 d-none d-lg-block bg-light">
-              <div class="align-self-stretch login-left">
+              <div class="align-self-stretch login-left p-top">
                 <!--<img src="img/logo.png" />-->
 
                 <p class="my-3"></p>
 
-                <div class="p-5">
+                <div class="p-5 p-top">
                   <div class="text-center">
                     <h1 class="h3 text-gray-700 mb-4 heading-text">File Upload<p class="h6 d-block mt-2">your files to
                         Assets, or</p>
@@ -24,42 +32,44 @@
                   </div>
                   <form class="user">
                     <div class="row form-group" class="h6 d-block mt-2">
-                      <input name='inputfile' type="file" #file placeholder="Choose file" style="display: none;" (change)="uploadFile(file.files)" multiple >
+                      <input name='inputfile' type="file" #file placeholder="Choose file" style="display: none;"
+                        (change)="uploadFile(file.files)" multiple>
                     </div>
-                    <div>
-                      <button type="button" class="btn btn-primary btn-user btn-block" (click)="file.click()">Upload File</button>
+                    <div class="p-2">
+                      <button type="button" class="btn btn-primary btn-user btn-block" (click)="file.click()">Upload
+                        File</button>
                     </div>
-                    <a href="javascript:;" class="nav-item nav-link btn btn-success btn-sm active"  id="nav-home-tab"
-                    data-toggle="tab" (click)="backToCall()"  role="tab" aria-controls="nav-home"
-                    aria-selected="true"><i class="fa fa-share"></i>Back to Call</a> 
-                    <span style="color: red;"*ngIf="progress > 0">
-                      {{progress}}%
-                    </span>
-                    <span style="color: green;float:right;" *ngIf="message">
-                      {{message}}
-                    </span>
-               
+                    <div class="p-2">
+                      <a href="javascript:;" class="nav-item nav-link btn btn-success btn-sm active" id="nav-home-tab"
+                        data-toggle="tab" (click)="backToCall()" role="tab" aria-controls="nav-home"
+                        aria-selected="true"><i class="fa fa-share"></i>Back to Call</a>
+                    </div>
+                    <div class="p-2">
+                      <span style="color: red;" *ngIf="progress > 0">
+                        {{progress}}%
+                      </span>
+                      <span style="color: green;float:right;" *ngIf="message">
+                        {{message}}
+                      </span>
+                    </div>
                   </form>
                 </div>
 
               </div>
             </div>
             <div class="col-lg-6">
-              <div class="p-5">
+              <div class="p-5 p-top">
 
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                   <h6 class="m-0 font-weight-bold"><i class="fa fa-calendar"></i>Uploaded files</h6>
                 </div>
                 <!-- Card Body -->
-                <div class="card-body">
+                <div class="card-body" style="height: 250px; overflow: auto;">
                   <table class="table table-striped" id="dataTable">
                     <thead>
                       <tr>
                         <th>File name</th>
-
-                        <!-- <th>Phone</th>
-                  <th>Email</th> -->
                       </tr>
                     </thead>
                     <tr *ngFor="let temp of docArray">
@@ -67,7 +77,6 @@
                     </tr>
                   </table>
                 </div>
-
               </div>
             </div>
           </div>

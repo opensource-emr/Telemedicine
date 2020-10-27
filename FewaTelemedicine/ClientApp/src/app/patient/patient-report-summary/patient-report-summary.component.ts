@@ -10,6 +10,7 @@ import { Title } from '@angular/platform-browser';
 })
 export class PatientReportSummaryComponent {
   patientObj: Patient = null;
+  showEmailModal: boolean = false;
   isMobile: boolean;
   constructor(public httpClient: HttpClient,
     public routing: Router,
@@ -22,8 +23,13 @@ export class PatientReportSummaryComponent {
       this.isMobile = this.global.isMobile.test(window.navigator.userAgent);
     }
   }
+
   SuccessTestDone(res) {
-    this.patientObj = res;
+    this.global.patientObj = res;
     alert(res);
+  }
+
+  openEmailModal() {
+    this.showEmailModal = true;
   }
 }

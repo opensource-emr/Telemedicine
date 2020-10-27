@@ -15,10 +15,9 @@ using Microsoft.Extensions.Configuration;
 
 namespace FewaTelemedicine.Domain
 {
-   public class FewaContextFactory : IDesignTimeDbContextFactory<FewaDbContext>
+    public class FewaContextFactory : IDesignTimeDbContextFactory<FewaDbContext>
     {
         // private readonly IHttpContextAccessor accessor;
-
         public FewaDbContext CreateDbContext(string[] args)
         {
             string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
@@ -46,7 +45,7 @@ namespace FewaTelemedicine.Domain
             : base(options)
         {
             //this.accessor = httpContextAccessor;
-             
+
         }
         public DbSet<Practice> practices { get; set; }
         public DbSet<Provider> providers { get; set; }
@@ -54,26 +53,29 @@ namespace FewaTelemedicine.Domain
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //  Seeding for provider and practice
-            var providerSeed = CreateProvider(1, "provider", "FHBsjQhfB78CnRY7uVquqA==", "provider","practice");
-            var providerSeed1 = CreateProvider(2, "doctor", "ajNJkHEqM5bu0szpIIhwzw==", "provider1", "practice1");
-            var practiceSeed = CreatePractice(1, "practice", "1234567890", "abc@gmail.com", "Jitsi", "/img/logo.png", "https://localhost:44304/", "Welcome to the demo of Fewa. This is the place where you can put your hospital description. Fewa is a application which helps to connect doctors and patient using video. Patient can print advice , share documents with provider and provider also knows how much time he has given to attend the patient. To start using the demo login as username-provider,password provider , send a invitation to the patient and then both can communicate", "fewa Telemedicine call today schedule", "Please attend the provider","");
-            var practiceSeed1= CreatePractice(2, "practice1", "0987654321", "pqr@gmail.com", "Jitsi", "/img/logo.png", "https://localhost:44304/", "Welcome to the demo of Fewa. This is the place where you can put your hospital description. Fewa is a application which helps to connect doctors and patient using video. Patient can print advice , share documents with provider and provider also knows how much time he has given to attend the patient. To start using the demo login as username-doctor,password doctor , send a invitation to the patient and then both can communicate", "fewa Telemedicine call today schedule", "Please attend the provider", "");
+            var providerSeed = CreateProvider(1, "provider", "FHBsjQhfB78CnRY7uVquqA==", "provider", "practice", 1);
+            var providerSeed1 = CreateProvider(2, "doctor", "ajNJkHEqM5bu0szpIIhwzw==", "provider1", "practice1", 2);
+            var practiceSeed = CreatePractice(1, "practice", "1234567890", "abc@gmail.com", "Jitsi", "/img/logo.png", "https://localhost:44304", "Welcome to the demo of Fewa. This is the place where you can put your hospital description. Fewa is a application which helps to connect doctors and patient using video. Patient can print advice , share documents with provider and provider also knows how much time he has given to attend the patient. To start using the demo login as username-provider,password provider , send a invitation to the patient and then both can communicate", "fewa Telemedicine call today schedule", "Please attend the provider", "");
+            var practiceSeed1 = CreatePractice(2, "practice1", "0987654321", "pqr@gmail.com", "Jitsi", "/img/logo.png", "https://localhost:44304", "Welcome to the demo of Fewa. This is the place where you can put your hospital description. Fewa is a application which helps to connect doctors and patient using video. Patient can print advice , share documents with provider and provider also knows how much time he has given to attend the patient. To start using the demo login as username-doctor,password doctor , send a invitation to the patient and then both can communicate", "fewa Telemedicine call today schedule", "Please attend the provider", "");
             modelBuilder.Entity<Provider>().ToTable("Provider");
             modelBuilder.Entity<Patient>().ToTable("Patient");
             modelBuilder.Entity<Practice>().ToTable("Practice");
             modelBuilder.Entity<Patient>().Property(et => et.patientId)
                     .ValueGeneratedOnAdd();
+            modelBuilder.Entity<Practice>().HasIndex(b => b.url)
+            .IsUnique();
             modelBuilder.Entity<Practice>().
                     HasData(practiceSeed, practiceSeed1);
             modelBuilder.Entity<Provider>().
-                    HasData(providerSeed, providerSeed1); // he does not create tis table
-           
+                    HasData(providerSeed, providerSeed1); // he does not create this table
+
         }
         public Provider CreateProvider(int _id,
                                string _userName,
                                string _password,
                                string _url,
-                               string _practice)
+                               string _practice,
+                               int _practiceId)
         {
             var provider = new Provider
             {
@@ -81,8 +83,11 @@ namespace FewaTelemedicine.Domain
                 userName = _userName,
                 password = _password,
                 roomName = Guid.NewGuid().ToString() + "-" + "name",
-                practice=_practice,
-                url = _url
+                practice = _practice,
+                url = _url,
+                practiceId = _practiceId,
+                nameTitle = "",
+                name = ""
             };
 
             return provider;
@@ -233,6 +238,7 @@ namespace FewaTelemedicine.Domain
             {
                 practiceId = _id,
                 url = _url,
+                name = "",
                 contactNumber = _contactNumber,
                 email = _email,
                 callingPlatform = _callingPlatform,
@@ -240,14 +246,14 @@ namespace FewaTelemedicine.Domain
                 serverName = _serverName,
                 description = _description,
                 emailHtmlBody = _emailHtmlBody,
-                emailSubject=_emailSubject,
-                emailPlainBody=_emailPlainBody,
-                emailAdditionalContent= _emailAdditionalContent
+                emailSubject = _emailSubject,
+                emailPlainBody = _emailPlainBody,
+                emailAdditionalContent = _emailAdditionalContent
 
             };
-            
+
             return practice;
         }
-       
+
     }
 }

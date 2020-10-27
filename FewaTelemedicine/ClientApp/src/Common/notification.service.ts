@@ -13,6 +13,7 @@ export class NotificationService {
   EventChatMessage = new EventEmitter<string>();
   EventGetAllProviders = new EventEmitter<Provider>();
   private connectionIsEstablished = false;
+  private manual_stop: boolean = false;
   private _hubConnection: HubConnection;
 
   constructor(public global: Global) {
@@ -53,6 +54,11 @@ export class NotificationService {
     });
   }
 
+  public DisconnectUser() {
+    this.manual_stop = true;
+    this._hubConnection.stop();
+  }
+
   public Connect() {
     this.createConnection();
     this.registerOnServerEvents();
@@ -62,7 +68,7 @@ export class NotificationService {
     this._hubConnection = new HubConnectionBuilder()
       .withUrl(window.location.origin + '/NotificationHub?token=' + this.global.token)
       .build();
-    this._hubConnection.serverTimeoutInMilliseconds = 500000; // 100 second
+    this._hubConnection.serverTimeoutInMilliseconds = 1000000; // 1000 second
   }
 
   private startConnection(): void {
@@ -81,30 +87,33 @@ export class NotificationService {
       });
 
     this._hubConnection.onclose((e) => {
-      console.error('Connection Closed unexpectedy, connecting again...');
-      //alert("Connection lost!")
-      setTimeout(() => {
-        this.Connect();
-      }, 1000);
+      if (e == null || e == undefined) {
+        console.log('Connection Closed.Logout Success.');
+        return;
+      }
+      else {
+        console.error('Connection Closed unexpectedy, connecting again...');
+        setTimeout(() => {
+          this.Connect();
+        }, 1000);
+      }
     });
   }
 
   private registerOnServerEvents(): void {
-
     this._hubConnection.on('GetAllPatients', (data: any) => {
       var obj: any = JSON.parse(data)
       this.EventGetAllPatients.emit(obj);
     });
 
     this._hubConnection.on('CallPatient', (data: any) => {
-      var obj: any = JSON.parse(data)
-
+      var obj: any = JSON.parse(data);
       this.EventCallPatient.emit(obj);
     });
 
 
     this._hubConnection.on('CompletePatient', (data: any) => {
-      console.log('Complete Patient' + data);
+      //console.log('Complete Patient' + data);
       var obj: any = JSON.parse(data)
       this.EventCompletePatient.emit(obj);
     });

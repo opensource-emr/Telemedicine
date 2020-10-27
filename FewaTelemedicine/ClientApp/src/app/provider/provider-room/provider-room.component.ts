@@ -133,7 +133,7 @@ export class ProviderRoomComponent {
         BRAND_WATERMARK_LINK: '',
         DISPLAY_WELCOME_PAGE_CONTENT: false,
         DISPLAY_WELCOME_PAGE_TOOLBAR_ADDITIONAL_CONTENT: false,
-        DEFAULT_REMOTE_DISPLAY_NAME: this.global.patientObj.name,
+        DEFAULT_REMOTE_DISPLAY_NAME: this.global.patientObj ? this.global.patientObj.name : 'Fellow Jitser',
         disable1On1Mode: false,
         REMOTE_THUMBNAIL_RATIO: 0, // 1:1
         filmStripOnly: false,

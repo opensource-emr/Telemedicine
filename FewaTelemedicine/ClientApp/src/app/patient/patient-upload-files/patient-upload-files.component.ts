@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output} from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import { UploadDownloadService } from 'src/Common/upload-download.service';
 import { ProgressStatus } from 'src/models/progress-status.model';
@@ -14,7 +14,7 @@ import { Observable } from 'rxjs';
 
 export class PatientUploadFilesComponent {
     @Output("closeModal")
-    closeModal:EventEmitter<boolean>=new EventEmitter<boolean>();
+    closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
     public baseApiUrl: string;
     public progress: number;
     public message: string;
@@ -31,7 +31,21 @@ export class PatientUploadFilesComponent {
     public state: Observable<object>;
     constructor(private http: HttpClient, public service: UploadDownloadService, public global: Global, private routing: Router) {
         this.uploadStatus = new EventEmitter<ProgressStatus>();
-            this.state = history.state;
+        this.state = history.state;
+        this.getFiles();
+    }
+
+    private getFiles() {
+        this.http.get(this.service.apiFileUrl + '?folderName=' + sessionStorage.getItem('PatientName'))
+            .subscribe(res => {
+                for (var i = 0; i < Object.keys(res).length; i++) {
+                    this.FileName = Object.values(res)[i].replace(/^.*[\\\/]/, '');
+                    this.docArray[i] = {
+                        filename: this.FileName,
+                        filepath: Object.values(res)[i]
+                    }
+                }
+            });
     }
 
     public uploadFile = (files) => {
@@ -52,32 +66,25 @@ export class PatientUploadFilesComponent {
             formData.append('name' + index, file, FileName);
             console.log(formData.get('name'));
         });
-        this.http.post(this.service.apiUploadUrl, formData, { reportProgress: true, observe: 'events' })
-            .subscribe(
-                event => {
-                    if (event.type === HttpEventType.UploadProgress) {
-                        this.progress = Math.round(100 * event.loaded / event.total);
-                    }
-                    else if (event.type === HttpEventType.Response) {
-                        for (var i = 0; i < Object.keys(event.body).length; i++) {
-                            this.FileName = Object.values(event.body)[i].replace(/^.*[\\\/]/, '');
-                            this.docArray[i] = {
-                                filename: this.FileName,
-                                filepath: Object.values(event.body)[i]
-                            }
+        this.http.post(this.service.apiUploadUrl + '?folderName=' + sessionStorage.getItem('PatientName'), formData, { reportProgress: true, observe: 'events' })
+            .subscribe(event => {
+                if (event.type === HttpEventType.UploadProgress) {
+                    this.progress = Math.round(100 * event.loaded / event.total);
+                }
+                else if (event.type === HttpEventType.Response) {
+                    for (var i = 0; i < Object.keys(event.body).length; i++) {
+                        this.FileName = Object.values(event.body)[i].replace(/^.*[\\\/]/, '');
+                        this.docArray[i] = {
+                            filename: this.FileName,
+                            filepath: Object.values(event.body)[i]
                         }
-                        this.message = 'Upload success.';
                     }
-                });
+                    this.message = 'Upload success.';
+                }
+            });
     }
 
     backToCall() {
         this.closeModal.emit(true);
-        // if (this.global.patientObj.callingPlatform == this.tokbox) {
-        //     this.routing.navigateByUrl('/PatientRoomTokbox', { state: this.global });
-        // }
-        // else {
-        //     this.routing.navigateByUrl('/PatientRoom', { state: this.global });
-        // }
-    }    
+    }
 }

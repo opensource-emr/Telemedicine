@@ -10,12 +10,17 @@ import { Patient } from 'src/models/DomainModels';
 })
 export class PatientReportSummaryMobileComponent {
     patientObj: Patient = null;
+    showEmailModal: boolean = false;
     constructor(public httpClient: HttpClient,
         public routing: Router,
         public global: Global) {
     }
     SuccessTestDone(res) {
-        this.patientObj = res;
+        this.global.patientObj = res;
         alert(res);
+    }
+
+    openEmailModal() {
+        this.showEmailModal = true;
     }
 }

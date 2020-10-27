@@ -59,7 +59,7 @@
     <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow justify-content-center">
         <!-- Topbar Navbar -->
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
-            <div class="sidebar-brand-text mx-3"><img src="/img/logo.png" alt="logo"></div>
+            <div class="sidebar-brand-text mx-3"><img src="{{practiceObj.logoPath}}" alt="logo"></div>
         </a>
     </nav>
     <!-- End of Topbar -->
@@ -70,20 +70,23 @@
             <div class="col-md-6 col-sm-12 col-xs-12 m-auto text-center">
                 <div class="card">
                     <div class="card-body pt-5 pb-5">
-                        <form action="" class="user" autocomplete="off">
+                        <form action="" class="user" autocomplete="off" [formGroup]="patRegForm">
                             <div class="row">
                                 <div class="col-sm-12 col-xs-12">
                                     <input type="text" class="form-control" placeholder="Enter Your Name"
-                                        [(ngModel)]="patientObj.name" name="PatientName" />
+                                        formControlName="patientName" name="PatientName" />
+                                    <small style="color: red;" *ngIf="isControlHasError('patientName','required')">Enter
+                                        Your Name</small>
                                 </div>
                             </div>
                             <div class="custom-control custom-checkbox mt-4 d-xs-none">
-                                <input type="checkbox" class="custom-control-input" id="customCheck" checked />
+                                <input type="checkbox" class="custom-control-input" id="customCheck" checked
+                                    formControlName="acceptTerms" />
                                 <label class="custom-control-label font-weight-normal" for="customCheck">By
                                     clicking you will accept our <a href="">Terms and Conditions</a></label>
                             </div>
-                            <button type="submit" class="btn btn-primary  btn-sm d-inline  mt-4" href="javascrpt:;"
-                                (click)="LoginPatient()">Check In</button>
+                            <button type="submit" class="btn btn-primary  btn-sm d-inline  mt-4" href="javascript:;"
+                                (click)="LoginPatient()" [disabled]="!disableCheckInBtn">Check In</button>
                         </form>
                     </div>
                 </div>

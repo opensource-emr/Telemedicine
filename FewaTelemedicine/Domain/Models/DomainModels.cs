@@ -9,6 +9,7 @@ namespace FewaTelemedicine.Domain.Models
 {
     public class Practice
     {
+        [Key]
         public int practiceId { get; set; }
         public string name { get; set; }
         public string address { get; set; }
@@ -16,7 +17,6 @@ namespace FewaTelemedicine.Domain.Models
         public string email { get; set; }
         public string description { get; set; }
         public string callingPlatform { get; set; }
-        
         public string url { get; set; }
         public string logoPath { get; set; }
 
@@ -25,7 +25,7 @@ namespace FewaTelemedicine.Domain.Models
         public string emailApiKey { get; set; }
         public string emailApiName { get; set; }
         public string emailPlainBody { get; set; }
-        public string emailSubject{ get; set; }
+        public string emailSubject { get; set; }
         public string emailHtmlBody { get; set; }
         public string emailAdditionalContent { get; set; }
 
@@ -57,8 +57,15 @@ namespace FewaTelemedicine.Domain.Models
         public string roomKey { get; set; }
         public string url { get; set; }
         public string practice { get; set; }
+        public int practiceId { get; set; }
         [NotMapped]
         public string signalRConnectionId { get; set; }
+
+        [NotMapped]
+        public string otp { get; set; }
+        [NotMapped]
+        public string newPassword { get; set; }
+
 
     }
     public class ProviderCabin
@@ -107,15 +114,15 @@ namespace FewaTelemedicine.Domain.Models
         public string followUpMeasure { get; set; }
         [NotMapped]
         public string message { get; set; }
-        
+
         [NotMapped]
         public string signalRConnectionId { get; set; }
         [NotMapped]
         public string medication { get; set; }
         public string url { get; set; }
-        
+
         public Provider provider { get; set; }
-        
+
 
     }
     public class WaitingRoom
@@ -129,7 +136,7 @@ namespace FewaTelemedicine.Domain.Models
     public class ChatMessage
     {
         [NotMapped]
-        public bool isProvider{ get; set; }
+        public bool isProvider { get; set; }
         [NotMapped]
         public string name { get; set; }
         [NotMapped]

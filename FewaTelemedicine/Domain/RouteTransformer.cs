@@ -42,8 +42,12 @@ namespace FewaTelemedicine.Domain
 
             using (var context = new FewaDbContext(optionsBuilder.Options))
             {
-                var t = context.providers.Where(a => a.url == provider && a.practice == practice).FirstOrDefault();
-                if (t != null)
+                var temp = (from pro in context.providers
+                            join pra in context.practices on pro.practiceId equals pra.practiceId
+                            where pro.url == provider && pra.url == practice
+                            select pro).FirstOrDefault();
+
+                if (temp != null)
                 {
                     values["controller"] = "Home";
                     values["action"] = "Index";

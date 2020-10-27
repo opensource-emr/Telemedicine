@@ -16,6 +16,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
 using System.Reflection.Metadata;
+using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Security.Claims;
 using System.Text;
@@ -161,12 +162,48 @@ namespace FewaTelemedicine.Controllers
             { provider = new Provider() { userName = name } });
 
         }
-        public List<Patient> GetPatientsAttended()
+
+        public List<Patient> GetPatientsAttended([Optional] string searchString)
         {
-            var attendedPatients = (from temp in FewaDbContext.patients
+            var attendedPatients = new List<Patient>();
+            //Add Optional paramter if value is in parameter then filter.
+            // Else no filter.
+            // if no search text then today's all records and if no today's records
+            // then top 10 records.
+            // if value in search text then  return values matching with search text.
+            if (string.IsNullOrEmpty(searchString))
+            {
+                DateTime startDateTime = DateTime.Today; //Today at 00:00:00
+                DateTime endDateTime = DateTime.Today.AddDays(1).AddTicks(-1); //Today at 23:59:59
+                /* Display Today's Records */
+                attendedPatients = (from temp in FewaDbContext.patients
+                                    where (temp.appointmentDate >= startDateTime && temp.appointmentDate <= endDateTime)
                                     orderby temp.startTime descending
                                     select temp
-                                    ).ToList<Patient>();
+                                   ).ToList<Patient>();
+                /*Display  Previous Records  if no today's records */
+                if (attendedPatients.Count <= 0)
+                {
+                    attendedPatients = (from temp in FewaDbContext.patients
+                                        orderby temp.startTime, temp.appointmentDate descending
+                                        select temp
+                                  ).OrderByDescending(a => a.startTime).Take(10).ToList<Patient>();
+
+                }
+            }
+            else if (!string.IsNullOrEmpty(searchString))
+            {
+                /* Display Records Matching With SearchString */
+                attendedPatients = (from temp in FewaDbContext.patients
+                                    where
+                                    (
+                                    temp.appointmentDate.Month.ToString().Contains(searchString) ||
+                                    temp.appointmentDate.Date.ToString().Contains(searchString) ||
+                                    temp.appointmentDate.Year.ToString().Contains(searchString))
+                                    orderby temp.appointmentDate descending
+                                    select temp).Take(10).AsEnumerable().ToList<Patient>();
+            }
+
             return attendedPatients;
         }
 

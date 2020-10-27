@@ -16,8 +16,6 @@ namespace FewaTelemedicine.Controllers
     [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
-
-
     public class UploadController : ControllerBase
     {
         [Obsolete]
@@ -26,7 +24,7 @@ namespace FewaTelemedicine.Controllers
         FewaDbContext fewaDbContext = null;
 
         [Obsolete]
-        public UploadController(IHostingEnvironment hostingEnvironment,WaitingRoom _waitingroom, FewaDbContext _fewaDbContext)
+        public UploadController(IHostingEnvironment hostingEnvironment, WaitingRoom _waitingroom, FewaDbContext _fewaDbContext)
         {
             _hostingEnvironment = hostingEnvironment;
             waitingroom = _waitingroom;
@@ -34,12 +32,12 @@ namespace FewaTelemedicine.Controllers
         }
         [HttpPost, DisableRequestSizeLimit]
         [Obsolete]
-        public IActionResult UploadFile()
+        public IActionResult UploadFile(string folderName = "")
         {
             try
             {
                 var files = Request.Form.Files;
-                string folderName = "Upload";
+                folderName = "Upload" + (!string.IsNullOrEmpty(folderName) ? "/" + folderName : "");
                 string webRootPath = _hostingEnvironment.WebRootPath;
                 string newPath = Path.Combine(webRootPath, folderName);
                 var result = new List<string>();
@@ -51,7 +49,7 @@ namespace FewaTelemedicine.Controllers
                 {
                     return BadRequest();
                 }
-               
+
                 foreach (var file in files)
                 {
                     var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
@@ -84,12 +82,12 @@ namespace FewaTelemedicine.Controllers
         [HttpGet]
         [Route("files")]
         [Obsolete]
-        public IActionResult Files()
+        public IActionResult Files(string folderName = "")
         {
             try
             {
                 var result = new List<string>();
-                string folderName = "Upload";
+                folderName = "Upload" + (!string.IsNullOrEmpty(folderName) ? "/" + folderName : "");
                 string webRootPath = _hostingEnvironment.WebRootPath;
                 string newPath = Path.Combine(webRootPath, folderName);
                 if (Directory.Exists(newPath))
@@ -108,6 +106,6 @@ namespace FewaTelemedicine.Controllers
                 return Ok("file doesnot exists: " + ex.Message);
             }
         }
-        
+
     }
 }

@@ -55,6 +55,37 @@
         }
     }
 </style>
+<style>
+    .modal-pat {
+        display: block;
+        position: fixed;
+        /* Stay in place */
+        z-index: 9999;
+        /* Sit on top */
+        padding-top: 100px;
+        /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%;
+        /* Full width */
+        height: 100%;
+        /* Full height */
+        overflow: auto;
+        /* Enable scroll if needed */
+        background-color: rgb(0, 0, 0);
+        /* Fallback color */
+        background-color: rgba(0, 0, 0, 0.4);
+        /* Black w/ opacity */
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+    }
+</style>
 
 <!-- Page Wrapper -->
 <div id="wrapper">
@@ -68,7 +99,8 @@
                 <!-- Topbar Navbar -->
                 <a class="sidebar-brand d-flex align-items-center justify-content-center">
                     <div class="sidebar-brand-text mx-3 align-items-center justify-content-center"><img
-                            src="/img/logo.png" style="float:none;margin:0 auto;height:auto;width:50%;"
+                            src="{{global.practiceObj.logoPath}}"
+                            style="float:none;margin:0 auto;height:auto;width:50%;"
                             class="img-fluid rounded mx-auto d-block" alt=""></div>
                 </a>
             </nav>
@@ -93,27 +125,29 @@
                                     style="border:1px solid #000; font-family: Verdana; font-size: 13px; width: 100%;border-collapse: inherit !important;">
                                     <tr style="border: 1px solid #fff">
                                         <td style="padding: 8px;"><strong>Lab Orders
-                                                Sent:</strong>{{patientObj?.labOrdersSent| yesNoPipe}}</td>
+                                                Sent:</strong>{{global.patientObj?.labOrdersSent| yesNoPipe}}</td>
                                     </tr>
                                     <tr style="border: 1px solid #fff">
                                         <td style="padding: 8px;"><strong>New prescriptions sent to your
                                                 pharmacy:</strong>
-                                            {{patientObj?.newPrescriptionsSentToYourPharmacy| yesNoPipe}}</td>
+                                            {{global.patientObj?.newPrescriptionsSentToYourPharmacy| yesNoPipe}}</td>
                                     </tr>
                                     <tr style="border: 1px solid #fff">
                                         <td style="padding: 8px;"><strong>New prescriptions mailed to
-                                                you:</strong>{{patientObj?.newPrescriptionsMailedToYou| yesNoPipe}}</td>
+                                                you:</strong>{{global.patientObj?.newPrescriptionsMailedToYou| yesNoPipe}}
+                                        </td>
                                     </tr>
 
                                     <tr style="border: 1px solid #fff; border-bottom: none;">
                                         <td style="padding: 8px;"><strong><u>Advice</u></strong></td>
                                     </tr>
                                     <tr style="border: 1px solid #fff; border-top: none">
-                                        <td style="padding: 8px; padding-top: 0">{{patientObj?.medication}}</td>
+                                        <td style="padding: 8px; padding-top: 0">{{global.patientObj?.medication}}</td>
                                     </tr>
                                     <tr>
                                         <td style="padding: 8px; "><strong>Follow up in:</strong>
-                                            <span>{{patientObj?.followUpNumber}}</span> {{patientObj?.followUpMeasure}}
+                                            <span>{{global.patientObj?.followUpNumber}}</span>
+                                            {{global.patientObj?.followUpMeasure}}
                                         </td>
                                     </tr>
                                 </table>
@@ -124,7 +158,8 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12 text-center mt-4 mb-4">
-                        <a href="../../" class="btn btn-primary">Email</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="javascript:;" (click)="showEmailModal = true"
+                            class="btn btn-primary">Email</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <button class="btn btn-primary" [useExistingCss]="true" printSectionId="print-section"
                             ngxPrint>print</button>
                     </div>
@@ -132,4 +167,8 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="modal-pat" *ngIf="showEmailModal">
+    <pat-send-email (closeModal)="showEmailModal=false"></pat-send-email>
 </div>

@@ -2,15 +2,15 @@
   <div class="row m-w100">
     <div class="col-md-9  col-sm-12 col-xs-12 p-0">
       <div class="video-frame">
-        <iframe width="560" height="315" [src]="global.config.videourl | safe"
-        frameborder="0" allow="microphone; camera" allowfullscreen></iframe>
+        <iframe width="560" height="315" [src]="global.config.videourl | safe" frameborder="0"
+          allow="microphone; camera" allowfullscreen></iframe>
       </div>
     </div>
     <div class="col-md-3 col-sm-12 col-xs-12 p-0 right-panel">
       <!-- My doctor Info -->
       <div class="my-doc">
         <img *ngIf="retrievedImage" class="img-profile rounded-circle" [src]="Transform()" width="25%">
-        <img *ngIf="!retrievedImage"  src="/img/doc.svg" alt="" class="doc-img-p">
+        <img *ngIf="!retrievedImage" src="/img/doc.svg" alt="" class="doc-img-p">
         <h5 class="mt-4">{{providerObj.nameTitle}} &nbsp;&nbsp;{{providerObj.name}} </h5>
         <span class="d-block mt-2"><i class="fa fa-user-md"></i>{{providerObj.designation}} </span>
         <p class=""><i class="fa fa-hospital-o"></i>{{providerObj.clinic}} </p>
@@ -29,8 +29,8 @@
             <div class="chatbox">
               <form [formGroup]="ChatForm">
                 <div class="chat-messages">
-                  <label  for="selPatient" style="float: left;">Provider: </label>
-                  <label >{{providerObj.userName}}</label>
+                  <label for="selPatient" style="float: left;">Provider: </label>
+                  <label>{{providerObj.userName}}</label>
                   <!--<select  id="selPatient" style="float: left;" formControlName="selUser"
                     (change)="OnChatUserChange()">
                     <option disabled value="null">Select Provider</option>
@@ -42,14 +42,16 @@
 
                   <div #scrollBtm class="message-box-holder" *ngFor="let msg of ChatMessages">
                     <div class="message-sender">
-                    <b> {{ msg.name }} :-</b> {{ msg.message }}
+                      <b> {{ msg.name }} :-</b> {{ msg.message }}
                     </div>
-                    </div>   
-                  </div>  
+                  </div>
+                </div>
                 <div class="chat-input-holder" style="padding-bottom: 15px;">
-                  <textarea class="chat-input" placeholder="Type your message here.." formControlName="chatMessage" (keyup)="onChatEnter($event)"></textarea>
+                  <textarea class="chat-input" placeholder="Type your message here.." formControlName="chatMessage"
+                    (keyup)="onChatEnter($event)"></textarea>
                   <input type="button" value="Send" class="message-send btn-primary" (click)="SendChatMsg()" />
-                  <small *ngIf="hasError('required','chatMessage')" style="color: red;position:absolute;bottom: 0px;left:25px;"> Chat message is required </small>
+                  <small *ngIf="hasError('required','chatMessage')"
+                    style="color: red;position:absolute;bottom: 0px;left:25px;"> Chat message is required </small>
                 </div>
 
               </form>
@@ -103,7 +105,7 @@
           <div class="desc">
             your files to Assets, or
           </div>
-          <div class="btn btn-sm btn-primary"  (click)="openUploadModal()">
+          <div class="btn btn-sm btn-primary" (click)="openUploadModal()">
             click here to browse
           </div>
         </div>

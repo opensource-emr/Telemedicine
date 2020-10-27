@@ -2,9 +2,10 @@ import { BrowserModule, Title } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER, Inject } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap'; //Added by Bhavana
 import { AppComponent } from './app.component';
 import { LoginComponent } from './security/login/login.component';
-import { APP_BASE_HREF, CommonModule } from '@angular/common';
+import { APP_BASE_HREF, CommonModule, DatePipe } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 
 import { ConfigService } from 'src/Common/config.service';
@@ -15,6 +16,7 @@ import { ForgotPasswordComponent } from './security/forgot-password/forgot-passw
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProviderRoomComponent } from './provider/provider-room/provider-room.component';
 import { PatientRoomComponent } from './patient/patient-room/patient-room.component';
+import { PatientSendEmailComponent } from './patient/patient-send-email/patient-send-email.component';
 import { PatientRegistrationComponent } from './patient/patient-registation/patient-registration.component';
 import { YesNoPipe } from 'src/Common/yes-no.pipe';
 import { PatientReportSummaryComponent } from './patient/patient-report-summary/patient-report-summary.component';
@@ -33,11 +35,6 @@ import { PatientRoomMobileComponent } from './patient/patient-room/patient-room-
 import { PatientReportSummaryMobileComponent } from './patient/patient-report-summary/patient-report-summary-mobile.component';
 import { PatientRoomTokboxMobileComponent } from './patient/patient-room-tokbox/patient-room-tokbox-mobile.component';
 
-// gets the path of the currently type URL
-// var p=window.location.hash.split('/',3);
-// var s='/'+p[1]+'/'+p[2]+'/';
-// console.log(p);
-// window['base-href'] =s;
 
 const initializerConfigFn = (config: ConfigService) => {
   return () => {
@@ -57,6 +54,7 @@ const initializerConfigFn = (config: ConfigService) => {
     PatientRegistrationMobileComponent,
     PatientRoomComponent,
     PatientRoomMobileComponent,
+    PatientSendEmailComponent,
     PatientReportSummaryComponent,
     PatientReportSummaryMobileComponent,
     PatientWaitingRoomComponent,
@@ -75,6 +73,7 @@ const initializerConfigFn = (config: ConfigService) => {
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
+    NgbModule,
     BrowserAnimationsModule, // required animations module
     NgxPrintModule,
     CKEditorModule
@@ -93,6 +92,7 @@ const initializerConfigFn = (config: ConfigService) => {
       deps: [ConfigService],
     },
     Global,
+    DatePipe,
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true }],
   bootstrap: [AppComponent]
 })
