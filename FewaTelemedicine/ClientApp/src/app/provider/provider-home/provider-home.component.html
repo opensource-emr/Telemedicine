@@ -1,13 +1,14 @@
 <head>
-
   <link href="//cdn.syncfusion.com/ej2/ej2-notifications/styles/material.css" rel="stylesheet" />
-  <script src="../../../vendor/ckeditor/ckeditor.js"></script>
-
+  <!-- <script src="../../../vendor/ckeditor/ckeditor.js"></script> -->
+  <style>
+    .dropdown:hover>.dropdown-menu {
+      display: block !important;
+    }
+  </style>
 </head>
 
 <body id="page-top">
-
-
   <!-- Page Wrapper -->
   <div id="wrapper">
     <!-- Content Wrapper -->
@@ -25,7 +26,7 @@
           <!-- Topbar Navbar -->
           <a class="sidebar-brand d-flex align-items-center justify-content-center">
 
-            <div class="sidebar-brand-text mx-3"><img src="/img/logo.png" alt=""></div>
+            <div class="sidebar-brand-text mx-3"><img src="{{practiceObj.logoPath}}" alt=""></div>
           </a>
           <ul class="navbar-nav ml-auto">
 
@@ -35,7 +36,8 @@
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="javascript:;" id="userDropdown" role="button"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="Check('accSett')"><strong
-                  *ngIf="global.providerObj.name==null">Upload profile</strong>
+                  *ngIf="(global.providerObj.name==null && providerObj.name==null)||(global.providerObj.name=='' && providerObj.name=='')">Upload
+                  profile</strong>
                 <span
                   class="mr-2 d-none d-lg-inline text-gray-600 small">{{providerObj.nameTitle}}&nbsp;{{providerObj.name}}</span>
                 <img *ngIf="retrievedImage" class="img-profile rounded-circle" [src]="Transform()">
@@ -44,21 +46,22 @@
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                <a class="dropdown-item" href="javascript:;" (click)="Check('accSett')">
+                  <i class="fa fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                   Profile
                 </a>
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                <!-- <a class="dropdown-item" href="#">
+                  <i class="fa fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                   Settings
                 </a>
                 <a class="dropdown-item" href="#">
-                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                  <i class="fa fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                   Activity Log
-                </a>
+                </a> -->
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                <a class="dropdown-item" href="javascript:;" (click)="Logout()" data-toggle="modal"
+                  data-target="#logoutModal">
+                  <i class="fa fa-sign-out fa-sm fa-fw mr-2 text-gray-400"></i>
                   Logout
                 </a>
               </div>
@@ -75,17 +78,17 @@
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-3">
-           
+
             <h5 class="h4 mb-0 text-gray-800 font-weight-light"><strong
                 class="">Hello!&nbsp;&nbsp;{{providerObj.nameTitle}}&nbsp;{{providerObj.name}}
               </strong><span class="font-weight-normal d-block text-sm mt-1">Choose following actions to
                 proceed.</span></h5>
-             
+
             <div class="patient-camera" style="float: right;">
-                <video  #pcam  autoplay autoplay="true"></video>
+              <video #pcam autoplay autoplay="true"></video>
             </div>
           </div>
-         
+
           <!-- Content Row -->
           <!-- Doctor Actions -->
           <div class="row mb-3">
@@ -104,7 +107,9 @@
                   <a class="nav-item nav-link btn btn-success btn-sm" id="nav-contact-tab" data-toggle="tab"
                     href="javascript:;" role="tab" aria-controls="nav-contact" aria-selected="false"
                     (click)="Check('chatSection')" (click)="count=0">Chat Section</a>
-                    <span class="e-badge e-badge-info e-badge-overlap e-badge-notification e-badge-circle" style="position:inherit;display:inline-block;margin: -9px 0px 0px -6px;" *ngIf="count>0">{{count}}</span>
+                  <span class="e-badge e-badge-info e-badge-overlap e-badge-notification e-badge-circle"
+                    style="position:inherit;display:inline-block;margin: -9px 0px 0px -6px;"
+                    *ngIf="count>0">{{count}}</span>
                 </div>
 
 
@@ -121,22 +126,21 @@
                   <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold">Send Invitation Link</h6>
                   </div>
-                  <form class="user p-3" [formGroup]="invitationForm">
+                  <form class="form user p-3" [formGroup]="invitationForm">
                     <div class="row">
                       <div class="col-md-4">
-                        <input type="email" class="form-control form-control-user" placeholder="Email"
-                          formControlName="email" [(ngModel)]="patientObj.email" />
+                        <input type="email" required class="form-control" placeholder="Email" [pattern]="emailPattern"
+                          formControlName="email" [(ngModel)]="patientObj.email" name="email" id="email" />
                       </div>
                       <div class="col-md-4">
-                        <input type="text" class="form-control form-control-user" placeholder="Mobile number"
-                          formControlName="mobileno" [(ngModel)]="patientObj.mobileNumber" />
+                        <input type="text" required minlength="10" class="form-control form-control-user"
+                          [pattern]="mobilePattern" placeholder="Mobile number" formControlName="mobileno"
+                          [(ngModel)]="patientObj.mobileNumber" />
                       </div>
-                      <!-- <div class="col-md-4">
-                            <input type="text" class="form-control form-control-user"  aria-describedby="" placeholder="Invitation Link">
-                          </div> -->
                       <div class="col-md-2">
+                        <!-- || (!patientObj.mobileNumber && !patientObj.email) -->
                         <button href="javascript:;" class="btn btn-primary btn-user btn-block" (click)="Invitation()"
-                          [disabled]="!(this.InvitationButton)">
+                          [disabled]="!(this.InvitationButton) || (!invitationForm.controls.mobileno.valid && !invitationForm.controls.email.valid)  || (invitationForm.controls.mobileno.value == '' &&  invitationForm.controls.email.value == '')">
                           Send
                         </button>
                       </div>
@@ -150,34 +154,68 @@
                         Sending Failed.
                       </div>
                     </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <!-- <small class="text-danger" *ngIf="IsError('required','email')"> Email
+                          is required</small> -->
+                        <small class="text-danger" *ngIf="IsError('pattern','email')">Please provide a
+                          valid Email </small>
+                      </div>
+                      <div class="col-md-4">
+                        <!-- <small class="text-danger" *ngIf="IsError('required','mobileno')"> Mobile No.
+                              is required</small> -->
+                        <small class="text-danger" *ngIf="IsError('pattern','mobileno')">Please provide a
+                          valid country code. </small>
+                        <small class="text-danger" *ngIf="IsError('minlength','mobileno')">Minimum digits should be 10
+                        </small>
+                      </div>
+                    </div>
                   </form>
                 </div>
                 <div *ngIf="SendInvitation">
                   <!-- Card Header - Dropdown -->
                   <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
-                  *ngIf="SendInvitation">
+                    *ngIf="SendInvitation">
                     <h6 class="m-0 font-weight-bold"><i class="fa fa-calendar"></i>Completed Appointments</h6>
                   </div>
                   <!-- Card Body -->
                   <div class="card-body">
-                    <table class="table table-striped" id="dataTable">
-                      <thead>
-                        <tr>
-                          <th>Date</th>
-                          <th>Call Duration</th>
-                          <th>Call Start Time</th>
-                          <th>Call End Time</th>
-                          <!-- <th>Phone</th>
+                    <div class="row">
+                      <div class="col-md-4 pb-2">
+                        <div class="md-form">
+                          <div class="input-group">
+                            <input class="form-control" placeholder="yyyy-mm-dd" (dateSelect)="onDateSelect($event)"
+                              name="dp" [(ngModel)]="selectedDate" ngbDatepicker #d="ngbDatepicker">
+                            <div class="input-group-append">
+                              <button class="btn btn-outline-secondary fa fa-calendar" (click)="d.toggle()"
+                                type="button"></button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row" style="overflow-y:scroll;height:400px;">
+                      <table class="table table-striped" id="dataTable">
+                        <thead>
+                          <tr>
+                            <th>Date</th>
+                            <th>Call Duration</th>
+                            <th>Call Start Time</th>
+                            <th>Call End Time</th>
+                            <!-- <th>Phone</th>
                       <th>Email</th> -->
-                        </tr>
-                      </thead>
-                      <tr *ngFor="let temp of CompletedPatients ">
-                        <td>{{temp.appointmentDate |  date: 'LLLL dd, yyyy'}}</td>
-                        <td>{{Difference(temp.startTime,temp.endTime)}}mins </td>
-                        <td>{{temp.startTime| date:'hh:mm:ss a'}}</td>
-                        <td>{{temp.endTime| date:'hh:mm:ss a'}}</td>
-                      </tr>
-                    </table>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let temp of FilteredCompletedPatients">
+                            <td>{{temp.appointmentDate |  date: 'MMMM dd, yyyy'}}</td>
+                            <td>{{Difference(temp.startTime,temp.endTime)}}</td>
+                            <td>{{temp.startTime| date:'hh:mm:ss a'}}</td>
+                            <td>{{temp.endTime| date:'hh:mm:ss a'}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
 
                 </div>
@@ -269,14 +307,14 @@
                             </div>
 
                           </div>
-                          <div class="row form-group">
+                          <!-- <div class="row form-group">
                             <label for="" class="col-md-3 control-label">Affiliated Hospital or Clinic</label>
                             <div class="col-md-9">
                               <input type="text" placeholder="Affiliated Hospital or Clinic" class="form-control"
-                                name="Clinic" [(ngModel)]="providerObj.clinic">
+                                name="Clinic" [(ngModel)]="providerObj.practice">
                             </div>
 
-                          </div>
+                          </div> -->
                           <div class="row form-group">
                             <label for="" class="col-md-3 control-label">Upload Image</label>
                             <div class="col-md-5">
@@ -323,8 +361,8 @@
                           <div class="row form-group">
                             <label for="" class="col-md-3 control-label">Practice Contact No.</label>
                             <div class="col-md-9">
-                              <input type="number" placeholder="Contact Number" class="form-control" name="ContactNumber"
-                                [(ngModel)]="practiceObj.contactNumber">
+                              <input type="number" placeholder="Contact Number" class="form-control"
+                                name="ContactNumber" [(ngModel)]="practiceObj.contactNumber">
                             </div>
 
                           </div>
@@ -339,41 +377,45 @@
                           <div class="row form-group">
                             <label for="" class="col-md-3 control-label">Practice Description</label>
                             <div class="col-md-9">
-                              <textarea placeholder="Description"  class="form-control" style="overflow:hidden;min-height:80px;"
-                                name="description" [(ngModel)]="practiceObj.description"></textarea>
+                              <textarea placeholder="Description" class="form-control"
+                                style="overflow:hidden;min-height:80px;" name="description"
+                                [(ngModel)]="practiceObj.description"></textarea>
                             </div>
                           </div>
                           <div class="row form-group">
                             <label for="" class="col-md-3 control-label">Practice Logo</label>
                             <div class="col-md-3">
                               <div class="profile-pic">
-                                <img src="{{practiceObj.logoPath}}"  id="logo" class="img-thumbnail img-circle img-responsive" width="210" height="80" />   
+                                <img src="{{practiceObj.logoPath}}" id="logo"
+                                  class="img-thumbnail img-circle img-responsive" width="210" height="80" />
                                 <div class="edit">
                                   <a href="javascript:;" class="icon" title="Edit">
-                                  <i (click)="fileInput.click()" class="fa fa-pencil fa-lg"></i>  
-                                  </a>                                                                     
+                                    <i (click)="fileInput.click()" class="fa fa-pencil fa-lg"></i>
+                                  </a>
                                   <input style="display: none" type="file" placeholder="Choose File"
-                                  (change)="updatePracticeLogo($event.target.files)" accept="images/*" #fileInput>     
-                                </div>                                                                          
-                              </div>
-                                                                                   
-                            </div>
-                                <div class="col-md-6">
-                                    <label *ngIf="LogoToUpload"> {{LogoToUpload.name}}</label>
-                                  <span class="upload" *ngIf="progress > 0">
-                                    {{progress}}%
-                                  </span>
-                                  <span class="upload" *ngIf="message">
-                                    {{message}}
-                                  </span>
+                                    (change)="updatePracticeLogo($event.target.files)" accept="images/*" #fileInput>
                                 </div>
-                           
+                              </div>
+
+                            </div>
+                            <div class="col-md-6">
+                              <label *ngIf="LogoToUpload"> {{LogoToUpload.name}}</label>
+                              <span class="upload" *ngIf="progress > 0">
+                                {{progress}}%
+                              </span>
+                              <span class="upload" *ngIf="message">
+                                {{message}}
+                              </span>
+                            </div>
+
                           </div>
                           <div class="row form-group">
                             <label for="" class="col-md-3 control-label">video call platform</label>
                             <div class="col-md-9">
-                              <input type="radio" name="VideoCallPlatform" value="Jitsi" [(ngModel)]="practiceObj.callingPlatform" checked />Jitsi
-                              <input type="radio" name="VideoCallPlatform" value="Tokbox" [(ngModel)]="practiceObj.callingPlatform">Tokbox
+                              <input type="radio" name="VideoCallPlatform" value="Jitsi"
+                                [(ngModel)]="practiceObj.callingPlatform" checked />Jitsi
+                              <input type="radio" name="VideoCallPlatform" value="Tokbox"
+                                [(ngModel)]="practiceObj.callingPlatform">Tokbox
                             </div>
 
                           </div>
@@ -394,7 +436,7 @@
                       </div>
                       <div class="card-body">
                         <form action="" class="user">
-                            <h6 class="m-0 font-weight-bold">Email Parameters :</h6><br>
+                          <h6 class="m-0 font-weight-bold">Email Parameters :</h6><br>
                           <div class="row form-group">
                             <label for="" class="col-md-3 control-label">Email Subject</label>
                             <div class="col-md-9">
@@ -402,35 +444,37 @@
                                 [(ngModel)]="practiceObj.emailSubject">
                             </div>
                           </div>
-    
+
                           <div class="row form-group">
                             <label for="" class="col-md-3 control-label">Email Plain Body</label>
                             <div class="col-md-9">
-                              <input type="text" class="form-control" name="EmailPlainBody" [(ngModel)]="practiceObj.emailPlainBody"
-                                placeholder="Email Plain Body">
+                              <input type="text" class="form-control" name="EmailPlainBody"
+                                [(ngModel)]="practiceObj.emailPlainBody" placeholder="Email Plain Body">
                             </div>
                           </div>
 
                           <div class="row form-group">
-                              <label for="" class="col-md-3 control-label">Email Additional Content</label>
-                              <div class="col-md-9">
-                                <textarea  style="overflow:hidden;min-height:80px;" class="form-control" name="EmailAdditionalContent" [(ngModel)]="practiceObj.emailAdditionalContent"
-                                  placeholder="Email Additional Content"></textarea>
-                              </div>
-                            </div>  
-                            
-                            <div class="row form-group" *ngIf="showPreview"> 
-                                <label for="" class="col-md-3 control-label">Preview Template</label>
-                                <div class="col-md-9">
-                                 <p  style="height:600px;pointer-events: none;" id="content" [innerHTML]="EmailTemplateUrl()"></p>
-                                  <!-- <iframe [srcdoc]='EmailHTMLBody'
+                            <label for="" class="col-md-3 control-label">Email Additional Content</label>
+                            <div class="col-md-9">
+                              <textarea style="overflow:hidden;min-height:80px;" class="form-control"
+                                name="EmailAdditionalContent" [(ngModel)]="practiceObj.emailAdditionalContent"
+                                placeholder="Email Additional Content"></textarea>
+                            </div>
+                          </div>
+
+                          <div class="row form-group" *ngIf="showPreview">
+                            <label for="" class="col-md-3 control-label">Preview Template</label>
+                            <div class="col-md-9">
+                              <p style="height:600px;pointer-events: none;" id="content"
+                                [innerHTML]="EmailTemplateUrl()"></p>
+                              <!-- <iframe [srcdoc]='EmailHTMLBody'
                                   marginheight="0"
                                   marginwidth="0" 
                                   width="100%" 
                                   height="100%" 
                                   scrolling="auto" allowfullscreen></iframe> -->
-                                </div>
-                              </div>  
+                            </div>
+                          </div>
 
                           <div class="row mt-4">
                             <div class="col-md-5"></div>
@@ -439,12 +483,12 @@
                                 class="btn btn-sm btn-primary">
                             </div>
                             <div class="col-md-2">
-                                <input type="button" name="Preview" (click)="PreviewEmailTemplate()" value="Preview"
-                                  class="btn btn-sm btn-primary">
+                              <button type="button" (click)="PreviewEmailTemplate()"
+                                class="btn btn-sm btn-primary">{{button_name}}</button>
                             </div>
                           </div>
 
-                       
+
                           <!-- <div class="row mt-4">
                               <div class="col-md-5"></div>
                              
@@ -551,16 +595,17 @@
                   <h6 class="m-0 font-weight-bold"><i class="fa fa-users"></i>My Patients</h6>
                 </div>
                 <!-- Card Body -->
-                <div class="card-body" *ngIf="(this.global.isProvider)">
+                <div class="card-body">
                   <table class="table table-striped">
-                    <thead>
-                      <tr *ngFor="let temp of patients">
-                        <td cellpadding="0" cellspacing="0" *ngIf="temp.name">&nbsp;{{temp.patientId + 1}})&nbsp;&nbsp;{{temp.name}}</td>
-                        <td cellpadding="0" cellspacing="0"><a href="javascript:;"
-                            (click)="CallPatient(temp)" *ngIf="temp.status==0 && temp.name" class="btn-call"><i
+                    <thead *ngIf="patients.length > 0">
+                      <tr *ngFor="let temp of patients, let i=index">
+                        <td cellpadding="0" cellspacing="0">
+                          &nbsp;{{i + 1}})&nbsp;&nbsp;{{temp.name}}</td>
+                        <td cellpadding="0" cellspacing="0"><a href="javascript:;" (click)="CallPatient(temp)"
+                            *ngIf="temp.status==0 && temp.name" class="btn-call"><i
                               class="fa fa-video-camera"></i>Call</a></td>
                         <td cellpadding="0" cellspacing="0" *ngIf="temp.name"><a class="btn-call"><i
-                              class="fa fa-video-camera" ></i>Chat</a></td>
+                              class="fa fa-video-camera"></i>Chat</a></td>
                         <td cellpadding="0" cellspacing="0" *ngIf="temp.status==1 && temp.name">In Call</td>
                       </tr>
                     </thead>
@@ -694,7 +739,8 @@
   <script>
     // Call the dataTables jQuery plugin
     $(document).ready(function () {
-      $('#dataTable').DataTable();
+      $('#dataTable').DataTable(
+      );
     });
   </script>
 </body>

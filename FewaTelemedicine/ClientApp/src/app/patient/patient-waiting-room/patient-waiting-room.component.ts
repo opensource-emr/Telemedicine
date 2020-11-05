@@ -21,28 +21,46 @@ export class PatientWaitingRoomComponent implements OnDestroy {
   tokbox: string = "Tokbox";
   public state: Observable<object>;
   @ViewChild('scrollBtm', { static: false }) private scrollBottom: ElementRef;
-  patientObj:Patient=new Patient();
-  providerObj:Provider=new Provider();
+  patientObj: Patient = new Patient();
+  providerObj: Provider = new Provider();
+  isMobile: boolean;
 
   ngAfterViewInit() {
-    let _video = this.video.nativeElement;
-    this.Video = _video;
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({ video: true })
-        .then(stream => {
-          _video.srcObject = stream;
-          _video.play();
-        })
+    if (this.video) {
+      let _video = this.video.nativeElement;
+      this.Video = _video;
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+          .then(stream => {
+            _video.srcObject = stream;
+            _video.play();
+          })
+      }
     }
   }
   constructor(
     public httpClient: HttpClient, private notificationService: NotificationService,
     public routing: Router, private formBuilder: FormBuilder,
     public global: Global, private cdr: ChangeDetectorRef) {
+    this.isMobile = this.global.isMobile.test(window.navigator.userAgent);
+    window.onresize = () => {
+      setTimeout(() => {
+        this.isMobile = this.global.isMobile.test(window.navigator.userAgent);
+        if (!this.isMobile) {
+          this.initialize();
+          this.ngAfterViewInit();
+        }
+      }, 100);
+    }
+    if (!this.isMobile) {
+      this.initialize();
+    }
+  }
+  private initialize() {
     this.initForm();
     this.notificationService.Connect();
-    this.patientObj=this.global.patientObj;
-   
+    this.patientObj = this.global.patientObj;
+
     this.notificationService.EventCallPatient.subscribe(patient => {
       this.GotoDoctorRoom(patient);
     });
@@ -67,14 +85,9 @@ export class PatientWaitingRoomComponent implements OnDestroy {
 
     this.notificationService.EventGetAllProviders.subscribe(_providers => {
       this.providers = _providers;
-      for(let p of _providers)
-      {
-        if(p.url==this.global.currentProvider&&p.practice==this.global.currentPractice)
-       {
-        this.providerObj=p;
+      this.providerObj = this.providers.find(p => p.url == this.global.currentProvider && p.practice == this.global.currentPractice);
+      if (this.providerObj) {
         this.ChatForm.controls['selUser'].setValue(this.providerObj.userName);
-       }
-       
       }
       //this.global.doctorObj=_doctors[0];
     });
@@ -82,14 +95,16 @@ export class PatientWaitingRoomComponent implements OnDestroy {
     this.notificationService.EventConnectionEstablished.subscribe(() => {
       this.notificationService.LoadActiveDoctors();
     });
-      this.state = history.state;
+    this.state = history.state;
   }
   ngOnDestroy() {
-    const mediaStream = this.Video.srcObject;
-    if (mediaStream == null) {
-      return;
+    if (this.video) {
+      const mediaStream = this.Video.srcObject;
+      if (mediaStream == null) {
+        return;
+      }
+      (<MediaStream>mediaStream).getTracks().forEach(stream => stream.stop());
     }
-    (<MediaStream>mediaStream).getTracks().forEach(stream => stream.stop());
   }
 
   private initForm() {
@@ -110,36 +125,33 @@ export class PatientWaitingRoomComponent implements OnDestroy {
 
   GotoDoctorRoom(res) {
     if (res == false) { return; }
-        if (res.providerNameAttending.length > 0 && res.name == sessionStorage.getItem('PatientName')) {
-          this.patientObj.providerNameAttending = res.providerNameAttending;
-          var params = new HttpParams().set('username', this.patientObj.providerNameAttending);
-          this.httpClient.
-            get<any>(this.global.practiceUrl + "GetUpdatedProvider", { params: params })
-            .subscribe(res => {
-                     this.global.providerObj = res.User
-                      for (let temp of res.Configuration)
-                      {
-                        if(temp.url==this.global.providerObj.practice)
-                        {
-                          this.global.practiceObj=temp;
-                        }
-                      }
-          console.log(this.providerObj);
+    if (res.providerNameAttending.length > 0 && res.name == sessionStorage.getItem('PatientName')) {
+      this.patientObj.providerNameAttending = res.providerNameAttending;
+      var params = new HttpParams().set('username', this.patientObj.providerNameAttending);
+      this.httpClient.
+        get<any>(this.global.practiceUrl + "GetUpdatedProvider", { params: params })
+        .subscribe(res => {
+          this.global.providerObj = res.User
+          for (let temp of res.Configuration) {
+            if (temp.url == this.global.providerObj.practice) {
+              this.global.practiceObj = temp;
+            }
+          }
+          //console.log(this.providerObj);
           var url: string = this.global.config.videourl.replace("DOCTORNAME", this.patientObj.providerNameAttending);
           this.global.config.videourl = url;
           if (this.global.practiceObj.callingPlatform == this.tokbox) {
             this.routing.navigateByUrl('/PatientRoomTokbox', { state: this.global });
           }
           else {
-            this.routing.navigateByUrl('/PatientRoom', { state: this.global});
+            this.routing.navigate(['/PatientRoom'], { queryParams: { state: this.global } })//('/PatientRoom', { state: this.global });
           }
         });
-      }
- 
+    }
   }
 
   Error(res) {
-    console.log(res);
+    console.error(res);
   }
 
   SendChatMsg() {

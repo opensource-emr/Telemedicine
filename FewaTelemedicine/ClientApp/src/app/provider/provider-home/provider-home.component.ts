@@ -3,18 +3,19 @@ import { Router, NavigationStart, ActivatedRoute, Data } from '@angular/router';
 import { NotificationService } from 'src/Common/notification.service';
 import { Global } from 'src/Common/global.model'
 import { HttpClient, HttpEventType, HttpEvent, HttpParams } from '@angular/common/http';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { SMSModel } from 'src/models/SMS.model';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Message } from '@angular/compiler/src/i18n/i18n_ast';
+import { NgbCalendar, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { Pipe, PipeTransform } from '@angular/core';
 import { Provider, Patient, Practice } from 'src/models/DomainModels';
+import { DatePipe } from '@angular/common';
+import * as moment from 'moment';
 
 @Component({
   templateUrl: './provider-home.component.html',
   template: `<pre>{{ state | async | json }}</pre>`,
   styleUrls: ['../../../assets/css/doctor-home-component.css']
-
 })
 export class ProviderHomeComponent implements OnInit, AfterViewInit {
   public state: Observable<object>;
@@ -22,6 +23,11 @@ export class ProviderHomeComponent implements OnInit, AfterViewInit {
   public selectedFile: File;
   public progress: number;
   public message: string;
+  public emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
+  public mobilePattern = "^\\+?[0-9]{3}[0-9]{9}$|[0]{1}[0-9]{9}$";
+  disableBtn: boolean = false;
+  //((\+91-?)|0)?[0-9]{10}$
+  searchText: string = "";
   count: number = 0;
   receivedImageData: any;
   retrievedImage: any;
@@ -40,6 +46,7 @@ export class ProviderHomeComponent implements OnInit, AfterViewInit {
   ChatMessages: Array<any> = new Array<any>();
   ChatReceivedMessages: Array<any> = new Array<any>();
   ChatUserDropDowns: Array<any> = new Array<any>();
+  selectedDate: NgbDateStruct;
   ChatForm: FormGroup;
   usrname: string;
 
@@ -56,12 +63,14 @@ export class ProviderHomeComponent implements OnInit, AfterViewInit {
   public EmailTemplateUpdate: boolean = false;
   public ChatSection: boolean = false;
   public CompletedPatients: Array<Patient> = null;
+  public FilteredCompletedPatients: Array<Patient> = [];
   public CompPatients: Array<Patient> = null;
   public AddedDoctors: Array<Provider> = null;
   providerObj: Provider = new Provider();
   practiceObj: Practice = new Practice();
   patientObj: Patient = new Patient();
-
+  htmlBody: string = "";
+  public button_name: any = 'Show Preview';
   public showPatDetail: boolean = false;
   patients: Array<Patient> = new Array<Patient>();
 
@@ -83,15 +92,17 @@ export class ProviderHomeComponent implements OnInit, AfterViewInit {
   }
   constructor(private routing: Router,
     private notificationService: NotificationService,
+    private calendar: NgbCalendar,
     public global: Global,
     public httpClient: HttpClient,
     private formBuilder: FormBuilder,
     private activatedRoute: ActivatedRoute,
     private cdr: ChangeDetectorRef,
     private sanitizer: DomSanitizer,
-      ) {
-
-    this.initForm();
+  ) {
+    this.selectedDate = calendar.getToday();
+    this.initChatForm();
+    this.initInvitationForm();
     this.LoadPatientsAttended();
     this.practiceObj = this.global.practiceObj;
     this.providerObj = this.global.providerObj;
@@ -99,6 +110,7 @@ export class ProviderHomeComponent implements OnInit, AfterViewInit {
       this.notificationService.EventCompletePatient
         .subscribe(_patient => {
           // this.global.patientObj = _patient;
+          this.patients = [];
           this.patients = _patient;
           // this.patients = _patient;
           // this.PatientCompleted(_patient);
@@ -109,16 +121,9 @@ export class ProviderHomeComponent implements OnInit, AfterViewInit {
     this.notificationService.Connect();
     this.notificationService.EventGetAllPatients
       .subscribe(_patients => {
-        // this.patients = _patients;
-        for(let p of _patients)
-        {
-          if(p.url==this.global.currentProvider)
-          {
-            this.patients.push(p);
-            this.ChatUserDropDowns.push(p);
-          }
-        }
-       
+        this.patients = [];
+        this.patients = _patients.filter(t => t.url == this.global.currentProvider);
+        this.ChatUserDropDowns = _patients;
       });
 
     this.notificationService.EventCallPatient
@@ -139,9 +144,7 @@ export class ProviderHomeComponent implements OnInit, AfterViewInit {
         this.ChatMessages.push(chatMsg);
         this.count = this.count + 1;
         this.pushChatMsgUserwise(data.Name, chatMsg);
-
         this.cdr.detectChanges();
-        // this.scrollBottom.nativeElement.lastElementChild.scrollIntoView(false); // scroll to bottom
       });
 
     this.invitationForm = this.formBuilder.group(
@@ -166,43 +169,98 @@ export class ProviderHomeComponent implements OnInit, AfterViewInit {
           this.retrievedImage = 'data:image/png;base64,' + this.providerObj.image;
         }
       });
-
+  }
+  /* Search Filter : 12/10/2020 => Added by Bhavana Vanjani */
+  get searchFilter() {
+    return this.searchText;
   }
 
+  onDateSelect(event) {
+    let year = event.year;
+    let month = event.month <= 9 ? '0' + event.month : event.month;;
+    let day = event.day <= 9 ? '0' + event.day : event.day;;
+    let finalDate = year + "-" + month + "-" + day;
+    this.searchText = finalDate;
+    this.LoadPatientsAttended();
+  }
+
+  set searchFilter(value) {
+    this.searchText = value;
+    //this.LoadPatientsAttended();
+  }
+  /* Search Filter : 12/10/2020 => Added by Bhavana Vanjani */
+
   ngOnDestroy() {
-    const mediaStream = this.Video?.srcObject;
+    const mediaStream = this.Video ? this.Video.srcObject : null;
+    //const mediaStream = this.Video?.srcObject;
     if (mediaStream == null) {
       return;
     }
     (<MediaStream>mediaStream).getTracks().forEach(stream => stream.stop());
   }
+
   Transform() {
     return this.sanitizer.bypassSecurityTrustResourceUrl(this.retrievedImage);
   }
 
-  private initForm() {
+  private initChatForm() {
     this.ChatForm = this.formBuilder.group({
       selUser: [null, Validators.required],
       chatMessage: ['', Validators.required]
     });
   }
 
+  private initInvitationForm() {
+    this.invitationForm = this.formBuilder.group({
+      email: new FormControl('',
+        [Validators.required,
+        Validators.pattern(this.emailPattern)]),
+      mobileno: new FormControl('',
+        [
+          Validators.required,
+          Validators.minLength(10),
+          Validators.pattern(this.mobilePattern)]),
+    });
+  }
+
   hasError(typeofvalidator: string, controlname: string): boolean {
     const control = this.ChatForm.controls[controlname];
+    // if(!control){
+    //   const ctrl =  this.invitationForm.controls[controlname];
+    //   return ctrl.hasError(typeofvalidator) && ctrl.dirty;
+    // }
     return control.hasError(typeofvalidator) && control.dirty;
   }
 
-  Difference(start: Date, end: Date): number {
-    start = new Date(start);
-    end = new Date(end);
-    var startminutes = start.getMinutes();
-    var endminutes = end.getMinutes();
-    var diff = 0;
-    if (endminutes > startminutes) {
-      diff = endminutes - startminutes;
-    }
+
+
+
+  IsError(typeofvalidator: string, controlname: string): boolean {
+    const ctrl = this.invitationForm.controls[controlname];
+    return ctrl.hasError(typeofvalidator) && ctrl.dirty;
+  }
+
+  Difference(start: Date, end: Date) {
+    var endTime = end;
+    var startTime = start;
+    //var diff ;
+
+    //diff = moment.utc(moment(endTime,"YYYY-MM-DD HH:mm:ss").diff(moment(startTime,"YYYY-MM-DD HH:mm:ss"))).format("HH:mm:ss");
+    var ms = moment.utc(moment(endTime, "YYYY-MM-DD HH:mm:ss").diff(moment(startTime, "YYYY-MM-DD HH:mm:ss"))).format("HH:mm:ss");
+    var d = moment.duration(ms);
+    var diff = d.get("minutes") + "min" + d.get("seconds") + "sec";
+    //var s = Math.floor(d.asHours()) + moment.utc(ms).format(":mm:ss");
+    // start = new Date(start);
+    // end = new Date(end);
+    // var startminutes = start.getMinutes();
+    // var endminutes = end.getMinutes();
+    // var diff = 0;
+    // if (endminutes > startminutes) {
+    //   diff = endminutes - startminutes;
+    // }
     return diff;
   }
+
   Check(param) {
     let data = param;
 
@@ -308,6 +366,10 @@ export class ProviderHomeComponent implements OnInit, AfterViewInit {
       return;
     }
     this.selectedFile = <File>event.target.files[0];
+    if (this.selectedFile.size > 2097152) {
+      alert("Please upload file less than 2MB");
+      return;
+    }
     const fd: any = new FormData();
     fd.append('image', this.selectedFile, this.selectedFile.name);
     // this.providerObj.userName = this.providerObj.userName;
@@ -337,9 +399,10 @@ export class ProviderHomeComponent implements OnInit, AfterViewInit {
         }
       );
   }
+
   UpdatePracticeConfiguration() {
     this.httpClient.
-      post<any>(this.global.practiceUrl + "UpdatePracticeConfiguration", this.global.practiceObj)
+      post<any>(this.global.practiceUrl + "UpdatePracticeConfiguration", this.practiceObj)
       .subscribe(res => {
         this.practiceObj = res;
         alert("Practice Configuration updated");
@@ -348,7 +411,7 @@ export class ProviderHomeComponent implements OnInit, AfterViewInit {
   }
 
   UpdateProfile() {
-    console.log(this.providerObj);
+    //console.log(this.providerObj);
     this.httpClient.
       post<any>(this.global.practiceUrl + "UpdateProfile", this.providerObj)
       .subscribe(res => {
@@ -360,22 +423,32 @@ export class ProviderHomeComponent implements OnInit, AfterViewInit {
       },
         err => { console.log(err); });
   }
-  EmailTemplateUrl() {
-    return this.sanitizer.bypassSecurityTrustHtml(this.practiceObj.emailHtmlBody);
-  }
-  PreviewEmailTemplate() {
 
+  EmailTemplateUrl() {
+    return this.sanitizer.bypassSecurityTrustHtml(this.htmlBody);
+  }
+
+  PreviewEmailTemplate() {
     this.httpClient.
       post<any>(this.global.practiceUrl + "PreviewEmailTemplate", this.practiceObj)
       .subscribe(res => {
+        this.htmlBody = res.EmailHTMLBody.replace("ProviderNameTitle", this.providerObj.nameTitle);
+        this.htmlBody = this.htmlBody.replace("ProviderName", this.providerObj.name);
+        this.htmlBody = this.htmlBody.replace("PracticeName", this.practiceObj.name);
+        this.htmlBody = this.htmlBody.replace("{ImageUrl}", this.practiceObj.logoPath);
         this.practiceObj.emailHtmlBody = res.EmailHTMLBody;
-        this.showPreview = true;
+        this.showPreview = !this.showPreview;
+        if (this.showPreview)
+          this.button_name = "Hide Preview"
+        else
+          this.button_name = "Show preview"
       },
         err => { console.log(err); });
   }
+
   UpdateEmailTemplate() {
     this.httpClient.
-      post<any>(this.global.practiceUrl + "UpdatePracticeConfiguration", this.practiceObj.emailHtmlBody)
+      post<any>(this.global.practiceUrl + "UpdatePracticeConfiguration", this.practiceObj)
       .subscribe(res => {
         this.practiceObj = res;
         alert("Email Template Updated");
@@ -384,16 +457,23 @@ export class ProviderHomeComponent implements OnInit, AfterViewInit {
   }
 
   Invitation() {
+    // if (this.invitationForm.invalid) {
+    //   return;
+    // }
+    this.InvitationFailure = false;
+    this.InvitationSuccess = false;
+    this.patientObj.email = this.invitationForm.controls['email'].value;
+    this.patientObj.mobileNumber = this.invitationForm.controls['mobileno'].value;
     this.InvitationButton = false;
     this.httpClient.post("/Messenger/SendEmail", this.patientObj).subscribe(res => this.EmailInvitationSuccess(res), err => this.Error(err));
-    this.invitationForm.reset();
+
   }
 
   CallPatient(callPatient: Patient) {
     if (this.patientObj.status == 1) {
       this.patientObj = new Patient;
     }
-    console.log(this.providerObj);
+    //console.log(this.providerObj);
     this.showPatDetail = true;
     let dateTime = new Date();
     this.patientObj.appointmentDate = dateTime;
@@ -405,23 +485,24 @@ export class ProviderHomeComponent implements OnInit, AfterViewInit {
     }
     else
       this.routing.navigateByUrl('/ProviderRoom', { state: this.global });
-
   }
 
   LoadPatientsAttended() {
-    this.CompletedPatients=[];
-    this.httpClient.get(this.global.practiceUrl + "GetPatientsAttended")
+    this.CompletedPatients = [];
+    let params = new HttpParams().set('searchString', this.searchText);
+    this.httpClient.get<any>(this.global.practiceUrl + "GetPatientsAttended", { params: params })
       .subscribe(res => this.LoadPatientSuccess(res), err => this.Error(err));
-
   }
+
   LoadPatientSuccess(res) {
     this.CompletedPatients = res.filter(t => t.url == this.global.providerObj.url);
+    this.FilteredCompletedPatients = this.CompletedPatients;
     this.cdr.detectChanges();
     // this.CompletedPatients=res;
   }
 
   NextPatient(res) {
-    console.log(this.patientObj);
+    //console.log(this.patientObj);
     if (res) {
       //console.log(this.patients);
       this.patients.forEach(p => {
@@ -432,20 +513,29 @@ export class ProviderHomeComponent implements OnInit, AfterViewInit {
       this.patientObj = res;
     }
   }
+
+
   EmailInvitationSuccess(res) {
-    console.log(res);
+    //console.log(res);
     if (res) {
       this.InvitationButton = true;
       this.InvitationSuccess = true;
-
+      this.invitationForm.reset();
+      setTimeout(() => {
+        this.InvitationSuccess = false;
+      }, 10000);
       //alert("Email Invitation Sent has been sent ");
     }
     else {
       this.InvitationButton = true;
       this.InvitationFailure = true;
+      setTimeout(() => {
+        this.InvitationFailure = false;
+      }, 10000);
       //alert("Sending failed!");
     }
   }
+
   // SMSInvitationSuccess(res)
   // {
   //   if(res)
@@ -453,12 +543,14 @@ export class ProviderHomeComponent implements OnInit, AfterViewInit {
   //    else
   //    alert("Mobile number doesnot exists");
   // }
+
   Success(res) {
     this.patients = res;
-
   }
+
   Error(err) {
   }
+
   SendChatMsg() {
     try {
       for (const i in this.ChatForm.controls) {
@@ -522,5 +614,14 @@ export class ProviderHomeComponent implements OnInit, AfterViewInit {
       this.AllUserChats[user].push(messageObj);
     } catch (e) { }
   }
+
+  Logout() {
+    this.global.providerObj = new Provider();
+    //this.providerObj = new Provider();
+    this.notificationService.DisconnectUser();
+    //this.ngOnDestroy();
+    this.routing.navigateByUrl('/Login');
+  }
+
 
 }

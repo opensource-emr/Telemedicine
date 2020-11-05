@@ -1,0 +1,230 @@
+<style>
+  html,
+  body {
+    border: 1px solid black;
+    border-width: thin;
+    overflow: auto;
+    display: block;
+    box-sizing: border-box;
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+  }
+
+  html,
+  body ::-webkit-scrollbar {
+    display: none;
+    /* Chrome */
+  }
+
+  #page-top {
+    max-width: 100%;
+    margin: auto;
+    background-color: white !important;
+  }
+
+  @media (orientation: portrait) {
+    .row {
+      width: 100vw;
+    }
+
+    .video-frame,
+    .col-size {
+      padding: 3%;
+    }
+
+    .video-frame iframe {
+      width: 100vw;
+      height: 72vh;
+      padding-left: 5%;
+    }
+
+    .right-panel {
+      width: 100vw;
+      height: 28vh;
+      padding: 5%;
+      margin: 3%;
+      margin-bottom: 5%;
+      -ms-overflow-style: none;
+      /* IE and Edge */
+      scrollbar-width: none;
+    }
+
+    .drop {
+      height: 100px;
+      margin-left: 6%;
+    }
+
+    .my-doc {
+      margin-left: 6%;
+    }
+
+    .right-panel::-webkit-scrollbar {
+      display: none;
+      /* Chrome */
+    }
+  }
+
+  @media (orientation: landscape) {
+    .row {
+      width: 100vw;
+    }
+
+    .video-frame,
+    .col-size {
+      padding: 3%;
+    }
+
+    .video-frame iframe {
+      width: 100vw;
+      height: 70vh;
+      padding-left: 3%;
+    }
+
+    .video-frame iframe .title {
+      margin: 0%;
+    }
+
+    .right-panel::-webkit-scrollbar {
+      display: none;
+      /* Chrome */
+    }
+
+    .right-panel {
+      width: 100vw;
+      height: 30vh;
+      padding-left: 5%;
+      padding-bottom: 3%;
+      /* margin:3%; */
+      -ms-overflow-style: none;
+      /* IE and Edge */
+      scrollbar-width: none;
+    }
+
+    .my-doc {
+      margin-left: 6%;
+    }
+
+    .drop {
+      height: 75px;
+      margin-left: 6%;
+    }
+
+  }
+</style>
+
+<div class="row m-w100">
+  <div class="col-md-9  col-sm-12 col-xs-12 p-0">
+    <div class="video-frame">
+      <iframe width="100%" height="100%" [src]="global.config.videourl | safe" frameborder="0"
+        allow="microphone; camera" allowfullscreen></iframe>
+    </div>
+  </div>
+  <div class="col-md-3 col-sm-12 col-xs-12 p-0 right-panel">
+    <!-- See File On popup click  -->
+    <div id="myModalpdf" class="modal fade uploads" role="dialog">
+      <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body">
+            <!-- Inorder to load PDF -->
+            <embed src="/img/Telemedicine.pdf" target="_blank">
+            <!-- END -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End See File On popup click  -->
+    <!-- See File On popup click  -->
+    <div id="myModalimg" class="modal fade uploads" role="dialog">
+      <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body">
+            <!-- Inorder to load PDF -->
+            <img src="img/1.jpg" alt="">
+            <!-- END -->
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!-- End See File On popup click  -->
+    <div class="drop">
+      <div class="cont">
+        <div class="desc">
+          your files to Assets, or
+        </div>
+        <div class="btn btn-sm btn-primary" [routerLink]='["/Upload"]'>
+          click here to browse
+        </div>
+      </div>
+    </div>
+    <!-- Upload end -->
+  </div>
+</div>
+<script src="js/vendor.bundle.base.js"></script>
+
+<script src="js/vendor.bundle.addons.js"></script>
+<script type="text/javascript">
+  var drop = $("input");
+  drop.on('dragenter', function (e) {
+    $(".drop").css({
+      "border": "2px dashed #09f",
+      "background": "#f4f1f1"
+    });
+    $(".cont").css({
+      "color": "#09f"
+    });
+  }).on('dragleave dragend mouseout drop', function (e) {
+    $(".drop").css({
+      "border": "3px dashed #DADFE3",
+      "background": "#f4f1f1 "
+    });
+    $(".cont").css({
+      "color": "#555"
+    });
+  });
+
+
+
+  function handleFileSelect(evt) {
+    var files = evt.target.files; // FileList object
+
+    // Loop through the FileList and render image files as thumbnails.
+    for (var i = 0, f; f = files[i]; i++) {
+
+      // Only process image files.
+      if (!f.type.match('image.*')) {
+        continue;
+      }
+
+      var reader = new FileReader();
+
+      // Closure to capture the file information.
+      reader.onload = (function (theFile) {
+        return function (e) {
+          // Render thumbnail.
+          var span = document.createElement('span');
+          span.innerHTML = ['<img class="thumb" src="', e.target.result,
+            '" title="', escape(theFile.name), '"/>'].join('');
+          document.getElementById('list').insertBefore(span, null);
+        };
+      })(f);
+
+      // Read in the image file as a data URL.
+      reader.readAsDataURL(f);
+    }
+  }
+
+  $('#files').change(handleFileSelect);
+</script>

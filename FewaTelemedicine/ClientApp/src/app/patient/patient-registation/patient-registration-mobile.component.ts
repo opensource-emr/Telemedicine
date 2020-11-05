@@ -1,22 +1,21 @@
-import { Component, OnInit, Provider } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NotificationService } from 'src/Common/notification.service';
 import { Global } from 'src/Common/global.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Patient, Practice } from 'src/models/DomainModels';
+import { Patient, Practice, Provider } from 'src/models/DomainModels';
 import { Observable } from 'rxjs';
-import { Title } from '@angular/platform-browser';
 
 @Component({
-  templateUrl: './patient-registration.component.html'
+  templateUrl: './patient-registration-mobile.component.html',
+  selector: 'pat-reg-mobile'
 })
-export class PatientRegistrationComponent implements OnInit {
+export class PatientRegistrationMobileComponent implements OnInit {
   practiceObj: Practice = new Practice();
   patientObj: Patient = new Patient();
   providers: Array<Provider> = new Array<Provider>();
   public state: Observable<object>;
-  isMobile: boolean;
   patRegForm: FormGroup;
   disableCheckInBtn = true;
   constructor(public httpClient: HttpClient,
@@ -24,13 +23,7 @@ export class PatientRegistrationComponent implements OnInit {
     public global: Global,
     private formBuilder: FormBuilder,
     private notificationService: NotificationService,
-    private route: ActivatedRoute,
-    private title: Title) {
-    this.title.setTitle('Fewa Telemedicine-Join')
-    this.isMobile = this.global.isMobile.test(window.navigator.userAgent);
-    window.onresize = () => {
-      this.isMobile = this.global.isMobile.test(window.navigator.userAgent);
-    }
+    private route: ActivatedRoute) {
     this.patRegForm = this.formBuilder.group({
       patientName: ['', Validators.required],
       acceptTerms: [true, Validators.required]
@@ -75,7 +68,6 @@ export class PatientRegistrationComponent implements OnInit {
         this.global.patientObj = res.Value.User;
         this.global.patientObj.patientId = res.Value.patientId;
         this.global.patientObj.name = res.Value.name;
-        this.global.patientObj.providerNameAttending = res.Value.providerNameAttending;
         // this.global.patientObj.url = res.Value.User.url;
         this.routing.navigateByUrl('/Waiting', { state: this.global });
       },

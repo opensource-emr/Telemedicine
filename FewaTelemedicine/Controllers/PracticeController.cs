@@ -16,6 +16,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
 using System.Reflection.Metadata;
+using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Security.Claims;
 using System.Text;
@@ -54,7 +55,7 @@ namespace FewaTelemedicine.Controllers
             INotificationHub> _notify;
         private readonly IConfiguration _config;
         private IWebHostEnvironment _hostingEnvironment;
-        private  FewaDbContext FewaDbContext = null;
+        private FewaDbContext FewaDbContext = null;
         public IConfiguration Configuration { get; }
 
         public PracticeController(
@@ -64,30 +65,30 @@ namespace FewaTelemedicine.Controllers
             IConfiguration configuration,
             List<Provider> providers,
             IHubContext<NotificationHub,
-                INotificationHub> notify,
+            INotificationHub> notify,
             IConfiguration config,
             IPatientRepository patientRepository,
             IProviderRepository providerRepository,
             IWebHostEnvironment hostEnvironment,
-            FewaDbContext  fewaDbContext)
-            {
-                FewaDbContext = fewaDbContext;
-                _patientRepository = patientRepository;
-                _providers = providers;
-                Configuration = configuration;
-                _logger = logger;
-                _providerCabins = providerCabins;
-                _waitingroom = waitingroom;
-                _providerRepository = providerRepository;
-                idletime = Convert.ToInt32(configuration["IdleTime"]);
-                _notify = notify;
-                _config = config;
-                _hostingEnvironment= hostEnvironment;
-            }
-            public IActionResult Index()
-            {
-                return View();
-            }
+            FewaDbContext fewaDbContext)
+        {
+            FewaDbContext = fewaDbContext;
+            _patientRepository = patientRepository;
+            _providers = providers;
+            Configuration = configuration;
+            _logger = logger;
+            _providerCabins = providerCabins;
+            _waitingroom = waitingroom;
+            _providerRepository = providerRepository;
+            idletime = Convert.ToInt32(configuration["IdleTime"]);
+            _notify = notify;
+            _config = config;
+            _hostingEnvironment = hostEnvironment;
+        }
+        public IActionResult Index()
+        {
+            return View();
+        }
         public IActionResult GetPracticeConfiguration()
         {
             try
@@ -111,9 +112,9 @@ namespace FewaTelemedicine.Controllers
             obj.lastUpdated = DateTime.Now;
 
             _waitingroom.patients.Add(obj);
-           
 
-            var token = GenerateJSONWebToken(obj.name,"Patient");
+
+            var token = GenerateJSONWebToken(obj.name, "Patient");
             var result = new
             {
                 User = obj,
@@ -126,7 +127,7 @@ namespace FewaTelemedicine.Controllers
         {
             return Json(_waitingroom);
         }
-       
+
         public bool CheckProvider(string name, string password)
         {
             foreach (var item in _providers)
@@ -161,12 +162,48 @@ namespace FewaTelemedicine.Controllers
             { provider = new Provider() { userName = name } });
 
         }
-        public List<Patient> GetPatientsAttended()
+
+        public List<Patient> GetPatientsAttended([Optional] string searchString)
         {
-            var attendedPatients = (from temp in FewaDbContext.patients
+            var attendedPatients = new List<Patient>();
+            //Add Optional paramter if value is in parameter then filter.
+            // Else no filter.
+            // if no search text then today's all records and if no today's records
+            // then top 10 records.
+            // if value in search text then  return values matching with search text.
+            if (string.IsNullOrEmpty(searchString))
+            {
+                DateTime startDateTime = DateTime.Today; //Today at 00:00:00
+                DateTime endDateTime = DateTime.Today.AddDays(1).AddTicks(-1); //Today at 23:59:59
+                /* Display Today's Records */
+                attendedPatients = (from temp in FewaDbContext.patients
+                                    where (temp.appointmentDate >= startDateTime && temp.appointmentDate <= endDateTime)
                                     orderby temp.startTime descending
                                     select temp
-                                    ).ToList<Patient>();
+                                   ).ToList<Patient>();
+                /*Display  Previous Records  if no today's records */
+                if (attendedPatients.Count <= 0)
+                {
+                    attendedPatients = (from temp in FewaDbContext.patients
+                                        orderby temp.startTime, temp.appointmentDate descending
+                                        select temp
+                                  ).OrderByDescending(a => a.startTime).Take(10).ToList<Patient>();
+
+                }
+            }
+            else if (!string.IsNullOrEmpty(searchString))
+            {
+                /* Display Records Matching With SearchString */
+                attendedPatients = (from temp in FewaDbContext.patients
+                                    where
+                                    (
+                                    temp.appointmentDate.Month.ToString().Contains(searchString) ||
+                                    temp.appointmentDate.Date.ToString().Contains(searchString) ||
+                                    temp.appointmentDate.Year.ToString().Contains(searchString))
+                                    orderby temp.appointmentDate descending
+                                    select temp).Take(10).AsEnumerable().ToList<Patient>();
+            }
+
             return attendedPatients;
         }
 
@@ -177,6 +214,7 @@ namespace FewaTelemedicine.Controllers
             var provider = (from temp in FewaDbContext.providers
                             where temp.userName == username
                             select temp).FirstOrDefault();
+            provider.roomName = provider.roomName.Replace("name", provider.userName);
             var data = new
             {
                 User = provider,
@@ -200,7 +238,7 @@ namespace FewaTelemedicine.Controllers
             }
             return null;
         }
-        public IActionResult CallPatient([FromBody]Patient obj)
+        public IActionResult CallPatient([FromBody] Patient obj)
         {
             Patient p = GetPatientbyName(obj.name);
             if (p is null)
@@ -239,7 +277,7 @@ namespace FewaTelemedicine.Controllers
             //_notify.Clients.All.BroadcastMessage("PatientLoggedIn", dd);
             return Json(_waitingroom.patients);
         }
-        public IActionResult WriteMedication([FromBody]Patient obj)
+        public IActionResult WriteMedication([FromBody] Patient obj)
         {
             Patient p = GetPatientbyName(GetCurrentProviderCabin().patient.name);
             if (p.status == (int)TeleConstants.PatientCalled)
@@ -252,14 +290,14 @@ namespace FewaTelemedicine.Controllers
                 p.followUpNumber = obj.followUpNumber;
                 p.followUpMeasure = obj.followUpMeasure;
                 p.status = (int)TeleConstants.PatientCompleted;
-                return Ok(true); 
+                return Ok(true);
             }
             else
             {
                 return Ok(true);
             }
         }
-        public IActionResult TakeFinalReport([FromBody]Patient p1)
+        public IActionResult TakeFinalReport([FromBody] Patient p1)
         {
             Patient p = GetPatientbyName(p1.name);
             if (p is null) { return Ok(null); }
@@ -277,7 +315,7 @@ namespace FewaTelemedicine.Controllers
                 return Ok(null);
             }
         }
-        public IActionResult PatientAttended([FromBody]Patient obj)
+        public IActionResult PatientAttended([FromBody] Patient obj)
         {
             Patient p = GetPatientbyName(obj.name);
             if (p is null)
@@ -293,7 +331,7 @@ namespace FewaTelemedicine.Controllers
                 p.newPrescriptionsMailedToYou = obj.newPrescriptionsMailedToYou;
                 p.medication = obj.medication;
                 p.followUpNumber = obj.followUpNumber;
-                p.followUpMeasure = obj.followUpMeasure;                
+                p.followUpMeasure = obj.followUpMeasure;
                 _waitingroom.patients.Remove(p);
 
                 //var dd = JsonSerializer.Serialize(_waitingroom.PatientsAttendedModels);
@@ -369,7 +407,7 @@ namespace FewaTelemedicine.Controllers
                 string folderName = "img";
                 string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, folderName);
                 //logoPath = Path.Combine(folderName, file.FileName);
-                logoPath = '/'+folderName+'/' + file.FileName;
+                logoPath = '/' + folderName + '/' + file.FileName;
                 string filePath = Path.Combine(uploadsFolder, file.FileName);
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
@@ -379,7 +417,7 @@ namespace FewaTelemedicine.Controllers
             return Ok(logoPath);
         }
 
-        public  IActionResult UploadProfileImage()
+        public IActionResult UploadProfileImage()
         {
             try
             {
@@ -428,37 +466,37 @@ namespace FewaTelemedicine.Controllers
                 }
                 return Ok(provider.image);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return Ok("Unable to fetch Image " + ex.Message);
             }
-            
-        }
-       
 
-         public IActionResult PreviewEmailTemplate([FromBody] Practice list)
+        }
+
+
+        public IActionResult PreviewEmailTemplate([FromBody] Practice list)
         {
             if (ModelState.IsValid)
             {
-                var newEmailContent = list.emailAdditionalContent;           
+                var newEmailContent = list.emailAdditionalContent;
                 var oldEmailContent = FewaDbContext.practices.Select(a => a.emailAdditionalContent).FirstOrDefault();
-                var htmlContent = FewaDbContext.practices.Select(a => a.emailHtmlBody).FirstOrDefault();      
-                    if (!(string.IsNullOrEmpty(oldEmailContent)) && htmlContent.Contains(oldEmailContent))
-                    {
-                        htmlContent = htmlContent.Replace(oldEmailContent, newEmailContent);
-                    }                  
-                    else if (htmlContent.Contains("EmailAdditionalContent"))
-                    {
-                        htmlContent = htmlContent.Replace("EmailAdditionalContent", newEmailContent);
-                    }                       
-                  
+                var htmlContent = FewaDbContext.practices.Select(a => a.emailHtmlBody).FirstOrDefault();
+                if (!(string.IsNullOrEmpty(oldEmailContent)) && htmlContent.Contains(oldEmailContent))
+                {
+                    htmlContent = htmlContent.Replace(oldEmailContent, newEmailContent);
+                }
+                else if (htmlContent.Contains("EmailAdditionalContent"))
+                {
+                    htmlContent = htmlContent.Replace("EmailAdditionalContent", newEmailContent);
+                }
+
                 var data = new
                 {
                     EmailHTMLBody = htmlContent,
                     PreviewEmailContent = newEmailContent
                 };
 
-                
+
                 return Ok(data);
             }
             else
@@ -466,8 +504,8 @@ namespace FewaTelemedicine.Controllers
                 return Ok("Cannot Load Preview.");
             }
         }
-       
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

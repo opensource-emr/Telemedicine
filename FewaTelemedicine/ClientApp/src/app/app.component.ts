@@ -10,20 +10,17 @@ import { Global } from 'src/Common/global.model';
 })
 export class AppComponent implements OnInit {
 
-  constructor(private global:Global) {
-    var p=location.pathname.split('/');
-    this.global.currentPractice=p[1];
-    this.global.currentProvider=p[2];
+  constructor(private global: Global) {
+    var p = location.pathname.split('/');
+    this.global.currentPractice = p[1];
+    this.global.currentProvider = p[2];
   }
 
   ngOnInit() {
-   window.addEventListener("beforeunload", function (e) {
-    var confirmationMessage = "\o/";
-    console.log("cond");
-    e.returnValue = confirmationMessage;  
-    return confirmationMessage;             
-});
-  
+     window.addEventListener("beforeunload", function (e) {
+       var confirmationMessage = "\o/";
+       e.returnValue = confirmationMessage;
+       return confirmationMessage;
+     });
   }
-   
 }

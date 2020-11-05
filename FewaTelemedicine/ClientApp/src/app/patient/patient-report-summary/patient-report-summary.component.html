@@ -1,113 +1,159 @@
+<style>
+  .modal-pat {
+    display: block;
+    position: fixed;
+    /* Stay in place */
+    z-index: 9999;
+    /* Sit on top */
+    padding-top: 100px;
+    /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+  }
 
-<body id="page-top">
+  .modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+  }
+</style>
 
-    <!-- Page Wrapper -->
-    <div id="wrapper">
-      <!-- Content Wrapper -->    
-      <div id="content-wrapper" class="d-flex flex-column">
-        <!-- Main Content -->
-        <div id="content">
-  
-          <!-- Topbar -->
-          <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-  
-            <!-- Sidebar Toggle (Topbar) -->
-            <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-              <i class="fa fa-bars"></i>
-            </button>
-            <!-- Topbar Navbar -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-  
-              <div class="sidebar-brand-text mx-3"><img src="img/logo.png" alt=""></div>
-            </a>
-            <ul class="navbar-nav ml-auto">
-  
-              <div class="topbar-divider d-none d-sm-block"></div>
-              
-              <!-- Nav Item - User Information -->
-              <li class="nav-item dropdown no-arrow">
-               
-              </li>
-  
-            </ul>
-  
-          </nav>
-          <!-- End of Topbar -->
-  
-          <!-- Begin Page Content -->
-  
-          <div class="container-fluid">          
-            <div class="row m-w100" id="print-section">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="card">
-                  <div class="card-body">
-                    <!-- Report Printable Area -->
-                    <style type="text/css" media="Print">
-                      table{
-                        font-family: 'Verdana';
-                      }
-                      @media Print{
-                        table{
-                          font-family: 'Verdana';
-                        }
-                      }
-                    </style>
-                    <table style="width: 100%; text-align: center; margin: 45px 0; font-size: 13px; font-family: Verdana;">
-                      <tr>
-                        <td>
-                          <img src="/img/logo.png" style="height: 80px;">
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <h3 style="margin-top: 15px; margin-bottom: 5px;"><span style="display: block; margin-top: 15px;">John Doe International Hospital</span></h3>
-                          <h5 style="margin-top: 5px; margin-bottom: 15px;"><span style="display: block;">Hospital Address two</span></h5>
-                          <span style="display: block; margin-top: 5px;">Phone No. *********, Fax: **********</span>
-                        </td>
-                      </tr>
-                    </table>
-                    <table style="width: 100%; text-align: center; margin: 45px 0; font-size: 13px; font-family: Verdana;">
-                      <tr>
-                        <td>
-                          <h5><u>After Visit Summary Report</u></h5>
-                        </td>
-                      </tr>  
-                    </table>
-                    <table style="border:1px solid #000; font-family: Verdana; font-size: 13px; width: 100%;border-collapse: inherit !important;">
-  
-                      <tr style="border: 1px solid #fff">
-                        <td style="padding: 8px;" ><strong>Lab Orders Sent:</strong>{{patientObj?.labOrdersSent| yesNoPipe}}</td>
-                      </tr>
-                      <tr style="border: 1px solid #fff">
-                        <td style="padding: 8px;"><strong>New prescriptions sent to your pharmacy:</strong> {{patientObj?.newPrescriptionsSentToYourPharmacy| yesNoPipe}}</td>
-                      </tr>
-                      <tr style="border: 1px solid #fff">
-                        <td style="padding: 8px;"><strong>New prescriptions mailed to you:</strong>{{patientObj?.newPrescriptionsMailedToYou| yesNoPipe}}</td>
-                      </tr>
-  
-                      <tr style="border: 1px solid #fff; border-bottom: none;">
-                        <td style="padding: 8px;"><strong><u>Advice</u></strong></td>
-                      </tr>
-                      <tr style="border: 1px solid #fff; border-top: none">
-                        <td style="padding: 8px; padding-top: 0">{{patientObj?.medication}}</td>
-                      </tr>
-                      <tr>
-                        <td style="padding: 8px; "><strong>Follow up in:</strong> <span>{{patientObj?.followUpNumber}}</span> {{patientObj?.followUpMeasure}}</td>
-                      </tr>
-                    </table>
-                    <!-- Report Printable area end -->
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12 text-center mt-4 mb-4">
-                <a href="javascript:;" class="btn btn-primary">Email</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <button  class="btn btn-primary" [useExistingCss]="true" printSectionId="print-section" ngxPrint>print</button>
+<!-- Page Wrapper -->
+<div id="wrapper" *ngIf="!isMobile">
+  <!-- Content Wrapper -->
+  <div id="content-wrapper" class="d-flex flex-column">
+    <!-- Main Content -->
+    <div id="content">
+
+      <!-- Topbar -->
+      <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+        <!-- Sidebar Toggle (Topbar) -->
+        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+          <i class="fa fa-bars"></i>
+        </button>
+        <!-- Topbar Navbar -->
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+
+          <div class="sidebar-brand-text mx-3"><img src="{{global.practiceObj.logoPath}}" alt=""></div>
+        </a>
+        <ul class="navbar-nav ml-auto">
+
+          <div class="topbar-divider d-none d-sm-block"></div>
+
+          <!-- Nav Item - User Information -->
+          <li class="nav-item dropdown no-arrow">
+
+          </li>
+
+        </ul>
+
+      </nav>
+      <!-- End of Topbar -->
+
+      <!-- Begin Page Content -->
+
+      <div class="container-fluid">
+        <div class="row m-w100" id="print-section">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+              <div class="card-body">
+                <!-- Report Printable Area -->
+                <style type="text/css" media="Print">
+                  table {
+                    font-family: 'Verdana';
+                  }
+
+                  @media Print {
+                    table {
+                      font-family: 'Verdana';
+                    }
+                  }
+                </style>
+                <table style="width: 100%; text-align: center; margin: 45px 0; font-size: 13px; font-family: Verdana;">
+                  <tr>
+                    <td>
+                      <img src="{{global.practiceObj.logoPath}}" style="height: 80px;">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <h3 style="margin-top: 15px; margin-bottom: 5px;"><span
+                          style="display: block; margin-top: 15px;">{{global.practiceObj.name}}</span></h3>
+                      <h5 style="margin-top: 5px; margin-bottom: 15px;"><span
+                          style="display: block;">{{global.practiceObj.address}}</span></h5>
+                      <span style="display: block; margin-top: 5px;">Phone No.{{global.practiceObj.contactNumber}},
+                        Email:{{global.practiceObj.email}}</span>
+                    </td>
+                  </tr>
+                </table>
+                <table style="width: 100%; text-align: center; margin: 45px 0; font-size: 13px; font-family: Verdana;">
+                  <tr>
+                    <td>
+                      <h5><u>After Visit Summary Report</u></h5>
+                    </td>
+                  </tr>
+                </table>
+                <table
+                  style="border:1px solid #000; font-family: Verdana; font-size: 13px; width: 100%;border-collapse: inherit !important;">
+
+                  <tr style="border: 1px solid #fff">
+                    <td style="padding: 8px;"><strong>Lab Orders
+                        Sent:</strong>{{global.patientObj?.labOrdersSent| yesNoPipe}}
+                    </td>
+                  </tr>
+                  <tr style="border: 1px solid #fff">
+                    <td style="padding: 8px;"><strong>New prescriptions sent to your pharmacy:</strong>
+                      {{global.patientObj?.newPrescriptionsSentToYourPharmacy| yesNoPipe}}</td>
+                  </tr>
+                  <tr style="border: 1px solid #fff">
+                    <td style="padding: 8px;"><strong>New prescriptions mailed to
+                        you:</strong>{{global.patientObj?.newPrescriptionsMailedToYou| yesNoPipe}}</td>
+                  </tr>
+
+                  <tr style="border: 1px solid #fff; border-bottom: none;">
+                    <td style="padding: 8px;"><strong><u>Advice</u></strong></td>
+                  </tr>
+                  <tr style="border: 1px solid #fff; border-top: none">
+                    <td style="padding: 8px; padding-top: 0">{{global.patientObj?.medication}}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 8px; "><strong>Follow up in:</strong>
+                      <span>{{global.patientObj?.followUpNumber}}</span> {{global.patientObj?.followUpMeasure}}</td>
+                  </tr>
+                </table>
+                <!-- Report Printable area end -->
               </div>
             </div>
           </div>
         </div>
+        <div class="row">
+          <div class="col-md-12 text-center mt-4 mb-4">
+            <a href="javascript:;" class="btn btn-primary"
+              (click)="openEmailModal()">Email</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="btn btn-primary" [useExistingCss]="true" printSectionId="print-section"
+              ngxPrint>print</button>
+          </div>
+        </div>
       </div>
     </div>
-</body>
+  </div>
+</div>
+
+<div class="modal-pat" *ngIf="showEmailModal">
+  <pat-send-email (closeModal)="showEmailModal=false"></pat-send-email>
+</div>
+
+<pat-summery-report *ngIf="isMobile"></pat-summery-report>
