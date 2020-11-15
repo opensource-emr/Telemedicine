@@ -1,0 +1,46 @@
+<div class="patient-intro">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-12 col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="welcomeNote" *ngIf="!isWaiting">
+                            <h2>Welcome,</h2>
+                            <p>Please check in here to join your provider if you consent for
+                                this secure video visit.</p>
+                            <h6>Please check in below to let <b>{{global.currentProvider}}</b> know you are here</h6>
+                            <form action="" class="user" [formGroup]="patRegForm">
+                                <div class="form-group">
+                                    <input class="form-control post-invitation" name="name"
+                                        formControlName="patientName" type="text" placeholder="Enter your name">
+                                    <small style="color: red;" *ngIf="isControlHasError('patientName','required')">Enter
+                                        Your Name</small>
+                                </div>
+                                <div class="custom-control custom-checkbox ">
+                                    <input type="checkbox" id="customCheck" name="customCheck"
+                                        class="custom-control-input" style="z-index: 2;" formControlName="acceptTerms" />
+                                    <label class="custom-control-label" for="customRadioInline1">By clicking you will
+                                        accept our <a>Terms and Conditions</a></label>
+                                </div>
+                                <br>
+                                <div class="submitButton">
+                                    <button type="submit" [disabled]="!disableCheckInBtn" class="submitBtn"
+                                        (click)="loginPatient()" href="javascript:;">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="welcomeNote" *ngIf="isWaiting">
+                            <h2>Welcome,</h2>
+                            <p>Please wait your provider will start this secure video visit.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-12 col-lg-6">
+                <div class="previewVideo">
+                    <test-audio-video></test-audio-video>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

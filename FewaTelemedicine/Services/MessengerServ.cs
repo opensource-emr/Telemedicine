@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FewaTelemedicine.Services
 {
-    public class MessengerServ : IMessengerService
+    public class MessengerServ: IMessengerService
     {
         private readonly IMessengerRepository _messengerRepository;
         public MessengerServ(IMessengerRepository messengerRepository)

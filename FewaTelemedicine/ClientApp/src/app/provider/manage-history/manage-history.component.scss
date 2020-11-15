@@ -1,0 +1,36 @@
+@import '../../../global.scss';
+
+// Searchbar css
+.searchbarSec{
+    position: relative;
+    width: 280px;
+    float: right;
+    .searchbar {
+        width: 280px;        
+    }
+    button{
+        padding: 0;
+        border: none;
+        background: none;
+        position: absolute;
+            top: 5px;
+            right: 15px;
+        svg{
+            fill: var(--primary);
+            width: 16px;
+            height: 16px;            
+        }
+    }
+}
+
+.meetingHeading {
+    padding: 10px 0 16px;
+    border-bottom: 1px solid $light-color;
+    margin-bottom: 15px;
+    h1{
+        padding-top: 10px;
+    }
+}
+  
+  
+  

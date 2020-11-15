@@ -10,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using System.Web;
 using Twilio;
@@ -41,18 +40,27 @@ namespace FewaTelemedicine.Persistence.Repositories
                 var pra = accessor.HttpContext.Session.GetString("practice");
                 var username = accessor.HttpContext.Session.GetString("name");
                 Practice practice = FewaDbContext.practices.Where(a => a.url == pra).FirstOrDefault();
+                if(practice==null)
+                {
+                    return false;
+                }
                 var provider = _providerRepository.getProviderByUserName(username);
-                var TodaysDate = DateTime.Now.ToString("MM-dd-yyyy HH:mm:ss");
+                if(provider==null)
+                {
+                    return false;
+                }
+                //var TodaysDate =DateTime.Now.ToString("MM-dd-yyyy HH:mm:ss");
                 var client = new SendGridClient(practice.emailApiKey);
                 var from = new EmailAddress(practice.email);
                 var to = new EmailAddress(receiverEmail);
                 var htmlContent = practice.emailHtmlBody;
-                htmlContent = htmlContent.Replace("{ImageUrl}", practice.serverName + practice.logoPath);
-                htmlContent = htmlContent.Replace("{Join}", practice.serverName + provider.practice + "/" + provider.url + "/#/Join");
-                htmlContent = htmlContent.Replace("ProviderNameTitle", provider.nameTitle);
-                htmlContent = htmlContent.Replace("ProviderName", provider.name);
-                htmlContent = htmlContent.Replace("PracticeName", practice.name);
-                htmlContent = htmlContent.Replace("TodaysDate", TodaysDate);
+                htmlContent = htmlContent.Replace("{imageUrl}", practice.serverName + practice.logoPath);
+                htmlContent = htmlContent.Replace("{join}",practice.serverName+"/"+provider.practice+"/"+provider.url + "/#/patient/intro");
+                htmlContent = htmlContent.Replace("providerNameTitle", provider.nameTitle);
+                htmlContent = htmlContent.Replace("providerName", provider.name);
+                htmlContent= htmlContent.Replace("practiceName", practice.name);
+                htmlContent = htmlContent.Replace("{serverName}", practice.serverName);
+                htmlContent = htmlContent.Replace("PatientEmail", receiverEmail);
                 htmlContent = htmlContent.Replace("EmailAdditionalContent", practice.emailAdditionalContent);
                 var msg = MailHelper.CreateSingleEmail(from, to, practice.emailSubject, practice.emailPlainBody, htmlContent);
                 var res = await client.SendEmailAsync(msg);
@@ -168,7 +176,7 @@ namespace FewaTelemedicine.Persistence.Repositories
                                  "           </td>  " +
                                  "       </tr>  " +
                                  "  </table>  ";
-                practice.emailSubject = "otp for password reset";
+                practice.emailSubject = "Password verification";
                 var client = new SendGridClient(practice.emailApiKey);
                 var from = new EmailAddress(practice.email);
                 var to = new EmailAddress(provider.email);
@@ -192,8 +200,11 @@ namespace FewaTelemedicine.Persistence.Repositories
             var bResponse = false;
             try
             {
-                var provider = _providerRepository.getProviderByUserName(patient.url);
-                Practice practice = FewaDbContext.practices.Where(a => a.url == provider.practice).FirstOrDefault();
+                var pra = accessor.HttpContext.Session.GetString("practice");
+                var username = accessor.HttpContext.Session.GetString("name");
+                Practice practice = FewaDbContext.practices.Where(a => a.url == pra).FirstOrDefault();
+
+                var provider = _providerRepository.getProviderByUserName(username);
                 var TodaysDate = DateTime.Now.ToString("MM-dd-yyyy HH:mm:ss");
                 var client = new SendGridClient(practice.emailApiKey);
                 var from = new EmailAddress(practice.email);

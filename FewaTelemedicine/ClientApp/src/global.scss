@@ -1,0 +1,104 @@
+
+
+// Colors
+// blue theme
+$gray:#666;
+$light-gray: #999; 
+$white:#fff;
+$black:#000;
+$light-color:#ccc;
+$success: #12DA26;
+
+/* =========== 
+Theme Color Change
+==============*/
+// blue Theme = Theme 1
+
+.blueTheme{
+    --primary: #071b4d;
+    //sidemenu font color
+    --primary-light:#9EB1E1;
+    --sidemenu-border: #355196; 
+    --table-body:#F3F6FF;
+}
+
+.greenTheme{
+    --primary: #009789;
+    //sidemenu font color
+    --primary-light:#05FFCE;
+    --sidemenu-border: #00E0B4; 
+    --table-body:#E1FFF9;
+}
+
+
+// input, textarea , select css
+
+input.form-control,select.form-control,select{
+    height: 46px !important;
+    font-size: 16px !important;
+}  
+input{
+    &:focus{
+        outline: none;
+        
+    }
+}
+select{
+    &:focus{
+        outline: none;
+    }
+}
+textarea{
+    &:focus{
+        outline: none;
+    }
+}
+// input and textarea placeholder css
+input::-webkit-input-placeholder { /* Edge */
+    color: rgba(var(--primary),0.3) !important;
+    font-size: 15px;
+  }
+  
+  :-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: rgba(var(--primary),0.3) !important;
+    font-size: 15px;
+  }
+  
+  ::placeholder {
+    color: rgba(var(--primary),0.3) !important;
+    font-size: 15px;
+  }
+
+//   width css
+
+.wdt-10{
+    width: 10%;
+}
+
+.wdt-20{
+    width: 20%;
+}
+.wdt-30{
+    width: 30%;
+}
+.wdt-40{
+    width: 40%;
+}
+.wdt-50{
+    width: 50%;
+}
+.wdt-60{
+    width: 60%;
+}
+.wdt-70{
+    width: 70%;
+}
+.wdt-80{
+    width: 80%;
+}
+.wdt-90{
+    width: 90%;
+}
+.wdt-100{
+    width: 100%;
+}

@@ -1,0 +1,477 @@
+/* You can add global styles to this file, and also import other style files */
+@import 'global.scss';
+
+
+// Font - Nunito family
+
+@font-face {
+    font-family: font-regular;
+    src: url(/assets/font/Nunito-Regular.ttf);
+}
+
+@font-face {
+    font-family: font-semibold;
+    src: url(/assets/font/Nunito-SemiBold.ttf);
+}
+
+@font-face {
+    font-family: font-bold;
+    src: url(/assets/font/Nunito-Bold.ttf);
+}
+
+@font-face {
+    font-family: font-extrabold;
+    src: url(/assets/font/Nunito-ExtraBold.ttf);
+}
+
+
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: font-bold !important;
+    font-size: 16px !important;
+    position: relative;
+}
+
+ul {
+    list-style: none;
+    margin: 0px 0px 0px 0px;
+    padding: 0 0 0 0;
+}
+
+p {
+    margin-bottom: 0;
+}
+
+a {
+    &:hover {
+        text-decoration: none !important;
+    }
+
+    &:focus {
+        outline: none !important;
+    }
+}
+
+.pad0 {
+    padding-top: 0 !important;
+    padding-left: 0 !important;
+    padding-bottom: 0 !important;
+    padding-right: 0 !important;
+}
+
+.display-flex {
+    display: flex;
+}
+
+.position-relative {
+    position: relative;
+}
+
+
+// Custom Common Css
+// register, login , forgot password
+.introSection {
+    display: flex;
+    align-items: center;
+
+    .intro-form {
+        width: 40%;
+        min-height: 100vh;
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        z-index: 1;
+        position: relative;
+
+        &::before {
+            content: "";
+            width: 200px;
+            height: 200px;
+            border: 30px solid var(--primary);
+            border-radius: 50%;
+            position: absolute;
+            top: -70px;
+            left: -70px;
+            z-index: -1;
+        }
+
+        .introBackIcon {
+            position: absolute;
+            right: -20px;
+            top: 20px;
+
+            img {
+                width: 130px;
+                height: auto;
+                opacity: 0.08;
+            }
+        }
+
+        .intro-formSec {
+            width: 65%;
+            padding: 50px 0 0;
+            z-index: 1;
+
+            h5 {
+                font-size: 20px;
+                text-transform: uppercase;
+                color: rgba(var(--primary), 0.6);
+            }
+
+            h4 {
+                font-size: 20px;
+                color: rgba(var(--primary), 0.6);
+            }
+
+            h6 {
+                font-size: 16px;
+                color: rgba(var(--primary), 0.6);
+            }
+
+            h2 {
+                font-size: 24px;
+            }
+
+            h1 {
+                font-size: 18px;
+                line-height: 24px;
+                padding-bottom: 20px;
+                color: $gray;
+            }
+
+            .loginIntro {
+                padding: 15px 0 25px;
+            }
+
+            .forPwd {
+                font-size: 14px;
+                color: rgba(var(--primary), 0.6);
+                padding-bottom: 15px;
+                display: inline-block;
+            }
+
+            form {
+                .intro-formList {
+                    .form-group {
+                        margin-bottom: 0.6rem;
+
+                        .form-control {
+                            height: calc(1.5em + .45rem + 2px);
+                        }
+
+                        &.form-check {
+                            input {
+                                vertical-align: middle;
+                            }
+
+                            label {
+                                vertical-align: text-top;
+                            }
+
+                            a {
+                                color: var(--primary);
+                            }
+
+                            .form-check-label {
+                                font-size: 13px;
+                                color: $light-gray;
+                            }
+                        }
+                    }
+
+                    .submitBtn {
+                        background: var(--primary);
+                        color: $white;
+                        width: 100%;
+                        font-size: 16px;
+                    }
+                }
+            }
+
+            p {
+                color: $light-gray;
+                font-size: 14px;
+                text-align: center;
+                margin: 15px 0 0;
+
+                a {
+                    color: var(--primary);
+
+                    &:hover {
+                        text-decoration: none;
+                    }
+                }
+            }
+        }
+    }
+
+    .intro-about {
+        width: 60%;
+        // background: linear-gradient(to right, rgba( var(--primary), 0.9), rgba( var(--primary), 0.9)), url("assets/img/intro-banner.jpg") center center;
+         background-size: cover !important;
+        background-repeat: no-repeat !important;
+        min-height: 100vh;
+        align-items: center;
+        display: flex;
+        position: relative;
+        
+        .intro-content {
+            text-align: center;
+            padding: 25px;
+            color: $white;
+
+            .into-logo {
+                text-align: center;
+                padding: 30px;
+
+                img {
+                    width: 250px;
+                }
+            }
+
+            .intro-bannercontent {
+                width: 70%;
+                margin: 0 auto;
+
+                p {
+                    line-height: 28px;
+                    font-size: 20px;
+                }
+
+                ul {
+                    list-style: none;
+                    margin: 0;
+                    padding: 0;
+
+                    li {
+                        display: inline-block;
+                        padding: 0 25px;
+
+                        span {
+                            font-size: 17px;
+                            vertical-align: text-top;
+                            padding: 0 10px 0 0px;
+
+                            svg {
+                                fill: $white;
+                                fill: #fff;
+                                width: 20px;
+                                height: 20px;
+                            }
+                        }
+
+                        &:first-child {
+                            border-right: 2px solid $white;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
+// Sidemenu Css
+.left_sidemenu {
+    background: var(--primary);
+    min-height: 100vh;
+    width: 250px;
+    box-shadow: 1px 0px 20px 8px rgba(0, 0, 0, 0.06);
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 10;
+
+    .sidemenu_logo {
+        background: $white;
+        padding: 20px 0;
+        text-align: center;
+
+        img {
+            width: 120px;
+            height: auto;
+        }
+    }
+
+    .sidemenu_list {
+        .sidemenu_border {
+            background-color: var(--sidemenu-border);
+            width: 80%;
+            height: 2px;
+            margin: 0 auto;
+        }
+
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 15px 0 15px;
+
+            li {
+                display: block;
+                color: var(--primary-light);
+                font-size: 16px;
+                padding: 15px 20px;
+                cursor: pointer;
+
+                span {
+                    padding: 0px 10px;
+
+                    svg {
+                        fill: var(--primary-light);
+                        width: 16px;
+                        height: 16px;
+                    }
+                }
+
+                &:focus {
+                    outline: none;
+                }
+
+                &.active {
+                    color: $white;
+
+                    span {
+                        svg {
+                            fill: $white;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+// header Css
+
+.fewa_header {
+    margin-left: 250px;
+    padding: 10px 15px;
+    border-bottom: 1px solid $light-color;
+
+    //  
+    .pageTitle {
+        h1 {
+            font-size: 18px;
+            text-transform: capitalize;
+            padding: 8px 0 0;
+        }
+    }
+
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+
+        li {
+            display: inline-block;
+            padding: 0px 15px;
+
+            .dropdown-menu {
+                left: auto !important;
+                right: -30px !important;
+            }
+
+            .profileHeader {
+                display: flex;
+                align-items: center;
+
+                p {
+                    font-size: 16px;
+                    margin: 0;
+                    padding: 0 10px;
+                }
+
+                .profilePic {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    overflow: hidden;
+                }
+            }
+
+            a {
+                font-size: 16px;
+                color: var(--primary);
+            }
+        }
+    }
+}
+
+// provider Inner Pages
+.main-content {
+    margin-left: 250px;
+    padding: 15px;
+
+    .card {
+        margin: 15px 0;
+        border: none;
+        box-shadow: 0px 0px 20px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    // fewa title css
+    .fewa-title {
+        h1 {
+            font-size: 20px;
+            color: $black;
+        }
+    }
+}
+
+// table css
+table {
+    margin-bottom: 0 !important;
+
+    thead {
+        border: none;
+
+        tr {
+            th {
+                border-bottom: none !important;
+                border-top: none !important;
+                font-size: 16px;
+                padding: 10px 15px !important;
+            }
+        }
+    }
+
+    tbody {
+        tr {
+            td {
+                color: $gray;
+                font-size: 16px;
+                border-bottom: none !important;
+                border-top: none !important;
+                padding: 10px 15px !important;
+                vertical-align: middle !important;
+            }
+
+            &:nth-child(odd) {
+                background: var(--table-body);
+            }
+        }
+    }
+}
+
+// home banner
+.blueTheme{
+    .homeBanner{
+        background: url(/assets/img/banner-bg.png) center right;
+    }
+    .intro-about {        
+        background: url('/assets/img/intro-banner-blue.png') center center;
+    }
+}
+
+.greenTheme{
+    .homeBanner{
+        background: url(/assets/img/banner-bg-green.png) center right;
+    }
+    .intro-about {        
+        background: url('/assets/img/intro-banner-green.png') center center;
+    }
+}

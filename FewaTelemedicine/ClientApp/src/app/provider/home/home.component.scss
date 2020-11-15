@@ -1,0 +1,344 @@
+@import '../../../global.scss';
+
+// Landing page css
+// section padding
+.footersection,.contactsection,.plansection,.howitsection,.aboutsection{
+    padding: 80px 0;
+}
+
+// BannerSection css
+
+
+.homeBanner{
+    // headercss
+    
+    background-repeat: no-repeat;
+    background-size: cover;
+    .headerSection{
+        padding: 30px 0;
+        h1{
+            font-size: 24px;
+            color: var(--primary);
+        }
+        ul{
+            text-align: right;
+            margin-bottom: 0;
+            li{
+                display: inline-block;
+                padding: 0 15px;
+                color: $black;
+                a{
+                    color: $black;
+                }
+                .signupBtn{
+                    background: $white;
+                    color: var(--primary);
+                    padding: 5px 15px;
+                    border-radius: 5px;
+                }
+            }
+        }
+    }
+    .bannerContent{
+        padding-top: 30px;
+        h2{
+            font-size: 24px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        p{
+            color: $gray;
+            padding-top: 10px;
+        }
+        .viewBtn{
+            color: $white;
+            background:var(--primary);
+            padding: 8px 30px;
+            text-align: center;
+            display: inline-block;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .bannerTexts{
+            padding: 30px 0;
+        }
+    }
+    .partnerSection{
+        background: var(--table-body);
+        z-index: 99;
+        width: 90%;
+        border-radius: 0 30px 0 0;
+        .container{
+            margin-right: 0;
+            .partnerList{
+                ul{
+                    margin-bottom: 0;
+                    text-align: right;
+                    li{
+                        display: inline-block;
+                        padding: 10px 15px;
+                        width: 16%;
+                        text-align: center;
+                        img{
+                            height: 84px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// About Section
+.aboutsection{
+    background: url(../../../assets/img/bg2.jpg) center right;
+    background-repeat: no-repeat;
+    background-size: cover;
+    .aboutImage{
+        position: relative;
+        display: block;
+        .aboutBg{
+            width: 85%;
+            height: 87%;
+            background: var(--primary);
+            position: absolute;
+            top: 16px;
+            left: 15px;
+            z-index: 0;
+            display: block;
+        }
+        img{
+            display: block;
+            z-index: 999;
+            position: relative;
+        
+        }
+    }
+    .about-content{
+        .about-header{
+            padding: 15px 0px 10px;
+            .display-flex{
+                align-items: baseline;
+                .aboutHeadborder{
+                    background: var(--primary);
+                    width: 70px;
+                    height: 5px;
+                    margin-right: 15px;
+                }
+                h3{
+                    color: $black;
+                    font-size: 18px;
+                    text-transform: uppercase;
+                }
+            }
+        }
+        h1{
+            color: var(--primary);
+            font-size: 30px;
+            padding-bottom: 15px;
+        }
+        p{
+            color: $gray;
+        }
+
+    }
+
+}
+// How Its Work Css
+.howitsection{
+    background: rgba(var(--primary),0.07);
+    h1{
+        font-size: 24px;
+        text-transform: uppercase;
+        color: var(--primary);
+    }
+    p{
+        font-size: 16px;
+        color: $gray;
+    }
+    .display-flex{
+        margin-bottom: 20px;
+        .Number{
+            width: 100px;
+            text-align: center;
+            h1{
+                color: var(--primary);
+                font-size: 35px;
+            }
+        }
+        .whatdoText{
+            width: calc(100% - 100px);
+            .whatdoImg{
+                background: $white;
+                text-align: center;
+            }
+            h3{
+                color: var(--primary);
+                font-size: 20px;
+                margin: 15px 0 10px;
+
+            }
+
+
+        }
+    }
+}
+
+// Plan section
+.plansection{
+    background: linear-gradient(to right, rgba(var(--primary),0.75) , rgba(var(--primary),0.75)), url('../../../assets/img/plan-bg.jpg') center center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        h1{
+            font-size: 24px;
+            text-transform: uppercase;
+            color: $white;
+        }
+        p{
+            font-size: 16px;
+            color: $white;
+        }
+        .card{
+            .card-body{
+                .price{
+                    h2{
+                        font-size: 24px;
+                        text-align: center;
+                        color: var(--primary);
+                        text-transform: uppercase;
+                    }
+                    h1{
+                        font-size: 35px;
+                        text-transform: capitalize;
+                        color: $black;
+                        text-align: center;
+                        margin: 30px 0;
+                        sup{
+                            font-size: 16px;
+                        }
+                        span{
+                            font-size: 20px;
+                        }
+                    }
+                    
+                }
+                ul{
+                    min-height: 104px;
+                    li{
+                        padding: 5px 10px;
+                        span{
+                            display: inline-block;
+                            padding-right: 15px;
+                            svg{
+                                width: 16px;
+                                height: 16px;
+                            }
+                        }
+                    }
+                }
+                .upgradeButton{
+                    text-align: center;
+                    .upgradeBtn{
+                        background: var(--primary);
+                        text-transform: uppercase;
+                        color: $white;
+                        padding: 8px 20px;
+                        border-radius: 30px;
+                        margin: 20px 0;
+                        display: inline-block;
+                    }
+                }
+            }
+        }
+}
+
+// Contact Section Css
+.contactsection{
+    background: url(../../../assets/img/bg3.jpg) center right;
+    background-repeat: no-repeat;
+    background-size: cover;
+    h1{
+        font-size: 24px;
+        text-transform: uppercase;
+        color: var(--primary);
+    }
+    p{
+        font-size: 16px;
+        color: $gray;
+    }
+    .contact-form{
+        padding: 30px 0;
+        label{
+            color: $gray;
+            padding: 0;
+            margin-bottom: 0;
+        }
+        input{
+            border:none;
+            border-bottom: 1px solid rgba($gray,0.5);
+            background: transparent;
+            height: calc(1.5em + .45rem + 2px);
+            border-radius: 0;
+        }
+        textarea{
+            border:none;
+            border-bottom: 1px solid rgba($gray,0.5);
+            background: transparent;
+            border-radius: 0;
+        }
+        .sendBtn{
+            background: var(--primary);
+            height: calc(1.5em + .75rem + 2px);
+            color: $white;
+            border:none;
+            border-bottom: none;
+            width: 100%;
+            text-align: center;
+            padding: 6px 0px;
+            border-radius: 5px;
+        }
+    }
+}
+// Footer Css
+.footersection{
+    background: rgba(var(--primary),0.07);
+    h2{
+        font-size: 20px;
+        color: var(--primary);
+        text-transform: uppercase;
+    }
+    p{
+        font-size: 16px;
+        color: $gray;
+        margin-bottom: 0;
+    }
+    ul{
+        li{
+            color: rgba($black,0.8);
+            padding: 5px 0px;
+            span{
+                width: 20px;
+                height: 100%;
+                text-align: left;
+                display: inline-block;
+                margin-right: 15px;
+                svg{
+                    fill:$light-gray;
+                    width: 16px;
+                    height: 16px;
+                }
+            }
+        }
+    }
+}
+// Bottom Footer Css
+.bottom-footer{
+    background-color: var(--primary);
+    padding: 20px 0;
+    p{
+        color: rgba($white,0.5);
+        font-size: 12px;
+        text-align: center;
+        margin-bottom: 0;
+    }
+}

@@ -12,6 +12,9 @@ FewaTelemedicine/wwwroot/ClientApp/
 ##obj folder
 TeleMedicine/obj
 
+##Migration folder
+TeleMedicine/Migrations
+
 *.lock
 *.log
 bin

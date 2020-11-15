@@ -10,5 +10,6 @@ namespace FewaTelemedicine.Domain.Repositories
     {
         List<Provider> getProvidersList();
         Provider getProviderByUserName(string username, string email = "");
+
     }
 }

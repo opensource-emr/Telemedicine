@@ -72,6 +72,10 @@ namespace FewaTelemedicine.Controllers
                 {
                     return Unauthorized();
                 }
+                if(pro.url != provider.url)
+                {
+                    return Unauthorized();
+                }
                 var providerPwd = Cipher.Decrypt(pro.password, provider.userName);
                 if (provider.password != providerPwd)
                 {

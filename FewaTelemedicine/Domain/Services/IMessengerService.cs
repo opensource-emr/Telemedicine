@@ -8,9 +8,11 @@ namespace FewaTelemedicine.Domain.Services
 {
     public interface IMessengerService
     {
+
         bool SendSMS(string message, string receiverContact);
         Task<bool> SendEmailAsync(string receiverEmail);
         Task<bool> SendOTP(string receiverEmail, string otp);
+
         Task<bool> SendPatientReportEmailAsync(Patient patient);
     }
 }

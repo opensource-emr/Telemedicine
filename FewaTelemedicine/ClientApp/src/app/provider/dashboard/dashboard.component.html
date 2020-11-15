@@ -1,0 +1,194 @@
+<div class="fewa_header">
+  <div class="row">
+    <div class="col-12 col-md-6">
+      <div class="pageTitle">
+        <h1>dashboard</h1>
+      </div>
+    </div>
+    <div class="col-12 col-md-6 text-right">
+      <ul>
+        <li>
+          <div class="dropdown">
+            <!-- <div class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> -->
+            <div class="profileHeader dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              <p
+                *ngIf="(global.providerObj.name==null && providerObj.name==null)||(global.providerObj.name=='' && providerObj.name=='')">
+                Upload Profile</p>
+              <p> {{providerObj.nameTitle}}&nbsp;{{providerObj.name}}</p>
+              <div class="profilePic">
+                <img *ngIf="!retrievedImage" src="/assets/img/profilePic.jpg" class="img-fluid">
+                <img *ngIf="retrievedImage" class="img-fluid" [src]="transform()">
+              </div>
+            </div>
+            <!-- </div> -->
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" (click)="logout()">Logout</a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="fewa_sidemenu">
+  <app-sidemenu></app-sidemenu>
+</div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-12 col-md-7">
+      <div class="welcomeNote clearfix">
+        <div class="welcomeImage">
+          <img src="/assets/img/dashboard.png" class="img-fluid">
+        </div>
+        <div class="welcomeContent">
+          <h1>Hello! {{providerObj.nameTitle}} &nbsp;{{providerObj.name}}</h1>
+          <p>Choose following actions to proceed.</p>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+      <div class="card">
+        <div class="card-body">
+          <div class="fewa-title">
+            <h1>Invitation Link</h1>
+          </div>
+          <div class="invitationForm" style="max-height: 56px;">
+            <form [formGroup]="form">
+              <div class="row">
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <input class="form-control" type="email" placeholder="Email address" formControlName="email"
+                      name="email" id="email">
+                    <div *ngIf="loginFormControls.email.touched && loginFormControls.email.invalid" style="color: red;">
+                      <div *ngIf="loginFormControls.email.errors.required">Email is required.</div>
+                      <div *ngIf="loginFormControls.email.errors.pattern">Invalid email address.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <input class="form-control" type="number" placeholder="Phone number"
+                      formControlName="mobile_number">
+                    <div *ngIf="loginFormControls.mobile_number.touched && loginFormControls.mobile_number.invalid"
+                      style="color: red;">
+                      <div *ngIf="loginFormControls.mobile_number.errors.required">Phone is required.</div>
+                      <div *ngIf="loginFormControls.mobile_number.errors.pattern">Invalid mobile number.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <button class="submitbtn" type="submit" [disabled]="this.invitationButton" value="Send"
+                    (click)="sendInvitation()">send</button>
+                </div>
+              </div>
+              <div class="row">
+                <div class="message" *ngIf="this.invitationButton">Sending invitation...</div>
+                <div class="message" *ngIf="this.invitationSuccess">Email invitation has been sent.</div>
+                <div *ngIf="this.invitationFailure" style="color: red;">Ops..!Sending failed...</div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-5">
+      <div class="pretestVideo">
+        <test-audio-video></test-audio-video>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 col-md-7">
+      <div class="card">
+        <div class="card-body">
+          <div class="fewa-title">
+            <h1>Completed Appoinment</h1>
+          </div>
+          <div class="row">
+            <div class="col-md-4 pb-2">
+              <div class="md-form">
+                <div class="input-group">
+                  <input class="form-control" placeholder="yyyy-mm-dd" (dateSelect)="onDateSelect($event)" name="dp"
+                    [(ngModel)]="selectedDate" ngbDatepicker #d="ngbDatepicker">
+
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" (click)="d.toggle()"
+                      style="background-color:transparent;outline:none;box-shadow: none;" type="button">
+                      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                        aria-hidden="true" focusable="false" width="1em" height="1em"
+                        style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);"
+                        preserveAspectRatio="xMidYMid meet" viewBox="0 0 8 8">
+                        <path
+                          d="M0 0v2h7V0H0zm0 3v4.91c0 .05.04.09.09.09H6.9c.05 0 .09-.04.09-.09V3h-7zm1 1h1v1H1V4zm2 0h1v1H3V4zm2 0h1v1H5V4zM1 6h1v1H1V6zm2 0h1v1H3V6z"
+                          fill="#626262" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Call Start Time</th>
+                  <th>Call End Time</th>
+                  <th>Duration</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let temp of FilteredCompletedPatients">
+                  <td>{{temp.appointmentDate |  date: 'MMMM dd, yyyy'}}</td>
+                  <td>{{temp.startTime| date:'hh:mm:ss a'}}</td>
+                  <td>{{temp.endTime| date:'hh:mm:ss a'}}</td>
+                  <td>{{difference(temp.startTime,temp.endTime)}} </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-5">
+      <div class="card">
+        <div class="card-body">
+          <div class="fewa-title">
+            <h1>Patients</h1>
+          </div>
+          <div class="table-responsive">
+            <table class="table">
+              <tbody>
+                <tr *ngFor="let temp of patients">
+                  <td *ngIf="temp.name">
+                    <div class="patientWaiting">
+                      <div class="activePatient"></div>
+                      <div class="patientName">
+                        <p>{{temp.name}}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td *ngIf="temp.status==0 && temp.name"><a class="patientBtn" href="javascript:;"
+                      (click)="callPatient(temp)"><span><svg height="472pt" viewBox="0 -87 472 472" width="472pt"
+                          xmlns="http://www.w3.org/2000/svg">
+                          <path
+                            d="m467.101562 26.527344c-3.039062-1.800782-6.796874-1.871094-9.898437-.179688l-108.296875 59.132813v-35.480469c-.03125-27.601562-22.398438-49.96875-50-50h-248.90625c-27.601562.03125-49.96875 22.398438-50 50v197.421875c.03125 27.601563 22.398438 49.96875 50 50h248.90625c27.601562-.03125 49.96875-22.398437 50-50v-34.835937l108.300781 59.132812c3.097657 1.691406 6.859375 1.625 9.894531-.175781 3.039063-1.804688 4.898438-5.074219 4.898438-8.601563v-227.816406c0-3.53125-1.863281-6.796875-4.898438-8.597656zm-138.203124 220.898437c-.015626 16.5625-13.4375 29.980469-30 30h-248.898438c-16.5625-.019531-29.980469-13.4375-30-30v-197.425781c.019531-16.558594 13.4375-29.980469 30-30h248.90625c16.558594.019531 29.980469 13.441406 30 30zm123.101562-1.335937-103.09375-56.289063v-81.535156l103.09375-56.285156zm0 0" />
+                        </svg></span> Call</a></td>
+                  <td *ngIf="temp.name"><a class="patientBtn" routerLink="/provider/chat"><span><svg height="682pt"
+                          viewBox="-21 -47 682.66669 682" width="682pt" xmlns="http://www.w3.org/2000/svg">
+                          <path
+                            d="m552.011719-1.332031h-464.023438c-48.515625 0-87.988281 39.464843-87.988281 87.988281v283.972656c0 48.414063 39.300781 87.816406 87.675781 87.988282v128.863281l185.191407-128.863281h279.144531c48.515625 0 87.988281-39.472657 87.988281-87.988282v-283.972656c0-48.523438-39.472656-87.988281-87.988281-87.988281zm50.488281 371.960937c0 27.835938-22.648438 50.488282-50.488281 50.488282h-290.910157l-135.925781 94.585937v-94.585937h-37.1875c-27.839843 0-50.488281-22.652344-50.488281-50.488282v-283.972656c0-27.84375 22.648438-50.488281 50.488281-50.488281h464.023438c27.839843 0 50.488281 22.644531 50.488281 50.488281zm0 0" />
+                          <path d="m171.292969 131.171875h297.414062v37.5h-297.414062zm0 0" />
+                          <path d="m171.292969 211.171875h297.414062v37.5h-297.414062zm0 0" />
+                          <path d="m171.292969 291.171875h297.414062v37.5h-297.414062zm0 0" />
+                        </svg></span> Chat</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

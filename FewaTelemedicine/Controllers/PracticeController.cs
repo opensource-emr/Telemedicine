@@ -46,7 +46,7 @@ namespace FewaTelemedicine.Controllers
         private readonly ILogger<PracticeController> _logger;
         private readonly IProviderRepository _providerRepository;
         List<ProviderCabin> _providerCabins = null;
-
+        private readonly IHttpContextAccessor accessor;
         WaitingRoom _waitingroom = null;
         private readonly IPatientRepository _patientRepository;
         List<Provider> _providers = null;
@@ -70,7 +70,8 @@ namespace FewaTelemedicine.Controllers
             IPatientRepository patientRepository,
             IProviderRepository providerRepository,
             IWebHostEnvironment hostEnvironment,
-            FewaDbContext fewaDbContext)
+            FewaDbContext fewaDbContext,
+            IHttpContextAccessor HttpContextAccessor)
         {
             FewaDbContext = fewaDbContext;
             _patientRepository = patientRepository;
@@ -83,16 +84,21 @@ namespace FewaTelemedicine.Controllers
             idletime = Convert.ToInt32(configuration["IdleTime"]);
             _notify = notify;
             _config = config;
+            accessor = HttpContextAccessor;
             _hostingEnvironment = hostEnvironment;
         }
         public IActionResult Index()
         {
             return View();
         }
-        public IActionResult GetPracticeConfiguration()
+        public IActionResult GetPracticeConfiguration(string practice)
         {
             try
             {
+                if (!string.IsNullOrEmpty(practice))
+                {
+                    return Ok(Json(FewaDbContext.practices.Where(a => a.url == practice).FirstOrDefault()));
+                }
                 List<Practice> result = FewaDbContext.practices.ToList();
                 return Ok(Json(result));
             }
@@ -120,7 +126,7 @@ namespace FewaTelemedicine.Controllers
                 User = obj,
                 Token = token
             };
-            return Ok(Json(result));
+            return Ok(result);
             // return Ok(Json(obj));
         }
         public IActionResult WaitingRoom()
@@ -209,10 +215,12 @@ namespace FewaTelemedicine.Controllers
 
         public IActionResult GetUpdatedProvider(string username)
         {
+            if (string.IsNullOrEmpty(username) || username == "undefined")
+            { return BadRequest(); }
 
             var configuration = FewaDbContext.practices.ToList();
             var provider = (from temp in FewaDbContext.providers
-                            where temp.userName == username
+                            where temp.userName == username || temp.url == username
                             select temp).FirstOrDefault();
             provider.roomName = provider.roomName.Replace("name", provider.userName);
             var data = new
@@ -364,9 +372,12 @@ namespace FewaTelemedicine.Controllers
                 _waitingroom.patients.Remove(t);
             }
         }
-
         public IActionResult UpdateProfile([FromBody] Provider obj)
         {
+            if (obj == null)
+            {
+                return BadRequest();
+            }
             var provider = _providerRepository.getProviderByUserName(obj.userName);
             if (provider is null)
             {
@@ -380,7 +391,6 @@ namespace FewaTelemedicine.Controllers
                 provider.mobileNumber = obj.mobileNumber;
                 provider.designation = obj.designation;
                 provider.medicalDegree = obj.medicalDegree;
-                //doc.Password = Cipher.Decrypt(doc.Password, doc.UserName);
                 if (obj.image != null)
                     provider.image = obj.image;
             }
@@ -422,7 +432,6 @@ namespace FewaTelemedicine.Controllers
             try
             {
                 string username = HttpContext.Session.GetString("name");
-                //var user = JsonSerializer.Deserialize<DoctorsModel>(Request.Form["user"].ToString());               
                 var file = Request.Form.Files[0];
                 var provider = _providerRepository.getProviderByUserName(username);
                 if (provider is null)
@@ -473,14 +482,28 @@ namespace FewaTelemedicine.Controllers
 
         }
 
-
         public IActionResult PreviewEmailTemplate([FromBody] Practice list)
         {
             if (ModelState.IsValid)
             {
+                if (list == null)
+                {
+                    return BadRequest();
+                }
+                var username = accessor.HttpContext.Session.GetString("name");
+                var provider = _providerRepository.getProviderByUserName(username);
                 var newEmailContent = list.emailAdditionalContent;
                 var oldEmailContent = FewaDbContext.practices.Select(a => a.emailAdditionalContent).FirstOrDefault();
                 var htmlContent = FewaDbContext.practices.Select(a => a.emailHtmlBody).FirstOrDefault();
+                htmlContent = htmlContent.Replace("{imageUrl}", list.serverName + list.logoPath);
+                htmlContent = htmlContent.Replace("{join}", list.serverName + "/" + provider.practice + "/" + provider.url + "/#/patient/intro");
+                htmlContent = htmlContent.Replace("{serverName}", list.serverName);
+                htmlContent = htmlContent.Replace("providerNameTitle", provider.nameTitle);
+                if (!(string.IsNullOrEmpty(provider.name)))
+                    htmlContent = htmlContent.Replace("providerName", provider.name);
+                if (string.IsNullOrEmpty(provider.name))
+                    htmlContent = htmlContent.Replace("providerName", provider.userName);
+                htmlContent = htmlContent.Replace("practiceName", list.name);
                 if (!(string.IsNullOrEmpty(oldEmailContent)) && htmlContent.Contains(oldEmailContent))
                 {
                     htmlContent = htmlContent.Replace(oldEmailContent, newEmailContent);
@@ -495,7 +518,6 @@ namespace FewaTelemedicine.Controllers
                     EmailHTMLBody = htmlContent,
                     PreviewEmailContent = newEmailContent
                 };
-
 
                 return Ok(data);
             }

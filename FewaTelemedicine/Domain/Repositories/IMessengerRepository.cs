@@ -14,3 +14,4 @@ namespace FewaTelemedicine.Domain.Repositories
         Task<bool> SendPatientReportEmailAsync(Patient patient);
     }
 }
+        

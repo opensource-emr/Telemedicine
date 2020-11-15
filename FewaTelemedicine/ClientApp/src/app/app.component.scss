@@ -1,0 +1,29 @@
+.themeSelect {
+  //display: none;
+  position: absolute;
+  top: 200px;
+  right: 0;
+  z-index: 1024;
+  ul {
+    margin-bottom: 0;
+    padding: 0;
+    li {
+      display: block;
+      background-color: #fff;
+      padding: 5px 10px;
+      cursor: pointer;
+      margin-bottom: 0px;
+      z-index: 1024;
+      box-shadow: 0px 5px 20px 5px rgba(0, 0, 0, 0.07);
+      &.blueClr {
+        color: #071b4d;
+      }
+      &.greenClr {
+        color: #009789;
+      }
+    }
+  }
+}
+.themeSelect:hover {
+  display: block;
+}

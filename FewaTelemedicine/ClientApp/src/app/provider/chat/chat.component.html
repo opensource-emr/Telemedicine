@@ -1,0 +1,186 @@
+<div class="fewa_header">
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <div class="pageTitle">
+                <h1>Chat</h1>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 text-right">
+            <ul>
+                <li>
+                    <div class="dropdown">
+                        <!-- <div class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> -->
+                        <div class="profileHeader dropdown-toggle" type="button" id="dropdownMenuButton"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <p
+                                *ngIf="(global.providerObj.name==null && providerObj.name==null)||(global.providerObj.name=='' && providerObj.name=='')">
+                                Upload Profile</p>
+                            <p> {{providerObj.nameTitle}}&nbsp;{{providerObj.name}}</p>
+                            <div class="profilePic">
+                                <img *ngIf="!retrievedImage" src="/assets/img/profilePic.jpg" class="img-fluid">
+                                <img *ngIf="retrievedImage" class="img-fluid" [src]="transform()">
+                            </div>
+                        </div>
+                        <!-- </div> -->
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" routerLink="/provider/login">Logout</a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="fewa_sidemenu">
+    <app-sidemenu></app-sidemenu>
+</div>
+<div class="main-content">
+    <div class="row">
+        <div class="col-12 col-md-3">
+            <div class="chatSearch clearfix">
+                <div class="searchbarSec">
+                    <input type="text" maxlength="12" placeholder="Search..." class="form-control searchbar"
+                        [(ngModel)]="searchPatient" (keyup)="searchPatients()">
+                    <button><svg xmlns="http://www.w3.org/2000/svg" height="136pt" version="1.1"
+                            viewBox="-1 0 136 136.21852" width="136pt">
+                            <g id="surface1">
+                                <path
+                                    d="M 93.148438 80.832031 C 109.5 57.742188 104.03125 25.769531 80.941406 9.421875 C 57.851562 -6.925781 25.878906 -1.460938 9.53125 21.632812 C -6.816406 44.722656 -1.351562 76.691406 21.742188 93.039062 C 38.222656 104.707031 60.011719 105.605469 77.394531 95.339844 L 115.164062 132.882812 C 119.242188 137.175781 126.027344 137.347656 130.320312 133.269531 C 134.613281 129.195312 134.785156 122.410156 130.710938 118.117188 C 130.582031 117.980469 130.457031 117.855469 130.320312 117.726562 Z M 51.308594 84.332031 C 33.0625 84.335938 18.269531 69.554688 18.257812 51.308594 C 18.253906 33.0625 33.035156 18.269531 51.285156 18.261719 C 69.507812 18.253906 84.292969 33.011719 84.328125 51.234375 C 84.359375 69.484375 69.585938 84.300781 51.332031 84.332031 C 51.324219 84.332031 51.320312 84.332031 51.308594 84.332031 Z M 51.308594 84.332031 "
+                                    style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;" />
+                            </g>
+                        </svg></button>
+                </div>
+            </div>
+            <div class="chatMembersList">
+                <ul>
+                    <ng-container *ngFor="let user of filteredPatients">
+                        <li class="active" *ngIf="currentChatUser.user==user.user">
+                            <div style="cursor: pointer;" class="chatMembers" (click)="onChatUserChange(user)">
+                                {{ user.user }}
+                                <span *ngIf="user.message[0]">{{user.message[0].time | date:'shortTime'}}</span>
+                            </div>
+                            <p *ngIf="user.message[0]">{{user.message[0].message}}</p>
+                        </li>
+                        <li *ngIf="currentChatUser.user!=user.user">
+                            <div style="cursor: pointer;" class="chatMembers" (click)="onChatUserChange(user)">
+                                {{ user.user }}
+                                <span *ngIf="user.message[0]">{{user.message[0].time | date:'shortTime'}}</span>
+                            </div>
+                            <p *ngIf="user.message[0]">{{user.message[0].message}}</p>
+                        </li>
+                    </ng-container>
+                </ul>
+            </div>
+        </div>
+        <div class="col-12 col-md-9 brd-left">
+            <div class="position-relative">
+                <div class="patientDetail display-flex">
+                    <div class="activeUser"></div>
+                    <h2>{{currentChatUser.user}}</h2>
+                </div>
+                <div class="chatSectionArea">
+                    <ul id="scrollingContainer">
+                        <li *ngFor="let msg of currentChatUser.message">
+                            <div class="userChatSec text-left" *ngIf="msg.sender == currentChatUser.user">
+                                <h5 class="userName">{{currentChatUser.user}}</h5>
+                                <div class="display-flex userChat">
+                                    <div class="chatmessage">{{ msg.message }}</div>
+                                    <div *ngIf="msg.time" class="chatTiming">{{ msg.time | date:'shortTime'}}</div>
+                                </div>
+
+                            </div>
+                            <div class="providerChatSec text-right" *ngIf="msg.receiver == currentChatUser.user">
+                                <div class="display-flex providerChat">
+                                    <div *ngIf="msg.time" class="chatTiming">{{ msg.time | date:'shortTime'}}</div>
+                                    <div class="chatmessage">{{ msg.message }}</div>
+                                </div>
+
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="writeChat">
+                    <div class="display-flex">
+                        <div class="attachmentInsert">
+                            <ul>
+                                <li><svg height="511pt" viewBox="0 -21 511.98744 511" width="511pt"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="m377.652344 469.828125c-4.03125 0-8.148438-.511719-12.226563-1.578125l-329.898437-88.34375c-25.449219-7.019531-40.617188-33.34375-33.960938-58.773438l36.265625-139.070312c2.21875-8.535156 10.945313-13.71875 19.519531-11.433594 8.535157 2.21875 13.675782 10.964844 11.4375 19.519532l-36.269531 139.09375c-2.238281 8.574218 2.859375 17.425781 11.394531 19.773437l329.707032 88.300781c8.46875 2.238282 17.214844-2.796875 19.433594-11.222656l11.261718-45.441406c2.136719-8.574219 10.796875-13.78125 19.371094-11.6875 8.578125 2.132812 13.804688 10.792968 11.691406 19.367187l-11.304687 45.65625c-5.699219 21.609375-25.152344 35.839844-46.421875 35.839844zm0 0" />
+                                        <path
+                                            d="m463.988281 341.828125h-330.667969c-26.472656 0-48-21.527344-48-48v-245.335937c0-26.472657 21.527344-48 48-48h330.667969c26.472657 0 48 21.527343 48 48v245.335937c0 26.472656-21.527343 48-48 48zm-330.667969-309.335937c-8.832031 0-16 7.167968-16 16v245.335937c0 8.832031 7.167969 16 16 16h330.667969c8.832031 0 16-7.167969 16-16v-245.335937c0-8.832032-7.167969-16-16-16zm0 0" />
+                                        <path
+                                            d="m191.988281 149.828125c-23.53125 0-42.667969-19.136719-42.667969-42.667969s19.136719-42.667968 42.667969-42.667968 42.664063 19.136718 42.664063 42.667968-19.132813 42.667969-42.664063 42.667969zm0-53.335937c-5.890625 0-10.667969 4.78125-10.667969 10.667968 0 5.886719 4.777344 10.667969 10.667969 10.667969 5.886719 0 10.664063-4.78125 10.664063-10.667969 0-5.886718-4.777344-10.667968-10.664063-10.667968zm0 0" />
+                                        <path
+                                            d="m101.746094 320.066406c-4.09375 0-8.191406-1.558594-11.304688-4.691406-6.25-6.25-6.25-16.386719 0-22.636719l96.425782-96.425781c14.59375-14.59375 38.335937-14.59375 52.90625 0l25.792968 25.792969 79.230469-95.105469c7.082031-8.492188 17.472656-13.398438 28.503906-13.460938 11.859375-.660156 21.460938 4.734376 28.605469 13.121094l106.199219 123.902344c5.757812 6.699219 4.96875 16.8125-1.730469 22.570312-6.71875 5.761719-16.808594 4.972657-22.570312-1.726562l-106.238282-123.945312c-1.410156-1.6875-3.136718-1.601563-4.097656-1.902344-.914062 0-2.6875.277344-4.09375 1.941406l-90.453125 108.589844c-2.882813 3.453125-7.082031 5.546875-11.5625 5.738281-4.566406.253906-8.875-1.496094-12.035156-4.671875l-38.183594-38.1875c-2.710937-2.710938-4.949219-2.710938-7.660156 0l-96.425781 96.40625c-3.117188 3.132812-7.210938 4.691406-11.308594 4.691406zm0 0" />
+                                    </svg></li>
+                                <li><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+                                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                        viewBox="0 0 511.988 511.988" style="enable-background:new 0 0 511.988 511.988;"
+                                        xml:space="preserve">
+                                        <g transform="translate(1 1)">
+                                            <g>
+                                                <path
+                                                    d="M489.305,185.463c-8.354-8.309-21.861-8.272-30.17,0.081L202.687,443.379c-33.271,33.271-87.308,33.271-120.641-0.045
+                                                c-33.308-33.325-33.308-87.362,0.004-120.674L346.089,57.234c20.772-20.771,54.543-20.771,75.375,0.045
+                                                c20.826,20.826,20.826,54.593-0.005,75.425L202.727,351.434c-0.014,0.014-0.026,0.03-0.04,0.044
+                                                c-8.333,8.287-21.8,8.276-30.116-0.04c-8.33-8.33-8.33-21.831,0-30.161l105.58-105.602c8.33-8.332,8.329-21.84-0.003-30.17
+                                                c-8.332-8.33-21.84-8.329-30.17,0.003l-105.579,105.6c-24.991,24.991-24.991,65.507,0.002,90.499
+                                                c24.992,24.992,65.508,24.992,90.501,0c0.029-0.029,0.052-0.06,0.08-0.089l218.646-218.646c37.494-37.494,37.494-98.276,0-135.77
+                                                c-37.499-37.472-98.277-37.472-135.749,0L51.84,292.53C1.906,342.464,1.906,423.509,51.876,473.504
+                                                c50.003,49.977,131.049,49.977,181.022,0.004l256.489-257.875C497.695,207.279,497.658,193.772,489.305,185.463z" />
+                                            </g>
+                                        </g>
+                                        <g>
+                                        </g>
+                                        <g>
+                                        </g>
+                                        <g>
+                                        </g>
+                                        <g>
+                                        </g>
+                                        <g>
+                                        </g>
+                                        <g>
+                                        </g>
+                                        <g>
+                                        </g>
+                                        <g>
+                                        </g>
+                                        <g>
+                                        </g>
+                                        <g>
+                                        </g>
+                                        <g>
+                                        </g>
+                                        <g>
+                                        </g>
+                                        <g>
+                                        </g>
+                                        <g>
+                                        </g>
+                                        <g>
+                                        </g>
+                                    </svg>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="chatCOntent">
+                            <form [formGroup]="chatForm">
+                                <input type="text" class="form-control" formControlName="chatMessage"
+                                    (keyup)="onChatEnter($event)">
+                                <!-- <div *ngIf="getValidationControl.chatMessage.touched && getValidationControl.chatMessage.invalid" style="color: red;">
+                                    <div *ngIf="getValidationControl.chatMessage.errors.required">Chat message is required.</div>
+                                </div> -->
+                            </form>
+                        </div>
+                        <div class="sentBtnSec">
+                            <button [disabled]="this.disableSendButton" class="sendbtn"
+                                (click)="sendChatMsg()">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

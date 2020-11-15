@@ -20,7 +20,7 @@ namespace FewaTelemedicine.Controllers
         private static ILoggerService _logger;
         private readonly IProviderRepository _providerRepo;
 
-        public MessengerController(IMessengerService messengerService,
+        public MessengerController(IMessengerService messengerService, 
                                    ILoggerService logger,
                                     IProviderRepository providerRepo)
         {
@@ -31,7 +31,7 @@ namespace FewaTelemedicine.Controllers
 
         //[Route("SendSMS")]
         //[HttpPost]
-
+    
         //public bool SendSMS([FromBody]DoctorsModel sms)
         //{
         //    string meetingId = sms.Id.ToString() + DateTime.Now.ToString("MMddHHmmss");
@@ -59,7 +59,8 @@ namespace FewaTelemedicine.Controllers
         [Route("SendEmail")]
         [HttpPost]
         public async Task<bool> SendEmail([FromBody] Patient email)
-        {
+        { 
+           
             try
             {
                 if (email is null)
@@ -78,7 +79,6 @@ namespace FewaTelemedicine.Controllers
                 return false;
             }
         }
-
 
         [Route("EmailPatientReport")]
         [HttpPost]
@@ -148,9 +148,9 @@ namespace FewaTelemedicine.Controllers
                 return false;
             }
         }
-        [Route("ReSendOTP")]
+        [Route("ResendOTP")]
         [HttpGet]
-        public async Task<bool> ReSendOTP()
+        public async Task<bool> ResendOTP()
         {
 
             try

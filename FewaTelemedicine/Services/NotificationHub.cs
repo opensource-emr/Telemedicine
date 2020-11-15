@@ -105,27 +105,13 @@ namespace FewaTelemedicine.Services
                 RemoveProvider(userName);
             }
         }
-        private Patient GetPatientbyName(string PatName)
+        private Patient GetPatientbyName(string patName)
         {
-            foreach (var t in waitingroom.patients)
-            {
-                if (PatName == t.name)
-                {
-                    return t;
-                }
-            }
-            return null;
+            return waitingroom.patients.Where(a => a.name == patName).FirstOrDefault();
         }
         private Provider GetProviderByName(string providerName)
         {
-            foreach (var t in providers)
-            {
-                if (providerName == t.userName)
-                {
-                    return t;
-                }
-            }
-            return null;
+            return providers.Where(a => a.userName == providerName).FirstOrDefault();
         }
 
         private Boolean IsProvider()
@@ -276,7 +262,7 @@ namespace FewaTelemedicine.Services
             }
         }
 
-        public async Task PatientAttended(Patient obj)
+        public async Task CallEnds(Patient obj)
         {
             try
             {
@@ -297,20 +283,49 @@ namespace FewaTelemedicine.Services
                     p.followUpNumber = obj.followUpNumber;
                     p.followUpMeasure = obj.followUpMeasure;
                     p.url = obj.url;
-                   
-                   
-
-
                     var patient = JsonConvert.SerializeObject(p);
-                    await this.Clients.Clients(GetPatientbyName(obj.name).signalRConnectionId)
-                      .CompletePatient(patient);
+                    await this.Clients.Clients(GetPatientbyName(obj.name).signalRConnectionId).CallEnds(patient);
+
+                    fewaDbContext.patients.Add(p);
+                    fewaDbContext.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task PatientAttended(Patient obj)
+        {
+            try
+            {
+                //Patient obj = JsonConvert.DeserializeObject<Patient>(obj1.ToString());
+                Patient p = GetPatientbyName(obj.name);
+                if (p is null)
+                {
+                    return;
+                }
+                else
+                {
+                    GetCurrentProviderCabin().patient = new Patient();
+                    p.status = (int)TeleConstants.PatientCompleted;
+                    p.labOrdersSent = obj.labOrdersSent;
+                    p.newPrescriptionsSentToYourPharmacy = obj.newPrescriptionsSentToYourPharmacy;
+                    p.newPrescriptionsMailedToYou = obj.newPrescriptionsMailedToYou;
+                    p.endTime = DateTime.Now;
+                    p.medication = obj.medication;
+                    p.followUpNumber = obj.followUpNumber;
+                    p.followUpMeasure = obj.followUpMeasure;
+                    p.url = obj.url;
+                    var patient = JsonConvert.SerializeObject(p);
+                    await this.Clients.Clients(GetPatientbyName(obj.name).signalRConnectionId).CompletePatient(patient);
 
                     waitingroom.patients.Remove(p);
                     SendUpdatedPatients();
 
-                    fewaDbContext.patients.Add(p);
-                    fewaDbContext.SaveChanges();
-
+                    //fewaDbContext.patients.Add(p);
+                    //fewaDbContext.SaveChanges();
                 }
             }
             catch(Exception ex)
@@ -322,24 +337,21 @@ namespace FewaTelemedicine.Services
         public async Task SendChatMessage(ChatMessage chatMessage)
         {
             string connId = "";
-            ChatMessage chatMsg = new ChatMessage();
-            if (chatMessage.isProvider)
+            if (!chatMessage.isProvider)
             {
-                connId = GetProviderByName(chatMessage.name).signalRConnectionId;
-
-                chatMsg.isProvider = false;
-                chatMsg.name = GetPatientbyName(Context.User.Identity.Name).name;
+                //sender is patient
+                connId = GetProviderByName(chatMessage.receiver)?.signalRConnectionId;
             }
             else
             {
-                connId = GetPatientbyName(chatMessage.name).signalRConnectionId;
-
-                chatMsg.isProvider = true;
-                chatMsg.name = GetProviderByName(Context.User.Identity.Name).userName;
+                //sender is provider
+                connId = GetPatientbyName(chatMessage.receiver)?.signalRConnectionId;
             }
-            chatMsg.message = chatMessage.message;
-
-            var chatMsgJsonStr = JsonConvert.SerializeObject(chatMsg);
+            if(string.IsNullOrEmpty(connId))
+            {
+                throw new Exception("Client connection id not found");
+            }
+            var chatMsgJsonStr = JsonConvert.SerializeObject(chatMessage);
             await this.Clients.Client(connId).ChatMessage(chatMsgJsonStr);
         }
 

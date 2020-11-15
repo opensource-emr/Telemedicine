@@ -1,0 +1,378 @@
+@import '../../../global.scss';
+
+.liveChatSection{
+    padding: 0px 15px;
+    .videoLive{
+        height: 100vh;
+        background: linear-gradient(to right, rgba(var(--primary),0.25) , rgba(var(--primary),0.25)), url('../../../assets/img/patient-bg.png') center center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .report-border{
+            width: 50%;
+            background: var(--primary);
+            padding: 5px;
+            border-radius: 10px;
+            border: 2px solid var(--primary);
+            position: relative;
+            .clipBody{
+                position: absolute;
+                width: 30%;
+                height: 50px;
+                background: var(--primary);
+                top: -25px;
+                left:35%;
+                border-radius: 30px;
+            }
+            .clipHeader{
+                position: absolute;
+                width: 20%;
+                height: 50px;
+                border: 5px solid var(--primary);     
+                 top: -40px;
+                left: 40%;
+                border-radius: 10px;
+            }
+        }
+        .afterVisit{
+            padding: 35px 25px 25px;
+            border-radius: 10px;
+            border: 2px solid var(--primary);
+            background: $white;
+            h1{
+                font-size: 20px;
+                color: var(--primary); 
+                margin-bottom: 25px;           
+            }
+            form{
+                label{
+                    font-size: 15px;
+                }
+                .custom-control{
+                    vertical-align: middle;
+                    label{
+                        color: $gray;
+                        vertical-align: middle;
+                        margin-bottom: 0;
+                    }
+                    
+    
+                }
+                .display-flex{
+                   
+                    input{
+                        width: 48%;
+                        font-size: 14px;
+                        margin-right: 10px;
+                        height: 40px;
+                    }
+                    select{
+                        width: 48%;
+                        font-size: 14px;
+                        height: 40px;
+                    }
+                }
+                .submitButton{
+                    display: block;
+                    text-align: right;
+                    .visitBtn{
+                        background: var(--primary);
+                        color: $white;
+                        display: inline-block;
+                        padding: 8px 30px;
+                        margin: 15px 0px 0px;
+                        border-radius: 5px;
+                    }
+                }
+            }
+        }
+    }
+    .notificationSec{
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        .notificationButton{
+            position: relative;
+            width: 70px;
+            height: 70px;
+            background: $white;
+            border-radius: 50%;
+            box-shadow: 0px 0px 25px 15px rgba($black,0.07);
+            .notificationBtn{
+                svg{
+                    fill: var(--primary);
+                    width: 40px;
+                    height: 40px;
+                    margin: 15px 15px;
+                }
+                .notificationMark{
+                    position: absolute;
+                    top: 9px;
+                    right: 20px;
+                    width: 17px;
+                    height: 17px;
+                    border-radius: 50%;
+                    
+                    &.active{
+                        background: $success;
+                        box-shadow: 0px 0px 25px 15px rgba($black,0.07);
+                    border: 2px solid $white;
+                    }
+                    &.disactive{
+                        display: none;
+                    }
+                }
+            }
+        }
+        .notificationBody{
+            background: $white;
+            border-radius: 5px;
+            width: 230px;
+            height: 230px;
+            position: absolute;
+            bottom: 78px;        
+            right: 0;
+            z-index: 5;
+            box-shadow: 0px 0px 25px 15px rgba($black,0.17);
+            &::before{
+                content: '';
+                width: 50px;
+                height: 50px;
+                transform: rotate(45deg);
+                position: absolute;
+                bottom: -20px;
+                right: 61px;
+                background: $white;
+                border-radius: 8px;
+            }
+            .notifyHeader{
+                border-bottom: 1px solid $light-color;
+                padding: 10px;
+                h3{
+                    color: var(--primary);
+                    font-size: 16px;
+                    text-align: center;
+                    padding: 0;
+                    margin-bottom: 0;
+                }
+            }
+            .notifyCOntent{
+                ul{
+                    margin-bottom: 0;
+                    padding: 0;
+                    li{
+                        display: block;
+                        padding-bottom: 15px;
+                        font-size: 13px;
+                        padding: 10px;
+                        .notifymsg{
+                            color: $gray;
+                        }
+                        .notifyTime{
+                            color: $light-gray;
+                            font-size: 11px;
+                            text-align: left;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Right section Area
+    .brd-left{
+        border-left: 1px solid $light-color;
+    }
+    .backToDash{
+        padding: 10px;
+        border-bottom: 1px solid $light-color;
+        .backBtn{
+            font-size: 18px;
+            color: var(--primary);
+            display: inline-block;
+            span{
+                display: inline-block;
+                padding-right: 15px;
+                svg{
+                    fill:var(--primary);
+                    width: 20px;
+                    height: 20px;
+                }
+            }
+        }
+    }
+   
+}
+
+// chat section
+.chatHeader{
+    background-color: var(--table-body);
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    .chatHeaderTitle{
+        width: 80%;
+        color: var(--primary);
+        font-size: 20px;
+        
+        span{
+            svg{
+                width: 20px;
+                height: 20px;
+                fill: var(--primary);
+            }
+        }
+    }
+    .arrowChat{
+        width: 20%;
+        text-align: right;
+        svg{
+            width: 20px;
+                height: 20px;
+                fill: var(--primary);
+                transform: rotate(-90deg);
+        }
+    }
+}
+.chatBody{
+    height: 360px;            
+    background: $white;
+    .chatWith{
+        
+        padding: 10px 0;
+        text-align: center;
+        border-bottom: 1px solid $light-color;
+       
+        h6{
+            color: $black;
+            font-size: 14px;
+            margin-bottom: 0;
+        }
+    }
+    .chatContent{
+        .chatDay{
+            display: block;
+            color: $light-gray;
+            font-size: 12px;
+            text-align: center;
+            padding-top: 10px;
+        }
+        .chatSectionArea{
+            height: calc(100vh - 220px);
+            padding: 10px 10px;     
+            overflow: auto;               
+            ul{
+                margin-bottom: 0;
+                li{
+                    display: block;
+                    padding-bottom: 10px;
+                    .userChatSec{
+                        .userName{
+                            font-size: 14px;
+                        }
+                        .userChat{
+                            align-items:flex-end;
+                            .chatmessage{
+                                background: var(--table-body);
+                                color: $gray;
+                                border: 1px solid $light-color;
+                                padding: 5px;
+                                border-radius: 0px 10px 10px 10px;
+                                margin: 0px 10px 10px 0 ;
+                                max-width: 250px;
+        white-space: pre-wrap;
+                                .attachment{
+                                    width: 100px;
+                                    height: auto;
+                                    img{
+                                        width: 100%;
+                                    }
+                                }
+                            }
+                            .chatTiming{
+                                color: $light-color;
+                                font-size: 11px;
+                                display: inline-block;
+                                margin-bottom: 10px;
+                            }
+                        }
+                    }
+                    .providerChatSec {
+                        .providerChat{
+                            justify-content: flex-end;
+                            align-items: flex-end;
+                            .chatmessage{
+                                background: $white;
+                                color: $gray;
+                                border: 1px solid $light-color;
+                                padding: 5px;
+                                border-radius: 10px 0px 10px 10px;
+                                margin: 0px 0px 10px 10px ;
+                                max-width: 250px;
+        white-space: pre-wrap;
+                                .attachment{
+                                    width: 100px;
+                                    height: auto;
+                                    img{
+                                        width: 100%;
+                                    }
+                                }
+                            }
+                            .chatTiming{
+                                color: $light-color;
+                                font-size: 11px;
+                                display: inline-block;
+                                margin-bottom: 10px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .writeChat{
+            border-top:1px solid $light-color;
+            padding: 0px;
+            background: var(--table-body);
+            .display-flex{
+                align-items: center;
+                .attachmentInsert{
+                    width: 80px;
+                    ul{
+                        margin-bottom: 0;
+                        li{
+                            display: inline-block;
+                            padding: 0px 10px;
+                            svg{
+                                fill:var(--primary);
+                                width: 16px;
+                                height: 16px;
+                            }
+                        }
+                    }
+                }
+                .chatCOntent{                
+                    width: calc(100% - 130px);
+                    input{
+                        border:none;
+                        background: var(--table-body);
+                    }
+                }
+                .sentBtnSec{
+                    width: 50px;
+                    text-align: center;
+                    .sendbtn{
+                        text-align: center;                                
+                        fill: var(--primary);
+                        display: block;
+                        width: 18px;
+                        height: 18px;
+                        margin: 0 auto;
+        
+                    }
+                }
+            }
+        }
+    }
+}

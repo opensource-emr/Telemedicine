@@ -18,6 +18,7 @@ namespace FewaTelemedicine.Domain
     public class FewaContextFactory : IDesignTimeDbContextFactory<FewaDbContext>
     {
         // private readonly IHttpContextAccessor accessor;
+
         public FewaDbContext CreateDbContext(string[] args)
         {
             string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
@@ -55,8 +56,8 @@ namespace FewaTelemedicine.Domain
             //  Seeding for provider and practice
             var providerSeed = CreateProvider(1, "provider", "FHBsjQhfB78CnRY7uVquqA==", "provider", "practice", 1);
             var providerSeed1 = CreateProvider(2, "doctor", "ajNJkHEqM5bu0szpIIhwzw==", "provider1", "practice1", 2);
-            var practiceSeed = CreatePractice(1, "practice", "1234567890", "abc@gmail.com", "Jitsi", "/img/logo.png", "https://localhost:44304", "Welcome to the demo of Fewa. This is the place where you can put your hospital description. Fewa is a application which helps to connect doctors and patient using video. Patient can print advice , share documents with provider and provider also knows how much time he has given to attend the patient. To start using the demo login as username-provider,password provider , send a invitation to the patient and then both can communicate", "fewa Telemedicine call today schedule", "Please attend the provider", "");
-            var practiceSeed1 = CreatePractice(2, "practice1", "0987654321", "pqr@gmail.com", "Jitsi", "/img/logo.png", "https://localhost:44304", "Welcome to the demo of Fewa. This is the place where you can put your hospital description. Fewa is a application which helps to connect doctors and patient using video. Patient can print advice , share documents with provider and provider also knows how much time he has given to attend the patient. To start using the demo login as username-doctor,password doctor , send a invitation to the patient and then both can communicate", "fewa Telemedicine call today schedule", "Please attend the provider", "");
+            var practiceSeed = CreatePractice(1, "practice", "1234567890", "abc@gmail.com", "Jitsi", "/img/logo.png", "https://localhost:44304", "Welcome to the demo of Fewa. This is the place where you can put your hospital description. Fewa is a application which helps to connect doctors and patient using video. Patient can print advice , share documents with provider and provider also knows how much time he has given to attend the patient. To start using the demo login as username-provider,password provider , send a invitation to the patient and then both can communicate", "Fewa Telemedicine Call Today Schedule", "Please attend the provider", "");
+            var practiceSeed1 = CreatePractice(2, "practice1", "0987654321", "pqr@gmail.com", "Jitsi", "/img/logo.png", "https://localhost:44304", "Welcome to the demo of Fewa. This is the place where you can put your hospital description. Fewa is a application which helps to connect doctors and patient using video. Patient can print advice , share documents with provider and provider also knows how much time he has given to attend the patient. To start using the demo login as username-doctor,password doctor , send a invitation to the patient and then both can communicate", "Fewa Telemedicine Call Today Schedule", "Please attend the provider", "");
             modelBuilder.Entity<Provider>().ToTable("Provider");
             modelBuilder.Entity<Patient>().ToTable("Patient");
             modelBuilder.Entity<Practice>().ToTable("Practice");
@@ -85,9 +86,7 @@ namespace FewaTelemedicine.Domain
                 roomName = Guid.NewGuid().ToString() + "-" + "name",
                 practice = _practice,
                 url = _url,
-                practiceId = _practiceId,
-                nameTitle = "",
-                name = ""
+                practiceId = _practiceId
             };
 
             return provider;
@@ -105,140 +104,298 @@ namespace FewaTelemedicine.Domain
                                string _emailAdditionalContent
                                )
         {
-            var _emailHtmlBody = "   <html>  " +
-                                               "      <head>  " +
-                                               "         <style>  " +
-                                               "            .banner-color {  " +
-                                               "            background-color: #eb681f!important;  " +
-                                               "            }  " +
-                                               "            .title-color {  " +
-                                               "            color: #0066cc!important;  " +
-                                               "            }  " +
-                                               "            .button-color {  " +
-                                               "            background-color: #0066cc!important;  " +
-                                               "            }  " +
-                                               "            @media screen and (min-width: 500px) {  " +
-                                               "            .banner-color {  " +
-                                               "            background-color: #eb681f!important;  " +
-                                               "            }  " +
-                                               "            .title-color {  " +
-                                               "            color: black;  " +
-                                               "            }  " +
-                                               "            .button-color {  " +
-                                               "            background-color: #0066cc!important;  " +
-                                               "            }  " +
-                                               "            }  " +
-                                               "         </style>  " +
-                                               "      </head>  " +
-                                               "      <body>  " +
-                                               "         <div style='background-color:#ececec;padding:0;margin:0 auto;font-weight:200;width:100%!important;height:100%!important'>  " +
-                                               "            <table align='center' border='0' cellspacing='0' cellpadding='0' style='table-layout:fixed;font-weight:200;font-family:Helvetica,Arial,sans-serif' width='100%'>  " +
-                                               "               <tbody>  " +
-                                               "                  <tr>  " +
-                                               "                     <td align='center'>  " +
-                                               "                        <center style='width:100%'>  " +
-                                               "                           <table bgcolor='#FFFFFF' border='0' cellspacing='0' cellpadding='0' style='margin:0 auto;max-width:512px;font-weight:200;width:inherit;font-family:Helvetica,Arial,sans-serif' width='512'>  " +
-                                               "                              <tbody style='position:absolute'>  " +
-                                               "                                 <tr>  " +
-                                               "                                    <td bgcolor='#F3F3F3' width='100%' style='background-color:#f3f3f3;padding:12px;border-bottom:1px solid #ececec'>  " +
-                                               "                                       <table border='0' cellspacing='0' cellpadding='0' style='font-weight:200;width:100%!important;font-family:Helvetica,Arial,sans-serif;min-width:100%!important' width='100%'>  " +
-                                               "                                          <tbody>  " +
-                                               "                                             <tr>  " +
-                                               "                                                <td align='left' valign='middle' width='50%'><span style='margin:0;color:#4c4c4c;white-space:normal;display:inline-block;text-decoration:none;font-size:12px;line-height:20px'></span></td>  " +
-                                               "                                                <td valign='middle' width='50%' align='right' style='padding:0 0 0 10px'><span style='margin:0;color:#4c4c4c;white-space:normal;display:inline-block;text-decoration:none;font-size:12px;line-height:20px'>TodaysDate</span></td>  " +
-                                               "                                                <td width='1'>&nbsp;</td>  " +
-                                               "                                             </tr>  " +
-                                               "                                          </tbody>  " +
-                                               "                                       </table>  " +
-                                               "                                    </td>  " +
-                                               "                                 </tr>  " +
-                                               "                                 <tr>  " +
-                                               "                                    <td align='left' style='background-color:white'>  " +
-                                               "                                       <table border='0' cellspacing='0' cellpadding='0' style='font-weight:200;font-family:Helvetica,Arial,sans-serif' width='100%'>  " +
-                                               "                                          <tbody>  " +
-                                               "                                             <tr>  " +
-                                               "                                                <td width='100%'>  " +
-                                               "                                                   <table border='0' cellspacing='0' cellpadding='0' style='font-weight:200;font-family:Helvetica,Arial,sans-serif' width='100%'>  " +
-                                               "                                                      <tbody>  " +
-                                               "                                                         <tr>  " +
-                                               "                                                            <td align='center'  style='padding:20px 48px;color:#ffffff' class='banner-color'>  " +
-                                               "                                                               <table border='0' cellspacing='0' cellpadding='0' style='font-weight:200;font-family:Helvetica,Arial,sans-serif' width='100%'>  " +
-                                               "                                                                  <tbody>  " +
-                                               "                                                                     <tr>  " +
-                                               "                                                                        <td align='center' width='100%'>  " +
-                                               "   																		<h1 style='padding:0;margin:0;color:#ffffff;font-weight:500;font-size:20px;line-height:24px'>Invitation from PracticeName</h1>  " +
-                                               "                                                                        </td>  " +
-                                               "                                                                     </tr>  " +
-                                               "                                                                  </tbody>  " +
-                                               "                                                               </table>  " +
-                                               "                                                            </td>  " +
-                                               "                                                         </tr>  " +
-                                               "                                                         <tr>  " +
-                                               "                                                            <td align='center' style='padding:20px 0 10px 0'>  " +
-                                               "                                                               <table border='0' cellspacing='0' cellpadding='0' style='font-weight:200;font-family:Helvetica,Arial,sans-serif' width='100%'>  " +
-                                               "                                                                  <tbody>  " +
-                                               "                                                                     <tr>  " +
-                                               "   																		<td align='center' width='100%' style='padding: 0 15px;text-align: justify;color: rgb(76, 76, 76);font-size: 12px;line-height: 18px;'>  " +
-                                               "   																		<tr _ngcontent-kfm-c50<td _ngcontent-kfm-c50=''><img _ngcontent-kfm-c50='' src='{ImageUrl}' style='height: 80px;'></td></tr>  " +
-                                               "   																		<h3 style='font-weight: 600; padding: 0px; margin: 0px; font-size: 16px; line-height: 24px; text-align: center;' class='title-color'>Hi, This is <strong>ProviderNameTitle &nbsp;&nbsp;ProviderName</strong></h3>  " +
-                                               "                                                                           <p style='margin: 20px 0 30px 0;font-size: 15px;text-align: center;'>EmailAdditionalContent &nbsp;</p>" +
-                                               "                                                                           <p style='margin: 20px 0 30px 0;font-size: 15px;text-align: center;'>Please click this following button to join me for a secure video meeting <b>Join now</b>!</p>  " +
-                                               "                                                                           <div style='font-weight: 200; text-align: center; margin: 25px;'><a style='padding:0.6em 1em;border-radius:600px;color:#ffffff;font-size:14px;text-decoration:none;font-weight:bold' class='button-color' href='{Join}'>Join the conference</a></div>  " +
-                                               "                                                                        </td>  " +
-                                               "                                                                     </tr>  " +
-                                               "                                                                  </tbody>  " +
-                                               "                                                               </table>  " +
-                                               "   															<table border='0' cellspacing='0' cellpadding='0' style='font-weight:200;font-family:Helvetica,Arial,sans-serif' width='100%'>  " +
-                                               "   																<tbody>  " +
-                                               "   																	<tr>  " +
-                                               "   																		<td align='center' valign='middle' width='100%' style='border-top:1px solid #d9d9d9;padding:12px 0px 20px 0px;text-align:center;color:#4c4c4c;font-weight:200;font-size:12px;line-height:18px'>Regards,  " +
-                                               "   																			<br><b>Powered by © Fewa Telehealth 2020</b>  " +
-                                               "   																		</td>  " +
-                                               "   																	</tr>  " +
-                                               "   																</tbody>  " +
-                                               "   															</table>  " +
-                                               "                                                            </td>  " +
-                                               "                                                         </tr>  " +
-                                               "                                                      </tbody>  " +
-                                               "                                                   </table>  " +
-                                               "                                                </td>  " +
-                                               "                                             </tr>  " +
-                                               "                                          </tbody>  " +
-                                               "                                       </table>  " +
-                                               "                                    </td>  " +
-                                               "                                 </tr>  " +
-                                               "                                 <tr>  " +
-                                               "                                  " +
-                                               "                                 </tr>  " +
-                                               "   							   <tr>  " +
-                                               "                                    <td bgcolor='#F3F3F3' width='100%' style='background-color:#f3f3f3;padding:12px;border-bottom:1px solid #ececec'>  " +
-                                               "                                       <table border='0' cellspacing='0' cellpadding='0' style='font-weight:200;width:100%!important;font-family:Helvetica,Arial,sans-serif;min-width:100%!important' width='100%'>  " +
-                                               "                                          <tbody>  " +
-                                               "                                             <tr>  " +
-                                               "   												<td align='left' valign='middle' width='50%'><span style='margin:0;color:#4c4c4c;white-space:normal;display:inline-block;text-decoration:none;font-size:12px;line-height:20px'></span></td>  " +
-                                               "                                                <td valign='middle' width='50%' align='right' style='padding:0 0 0 10px'><span style='margin:0;color:#4c4c4c;white-space:normal;display:inline-block;text-decoration:none;font-size:12px;line-height:20px'></span></td>  " +
-                                               "                                                <td width='1'>&nbsp;</td>  " +
-                                               "                                             </tr>  " +
-                                               "                                          </tbody>  " +
-                                               "                                       </table>  " +
-                                               "                                    </td>  " +
-                                               "                                 </tr>  " +
-                                               "                              </tbody>  " +
-                                               "                           </table>  " +
-                                               "                        </center>  " +
-                                               "                     </td>  " +
-                                               "                  </tr>  " +
-                                               "               </tbody>  " +
-                                               "            </table>  " +
-                                               "         </div>  " +
-                                               "      </body>  " +
-                                               "  </html>  ";
+            var _emailHtmlBody = "   <!DOCTYPE html>  " +
+                                 "   <html lang='en'>  " +
+                                 "     " +
+                                 "   <head>  " +
+                                 "       <meta charset='UTF-8'>  " +
+                                 "       <meta name='viewport' content='width=device-width, initial-scale=1.0'>  " +
+                                 "       <title>Fema mailer</title>  " +
+                                 "       <link href=“https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800” rel=“stylesheet”>  " +
+                                 "     " +
+                                 "       <style type='text/css'>  " +
+                                 "           body {  " +
+                                 "               margin: 0 !important;  " +
+                                 "               padding: 0 !important;  " +
+                                 "               -webkit-text-size-adjust: 100% !important;  " +
+                                 "               -ms-text-size-adjust: 100% !important;  " +
+                                 "               -webkit-font-smoothing: antialiased !important;  " +
+                                 "           }  " +
+                                 "     " +
+                                 "           img {  " +
+                                 "               border: 0 !important;  " +
+                                 "               outline: none !important;  " +
+                                 "           }  " +
+                                 "     " +
+                                 "           p {  " +
+                                 "               Margin: 0px !important;  " +
+                                 "               Padding: 0px !important;  " +
+                                 "           }  " +
+                                 "     " +
+                                 "           table {  " +
+                                 "               border-collapse: collapse;  " +
+                                 "               mso-table-lspace: 0px;  " +
+                                 "               mso-table-rspace: 0px;  " +
+                                 "           }  " +
+                                 "     " +
+                                 "           td,  " +
+                                 "           a,  " +
+                                 "           span {  " +
+                                 "               border-collapse: collapse;  " +
+                                 "               mso-line-height-rule: exactly;  " +
+                                 "           }  " +
+                                 "     " +
+                                 "           .ExternalClass * {  " +
+                                 "               line-height: 100%;  " +
+                                 "           }  " +
+                                 "     " +
+                                 "           .em_defaultlink a {  " +
+                                 "               color: inherit !important;  " +
+                                 "               text-decoration: none !important;  " +
+                                 "           }  " +
+                                 "     " +
+                                 "           span.MsoHyperlink {  " +
+                                 "               mso-style-priority: 99;  " +
+                                 "               color: inherit;  " +
+                                 "           }  " +
+                                 "     " +
+                                 "           span.MsoHyperlinkFollowed {  " +
+                                 "               mso-style-priority: 99;  " +
+                                 "               color: inherit;  " +
+                                 "           }  " +                               
+                                 "     " +
+                                 "           @media only screen and (min-width:481px) and (max-width:699px) {  " +
+                                 "               .em_main_table {  " +
+                                 "                   width: 100% !important;  " +
+                                 "               }  " +
+                                 "     " +
+                                 "               .em_wrapper {  " +
+                                 "                   width: 100% !important;  " +
+                                 "               }  " +
+                                 "     " +
+                                 "               .em_hide {  " +
+                                 "                   display: none !important;  " +
+                                 "               }  " +
+                                 "     " +
+                                 "               .em_img {  " +
+                                 "                   width: 100% !important;  " +
+                                 "                   height: auto !important;  " +
+                                 "               }  " +
+                                 "     " +
+                                 "               .em_h20 {  " +
+                                 "                   height: 20px !important;  " +
+                                 "               }  " +
+                                 "     " +
+                                 "               .em_padd {  " +
+                                 "                   padding: 20px 10px !important;  " +
+                                 "               }  " +
+                                 "           }  " +
+                                 "     " +
+                                 "           @media screen and (max-width: 480px) {  " +
+                                 "               .em_main_table {  " +
+                                 "                   width: 100% !important;  " +
+                                 "               }  " +
+                                 "     " +
+                                 "               .em_wrapper {  " +
+                                 "                   width: 100% !important;  " +
+                                 "               }  " +
+                                 "     " +
+                                 "               .em_hide {  " +
+                                 "                   display: none !important;  " +
+                                 "               }  " +
+                                 "     " +
+                                 "               .em_img {  " +
+                                 "                   width: 100% !important;  " +
+                                 "                   height: auto !important;  " +
+                                 "               }  " +
+                                 "     " +
+                                 "               .em_h20 {  " +
+                                 "                   height: 20px !important;  " +
+                                 "               }  " +
+                                 "     " +
+                                 "               .em_padd {  " +
+                                 "                   padding: 20px 10px !important;  " +
+                                 "               }  " +
+                                 "     " +
+                                 "               .em_text1 {  " +
+                                 "                   font-size: 16px !important;  " +
+                                 "                   line-height: 24px !important;  " +
+                                 "               }  " +
+                                 "     " +
+                                 "               u+.em_body .em_full_wrap {  " +
+                                 "                   width: 100% !important;  " +
+                                 "                   width: 100vw !important;  " +
+                                 "               }  " +
+                                 "           }  " +
+                                 "       </style>  " +
+                                 "     " +
+                                 "   </head>  " +
+                                 "     " +
+                                 "   <body style='margin:0px; padding:0px;'' bgcolor=' #efefef'>  " +
+                                 "       <table align='center' width='700' border='0' cellspacing='0' cellpadding='0' class='em_main_table'" +
+                                 "           style='width:700px;'>  " +
+                                 "           <tr>  " +
+                                 "               <td style='padding:25px;' class='em_padd' valign='top' bgcolor='#fff' align='center'>  " +
+                                 "                   <table width='100%' cellspacing='0' cellpadding='0' border='0' align='center' >  " +
+                                 "                       <tbody>  " +
+                                 "                           <tr>  " +
+                                 "                               <td bgcolor='white' style='font-family:\"Open Sans\", Arial, sans-serif; font-size:21px; line-height:15px;font-weight: 600; color:#20325F;' valign='top' align='center'>practiceName</td>  " +
+                                 "                           </tr>  " +
+                                 "                       </tbody>  " +
+                                 "                   </table>  " +
+                                 "               </td>  " +
+                                 "           </tr>  " +
+                                 "           <tr>  " +
+                                 "               <td valign='top' align='center' bgcolor='white'>  " +
+                                 "                   <table width='100%' cellspacing='0' cellpadding='0' border='0' align='center'>  " +
+                                 "                       <tbody>  " +
+                                 "                           <tr>  " +
+                                 "                               <td valign='top' align='center' bgcolor='white' ><img class='em_img' alt='hospital_logo'  " +
+                                 "                                       style='display:block; font-family:Arial, sans-serif; font-size:30px; line-height:34px; color:#000000; max-width:700px;'  " +
+                                 "                                       src='{imageUrl}' width='700' border='0' height='190'></td>  " +
+                                 "                           </tr>  " +
+                                 "                       </tbody>  " +
+                                 "                   </table>  " +
+                                 "               </td>  " +
+                                 "           </tr>  " +
+                                 "           <tr>  " +
+                                 "               <td valign='top' align='center' bgcolor='#fff' style='padding:35px 70px 30px;' class='em_padd'>  " +
+                                 "                   <table align='center' width='100%' border='0' cellspacing='0' cellpadding='0'>  " +
+                                 "                       <tr>  " +
+                                 "                           <td align='center' valign='top' bgcolor='white'  " +
+                                 "                               style='font-family:\"Open Sans\", Arial, sans-serif; font-size:20px;font-weight: 600; line-height:30px; color:#20325F;'>  " +
+                                 "                               Invitation to Join Conference</td>  " +
+                                 "                       </tr>  " +
+                                 "                       <tr>  " +
+                                 "                           <td height='15' bgcolor='white' style='font-size:0px; line-height:0px; height:15px;'>&nbsp;</td>  " +
+                                 "                       </tr>  " +
+                                 "                       <tr>  " +
+                                 "                           <td align='left' valign='top' bgcolor='white'  " +
+                                 "                               style='font-family:\"Open Sans\", Arial, sans-serif; font-size:16px; line-height:22px;font-weight: 600; color:#000; letter-spacing:2px; padding-bottom:12px;'>  " +
+                                 "                               Hi PatientEmail,  " +
+                                 "                           </td>  " +
+                                 "                       </tr>  " +
+                                 "                       <tr>  " +
+                                 "                           <td height='5' class='em_h20' bgcolor='white' style='font-size:0px; line-height:0px; height:5px;'>&nbsp;</td>  " +
+                                 "                       </tr>  " +
+                                 "                       <tr>  " +
+                                 "                           <td align='left' valign='top' bgcolor='white' " +
+                                 "                               style='font-family:\"Open Sans\", Arial, sans-serif; font-size:16px; line-height:22px; color:#666;padding-bottom:12px;'>  " +
+                                 "                               I’m <b style='color:#000;'>providerNameTitle providerName</b>, Please click following button to join me for a secure video meeting join now!</td>  " +
+                                 "                       </tr>  " +
+                                 "                       <tr>  " +
+                                 "                           <td height='5' class='em_h20' bgcolor='white' style='font-size:0px; line-height:0px; height:5px;'>&nbsp;</td>  " +
+                                 "                       </tr>  " +
+                                 "                       <tr>  " +
+                                 "                           <td align='center' valign='top' bgcolor='white'  " +
+                                 "                               style='font-family:\"Open Sans\", Arial, sans-serif; font-size:18px; line-height:22px;padding-bottom:12px;'>  " +
+                                 "                               <a href='{join}'style='display:inline-block;background:#20325F;font-weight:600;font-family:\"Open Sans\", Arial, sans-serif;font-size: 15px;text-transform:uppercase;color: #fff;text-decoration: none;padding: 10px 50px;border-radius: 30px;'>Click to join</a>  " +
+                                 "                               </td>  " +
+                                 "                       </tr>  " +
+                                 "                       <tr>  " +
+                                 "                           <td height='15' class='em_h20' style='font-size:0px; line-height:0px; height:15px;' bgcolor='white'>&nbsp;</td>  " +
+                                 "                       </tr>  " +
+                                 "                       <tr >  " +
+                                 "                           <td align='left' valign='top' bgcolor='white'" +
+                                 "                               style='font-family:\"Open Sans\", Arial, sans-serif; font-size:16px;" +
+                                 "                              line-height:22px;color:#666;padding-bottom:12px;' id='edit'>" +
+                                 "                               EmailAdditionalContent</td>  " +
+                                 "                       </tr>  " +
+                                 "                   </table>  " +
+                                 "               </td>  " +
+                                 "           </tr>  " +
+                                 "           <tr>  " +
+                                 "               <td valign='top' align='center' bgcolor='#f4f7ff' style='padding:38px 30px;' class='em_padd'>  " +
+                                 "                   <table align='center' width='100%' border='0' cellspacing='0' cellpadding='0'>  " +
+                                 "                       <tr>  " +
+                                 "                           <td align='center' valign='top' colspan='3' style='font-family:\"Open Sans\", Arial, sans-serif; font-size:20px;font-weight: 600; line-height:30px; color:#20325F;'>How Its Work</td>  " +
+                                 "                       </tr>  " +
+                                 "                       <tr>  " +
+                                 "                           <td height='20' class='em_h20' colspan='3' style='font-size:0px; line-height:0px; height:20px;'>&nbsp;</td>  " +
+                                 "                       </tr>  " +
+                                 "                       <tr>  " +
+                                 "                           <td align='center' valign='top'>  " +
+                                 "                               <table align='center' width='100%' border='0' cellspacing='0' cellpadding='0'>  " +
+                                 "                                   <tr>  " +
+                                 "                                       <td align='center' valign='top'><img src='{serverName}/img/Ellipse-34.png'></td>  " +
+                                 "                                   </tr>  " +
+                                 "                                   <tr>  " +
+                                 "                                       <td align='center' valign='top' style='font-family:\"Open Sans\", Arial, sans-serif; font-size:17px;line-height:30px; color:#000;'>Join Conference</td>  " +
+                                 "                                   </tr>  " +
+                                 "                               </table>  " +
+                                 "                           </td>  " +
+                                 "                           <td align='center' valign='top'>  " +
+                                 "                               <table align='center' width='100%' border='0' cellspacing='0' cellpadding='0'>  " +
+                                 "                                   <tr>  " +
+                                 "                                       <td align='center' valign='top'><img src='{serverName}/img/Ellipse-35.png'></td>  " +
+                                 "                                   </tr>  " +
+                                 "                                   <tr>  " +
+                                 "                                       <td align='center' valign='top' style='font-family:\"Open Sans\", Arial, sans-serif; font-size:17px;line-height:24px; color:#000;'>Communicates<br>with Doctor</td>  " +
+                                 "                                   </tr>  " +
+                                 "                               </table>  " +
+                                 "                           </td>  " +
+                                 "                           <td align='center' valign='top'>  " +
+                                 "                               <table align='center' width='100%' border='0' cellspacing='0' cellpadding='0'>  " +
+                                 "                                   <tr>  " +
+                                 "                                       <td align='center' valign='top'><img src='{serverName}/img/Ellipse-36.png'></td>  " +
+                                 "                                   </tr>  " +
+                                 "                                   <tr>  " +
+                                 "                                       <td align='center' valign='top' style='font-family:\"Open Sans\", Arial, sans-serif; font-size:17px;line-height:24px; color:#000;'>chat with doctor<br>to Patient </td>  " +
+                                 "                                   </tr>  " +
+                                 "                               </table>  " +
+                                 "                           </td>  " +
+                                 "                       </tr>  " +
+                                 "                   </table>  " +
+                                 "               </td>  " +
+                                 "           </tr>  " +
+                                 "           <tr>  " +
+                                 "               <td valign='top' align='center' bgcolor='#20325f' style='padding:38px 30px;' class='em_padd'>  " +
+                                 "                   <table align='center' width='100%' border='0' cellspacing='0' cellpadding='0'>  " +
+                                 "                       <tr>  " +
+                                 "                           <td valign='top' align='center' bgcolor='#20325f' style='padding-bottom:16px;'>  " +
+                                 "                               <table align='center' border='0' cellspacing='0' cellpadding='0'>  " +
+                                 "                                   <tr>  " +
+                                 "                                       <td valign='top' align='center' bgcolor='#20325f'><a href='#' target='_blank'  " +
+                                 "                                               style='text-decoration:none;'><img src='{serverName}/img/twitter 1.png' alt='fb'  " +
+                                 "                                                   style='display:block; font-family:Arial, sans-serif; font-size:14px; line-height:14px; color:#ffffff; max-width:20px;margin-right: 15px;max-height: 20px;'  " +
+                                 "                                                   border='0' width='26' height='26' /></a></td>  " +
+                                 "                                       <td width='6' style='width:6px;' bgcolor='#20325f'>&nbsp;</td>  " +
+                                 "                                       <td valign='top' align='center' bgcolor='#20325f'><a href='#' target='_blank'  " +
+                                 "                                               style='text-decoration:none;'><img src='{serverName}/img/linkedin 1.png' alt='tw'  " +
+                                 "                                                   style='display:block; font-family:Arial, sans-serif; font-size:14px; line-height:14px; color:#ffffff; max-width:20px;margin-right: 15px;max-height: 20px'  " +
+                                 "                                                   border='0' width='27' height='26' /></a></td>  " +
+                                 "                                       <td width='6' style='width:6px;' bgcolor='#20325f'>&nbsp;</td>  " +
+                                 "                                       <td valign='top' align='center'bgcolor='#20325f' ><a href='#' target='_blank'  " +
+                                 "                                               style='text-decoration:none;'><img src='{serverName}/img/rss 1.png' alt='yt'  " +
+                                 "                                                   style='display:block; font-family:Arial, sans-serif; font-size:14px; line-height:14px; color:#ffffff; max-width:20px;margin-right: 15px;max-height: 20px'  " +
+                                 "                                                   border='0' width='26' height='26' /></a></td>  " +
+                                 "                                   </tr>  " +
+                                 "                               </table>  " +
+                                 "                           </td>  " +
+                                 "                       </tr>  " +
+                                 "                       <tr>  " +
+                                 "                           <td align='center' valign='top'  " +
+                                 "                               style='font-family:\"Open Sans\", Arial, sans-serif; font-size:11px; line-height:18px; color:#fff;'>  " +
+                                 "                               <a href='#' target='_blank' style='color:#fff; text-decoration:underline;'>PRIVACY  " +
+                                 "                                   STATEMENT</a> | <a href='#' target='_blank'  " +
+                                 "                                   style='color:#fff; text-decoration:underline;'>TERMS OF SERVICE</a> | <a href='#'  " +
+                                 "                                   target='_blank' style='color:#fff; text-decoration:underline;'>RETURNS</a><br />  " +
+                                 "                               &copy; 2020 Fewa Telemedicine. All Rights Reserved.<br />  " +
+                                 "                               If you do not wish to receive any further emails from us, please <a href='#' target='_blank'  " +
+                                 "                                   style='text-decoration:none; color:#fff;'>unsubscribe</a></td>  " +
+                                 "                       </tr>  " +
+                                 "                   </table>  " +
+                                 "               </td>  " +
+                                 "           </tr>  " +
+                                 "       </table>  " +
+                                 "   </body>  " +
+                                 "     " +
+                                 "  </html>  ";
 
             var practice = new Practice
             {
                 practiceId = _id,
                 url = _url,
-                name = "",
                 contactNumber = _contactNumber,
                 email = _email,
                 callingPlatform = _callingPlatform,

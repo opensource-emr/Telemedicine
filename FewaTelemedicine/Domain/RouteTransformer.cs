@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -42,12 +40,8 @@ namespace FewaTelemedicine.Domain
 
             using (var context = new FewaDbContext(optionsBuilder.Options))
             {
-                var temp = (from pro in context.providers
-                            join pra in context.practices on pro.practiceId equals pra.practiceId
-                            where pro.url == provider && pra.url == practice
-                            select pro).FirstOrDefault();
-
-                if (temp != null)
+                var t = context.providers.Where(a => a.url == provider && a.practice == practice).FirstOrDefault();
+                if (t != null)
                 {
                     values["controller"] = "Home";
                     values["action"] = "Index";
