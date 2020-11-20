@@ -4,17 +4,20 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TestAudioVideoComponent } from './test-audio-video/test-audio-video.component';
 import { JitsiComponent } from './jitsi/jitsi.component';
 import { YesNoPipe } from './common/yes-no.pipe';
+import { SafePipe } from './common/safe.pipe';
 
 @NgModule({
   declarations: [
       TestAudioVideoComponent,
       JitsiComponent,
-      YesNoPipe
+      YesNoPipe,
+      SafePipe
   ],
   exports: [
     TestAudioVideoComponent,
     JitsiComponent,
-    YesNoPipe
+    YesNoPipe,
+    SafePipe
   ],
   imports: [
     CommonModule,

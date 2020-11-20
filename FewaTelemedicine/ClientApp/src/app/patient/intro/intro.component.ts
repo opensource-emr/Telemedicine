@@ -78,6 +78,8 @@ export class IntroComponent implements OnInit {
         this.global.isPatient = true;
         this.global.patientObj = res.User;
         sessionStorage.setItem('PatientName', this.global.patientObj.name);
+        var url: string = this.global.config.videourl.replace("PROVIDERNAME", this.global.currentProvider);
+        this.global.config.videourl = url;
         this.isWaiting = true;
         this.initiateNotifications();
       },

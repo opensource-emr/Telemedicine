@@ -1,7 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
 @import 'global.scss';
 
-
+@media print
+{    
+    @page { margin: 0; }
+    body { margin: 1.6cm; }
+    .no-print, .no-print *
+    {
+        display: none !important;
+    }
+}
 // Font - Nunito family
 
 @font-face {

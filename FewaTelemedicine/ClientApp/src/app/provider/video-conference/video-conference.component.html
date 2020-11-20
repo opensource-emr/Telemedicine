@@ -5,6 +5,8 @@
                 <div class="videoLive">
                     <jitsi-call *ngIf="isMeetStart" [roomName]="roomName"
                         [remoteUserDisplayName]="remoteUserDisplayName"></jitsi-call>
+                    <!-- <iframe width="100%" height="100%" [src]="global.config.videourl | safe"
+                        frameborder="0" allow="microphone; camera" allowfullscreen scrolling="none"></iframe> -->
                     <div class="VideoUserName">
                         <h2 (click)="endMeet()">
                             <svg height="24" width="24" viewBox="0 0 32 32">
@@ -168,14 +170,17 @@
                         <div class="chatSectionArea">
                             <ul id="scrollingContainer">
                                 <li *ngFor="let msg of currentChat">
-                                      <h6 *ngIf="msg.sender==global.patientObj.name" class="userName">{{msg.sender}}</h6>
-                                    <div class="userChatSec text-right" *ngIf="msg.sender != global.providerObj.userName">
+                                    <h6 *ngIf="msg.sender==global.patientObj.name" class="userName">{{msg.sender}}</h6>
+                                    <div class="userChatSec text-right"
+                                        *ngIf="msg.sender != global.providerObj.userName">
                                         <div class="display-flex userChat">
-                                            <div class="chatTiming" *ngIf="msg.time">{{ msg.time | date:'shortTime'}}</div>
+                                            <div class="chatTiming" *ngIf="msg.time">{{ msg.time | date:'shortTime'}}
+                                            </div>
                                             <div class="chatmessage">{{ msg.message }}</div>
                                         </div>
                                     </div>
-                                    <div class="providerChatSec text-left" *ngIf="msg.sender == global.providerObj.userName">
+                                    <div class="providerChatSec text-left"
+                                        *ngIf="msg.sender == global.providerObj.userName">
                                         <div class="display-flex providerChat">
                                             <div class="chatmessage" *ngIf="msg.time">{{ msg.message }}</div>
                                             <div class="chatTiming">{{ msg.time | date:'shortTime'}}</div>
@@ -259,11 +264,13 @@
                                 </div>
                                 <div class="chatCOntent">
                                     <form [formGroup]="chatForm">
-                                        <input type="text" class="form-control" placeholder="Type here.."  formControlName="chatMessage" (keyup.enter)="sendChatMsg()">
+                                        <input type="text" class="form-control" placeholder="Type here.."
+                                            formControlName="chatMessage" (keyup.enter)="sendChatMsg()">
                                     </form>
                                 </div>
                                 <div class="sentBtnSec">
-                                    <a class="sendbtn" (click)="sendChatMsg()"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+                                    <a class="sendbtn" (click)="sendChatMsg()"><svg version="1.1" id="Capa_1"
+                                            xmlns="http://www.w3.org/2000/svg"
                                             xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                             viewBox="0 0 448 448" style="enable-background:new 0 0 448 448;"
                                             xml:space="preserve">
