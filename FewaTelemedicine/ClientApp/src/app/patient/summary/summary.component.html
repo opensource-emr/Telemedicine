@@ -1,5 +1,5 @@
 <div class="patient-intro">
-    <div class="container">
+    <div class="container" id="printpage">
         <div class="row">
             <div class="col-12 text-center">
                 <h1 class="fewaLogo">Fewa Telemedicine</h1>
@@ -19,8 +19,8 @@
                                 vulputate lorem elementum a</p>
                             <div class="display-flex" *ngIf="patient">
                                 <div class="wdt-50 ">
-                                    <div class="printreport">
-                                        <a class="printBtn">
+                                    <div class="printreport no-print" >
+                                        <a class="printBtn" href="javascript:;" (click)="printReport()">
                                             <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
                                                 xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                                 width="475.078px" height="475.077px" viewBox="0 0 475.078 475.077"
@@ -89,6 +89,14 @@
                                                 name="customRadioInline1" class="custom-control-input">
                                             <label class="custom-control-label" for="customRadioInline2">New
                                                 prescriptions mailed to you:</label> -->
+                                                <label>New prescriptions sent to your
+                                                pharmacy:</label>&nbsp;{{patient.newPrescriptionsSentToYourPharmacy|yesNoPipe}}
+                                        </div>
+                                        <div class="custom-control custom-checkbox ">
+                                            <!-- <input type="checkbox" id="customRadioInline2" disabled (ngModel)="patient.newPrescriptionsMailedToYou"
+                                                name="customRadioInline1" class="custom-control-input">
+                                            <label class="custom-control-label" for="customRadioInline2">New
+                                                prescriptions mailed to you:</label> -->
                                                 <label>New prescriptions mailed to
                                                 you:</label>&nbsp;{{patient.newPrescriptionsMailedToYou|yesNoPipe}}
                                         </div>
@@ -104,19 +112,23 @@
                                 </div>
                             </div>
                             <br>
-                            <div class="text-center" *ngIf="patient == null || patient == undefined">
+                            <div class="text-center no-print" *ngIf="patient == null || patient == undefined">
                                 <p>Please wait Doctor will provide Report</p>
                             </div>
-                            <div class="reportShare" *ngIf="patient">
+                            <div class="reportShare no-print" *ngIf="patient">
                                 <div class="reportMail">
                                     <h3>Send your report to your email!.</h3>
-                                    <form>
+                                    <form [formGroup]="emailForm">
                                         <div class="display-flex">
-                                            <div class="form-group">
+                                            <div class="form-group" >
                                                 <input type="email" class="form-control"
-                                                    placeholder="Enter email address">
+                                                    placeholder="Enter email address" formControlName="email">
+                                                    <div *ngIf="emailFormControls.email.touched && emailFormControls.email.invalid" style="color: red;">
+                                                        <div *ngIf="emailFormControls.email.errors.required">Email is required.</div>
+                                                        <div *ngIf="emailFormControls.email.errors.pattern">Invalid email address.</div>
+                                                    </div>
                                             </div>
-                                            <button class="btn submitBtn">Send</button>
+                                            <button class="btn submitBtn" [disabled]="this.disableButton" (click)="sendReport()">Send</button>
                                         </div>
                                     </form>
                                 </div>

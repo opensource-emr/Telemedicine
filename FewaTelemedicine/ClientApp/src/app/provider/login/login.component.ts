@@ -76,7 +76,7 @@ export class LoginComponent implements OnInit {
         this.global.token = res.Token;
         this.global.isProvider = true;
         this.global.providerObj = res.User;
-        var url: string = this.global.config.videourl.replace("PROVIDERNAME", this.global.providerObj.userName);
+        var url: string = this.global.config.videourl.replace("PROVIDERNAME", this.global.currentProvider);
         this.global.config.videourl = url;
         this.routing.navigateByUrl('/provider/dashboard', { state: this.global });
       },

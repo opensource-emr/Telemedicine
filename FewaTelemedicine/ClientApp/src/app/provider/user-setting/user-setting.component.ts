@@ -26,6 +26,7 @@ export class UserSettingComponent implements OnInit {
   public logoMessage: string;
   public fileLimitExceeded: boolean = false;
   public showEditor: boolean = false;
+  public showInvitationTemplate: boolean = false;
   userForm: FormGroup = new FormGroup({});
   practiceConfigForm: FormGroup = new FormGroup({});
   practiceObj: Practice = new Practice();
@@ -193,6 +194,10 @@ export class UserSettingComponent implements OnInit {
           this.providerObj.image = this.receivedImageData.body;
         }
       });
+  }
+
+  loadInvitationTemplate(){
+    this.showInvitationTemplate=!this.showInvitationTemplate;
   }
 
   transform() {

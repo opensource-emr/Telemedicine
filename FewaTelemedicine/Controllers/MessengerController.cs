@@ -82,19 +82,19 @@ namespace FewaTelemedicine.Controllers
 
         [Route("EmailPatientReport")]
         [HttpPost]
-        public async Task<bool> SendEmailPatientReport([FromBody] Patient email)
+        public async Task<bool> SendEmailPatientReport([FromBody] Patient obj)
         {
             try
             {
-                if (email is null)
+                if (obj is null)
                 {
                     return false;
                 }
-                if (string.IsNullOrEmpty(email.email))
+                if (string.IsNullOrEmpty(obj.email))
                 {
                     return false;
                 }
-                return await _messengerService.SendPatientReportEmailAsync(email);
+                return await _messengerService.SendPatientReportEmailAsync(obj);
             }
             catch (Exception ex)
             {

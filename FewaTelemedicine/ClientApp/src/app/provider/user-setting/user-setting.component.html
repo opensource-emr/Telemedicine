@@ -18,8 +18,7 @@
                     <div class="dropdown">
                         <div class="profileHeader dropdown-toggle" type="button" id="dropdownMenuButton"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <p
-                                *ngIf="(global.providerObj.name==null && providerObj.name==null)||(global.providerObj.name=='' && providerObj.name=='')">
+                            <p *ngIf="(global.providerObj.name==null && providerObj.name==null)||(global.providerObj.name=='' && providerObj.name=='')">
                                 Upload Profile</p>
                             <p> {{providerObj.nameTitle}}&nbsp;{{providerObj.name}}&nbsp;</p>
                             <div class="profilePic">
@@ -310,13 +309,16 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <div class="row">
-                                                <div class="col-md-12">
+                                                <div class="col-md-6">
                                                     <label> Edit Invitation Email Template:
                                                     </label>
                                                 </div>
+                                                <div class="col-md-6">
+                                                    <button type="submit" class="cancelBtn" (click)="loadInvitationTemplate()">Edit Invitation Email Template </button>
+                                                </div>
                                             </div>
-                                            <div style="border:1px solid black;">
-                                                <p *ngIf="!showEditor" style="height:auto;pointer-events:none;"
+                                            <div style="border:1px solid black;margin-top:3% !important" *ngIf="showInvitationTemplate">
+                                                <p *ngIf="!showEditor" style="height:auto;pointer-events:none;padding-top:2% !important"
                                                     id="content" [innerHTML]="emailTemplateUrl()">
                                                 </p>
                                                 <div *ngIf="showEditor" style="margin:4%;">

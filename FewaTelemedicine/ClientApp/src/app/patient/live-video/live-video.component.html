@@ -4,6 +4,8 @@
             <div class="position-relative">
                 <div class="videoLive">
                     <jitsi-call *ngIf="isMeetStart" [roomName]="roomName" [remoteUserDisplayName]="remoteUserDisplayName"></jitsi-call>
+                    <!-- <iframe width="100%" height="100%" [src]="global.config.videourl | safe"
+                    frameborder="0" allow="microphone; camera" allowfullscreen scrolling="none"></iframe>     -->
                     <div class="VideoUserName">
                         <h2>{{global.currentProvider}}</h2>
                     </div>
