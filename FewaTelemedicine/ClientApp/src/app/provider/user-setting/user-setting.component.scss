@@ -30,6 +30,14 @@
             overflow-y: auto;
             .tab-forms{
                 padding: 15px 0;
+                .button-theme{
+                    color: $white;
+                    background-color: var(--primary); 
+                    font-size: 16px;
+                    padding: 10px 10px;
+                    border-radius: 5px;
+                }
+
                 h2{
                     color: var(--primary);
                     font-size: 18px;

@@ -13,11 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20201106190909_v1.cs" />
-    <Compile Remove="Migrations\20201106190909_v1.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.3" />
@@ -31,10 +26,6 @@
     <PackageReference Include="SendGrid" Version="9.14.1" />
     <PackageReference Include="Twilio.AspNet.Common" Version="5.33.1" />
     <PackageReference Include="Twilio.AspNet.Core" Version="5.33.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>
