@@ -18,6 +18,7 @@ export class UserSettingComponent implements OnInit {
   retrieveResponse: any;
   retrievedImage: any;
   receivedImageData: any;
+  receivedPracticeImageData: any;
   public logoToUpload: File = null;
   public selectedFile: File;
   public progress: number;
@@ -32,8 +33,6 @@ export class UserSettingComponent implements OnInit {
   practiceObj: Practice = new Practice();
   hospitalLogo: string = "";
   htmlBody:string= "";
-
-
  
   constructor(private routing: Router,
     public global: Global,
@@ -89,7 +88,7 @@ export class UserSettingComponent implements OnInit {
       hospital_name: ['', [Validators.required]],
       //hospital_email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
       hospital_contact : ['', [Validators.required]],
-      hospital_logo: new FormControl(" "),
+      hospital_logo: [''],
       hospital_description: new FormControl(" "),
       sender_email: ['', [Validators.required,Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
       email_api_key: ['', [Validators.required]],
@@ -108,7 +107,7 @@ export class UserSettingComponent implements OnInit {
     medical_degree: provider.medicalDegree,
     clinic:provider.clinic,
     name_title:provider.nameTitle,
-    profile_image:provider.image,
+    //profile_image:provider.image,
     })  
   }
 
@@ -117,7 +116,7 @@ export class UserSettingComponent implements OnInit {
       hospital_name: practice.name,
       //hospital_email: practice.email,
       hospital_contact: practice.contactNumber,
-      hospital_logo: practice.logoPath,
+      //hospital_logo: practice.logoPath,
       hospital_description: practice.description,
       sender_email:practice.email,
       email_api_key:practice.emailApiKey,
@@ -145,7 +144,7 @@ export class UserSettingComponent implements OnInit {
     //this.practiceObj.email = v.hospital_email;
     this.practiceObj.contactNumber = v.hospital_contact;
     this.practiceObj.description = v.hospital_description;
-    this.practiceObj.logoPath = v.hospital_logo;
+    //this.practiceObj.logoPath = v.hospital_logo;
     this.practiceObj.email = v.sender_email;
     this.practiceObj.emailApiKey = v.email_api_key;
     this.practiceObj.emailApiName = v.email_name;
@@ -275,11 +274,11 @@ export class UserSettingComponent implements OnInit {
     this.httpClient.post(this.global.practiceUrl + "UploadPracticeLogo", formData, { reportProgress: true, observe: 'events', responseType: 'text' })
       .subscribe(event => {
         if (event.type === HttpEventType.UploadProgress)
-          this.progress = Math.round(100 * event.loaded / event.total);
+          this.logoProgress = Math.round(100 * event.loaded / event.total);
         else if (event.type === HttpEventType.Response) {
-          this.receivedImageData = event;
-          this.message = 'Upload Success.';
-          this.practiceObj.logoPath = this.receivedImageData.body;
+          this.receivedPracticeImageData = event;
+          this.logoMessage = 'Upload Success.';
+          this.practiceObj.logoPath = this.receivedPracticeImageData.body;
         }
         else {
           this.message = 'Upload Failed.';
@@ -307,6 +306,7 @@ export class UserSettingComponent implements OnInit {
       post<any>(this.global.practiceUrl + "PreviewEmailTemplate", this.practiceObj)
       .subscribe(res => {
         this.htmlBody=res.EmailHTMLBody;
+        this.htmlBody=this.htmlBody.replace("EmailAdditionalContent", res.PreviewEmailContent);
         this.htmlBody=this.htmlBody.replace("border: 1px dashed #990000 !important;'>[<b> Note: Content In This Box Is Editable.</b>]<br>","' id='edit'");
         this.practiceObj.emailHtmlBody = res.EmailHTMLBody;
       },
