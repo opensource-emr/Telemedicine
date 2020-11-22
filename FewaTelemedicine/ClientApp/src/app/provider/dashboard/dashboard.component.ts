@@ -24,7 +24,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   selectedDate: NgbDateStruct;
   patients: Array<Patient> = new Array<Patient>();
   public showPatDetail: boolean = false;
-  retrievedImage: any;
   @ViewChild('pcam') video: any;
   Video: any;
   tokbox: string = 'Tokbox';
@@ -80,62 +79,17 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    var config = new HttpParams().set('username', this.global.providerObj.userName);
-    this.httpClient.get<any>(this.global.practiceUrl + "GetUpdatedProvider", { params: config })
-      .subscribe(res => {
-        this.providerObj = res.User;
-        if (this.providerObj.image) {
-          this.retrievedImage = 'data:image/png;base64,' + this.providerObj.image;
-        }
-      });
+    this.providerObj = this.global.providerObj;
   }
 
   ngAfterViewInit() {
-    this.startVideo();
   }
 
   private initForm() {
     this.form = this.fb.group({
       email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
-      mobile_number: ['', [Validators.required, Validators.pattern("^\\+?[0-9]{3}[0-9]{0,9}$")]],
+      mobile_number: ['', [Validators.pattern("^\\+?[0-9]{3}[0-9]{0,9}$")]],
     })
-  }
-
-  transform() {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(this.retrievedImage);
-  }
-
-  /**
-   * start video
-   * added by ajay patil
-   */
-  startVideo() {
-    this.isCamOn = true;
-    var video = document.querySelector("#pcam") as HTMLVideoElement;
-    video.style.width = '100%';
-    video.style.height = '100%';
-    if (navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({ video: true })
-        .then((stream) => {
-          video.srcObject = stream;
-        })
-        .catch((err0r) => {
-          console.log("Something went wrong!");
-        });
-    }
-  }
-  /**
-   * stop video
-   * added by ajay patil
-   */
-  stopVideo() {
-    this.isCamOn = false;
-    var video = document.querySelector("#pcam") as HTMLVideoElement;
-    const mediaStream = video ? video.srcObject : null;
-    if (mediaStream == null) {
-      return;
-    }
-    (<MediaStream>mediaStream).getTracks().forEach(stream => stream.stop());
   }
 
   onDateSelect(event) {

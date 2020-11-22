@@ -12,6 +12,7 @@ export class AppComponent {
     var p = location.pathname.split('/');
     this.global.currentPractice = p[1];
     this.global.currentProvider = p[2];
+    this.global.providerObj.url = this.global.currentProvider;
   }
 
   selectTheme(type) {

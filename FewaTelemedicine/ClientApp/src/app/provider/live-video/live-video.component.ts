@@ -94,13 +94,6 @@ export class LiveVideoComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  // patientCompleted(res) {
-  //   if (res.name == this.global.patientObj.name) {
-  //     this.global.patientObj = res;
-  //     this.router.navigate(['/ReportSummary']);
-  //   }
-  // }
-
   error(res) {
     alert(res.status);
   }

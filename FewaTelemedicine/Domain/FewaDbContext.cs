@@ -54,22 +54,20 @@ namespace FewaTelemedicine.Domain
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //  Seeding for provider and practice
-            var providerSeed = CreateProvider(1, "provider", "FHBsjQhfB78CnRY7uVquqA==", "provider", "practice", 1);
-            var providerSeed1 = CreateProvider(2, "doctor", "ajNJkHEqM5bu0szpIIhwzw==", "provider1", "practice1", 2);
             var practiceSeed = CreatePractice(1, "practice", "1234567890", "abc@gmail.com", "Jitsi", "/img/logo.png", "https://localhost:44304", "Welcome to the demo of Fewa. This is the place where you can put your hospital description. Fewa is a application which helps to connect doctors and patient using video. Patient can print advice , share documents with provider and provider also knows how much time he has given to attend the patient. To start using the demo login as username-provider,password provider , send a invitation to the patient and then both can communicate", "Fewa Telemedicine Call Today Schedule", "Please attend the provider", "EmailAdditionalContent");
+            var providerSeed = CreateProvider(1, "provider", "FHBsjQhfB78CnRY7uVquqA==", "provider", "practice", 1);
+
             var practiceSeed1 = CreatePractice(2, "practice1", "0987654321", "pqr@gmail.com", "Jitsi", "/img/logo.png", "https://localhost:44304", "Welcome to the demo of Fewa. This is the place where you can put your hospital description. Fewa is a application which helps to connect doctors and patient using video. Patient can print advice , share documents with provider and provider also knows how much time he has given to attend the patient. To start using the demo login as username-doctor,password doctor , send a invitation to the patient and then both can communicate", "Fewa Telemedicine Call Today Schedule", "Please attend the provider", "EmailAdditionalContent");
+            var providerSeed1 = CreateProvider(2, "doctor", "ajNJkHEqM5bu0szpIIhwzw==", "provider1", "practice1", 2);
+
+            modelBuilder.Entity<Practice>().ToTable("Practice");
             modelBuilder.Entity<Provider>().ToTable("Provider");
             modelBuilder.Entity<Patient>().ToTable("Patient");
-            modelBuilder.Entity<Practice>().ToTable("Practice");
-            modelBuilder.Entity<Patient>().Property(et => et.patientId)
-                    .ValueGeneratedOnAdd();
-            modelBuilder.Entity<Practice>().HasIndex(b => b.url)
-            .IsUnique();
-            modelBuilder.Entity<Practice>().
-                    HasData(practiceSeed, practiceSeed1);
-            modelBuilder.Entity<Provider>().
-                    HasData(providerSeed, providerSeed1); // he does not create this table
 
+            modelBuilder.Entity<Practice>().HasIndex(b => b.url).IsUnique();
+            modelBuilder.Entity<Practice>().HasData(practiceSeed, practiceSeed1);
+            modelBuilder.Entity<Provider>().HasData(providerSeed, providerSeed1); // he does not create this table
+            modelBuilder.Entity<Patient>().Property(et => et.patientId).ValueGeneratedOnAdd();
         }
         public Provider CreateProvider(int _id,
                                string _userName,
@@ -162,7 +160,7 @@ namespace FewaTelemedicine.Domain
                                  "           span.MsoHyperlinkFollowed {  " +
                                  "               mso-style-priority: 99;  " +
                                  "               color: inherit;  " +
-                                 "           }  " +                               
+                                 "           }  " +
                                  "     " +
                                  "           @media only screen and (min-width:481px) and (max-width:699px) {  " +
                                  "               .em_main_table {  " +
@@ -356,17 +354,17 @@ namespace FewaTelemedicine.Domain
                                  "                               <table align='center' border='0' cellspacing='0' cellpadding='0'>  " +
                                  "                                   <tr>  " +
                                  "                                       <td valign='top' align='center' bgcolor='#20325f'><a href='#' target='_blank'  " +
-                                 "                                               style='text-decoration:none;'><img src='{serverName}/img/twitter 1.png' alt='fb'  " +
+                                 "                                               style='text-decoration:none;'><img src='{serverName}/img/twitter.png' alt='fb'  " +
                                  "                                                   style='display:block; font-family:Arial, sans-serif; font-size:14px; line-height:14px; color:#ffffff; max-width:20px;margin-right: 15px;max-height: 20px;'  " +
                                  "                                                   border='0' width='26' height='26' /></a></td>  " +
                                  "                                       <td width='6' style='width:6px;' bgcolor='#20325f'>&nbsp;</td>  " +
                                  "                                       <td valign='top' align='center' bgcolor='#20325f'><a href='#' target='_blank'  " +
-                                 "                                               style='text-decoration:none;'><img src='{serverName}/img/linkedin 1.png' alt='tw'  " +
+                                 "                                               style='text-decoration:none;'><img src='{serverName}/img/linkedin.png' alt='tw'  " +
                                  "                                                   style='display:block; font-family:Arial, sans-serif; font-size:14px; line-height:14px; color:#ffffff; max-width:20px;margin-right: 15px;max-height: 20px'  " +
                                  "                                                   border='0' width='27' height='26' /></a></td>  " +
                                  "                                       <td width='6' style='width:6px;' bgcolor='#20325f'>&nbsp;</td>  " +
                                  "                                       <td valign='top' align='center'bgcolor='#20325f' ><a href='#' target='_blank'  " +
-                                 "                                               style='text-decoration:none;'><img src='{serverName}/img/rss 1.png' alt='yt'  " +
+                                 "                                               style='text-decoration:none;'><img src='{serverName}/img/rss.png' alt='yt'  " +
                                  "                                                   style='display:block; font-family:Arial, sans-serif; font-size:14px; line-height:14px; color:#ffffff; max-width:20px;margin-right: 15px;max-height: 20px'  " +
                                  "                                                   border='0' width='26' height='26' /></a></td>  " +
                                  "                                   </tr>  " +

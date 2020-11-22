@@ -18,7 +18,6 @@ export class ManageHistoryComponent implements OnInit {
   searchText: string = "";
   selectedDate: NgbDateStruct;
   providerObj: Provider = new Provider();
-  retrievedImage: any;
   
   constructor(private sanitizer: DomSanitizer,
     private cdr: ChangeDetectorRef,
@@ -31,18 +30,7 @@ export class ManageHistoryComponent implements OnInit {
     }
 
   ngOnInit() {
-    var config = new HttpParams().set('username', this.global.providerObj.userName);
-    this.httpClient.get<any>(this.global.practiceUrl + "GetUpdatedProvider", { params: config })
-      .subscribe(res => {
-        this.providerObj = res.User;
-        if (this.providerObj.image) {
-          this.retrievedImage = 'data:image/png;base64,' + this.providerObj.image;
-        }
-      });
-  }
-
-  transform() {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(this.retrievedImage);
+    this.providerObj = this.global.providerObj;
   }
 
   onDateSelect(event) {

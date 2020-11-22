@@ -121,11 +121,14 @@
                                     <form [formGroup]="emailForm">
                                         <div class="display-flex">
                                             <div class="form-group" >
-                                                <input type="email" class="form-control"
+                                                <input type="email" class="form-control" id="email" name="email"
                                                     placeholder="Enter email address" formControlName="email">
                                                     <div *ngIf="emailFormControls.email.touched && emailFormControls.email.invalid" style="color: red;">
                                                         <div *ngIf="emailFormControls.email.errors.required">Email is required.</div>
                                                         <div *ngIf="emailFormControls.email.errors.pattern">Invalid email address.</div>
+                                                    </div>
+                                                    <div *ngIf="disableButton == true">
+                                                        Sending....
                                                     </div>
                                             </div>
                                             <button class="btn submitBtn" [disabled]="this.disableButton" (click)="sendReport()">Send</button>

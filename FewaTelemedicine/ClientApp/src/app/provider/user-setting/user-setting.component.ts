@@ -16,7 +16,6 @@ export class UserSettingComponent implements OnInit {
   htmlContent = '';
   providerObj: Provider = new Provider();
   retrieveResponse: any;
-  retrievedImage: any;
   receivedImageData: any;
   receivedPracticeImageData: any;
   public logoToUpload: File = null;
@@ -32,8 +31,8 @@ export class UserSettingComponent implements OnInit {
   practiceConfigForm: FormGroup = new FormGroup({});
   practiceObj: Practice = new Practice();
   hospitalLogo: string = "";
-  htmlBody:string= "";
- 
+  htmlBody: string = "";
+
   constructor(private routing: Router,
     public global: Global,
     public httpClient: HttpClient,
@@ -44,30 +43,11 @@ export class UserSettingComponent implements OnInit {
   }
 
   ngOnInit() {
-    var providerConfig = new HttpParams().set('username', this.global.providerObj.userName);
-    this.httpClient.get<any>(this.global.practiceUrl + "GetUpdatedProvider", { params: providerConfig })
-      .subscribe(res => {
-        this.providerObj = res.User;
-        if (this.providerObj.image) {
-          this.retrievedImage = 'data:image/png;base64,' + this.providerObj.image;
-        }
-        this.setUserFormValue(this.providerObj);
-      });
-    this.loadPracticeConfiguration();
-  }
-
-  loadPracticeConfiguration() {
-    this.httpClient.get<any>(this.global.practiceUrl + "GetPracticeConfiguration")
-      .subscribe(res => {
-        if (res.Value.length > 0) {
-          for (let temp of res.Value) {
-            if (temp.url === this.global.practiceObj.url)
-              this.practiceObj = temp;
-          }
-        }
-        this.setPracticeFormValue(this.practiceObj);
-        this.loadEmailTemplate();
-      });
+    this.practiceObj = this.global.practiceObj;
+    this.setPracticeFormValue(this.practiceObj);
+    this.loadEmailTemplate();
+    this.providerObj = this.global.providerObj;
+    this.setUserFormValue(this.providerObj);
   }
 
   private initUserForm() {
@@ -77,9 +57,9 @@ export class UserSettingComponent implements OnInit {
       name: ['', [Validators.required]],
       designation: ['', [Validators.required]],
       medical_degree: ['', [Validators.required]],
-      clinic: ['', [Validators.required]],
+      clinic: ['', [Validators.nullValidator]],
       name_title: ['', [Validators.required]],
-      profile_image: ['', [Validators.required]],
+      profile_image: ['', [Validators.nullValidator]],
     })
   }
 
@@ -87,28 +67,28 @@ export class UserSettingComponent implements OnInit {
     this.practiceConfigForm = this.fb.group({
       hospital_name: ['', [Validators.required]],
       //hospital_email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
-      hospital_contact : ['', [Validators.required]],
+      hospital_contact: ['', [Validators.required]],
       hospital_logo: [''],
       hospital_description: new FormControl(" "),
-      sender_email: ['', [Validators.required,Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
+      sender_email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
       email_api_key: ['', [Validators.required]],
       email_name: ['', [Validators.required]],
-      calling_platform: ['',[Validators.required]],
-      addContent:new FormControl(" "),
+      calling_platform: ['', [Validators.required]],
+      addContent: new FormControl(" "),
     })
   }
 
   setUserFormValue(provider: Provider) {
-  this.userForm.patchValue({
-    email: provider.email,
-    phone: provider.mobileNumber,
-    name: provider.name,
-    designation: provider.designation,
-    medical_degree: provider.medicalDegree,
-    clinic:provider.clinic,
-    name_title:provider.nameTitle,
-    //profile_image:provider.image,
-    })  
+    this.userForm.patchValue({
+      email: provider.email,
+      phone: provider.mobileNumber,
+      name: provider.name,
+      designation: provider.designation,
+      medical_degree: provider.medicalDegree,
+      clinic: provider.clinic,
+      name_title: provider.nameTitle,
+      //profile_image:provider.image,
+    })
   }
 
   setPracticeFormValue(practice: Practice) {
@@ -118,13 +98,13 @@ export class UserSettingComponent implements OnInit {
       hospital_contact: practice.contactNumber,
       //hospital_logo: practice.logoPath,
       hospital_description: practice.description,
-      sender_email:practice.email,
-      email_api_key:practice.emailApiKey,
-      email_name:practice.emailApiName,
-      calling_platform:practice.callingPlatform,
-      addContent:practice.emailAdditionalContent,
-      })  
-    }
+      sender_email: practice.email,
+      email_api_key: practice.emailApiKey,
+      email_name: practice.emailApiName,
+      calling_platform: practice.callingPlatform,
+      addContent: practice.emailAdditionalContent,
+    })
+  }
 
   getUserFormValue() {
     var v = this.userForm.getRawValue();
@@ -135,6 +115,7 @@ export class UserSettingComponent implements OnInit {
     this.providerObj.medicalDegree = v.medical_degree;
     this.providerObj.clinic = v.clinic;
     this.providerObj.nameTitle = v.name_title;
+    this.providerObj.profilePhoto = this.selectedFile;
   }
 
 
@@ -165,8 +146,8 @@ export class UserSettingComponent implements OnInit {
     height: '500px',
     sanitize: true,
     toolbarHiddenButtons: [
-      ["insertImage", "insertVideo","toggleEditorMode","link",
-      "unlink"]
+      ["insertImage", "insertVideo", "toggleEditorMode", "link",
+        "unlink"]
     ],
   };
 
@@ -177,30 +158,14 @@ export class UserSettingComponent implements OnInit {
     this.selectedFile = <File>event.target.files[0];
     if (this.selectedFile.size > 2000000) {
       alert("Please upload file less than 2MB");
-      this.fileLimitExceeded = true;
+      this.userForm.get('profile_image').reset();
+      this.selectedFile = undefined;
       return;
     }
-    this.fileLimitExceeded = false;
-    const fd: any = new FormData();
-    fd.append('image', this.selectedFile, this.selectedFile.name);
-    this.httpClient.post(this.global.practiceUrl + "UploadProfileImage", fd, { reportProgress: true, observe: 'events', responseType: 'json' })
-      .subscribe(event => {
-        if (event.type === HttpEventType.UploadProgress)
-          this.progress = Math.round(100 * event.loaded / event.total);
-        else if (event.type === HttpEventType.Response) {
-          this.receivedImageData = event;
-          this.message = 'Upload success.';
-          this.providerObj.image = this.receivedImageData.body;
-        }
-      });
   }
 
-  loadInvitationTemplate(){
-    this.showInvitationTemplate=!this.showInvitationTemplate;
-  }
-
-  transform() {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(this.retrievedImage);
+  loadInvitationTemplate() {
+    this.showInvitationTemplate = !this.showInvitationTemplate;
   }
 
   resetUserForm() {
@@ -222,27 +187,26 @@ export class UserSettingComponent implements OnInit {
       return;
     }
     this.getUserFormValue();
+    const formData: any = new FormData();
+    Object.keys(this.providerObj).forEach(k => {
+      if (k == "profilePhoto" && this.selectedFile) {
+        formData.append(k, this.selectedFile, this.selectedFile.name)
+      } else {
+        formData.append(k, this.providerObj[k]);
+      }
+    })
     this.httpClient.
-      post<any>(this.global.practiceUrl + "UpdateProfile", this.providerObj)
-      .subscribe(res => {
-        this.providerObj = res;
-        this.getImage();
-        alert("profile updated");
-        this.providerObj = res;
+      post(this.global.practiceUrl + "UpdateProfile", formData, { reportProgress: true, observe: 'events', responseType: 'text' })
+      .subscribe(event => {
+        if (event.type === HttpEventType.UploadProgress)
+          this.progress = Math.round(100 * event.loaded / event.total);
+        else if (event.type === HttpEventType.Response) {
+          this.providerObj = JSON.parse(event.body);
+          this.global.providerObj = this.providerObj;
+          alert("profile updated");
+        }
       },
         err => { console.log(err); });
-  }
-
-  getImage() {
-    //Make a call to backend to get the Image Bytes.
-    this.httpClient.get(this.global.practiceUrl + "GetProfileImage")
-      .subscribe(
-        res => {
-          this.retrieveResponse = res;
-          if (this.retrieveResponse)
-            this.retrievedImage = 'data:image/png;base64,' + this.retrieveResponse;
-        }
-      );
   }
 
   updatePracticeConfiguration() {
@@ -254,6 +218,7 @@ export class UserSettingComponent implements OnInit {
       post<any>(this.global.practiceUrl + "UpdatePracticeConfiguration", this.practiceObj)
       .subscribe(res => {
         this.practiceObj = res;
+        this.global.practiceObj = res;
         alert("Practice Configuration updated");
       },
         err => { console.log(err); });
@@ -305,9 +270,9 @@ export class UserSettingComponent implements OnInit {
     this.httpClient.
       post<any>(this.global.practiceUrl + "PreviewEmailTemplate", this.practiceObj)
       .subscribe(res => {
-        this.htmlBody=res.EmailHTMLBody;
-        this.htmlBody=this.htmlBody.replace("EmailAdditionalContent", res.PreviewEmailContent);
-        this.htmlBody=this.htmlBody.replace("border: 1px dashed #990000 !important;'>[<b> Note: Content In This Box Is Editable.</b>]<br>","' id='edit'");
+        this.htmlBody = res.EmailHTMLBody;
+        this.htmlBody = this.htmlBody.replace("EmailAdditionalContent", res.PreviewEmailContent);
+        this.htmlBody = this.htmlBody.replace("border: 1px dashed #990000 !important;'>[<b> Note: Content In This Box Is Editable.</b>]<br>", "' id='edit'");
         this.practiceObj.emailHtmlBody = res.EmailHTMLBody;
       },
         err => { console.log(err); });
@@ -321,8 +286,8 @@ export class UserSettingComponent implements OnInit {
     this.httpClient.
       post<any>(this.global.practiceUrl + "PreviewEmailTemplate", this.practiceObj)
       .subscribe(res => {
-        this.htmlBody=res.EmailHTMLBody;
-        this.htmlBody=this.htmlBody.replace("' id='edit'>", "border: 1px dashed #990000 !important;'>[<b> Note: Content In This Box Is Editable.</b>]<br>");
+        this.htmlBody = res.EmailHTMLBody;
+        this.htmlBody = this.htmlBody.replace("' id='edit'>", "border: 1px dashed #990000 !important;'>[<b> Note: Content In This Box Is Editable.</b>]<br>");
         this.practiceObj.emailHtmlBody = res.EmailHTMLBody;
       },
         err => { console.log(err); });

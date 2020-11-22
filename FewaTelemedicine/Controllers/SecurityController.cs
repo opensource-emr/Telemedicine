@@ -83,20 +83,13 @@ namespace FewaTelemedicine.Controllers
                 }
                 if (providerPwd == provider.password)
                 {
-                    provider.image = pro.image;
-                    provider.providerId = pro.providerId;
-                    provider.nameTitle = pro.nameTitle;
-                    provider.url = pro.url;
-                    provider.practice = pro.practice;
-                    provider.name = pro.name;
-                    provider.roomName = pro.roomName;
-                    HttpContext.Session.SetString("name", provider.userName);
-                    HttpContext.Session.SetString("practice", provider.practice);
-                    var token = GenerateJSONWebToken(provider.userName, "provider");
+                    HttpContext.Session.SetString("name", pro.userName);
+                    HttpContext.Session.SetString("practice", pro.practice);
+                    var token = GenerateJSONWebToken(pro.userName, "provider");
                     AddProviderCabin(pro.userName);
                     var data = new
                     {
-                        User = provider,
+                        User = pro,
                         Token = token
                     };
                     return Ok(data);

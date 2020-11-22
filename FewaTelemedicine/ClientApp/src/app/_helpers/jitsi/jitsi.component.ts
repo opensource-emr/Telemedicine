@@ -72,7 +72,7 @@ export class JitsiComponent implements OnInit, OnDestroy {
       disable1On1Mode: false,
       REMOTE_THUMBNAIL_RATIO: 0, // 1:1
       filmStripOnly: false,
-      TOOLBAR_BUTTONS: ['microphone', 'camera', 'videoquality', 'fullscreen', 'chat']
+      TOOLBAR_BUTTONS: ['microphone', 'camera', 'videoquality', 'fullscreen']
     }
   }
 
@@ -80,6 +80,7 @@ export class JitsiComponent implements OnInit, OnDestroy {
     this.api.executeCommands({
       displayName: [ this.remoteUserDisplayName ] 
     });
+    this.api.executeCommand('subject', 'Fewa Telemedicine');
     //console.error('closing')
     this.api.addEventListener('readyToClose', function () {
       console.warn('readyToClose');

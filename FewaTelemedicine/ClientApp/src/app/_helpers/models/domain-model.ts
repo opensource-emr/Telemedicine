@@ -38,7 +38,7 @@ export class Provider {
     medicalDegree: string = "";
     mobileNumber: number;
     clinic: string = "";
-    image: File;
+    image: string = "";
     roomName: string = "";
     roomKey: string;
     callingPlatform: string = "";
@@ -47,6 +47,7 @@ export class Provider {
     newPassword: string = "";
     confirmedPassword: string = "";
     otp: string = "";
+    profilePhoto: any;
 }
 export class Patient {
     patientId: number;

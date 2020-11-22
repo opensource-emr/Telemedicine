@@ -15,8 +15,8 @@
                             <p *ngIf="(global.providerObj.name==null && providerObj.name==null)||(global.providerObj.name=='' && providerObj.name=='')">Upload Profile</p>
                             <p> {{providerObj.nameTitle}}&nbsp;{{providerObj.name}}</p>
                             <div class="profilePic">
-                                <img  *ngIf="!retrievedImage" src="/assets/img/profilePic.jpg" class="img-fluid">
-                                <img *ngIf="retrievedImage" class="img-fluid" [src]="transform()">
+                                <img  *ngIf="!providerObj.image" src="/assets/img/profilePic.jpg" class="img-fluid">
+                                <img *ngIf="providerObj.image" class="img-fluid" [src]="providerObj.image">
                             </div>
                         </div>
                         <!-- </div> -->

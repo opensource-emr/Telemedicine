@@ -42,8 +42,7 @@
   <div class="intro-about">
     <div class="intro-content">
       <div class="into-logo">
-        <img *ngIf="!global.isLogo" src="/assets/img/logo.png" class="img-fluid">
-        <img *ngIf="global.isLogo" src="{{practiceObj.logoPath}}" class="img-fluid">
+        <img src="{{practiceObj.logoPath}}" class="img-fluid">
       </div>
       <div class="intro-bannercontent">
         <p>{{practiceObj.description }}</p>
