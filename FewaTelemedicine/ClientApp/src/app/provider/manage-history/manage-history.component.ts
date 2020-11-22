@@ -27,6 +27,7 @@ export class ManageHistoryComponent implements OnInit {
     private calendar: NgbCalendar,
     public httpClient: HttpClient,) { 
       this.selectedDate = calendar.getToday();
+      this.loadPatientsAttended();
     }
 
   ngOnInit() {

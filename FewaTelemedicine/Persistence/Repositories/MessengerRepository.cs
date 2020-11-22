@@ -61,7 +61,14 @@ namespace FewaTelemedicine.Persistence.Repositories
                 htmlContent = htmlContent.Replace("practiceName", practice.name);
                 htmlContent = htmlContent.Replace("{serverName}", practice.serverName);
                 htmlContent = htmlContent.Replace("PatientEmail", receiverEmail);
-                htmlContent = htmlContent.Replace("EmailAdditionalContent", practice.emailAdditionalContent);
+                if (practice.emailAdditionalContent == "EmailAdditionalContent")
+                {
+                   htmlContent = htmlContent.Replace("EmailAdditionalContent","");
+                }
+                else
+                {
+                   htmlContent = htmlContent.Replace("EmailAdditionalContent", practice.emailAdditionalContent);
+                }               
                 var msg = MailHelper.CreateSingleEmail(from, to, practice.emailSubject, practice.emailPlainBody, htmlContent);
                 var res = await client.SendEmailAsync(msg);
                 if (res.StatusCode == System.Net.HttpStatusCode.OK || res.StatusCode == System.Net.HttpStatusCode.Accepted)

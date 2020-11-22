@@ -490,6 +490,7 @@ namespace FewaTelemedicine.Controllers
                 {
                     return BadRequest();
                 }
+               // var oldEmail = "";
                 var username = accessor.HttpContext.Session.GetString("name");
                 var provider = _providerRepository.getProviderByUserName(username);
                 var newEmailContent = list.emailAdditionalContent;
@@ -503,12 +504,17 @@ namespace FewaTelemedicine.Controllers
                     htmlContent = htmlContent.Replace("providerName", provider.name);
                 if (string.IsNullOrEmpty(provider.name))
                     htmlContent = htmlContent.Replace("providerName", provider.userName);
-                htmlContent = htmlContent.Replace("practiceName", list.name);
-                if (!(string.IsNullOrEmpty(oldEmailContent)) && htmlContent.Contains(oldEmailContent))
+                htmlContent = htmlContent.Replace("practiceName", list.name);               
+               /* if (string.IsNullOrEmpty(oldEmailContent))
+                {
+                    oldEmail = oldEmailContent;
+                    oldEmailContent = "old";
+                } */             
+                if (!string.IsNullOrEmpty(oldEmailContent) && htmlContent.Contains(oldEmailContent) && !string.IsNullOrEmpty(newEmailContent))
                 {
                     htmlContent = htmlContent.Replace(oldEmailContent, newEmailContent);
-                }
-                else if (htmlContent.Contains("EmailAdditionalContent"))
+                }                
+                else if (htmlContent.Contains("EmailAdditionalContent") && !string.IsNullOrEmpty(newEmailContent))
                 {
                     htmlContent = htmlContent.Replace("EmailAdditionalContent", newEmailContent);
                 }
