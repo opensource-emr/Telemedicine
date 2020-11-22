@@ -25,4 +25,12 @@ export class AppComponent {
       body.classList.remove("blueTheme");
     }
   }
+  mouseenter() {
+    var d = document.getElementById('selectTheme') as HTMLUListElement;
+    d.style.display = 'block';
+  }
+  mouseleave() {
+    var d = document.getElementById('selectTheme') as HTMLUListElement;
+    d.style.display = 'none';
+  }
 }

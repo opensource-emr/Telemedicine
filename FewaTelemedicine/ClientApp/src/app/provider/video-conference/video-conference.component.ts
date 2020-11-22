@@ -17,7 +17,6 @@ import { MessageModel } from 'src/app/_helpers/models/chat.model';
 export class VideoConferenceComponent implements OnInit {
   isDisplayed = false;
   isSubmitting: boolean = true;
-  public CompletedPatients: Array<Patient> = null;
   patientObj: Patient = null;
   roomName = "FewaTelemedicine";
   remoteUserDisplayName = "Fewa User";
@@ -51,8 +50,7 @@ export class VideoConferenceComponent implements OnInit {
           this.patientObj = _patient;
           this.patientCompleted(_patient);
           //this.ChatUserDropDowns = new Array<any>();
-        }
-        );
+        });
 
       this.notificationService.EventGetAllProviders.subscribe(_providers => {
         //this.ChatUserDropDowns = _providers.filter(t => t.practice == this.global.practiceObj.url);
@@ -94,10 +92,6 @@ export class VideoConferenceComponent implements OnInit {
       this.global.patientObj = res;
       this.routing.navigate(['/ReportSummary']);
     }
-  }
-
-  loadPatientSuccess(res) {
-    this.CompletedPatients = res;
   }
 
   error(res) {

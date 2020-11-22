@@ -15,8 +15,8 @@ import { DomSanitizer } from '@angular/platform-browser';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit, AfterViewInit {
-  public CompletedPatients: Array<Patient> = null;
-  public FilteredCompletedPatients: Array<Patient> = [];
+  public completedPatients: Array<Patient> = null;
+  public filteredCompletedPatients: Array<Patient> = [];
   providerObj: Provider = new Provider();
   practiceObj: Practice = new Practice();
   patientObj: Patient = new Patient();
@@ -177,15 +177,15 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   loadPatientsAttended() {
-    this.CompletedPatients = [];
+    this.completedPatients = [];
     let params = new HttpParams().set('searchString', this.searchText);
     this.httpClient.get<any>(this.global.practiceUrl + "GetPatientsAttended", { params: params })
       .subscribe(res => this.loadPatientSuccess(res), err => this.error(err));
   }
 
   loadPatientSuccess(res) {
-    this.CompletedPatients = res.filter(t => t.url == this.global.providerObj.url);
-    this.FilteredCompletedPatients = this.CompletedPatients;
+    this.completedPatients = res.filter(t => t.url == this.global.providerObj.url);
+    this.filteredCompletedPatients = [...this.completedPatients];
     this.cdr.detectChanges();
   }
 

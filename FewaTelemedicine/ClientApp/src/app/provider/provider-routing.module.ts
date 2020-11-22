@@ -23,8 +23,8 @@ const routes: Routes = [
   { path: 'chat', component: ChatComponent },
   { path: 'manage_history', component: ManageHistoryComponent },
   { path: 'user_setting', component: UserSettingComponent },
-  { path: 'live-old', component: LiveVideoComponent },
-  { path: 'live', component: VideoConferenceComponent },
+  { path: 'live', component: LiveVideoComponent },
+  { path: 'live-old', component: VideoConferenceComponent },
   { path: 'report', component: ProviderReportComponent }
 ];
 

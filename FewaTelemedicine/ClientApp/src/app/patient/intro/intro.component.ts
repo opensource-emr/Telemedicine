@@ -18,7 +18,6 @@ export class IntroComponent implements OnInit {
   practiceObj: Practice = new Practice();
   patRegForm: FormGroup;
   disableCheckInBtn = true;
-  isWaiting = false;
 
   constructor(public httpClient: HttpClient,
     public routing: Router,
@@ -80,18 +79,10 @@ export class IntroComponent implements OnInit {
         sessionStorage.setItem('PatientName', this.global.patientObj.name);
         var url: string = this.global.config.videourl.replace("PROVIDERNAME", this.global.currentProvider);
         this.global.config.videourl = url;
-        this.isWaiting = true;
-        this.initiateNotifications();
+        this.routing.navigateByUrl('/patient/live');
       },
         res => {
           alert('User already logged in');
         });
-  }
-  
-  private initiateNotifications() {
-    this.notificationService.Connect();
-    this.notificationService.EventCallPatient.subscribe(_data => {
-      this.routing.navigateByUrl('/patient/live');
-    });
   }
 }

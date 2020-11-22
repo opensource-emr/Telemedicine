@@ -33,7 +33,7 @@ export class SummaryComponent implements OnInit {
     this.notificationService.Connect();
     this.notificationService.EventCompletePatient.subscribe(_patient=>{
       this.patient = _patient;
-      console.log(_patient);
+      //console.log(_patient);
     })
   }
   private initForm() {
