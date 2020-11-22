@@ -4,7 +4,7 @@
             <div class="col-12 col-md-12 col-lg-6">
                 <div class="card">
                     <div class="card-body">
-                        <div class="welcomeNote" *ngIf="!isWaiting">
+                        <div class="welcomeNote">
                             <h2>Welcome,</h2>
                             <p>Please check in here to join your provider if you consent for
                                 this secure video visit.</p>
@@ -28,11 +28,7 @@
                                         (click)="loginPatient()" href="javascript:;">Submit</button>
                                 </div>
                             </form>
-                        </div>
-                        <div class="welcomeNote" *ngIf="isWaiting">
-                            <h2>Welcome,</h2>
-                            <p>Please wait your provider will start this secure video visit.</p>
-                        </div>
+                        </div>                       
                     </div>
                 </div>
             </div>

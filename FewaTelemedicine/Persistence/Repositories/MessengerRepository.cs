@@ -32,7 +32,7 @@ namespace FewaTelemedicine.Persistence.Repositories
             _providerRepository = providerRepository;
         }
 
-        public async Task<bool> SendEmailAsync(string receiverEmail)
+        public async Task<bool> SendEmailAsync(string receiverEmail, string hostname = "")
         {
             var bResponse = false;
             try
@@ -49,6 +49,10 @@ namespace FewaTelemedicine.Persistence.Repositories
                 {
                     return false;
                 }
+                if (!string.IsNullOrEmpty(hostname))
+                {
+                    practice.serverName = hostname;
+                }
                 //var TodaysDate =DateTime.Now.ToString("MM-dd-yyyy HH:mm:ss");
                 var client = new SendGridClient(practice.emailApiKey);
                 var from = new EmailAddress(practice.email);
@@ -63,12 +67,12 @@ namespace FewaTelemedicine.Persistence.Repositories
                 htmlContent = htmlContent.Replace("PatientEmail", receiverEmail);
                 if (practice.emailAdditionalContent == "EmailAdditionalContent")
                 {
-                   htmlContent = htmlContent.Replace("EmailAdditionalContent","");
+                    htmlContent = htmlContent.Replace("EmailAdditionalContent", "");
                 }
                 else
                 {
-                   htmlContent = htmlContent.Replace("EmailAdditionalContent", practice.emailAdditionalContent);
-                }               
+                    htmlContent = htmlContent.Replace("EmailAdditionalContent", practice.emailAdditionalContent);
+                }
                 var msg = MailHelper.CreateSingleEmail(from, to, practice.emailSubject, practice.emailPlainBody, htmlContent);
                 var res = await client.SendEmailAsync(msg);
                 if (res.StatusCode == System.Net.HttpStatusCode.OK || res.StatusCode == System.Net.HttpStatusCode.Accepted)
@@ -106,7 +110,7 @@ namespace FewaTelemedicine.Persistence.Repositories
             }
 
         }
-        public async Task<bool> SendOTP(string receiverEmail, string otp)
+        public async Task<bool> SendOTP(string receiverEmail, string otp, string hostname = "")
         {
             var bResponse = false;
             var name = "";
@@ -122,14 +126,14 @@ namespace FewaTelemedicine.Persistence.Repositories
                 {
                     return false;
                 }
-                if (!string.IsNullOrEmpty(provider.name))
+                if (!string.IsNullOrEmpty(hostname))
                 {
-                    name = "Dr." + provider.name;
+                    practice.serverName = hostname;
                 }
-                else
-                {
-                    name = provider.email;
-                }
+                name = (!string.IsNullOrEmpty(provider.name)) 
+                    ? ((!string.IsNullOrEmpty(provider.nameTitle) ? provider.nameTitle : "") + provider.name)
+                    : provider.email;
+
                 practice.emailPlainBody = "";
                 var htmlContent = "   <table align='center' cellpadding='0' cellspacing='0' border='0' width='100%'bgcolor='#f0f0f0'>  " +
                                  "           <tr>  " +
@@ -202,13 +206,13 @@ namespace FewaTelemedicine.Persistence.Repositories
             return bResponse;
         }
 
-        public async Task<bool> SendPatientReportEmailAsync(Patient patient)
+        public async Task<bool> SendPatientReportEmailAsync(Patient patient, string hostname = "")
         {
             var bResponse = false;
             try
             {
                 Provider provider = FewaDbContext.providers.Where(a => a.url == patient.url).FirstOrDefault();
-                if(provider==null)
+                if (provider == null)
                 {
                     return false;
                 }
@@ -217,13 +221,18 @@ namespace FewaTelemedicine.Persistence.Repositories
                 {
                     return false;
                 }
+
+                if (!string.IsNullOrEmpty(hostname))
+                {
+                    practice.serverName = hostname;
+                }
                 var client = new SendGridClient(practice.emailApiKey);
                 var from = new EmailAddress(practice.email);
                 var to = new EmailAddress(patient.email);
                 var labOrdersSent = patient.labOrdersSent == true ? "Yes" : "No";
                 var newPrescriptionsSentToYourPharmacy = patient.newPrescriptionsSentToYourPharmacy == true ? "Yes" : "No";
                 var newPrescriptionsMailedToYou = patient.newPrescriptionsMailedToYou == true ? "Yes" : "No";
-                var htmlContent ="   <!DOCTYPE html>  " +
+                var htmlContent = "   <!DOCTYPE html>  " +
                                  "   <html lang='en'>  " +
                                  "     " +
                                  "   <head>  " +
@@ -358,7 +367,7 @@ namespace FewaTelemedicine.Persistence.Repositories
                                  "                   <table width='100%' cellspacing='0' cellpadding='0' border='0' align='center'>  " +
                                  "                       <tbody>  " +
                                  "                           <tr>  " +
-                                 "                               <td style='font-family:\"Open Sans\", Arial, sans-serif; font-size:21px; line-height:15px;font-weight: 600; color:#20325F;' valign='top' align='center'>"+practice.name+"</td>  " +
+                                 "                               <td style='font-family:\"Open Sans\", Arial, sans-serif; font-size:21px; line-height:15px;font-weight: 600; color:#20325F;' valign='top' align='center'>" + practice.name + "</td>  " +
                                  "                           </tr>  " +
                                  "                       </tbody>  " +
                                  "                   </table>  " +
@@ -391,7 +400,7 @@ namespace FewaTelemedicine.Persistence.Repositories
                                  "                       <tr>  " +
                                  "                           <td align='left' valign='top'  " +
                                  "                               style='font-family:\"Open Sans\", Arial, sans-serif; font-size:16px; line-height:22px;font-weight: 600; color:#000; letter-spacing:2px; padding-bottom:12px;'>  " +
-                                 "                               Hi "+patient.name+",  " +
+                                 "                               Hi " + patient.name + ",  " +
                                  "                           </td>  " +
                                  "                       </tr>  " +
                                  "                       <tr>  " +
@@ -400,7 +409,7 @@ namespace FewaTelemedicine.Persistence.Repositories
                                  "                       <tr>  " +
                                  "                           <td align='left' valign='top'  " +
                                  "                               style='font-family:\"Open Sans\", Arial, sans-serif; font-size:14px; line-height:22px; color:#666;padding-bottom:12px;'>  " +
-                                 "                                <b style='color:#000;'>Lab Orders Sent:</b>&nbsp;"+ labOrdersSent + "</td>  " +
+                                 "                                <b style='color:#000;'>Lab Orders Sent:</b>&nbsp;" + labOrdersSent + "</td>  " +
                                  "                       </tr>  " +
                                  "                       <tr>  " +
                                  "                           <td align='left' valign='top'  " +
@@ -415,12 +424,12 @@ namespace FewaTelemedicine.Persistence.Repositories
                                  "   					 <tr>  " +
                                  "                           <td align='left' valign='top'  " +
                                  "                               style='font-family:\"Open Sans\", Arial, sans-serif; font-size:14px; line-height:22px; color:#666;padding-bottom:12px;'>  " +
-                                 "                                <b style='color:#000;'>Advice:</b>&nbsp;"+patient.medication+"</td>  " +
+                                 "                                <b style='color:#000;'>Advice:</b>&nbsp;" + patient.medication + "</td>  " +
                                  "                       </tr>  " +
                                  "   					 <tr>  " +
                                  "                           <td align='left' valign='top'  " +
                                  "                               style='font-family:\"Open Sans\", Arial, sans-serif; font-size:14px; line-height:22px; color:#666;padding-bottom:12px;'>  " +
-                                 "                                <b style='color:#000;'>Follow Up in:</b>&nbsp;"+patient.followUpNumber+"/"+patient.followUpMeasure+"</td>  " +
+                                 "                                <b style='color:#000;'>Follow Up in:</b>&nbsp;" + patient.followUpNumber + "/" + patient.followUpMeasure + "</td>  " +
                                  "                       </tr>  " +
                                  "                       <tr>  " +
                                  "                           <td height='15' class='em_h20' style='font-size:0px; line-height:0px; height:15px;'>&nbsp;</td>  " +
@@ -442,7 +451,7 @@ namespace FewaTelemedicine.Persistence.Repositories
                                  "                           <td align='center' valign='top'>  " +
                                  "                               <table align='center' width='100%' border='0' cellspacing='0' cellpadding='0'>  " +
                                  "                                   <tr>  " +
-                                 "                                       <td align='center' valign='top'><img src='"+ practice.serverName + "/img/Ellipse-34.png'></td>  " +
+                                 "                                       <td align='center' valign='top'><img src='" + practice.serverName + "/img/Ellipse-34.png'></td>  " +
                                  "                                   </tr>  " +
                                  "                                   <tr>  " +
                                  "                                       <td align='center' valign='top' style='font-family:\"Open Sans\", Arial, sans-serif; font-size:17px;line-height:30px; color:#000;'>Join Conference</td>  " +
@@ -452,7 +461,7 @@ namespace FewaTelemedicine.Persistence.Repositories
                                  "                           <td align='center' valign='top'>  " +
                                  "                               <table align='center' width='100%' border='0' cellspacing='0' cellpadding='0'>  " +
                                  "                                   <tr>  " +
-                                 "                                       <td align='center' valign='top'><img src='"+ practice.serverName + "/img/Ellipse-35.png'></td>  " +
+                                 "                                       <td align='center' valign='top'><img src='" + practice.serverName + "/img/Ellipse-35.png'></td>  " +
                                  "                                   </tr>  " +
                                  "                                   <tr>  " +
                                  "                                       <td align='center' valign='top' style='font-family:\"Open Sans\", Arial, sans-serif; font-size:17px;line-height:24px; color:#000;'>Communicates<br>with Doctor</td>  " +
@@ -481,17 +490,17 @@ namespace FewaTelemedicine.Persistence.Repositories
                                  "                               <table align='center' border='0' cellspacing='0' cellpadding='0'>  " +
                                  "                                   <tr>  " +
                                  "                                       <td valign='top' align='center'><a href='#' target='_blank'  " +
-                                 "                                               style='text-decoration:none;'><img src='" + practice.serverName + "/img/twitter 1.png' alt='fb'  " +
+                                 "                                               style='text-decoration:none;'><img src='" + practice.serverName + "/img/twitter.png' alt='fb'  " +
                                  "                                                   style='display:block; font-family:Arial, sans-serif; font-size:14px; line-height:14px; color:#ffffff; max-width:20px;margin-right: 15px;max-height: 20px;'  " +
                                  "                                                   border='0' width='26' height='26' /></a></td>  " +
                                  "                                       <td width='6' style='width:6px;'>&nbsp;</td>  " +
                                  "                                       <td valign='top' align='center'><a href='#' target='_blank'  " +
-                                 "                                               style='text-decoration:none;'><img src='" + practice.serverName + "/img/linkedin 1.png' alt='tw'  " +
+                                 "                                               style='text-decoration:none;'><img src='" + practice.serverName + "/img/linkedin.png' alt='tw'  " +
                                  "                                                   style='display:block; font-family:Arial, sans-serif; font-size:14px; line-height:14px; color:#ffffff; max-width:20px;margin-right: 15px;max-height: 20px'  " +
                                  "                                                   border='0' width='27' height='26' /></a></td>  " +
                                  "                                       <td width='6' style='width:6px;'>&nbsp;</td>  " +
                                  "                                       <td valign='top' align='center'><a href='#' target='_blank'  " +
-                                 "                                               style='text-decoration:none;'><img src='" + practice.serverName + "/img/rss 1.png' alt='yt'  " +
+                                 "                                               style='text-decoration:none;'><img src='" + practice.serverName + "/img/rss.png' alt='yt'  " +
                                  "                                                   style='display:block; font-family:Arial, sans-serif; font-size:14px; line-height:14px; color:#ffffff; max-width:20px;margin-right: 15px;max-height: 20px'  " +
                                  "                                                   border='0' width='26' height='26' /></a></td>  " +
                                  "                                   </tr>  " +
@@ -516,7 +525,7 @@ namespace FewaTelemedicine.Persistence.Repositories
                                  "   </body>  " +
                                  "     " +
                                  "  </html>  ";
-               
+
                 var emailSubject = "After Visit Summary Report";
                 var msg = MailHelper.CreateSingleEmail(from, to, emailSubject, practice.emailPlainBody, htmlContent);
                 var res = await client.SendEmailAsync(msg);

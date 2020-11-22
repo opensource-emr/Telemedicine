@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Global } from 'src/app/_helpers/common/global.model';
 
 @Component({
   selector: 'app-home',
@@ -7,9 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  constructor(private global: Global) { }
 
   ngOnInit(): void {
+    this.global.isProvider = true;
+    this.global.isPatient = false;
   }
-
 }

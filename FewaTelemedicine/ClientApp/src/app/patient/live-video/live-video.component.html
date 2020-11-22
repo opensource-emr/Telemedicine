@@ -3,11 +3,17 @@
         <div class="col-12 col-lg-9 col-md-12 pad0">
             <div class="position-relative">
                 <div class="videoLive">
-                    <jitsi-call *ngIf="isMeetStart" [roomName]="roomName" [remoteUserDisplayName]="remoteUserDisplayName"></jitsi-call>
+                    <jitsi-call *ngIf="isMeetStart" [roomName]="roomName"
+                        [remoteUserDisplayName]="remoteUserDisplayName"></jitsi-call>
                     <!-- <iframe width="100%" height="100%" [src]="global.config.videourl | safe"
-                    frameborder="0" allow="microphone; camera" allowfullscreen scrolling="none"></iframe>     -->
+                    frameborder="0" allow="microphone; camera" allowfullscreen scrolling="none"></iframe> -->
+
+                    <test-audio-video *ngIf="isWaiting"></test-audio-video>
+
                     <div class="VideoUserName">
-                        <h2>{{global.currentProvider}}</h2>
+                        <h2 *ngIf="!isWaiting">{{global.currentProvider}}</h2>
+                        <h2 *ngIf="isWaiting">Please wait <strong>{{global.currentProvider}}</strong> will start this
+                            secure video visit.</h2>
                     </div>
                 </div>
             </div>
@@ -75,7 +81,7 @@
                         </svg></span> Chat Session
                 </div>
             </div>
-            <div class="chatBody">
+            <div class="chatBody" *ngIf="providerObj">
                 <div class="chatWith">
                     <h6>Direct Message with {{providerObj.userName}}</h6>
                 </div>

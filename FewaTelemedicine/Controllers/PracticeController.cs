@@ -97,12 +97,12 @@ namespace FewaTelemedicine.Controllers
             {
                 if (!string.IsNullOrEmpty(practice))
                 {
-                    return Ok(Json(FewaDbContext.practices.Where(a => a.url == practice).FirstOrDefault()));
+                    return Ok(FewaDbContext.practices.Where(a => a.url == practice).FirstOrDefault());
                 }
                 List<Practice> result = FewaDbContext.practices.ToList();
-                return Ok(Json(result));
+                return Ok(result);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return StatusCode(500, "Internal server error.");
             }
@@ -372,11 +372,33 @@ namespace FewaTelemedicine.Controllers
                 _waitingroom.patients.Remove(t);
             }
         }
-        public IActionResult UpdateProfile([FromBody] Provider obj)
+        public IActionResult UpdateProfile([FromForm] Provider obj)
         {
             if (obj == null)
             {
                 return BadRequest();
+            }
+            var files = Request.Form.Files;
+            if (files.Count > 0)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    files[0].CopyTo(memoryStream);
+
+                    // Upload the file if less than 2 MB
+                    if (memoryStream.Length < 2097152)
+                    {
+                        var arr = memoryStream.ToArray();
+                        obj.image = "data:image/"
+                            + Path.GetExtension(files[0].FileName).Replace(".", "")
+                            + ";base64,"
+                            + Convert.ToBase64String(arr);
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("File", "The file is too large.");
+                    }
+                }
             }
             var provider = _providerRepository.getProviderByUserName(obj.userName);
             if (provider is null)
@@ -426,62 +448,6 @@ namespace FewaTelemedicine.Controllers
             }
             return Ok(logoPath);
         }
-
-        public IActionResult UploadProfileImage()
-        {
-            try
-            {
-                string username = HttpContext.Session.GetString("name");
-                var file = Request.Form.Files[0];
-                var provider = _providerRepository.getProviderByUserName(username);
-                if (provider is null)
-                {
-                    return StatusCode(500);
-                }
-
-                using (var memoryStream = new MemoryStream())
-                {
-                    file.CopyTo(memoryStream);
-
-                    // Upload the file if less than 2 MB
-                    if (memoryStream.Length < 2097152)
-                    {
-                        provider.image = memoryStream.ToArray();
-                        //_fewaDbContext.DoctorsModels.Update(doc);
-                        //await _fewaDbContext.SaveChangesAsync();
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("File", "The file is too large.");
-                    }
-                    return Ok(provider.image);
-                }
-            }
-            catch (System.Exception ex)
-            {
-                return Ok("Upload Failed: " + ex.Message);
-            }
-        }
-
-        public IActionResult GetProfileImage()
-        {
-            try
-            {
-                string username = HttpContext.Session.GetString("name");
-                var provider = _providerRepository.getProviderByUserName(username);
-                if (provider.image != null)
-                {
-                    return Ok(provider.image);
-                }
-                return Ok(provider.image);
-            }
-            catch (Exception ex)
-            {
-                return Ok("Unable to fetch Image " + ex.Message);
-            }
-
-        }
-
         public IActionResult PreviewEmailTemplate([FromBody] Practice list)
         {
             if (ModelState.IsValid)
@@ -490,7 +456,7 @@ namespace FewaTelemedicine.Controllers
                 {
                     return BadRequest();
                 }
-               // var oldEmail = "";
+                // var oldEmail = "";
                 var username = accessor.HttpContext.Session.GetString("name");
                 var provider = _providerRepository.getProviderByUserName(username);
                 var newEmailContent = list.emailAdditionalContent;
@@ -504,16 +470,16 @@ namespace FewaTelemedicine.Controllers
                     htmlContent = htmlContent.Replace("providerName", provider.name);
                 if (string.IsNullOrEmpty(provider.name))
                     htmlContent = htmlContent.Replace("providerName", provider.userName);
-                htmlContent = htmlContent.Replace("practiceName", list.name);               
-               /* if (string.IsNullOrEmpty(oldEmailContent))
-                {
-                    oldEmail = oldEmailContent;
-                    oldEmailContent = "old";
-                } */             
+                htmlContent = htmlContent.Replace("practiceName", list.name);
+                /* if (string.IsNullOrEmpty(oldEmailContent))
+                 {
+                     oldEmail = oldEmailContent;
+                     oldEmailContent = "old";
+                 } */
                 if (!string.IsNullOrEmpty(oldEmailContent) && htmlContent.Contains(oldEmailContent) && !string.IsNullOrEmpty(newEmailContent))
                 {
                     htmlContent = htmlContent.Replace(oldEmailContent, newEmailContent);
-                }                
+                }
                 else if (htmlContent.Contains("EmailAdditionalContent") && !string.IsNullOrEmpty(newEmailContent))
                 {
                     htmlContent = htmlContent.Replace("EmailAdditionalContent", newEmailContent);

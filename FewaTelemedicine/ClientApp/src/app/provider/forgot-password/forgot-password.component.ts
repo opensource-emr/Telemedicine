@@ -22,35 +22,52 @@ export class ForgotPasswordComponent implements OnInit {
   providerForm: FormGroup;
   countDownTime: number = 30;
   form: FormGroup = new FormGroup({});
-  constructor(public httpClient: HttpClient
-    , public routing: Router,
+  constructor(public httpClient: HttpClient,
+    public routing: Router,
     public global: Global,
     public fb: FormBuilder) {
     this.initForm();
   }
 
   ngOnInit(): void {
+    if (!this.global.practiceObj.url) {
+      this.getPractice();
+    }
   }
 
+  private getPractice() {
+    this.httpClient.get<any>(this.global.practiceUrl + 'GetPracticeConfiguration?practice=' + this.global.currentPractice)
+      .subscribe(res => {
+        this.global.practiceObj = res;
+        if (!this.global.practiceObj.logoPath) {
+          this.global.practiceObj.logoPath = '/assets/img/logo.png';
+        }
+        this.practiceObj = this.global.practiceObj;
+      }, err => {
+        alert('Can not load configuration please talk with admin.');
+      });
+  }
   private initForm() {
     this.form = this.fb.group({
       password: ['', [Validators.required]],
       confirm_password: ['', [Validators.required]],
       otp: ['', Validators.required],
-      email_username: ['', Validators.required],
-
+      email_username: ['', Validators.required]
     }, {
       validator: ConfirmedValidator('password', 'confirm_password')
     })
   }
 
   countDown(): void {
-
     var countDown = setInterval(() => {
       this.countDownTime--;
-      document.getElementById('countdown').innerHTML = this.countDownTime.toString();
-      if (this.countDownTime === 0) {
-        this.disableResendButton = false;
+      if (document.getElementById('countdown')) {
+        document.getElementById('countdown').innerHTML = this.countDownTime.toString();
+        if (this.countDownTime === 0) {
+          this.disableResendButton = false;
+          clearInterval(countDown);
+        }
+      } else {
         clearInterval(countDown);
       }
     }, 1000);
@@ -109,7 +126,7 @@ export class ForgotPasswordComponent implements OnInit {
       alert(res);
     this.disableSubmitButton = false;
   }
-  
+
   successResendOTP(res) {
     if (res) {
 

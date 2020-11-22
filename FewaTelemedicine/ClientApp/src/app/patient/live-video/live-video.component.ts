@@ -22,6 +22,7 @@ export class LiveVideoComponent implements OnInit {
   roomName = "FewaTelemedicine";
   remoteUserDisplayName = "Fewa User";
   isMeetStart = false;
+  isWaiting: boolean = true;
 
   constructor(public httpClient: HttpClient,
     private notificationService: NotificationService,
@@ -41,7 +42,6 @@ export class LiveVideoComponent implements OnInit {
         this.global.providerObj = res.User;
         this.roomName = this.global.providerObj.roomName;
         this.remoteUserDisplayName = this.global.currentProvider;
-        this.isMeetStart = true;
         for (let temp of res.Configuration) {
           if (temp.url == this.global.providerObj.practice) {
             this.global.practiceObj = temp;
@@ -63,6 +63,8 @@ export class LiveVideoComponent implements OnInit {
     this.notificationService.Connect();
     this.patientObj = this.global.patientObj;
     this.notificationService.EventCallPatient.subscribe(patient => {
+      this.isWaiting = false;
+      this.isMeetStart = true;
     });
 
     this.notificationService.EventGetAllProviders.subscribe(_providers => {

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Global } from 'src/app/_helpers/common/global.model';
 
 @Component({
   selector: 'app-sidemenu',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SidemenuComponent implements OnInit {
 
-  constructor() { }
+  constructor(public global: Global) { }
 
   ngOnInit(): void {
   }

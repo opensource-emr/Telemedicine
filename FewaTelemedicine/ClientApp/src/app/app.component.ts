@@ -12,6 +12,7 @@ export class AppComponent {
     var p = location.pathname.split('/');
     this.global.currentPractice = p[1];
     this.global.currentProvider = p[2];
+    this.global.providerObj.url = this.global.currentProvider;
   }
 
   selectTheme(type) {
@@ -24,5 +25,13 @@ export class AppComponent {
       body.classList.add("greenTheme");
       body.classList.remove("blueTheme");
     }
+  }
+  mouseenter() {
+    var d = document.getElementById('selectTheme') as HTMLUListElement;
+    d.style.display = 'block';
+  }
+  mouseleave() {
+    var d = document.getElementById('selectTheme') as HTMLUListElement;
+    d.style.display = 'none';
   }
 }

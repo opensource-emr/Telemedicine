@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FewaTelemedicine.Services
 {
-    public class MessengerServ: IMessengerService
+    public class MessengerServ : IMessengerService
     {
         private readonly IMessengerRepository _messengerRepository;
         public MessengerServ(IMessengerRepository messengerRepository)
@@ -16,17 +16,17 @@ namespace FewaTelemedicine.Services
             this._messengerRepository = messengerRepository;
         }
 
-        public async Task<bool> SendEmailAsync(string receiverEmail)
+        public async Task<bool> SendEmailAsync(string receiverEmail, string hostname = "")
         {
-            return await this._messengerRepository.SendEmailAsync(receiverEmail);
+            return await this._messengerRepository.SendEmailAsync(receiverEmail, hostname);
         }
-        public async Task<bool> SendPatientReportEmailAsync(Patient patient)
+        public async Task<bool> SendPatientReportEmailAsync(Patient patient, string hostname = "")
         {
-            return await this._messengerRepository.SendPatientReportEmailAsync(patient);
+            return await this._messengerRepository.SendPatientReportEmailAsync(patient, hostname);
         }
-        public async Task<bool> SendOTP(string receiverEmail, string otp)
+        public async Task<bool> SendOTP(string receiverEmail, string otp, string hostname = "")
         {
-            return await this._messengerRepository.SendOTP(receiverEmail, otp);
+            return await this._messengerRepository.SendOTP(receiverEmail, otp, hostname);
         }
         public bool SendSMS(string message, string receiverContact)
         {

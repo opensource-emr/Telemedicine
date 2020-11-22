@@ -17,7 +17,6 @@ export class ChatComponent implements OnInit, AfterViewInit {
   providerObj: Provider = new Provider();
   userChat: Array<ChatModel> = [];
   currentChatUser: ChatModel = new ChatModel();
-  retrievedImage: any;
   container: HTMLElement;
   disableSendButton: boolean = true;
   filteredPatients: Array<ChatModel> = [];
@@ -77,14 +76,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
       });
   }
   ngOnInit() {
-    var config = new HttpParams().set('username', this.global.providerObj.userName);
-    this.httpClient.get<any>(this.global.practiceUrl + "GetUpdatedProvider", { params: config })
-      .subscribe(res => {
-        this.providerObj = res.User;
-        if (this.providerObj.image) {
-          this.retrievedImage = 'data:image/png;base64,' + this.providerObj.image;
-        }
-      });
+    this.providerObj = this.global.providerObj;
   }
 
   ngAfterViewInit() {
@@ -142,10 +134,4 @@ export class ChatComponent implements OnInit, AfterViewInit {
   get chatFormControls() {
     return this.chatForm.controls;
   }
-
-  transform() {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(this.retrievedImage);
-  }
-
-
 }

@@ -42,7 +42,7 @@
                                 and
                                 Conditions</a>.</label>
                     </div>
-                    <button type="submit" class="btn submitBtn" routerLink="/provider/dashboard">Sign Up</button>
+                    <button type="submit" class="btn submitBtn" (click)="onSubmit()">Sign Up</button>
                     <p>Already have an account? <a href="javascript:" routerLink="/provider/login">Sign in</a></p>
                 </div>
             </form>
@@ -51,7 +51,7 @@
     <div class="intro-about">
         <div class="intro-content">
             <div class="into-logo">
-                <img src="/assets/img/logo.png" class="img-fluid">
+                <img [src]="global.practiceObj.logoPath" class="img-fluid">
             </div>
             <div class="intro-bannercontent">
                 <p>Welcome to the demo of Fewa. This is the place where you can put your hospital description. Fewa is a

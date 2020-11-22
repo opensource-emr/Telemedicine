@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Twilio.TwiML.Voice;
+using System.Web;
 
 namespace FewaTelemedicine.Controllers
 {
@@ -20,7 +21,7 @@ namespace FewaTelemedicine.Controllers
         private static ILoggerService _logger;
         private readonly IProviderRepository _providerRepo;
 
-        public MessengerController(IMessengerService messengerService, 
+        public MessengerController(IMessengerService messengerService,
                                    ILoggerService logger,
                                     IProviderRepository providerRepo)
         {
@@ -31,7 +32,7 @@ namespace FewaTelemedicine.Controllers
 
         //[Route("SendSMS")]
         //[HttpPost]
-    
+
         //public bool SendSMS([FromBody]DoctorsModel sms)
         //{
         //    string meetingId = sms.Id.ToString() + DateTime.Now.ToString("MMddHHmmss");
@@ -59,8 +60,8 @@ namespace FewaTelemedicine.Controllers
         [Route("SendEmail")]
         [HttpPost]
         public async Task<bool> SendEmail([FromBody] Patient email)
-        { 
-           
+        {
+
             try
             {
                 if (email is null)
@@ -71,7 +72,7 @@ namespace FewaTelemedicine.Controllers
                 {
                     return false;
                 }
-                return await _messengerService.SendEmailAsync(email.email);
+                return await _messengerService.SendEmailAsync(email.email, Request.Scheme + "://" + Request.Host.Value);
             }
             catch (Exception ex)
             {
@@ -94,7 +95,7 @@ namespace FewaTelemedicine.Controllers
                 {
                     return false;
                 }
-                return await _messengerService.SendPatientReportEmailAsync(obj);
+                return await _messengerService.SendPatientReportEmailAsync(obj, Request.Scheme + "://" + Request.Host.Value);
             }
             catch (Exception ex)
             {
@@ -124,7 +125,7 @@ namespace FewaTelemedicine.Controllers
                 if (!string.IsNullOrEmpty(provider.email))
                 {
                     provider.otp = GenerateOtp(provider.email);
-                    var result = await _messengerService.SendOTP(provider.email, provider.otp);
+                    var result = await _messengerService.SendOTP(provider.email, provider.otp, Request.Scheme + "://" + Request.Host.Value);
                     if (result == true)
                     {
                         HttpContext.Session.SetString("otp", JsonConvert.SerializeObject(provider));

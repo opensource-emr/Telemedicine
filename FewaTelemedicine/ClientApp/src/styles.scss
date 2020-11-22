@@ -1,6 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 @import 'global.scss';
 
+body {
+    min-width: 1349px !important;
+}
 @media print
 {    
     @page { margin: 0; }

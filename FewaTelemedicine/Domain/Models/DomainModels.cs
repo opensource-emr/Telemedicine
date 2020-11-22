@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -52,7 +53,8 @@ namespace FewaTelemedicine.Domain.Models
         public string designation { get; set; }
         public string medicalDegree { get; set; }
         public string mobileNumber { get; set; }
-        public byte[] image { get; set; } // doctors
+        //public byte[] image { get; set; } // doctors
+        public string image { get; set; }
         public string roomName { get; set; }
         public string roomKey { get; set; }
         public string url { get; set; }
@@ -65,6 +67,8 @@ namespace FewaTelemedicine.Domain.Models
         public string otp { get; set; }
         [NotMapped]
         public string newPassword { get; set; }
+        [NotMapped]
+        public IFormFile profilePhoto { get; set; } //For receiving image file from client side
 
     }
     public class ProviderCabin

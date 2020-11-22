@@ -17,9 +17,7 @@ export class LoginComponent implements OnInit {
   practiceObj: Practice = new Practice();
   providerForm: FormGroup;
   clicked: boolean = false;
-  practiceDetails = { description: '', contactNo: Number, email: '', logoPath: '' };
-  paramCheck: any;
-  public state: Observable<object>;
+
   constructor(private httpClient: HttpClient,
     private routing: Router,
     public global: Global,
@@ -27,25 +25,22 @@ export class LoginComponent implements OnInit {
     this.initForm();
   }
 
-
   ngOnInit(): void {
-    this.httpClient.get<any>(this.global.practiceUrl + 'GetPracticeConfiguration')
+    this.getPractice();
+  }
+  private getPractice() {
+    this.httpClient.get<any>(this.global.practiceUrl + 'GetPracticeConfiguration?practice=' + this.global.currentPractice)
       .subscribe(res => {
-        if (res && res.Value && res.Value.length > 0) {
-          this.global.providerObj.url = this.global.currentProvider
-          for (let temp of res.Value) {
-            if (temp.url == this.global.currentPractice) {
-              this.global.practiceObj = temp;
-              this.practiceObj = temp;
-              this.global.isLogo = true;
-            }
-          }
+        this.global.practiceObj = res;
+        if (!this.global.practiceObj.logoPath) {
+          this.global.practiceObj.logoPath = '/assets/img/logo.png';
         }
+        this.practiceObj = this.global.practiceObj;
       }, err => {
         alert('Can not load configuration please talk with admin.');
       });
-    this.state = history.state;
   }
+
   private initForm() {
     this.providerForm = this.formBuilder.group({
       providerUserName: ['', Validators.required],
@@ -76,6 +71,8 @@ export class LoginComponent implements OnInit {
         this.global.token = res.Token;
         this.global.isProvider = true;
         this.global.providerObj = res.User;
+        var roomname = this.global.providerObj.roomName.replace("name", this.global.providerObj.userName);
+        this.global.providerObj.roomName = roomname;
         var url: string = this.global.config.videourl.replace("PROVIDERNAME", this.global.currentProvider);
         this.global.config.videourl = url;
         this.routing.navigateByUrl('/provider/dashboard', { state: this.global });
