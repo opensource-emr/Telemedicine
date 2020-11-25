@@ -14,7 +14,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class ManageHistoryComponent implements OnInit {
   public CompletedPatients: Array<Patient> = null;
-  public FilteredCompletedPatients: Array<Patient> = [];
+  public filteredCompletedPatients: Array<Patient> = [];
   searchText: string = "";
   selectedDate: NgbDateStruct;
   providerObj: Provider = new Provider();
@@ -44,14 +44,13 @@ export class ManageHistoryComponent implements OnInit {
 
   loadPatientsAttended() {
     this.CompletedPatients = [];
-    let params = new HttpParams().set('searchString', this.searchText);
-    this.httpClient.get<any>(this.global.practiceUrl + "GetPatientsAttended", { params: params })
-      .subscribe(res => this.loadPatientSuccess(res), err => this.error(err));
+    this.httpClient.get<any>(this.global.practiceUrl + "GetPatientsAttended?provider="+this.global.providerObj.url+"&searchString="+this.searchText)
+          .subscribe(res => this.loadPatientSuccess(res), err => this.error(err));
   }
 
   loadPatientSuccess(res) {
-    this.CompletedPatients = res.filter(t => t.url == this.global.providerObj.url);
-    this.FilteredCompletedPatients = this.CompletedPatients;
+    this.filteredCompletedPatients = res;
+    //this.FilteredCompletedPatients = this.CompletedPatients;
     this.cdr.detectChanges();
   }
 
