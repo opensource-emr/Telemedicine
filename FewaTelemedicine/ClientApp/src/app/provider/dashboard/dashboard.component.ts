@@ -132,14 +132,13 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   loadPatientsAttended() {
     this.completedPatients = [];
-    let params = new HttpParams().set('searchString', this.searchText);
-    this.httpClient.get<any>(this.global.practiceUrl + "GetPatientsAttended", { params: params })
-      .subscribe(res => this.loadPatientSuccess(res), err => this.error(err));
+    this.httpClient.get<any>(this.global.practiceUrl + "GetPatientsAttended?provider="
+                            +this.global.providerObj.url+"&searchString="+this.searchText)
+                    .subscribe(res => this.loadPatientSuccess(res), err => this.error(err));
   }
 
   loadPatientSuccess(res) {
-    this.completedPatients = res.filter(t => t.url == this.global.providerObj.url);
-    this.filteredCompletedPatients = [...this.completedPatients];
+    this.filteredCompletedPatients = res;
     this.cdr.detectChanges();
   }
 
