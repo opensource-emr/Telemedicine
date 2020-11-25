@@ -51,6 +51,7 @@ namespace FewaTelemedicine.Domain
         public DbSet<Practice> practices { get; set; }
         public DbSet<Provider> providers { get; set; }
         public DbSet<Patient> patients { get; set; }
+        public DbSet<ProviderAdvice> advice { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //  Seeding for provider and practice
@@ -63,7 +64,8 @@ namespace FewaTelemedicine.Domain
             modelBuilder.Entity<Practice>().ToTable("Practice");
             modelBuilder.Entity<Provider>().ToTable("Provider");
             modelBuilder.Entity<Patient>().ToTable("Patient");
-
+            modelBuilder.Entity<Patient>().ToTable("ProviderAdvice");
+            modelBuilder.Entity<ProviderAdvice>().Property(t => t.adviceId).ValueGeneratedOnAdd();
             modelBuilder.Entity<Practice>().HasIndex(b => b.url).IsUnique();
             modelBuilder.Entity<Practice>().HasData(practiceSeed, practiceSeed1);
             modelBuilder.Entity<Provider>().HasData(providerSeed, providerSeed1); // he does not create this table

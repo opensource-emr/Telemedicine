@@ -148,4 +148,12 @@ namespace FewaTelemedicine.Domain.Models
         [NotMapped]
         public string receiver { get; set; }
     }
+    public class ProviderAdvice
+    {
+        [Key]
+        public int adviceId { get; set; }
+        public string advice { get; set; }
+        public string? inputType { get; set; }
+        public int providerId { get; set; }
+    }
 }

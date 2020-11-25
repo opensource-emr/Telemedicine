@@ -51,6 +51,8 @@
                     <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
                         aria-controls="v-pills-profile" aria-selected="false"
                         (click)="loadEmailTemplate()">Configuration</a>
+                    <a class="nav-link" id="v-pills-advice-tab" data-toggle="pill" href="#v-pills-advice" role="tab"
+                        aria-controls="v-pills-advice" aria-selected="false">Advice</a>
                 </div>
                 <div class="tab-content" id="v-pills-tabContent">
                     <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
@@ -413,6 +415,78 @@
                                         </ul>
                                     </div>
 
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="v-pills-advice" role="tabpanel"
+                        aria-labelledby="v-pills-advice-tab">
+                        <div class="fewa-title">
+                            <h1>Update Advice</h1>
+                        </div>
+                        <div class="tab-forms">
+                            <form [formGroup]="adviceForm">
+                                <table  class="table table-bordered" style="width:100%;text-align:center;">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Sr. No
+                                            </th>
+                                            <th>
+                                                Advice
+                                            </th>
+                                            <th>
+                                                Action
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody formArrayName="adviceArray">
+                                        <tr *ngFor="let array of adviceArray.controls; let i=index"
+                                            [formGroupName]="i">
+                                            <td>
+                                                {{i+1}}
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control disable" name="advice"
+                                                    formControlName="advice" />
+                                            </td>
+                                            <td>
+                                                <a (click)="editRow(i)" href="javascript:;" >
+                                                <svg fill="#000000" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" width="28px" height="28px">
+                                                <path d="M14.5 5.5L3 17 3 21 7 21 18.5 9.5zM21.707 4.879l-2.586-2.586c-.391-.391-1.024-.391-1.414 0L16 4l4 4 1.707-1.707C22.098 5.902 22.098 5.269 21.707 4.879z"/></svg>
+                                                </a>
+                                                    &nbsp;&nbsp;
+                                                  <a  (click)="removeRow(i)" href="javascript:;">                                                                                               
+                                                    <svg fill="#000000" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" width="28px" height="28px">    
+                                                    <path d="M 10 2 L 9 3 L 4 3 L 4 5 L 20 5 L 20 3 L 15 3 L 14 2 L 10 2 z M 5 7 L 5 20 C 5 21.1 5.9 22 7 22 L 17 22 C 18.1 22 19 21.1 19 20 L 19 7 L 5 7 z M 8 9 L 10 9 L 10 20 L 8 20 L 8 9 z M 14 9 L 16 9 L 16 20 L 14 20 L 14 9 z"/>
+                                                    </svg>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="3">
+                                                <button type="button"  class="button-theme" style="width:100%;" (click)="addRow()">
+                                                    Add New Advice
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="row" style="margin-top:3% !important;">
+                                    <div class="col-12 col-md-6">
+
+                                    </div>
+                                    <div class="col-12 col-md-6 text-right">
+                                        <ul>
+                                            <li><button class="cancelBtn" (click)="resetAdviceForm()">Cancel</button>
+                                            </li>
+                                            <li><button class="saveBtn" [disabled]="!adviceForm.valid"
+                                                    (click)="saveAdvice()">Save</button>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </form>
                         </div>

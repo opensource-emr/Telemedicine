@@ -1,4 +1,5 @@
 ﻿
+
 #region Hospital Controller Description 
 /* This file contains Definition of  Methods for Login Patient, Get and Add Waiting Room,Doctor Cabin,Updated Doctor,
  * ProfileUpdate and Update Parameter.
@@ -498,6 +499,70 @@ namespace FewaTelemedicine.Controllers
             {
                 return Ok("Cannot Load Preview.");
             }
+        }
+
+        public IActionResult GetAllAdvice()
+        {
+            try
+            {
+                List<ProviderAdvice> getAllAdvice = FewaDbContext.advice.ToList();
+                if (getAllAdvice.Count > 0)
+                {
+                    return Ok(getAllAdvice);
+                }
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return Ok("Error In Retrieving Records" + ex.Message);
+            }
+        }
+        public IActionResult SaveAdvice([FromBody] List<ProviderAdvice> adviceList)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (adviceList == null)
+                    {
+                        return BadRequest();
+                    }
+                    foreach (var i in adviceList)
+                    {
+                        if (i.adviceId > 0)
+                        {
+                            FewaDbContext.advice.Update(i);
+                        }
+                        else
+                        {
+                            FewaDbContext.advice.Add(i);
+                        }
+
+
+                        FewaDbContext.SaveChanges();
+                    }
+                    return Ok();
+                }
+                catch (Exception ex)
+                {
+                    return Ok("Error Adding New Advice: " + ex.Message);
+                }
+            }
+            else
+            {
+                return Ok("Unable to Save Advice.");
+            }
+        }
+        public IActionResult DeleteAdvice(int id)
+        {
+            ProviderAdvice removeAdvice = FewaDbContext.advice.Find(id);
+            if (removeAdvice == null)
+            {
+                return NotFound();
+            }
+            FewaDbContext.advice.Remove(removeAdvice);
+            FewaDbContext.SaveChanges();
+            return Ok(removeAdvice);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

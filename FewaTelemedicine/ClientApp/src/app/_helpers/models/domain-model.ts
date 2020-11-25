@@ -77,3 +77,11 @@ export class ProviderCabin {
     public patient: Patient;
     public provider: Provider;
 }
+
+export class ProviderAdvice {
+    adviceId: number;
+    advice: string = "";
+    inputType: string = "";
+    providerId: number;
+}
+
