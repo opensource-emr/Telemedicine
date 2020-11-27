@@ -52,7 +52,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
       });
       this.filteredPatients = [...this.userChat];
     });
-    
+
     this.notificationService.EventChatMessage
       .subscribe(data => {
         if (data.sender) {
@@ -84,11 +84,12 @@ export class ChatComponent implements OnInit, AfterViewInit {
   }
   scrollToBottom() {
     var div = document.getElementById("scrollingContainer");
-    div.scrollIntoView(false);
+    if (div)
+      div.scrollIntoView(false);
   }
   searchPatients() {
     this.filteredPatients = [...this.userChat]
-        .filter(a => a.user.toLowerCase()
+      .filter(a => a.user.toLowerCase()
         .includes(this.searchPatient.toLowerCase()));
   }
 

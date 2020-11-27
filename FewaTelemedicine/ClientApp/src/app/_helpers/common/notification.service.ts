@@ -78,8 +78,15 @@ export class NotificationService {
     this._hubConnection = new HubConnectionBuilder()
       .withUrl(window.location.origin + '/NotificationHub?token=' + this.global.token)
       .build();
-    this._hubConnection.serverTimeoutInMilliseconds = 3600000; // 1 hour 
-    //console.log(this._hubConnection);
+    /**
+     * If the server hasn't sent a message in 1 minute, 
+     * the client considers the server disconnected and triggers the onclose event.
+     */
+    this._hubConnection.serverTimeoutInMilliseconds = 1000 * 60 * 2;//60 seconds
+    /**
+     * after 15 seeconds ping server
+     */
+    this._hubConnection.keepAliveIntervalInMilliseconds = 1000 * 15;//15 seconds
   }
 
   private startConnection(): void {
@@ -103,17 +110,17 @@ export class NotificationService {
         return;
       }
       else {
-        //console.error('Connection Closed unexpectedy, connecting again...');
+        // console.error('Connection Closed unexpectedy, connecting again...');
         // setTimeout(() => {
         //   this.Connect();
         // }, 1000);
         alert("Session timeout, please log in again!");
-        if (this.global.isProvider) {
-          this.router.navigate(['provider/login'])
-        }
-        else {
-          this.router.navigate(['patient/intro']);
-        }
+        // if (this.global.isProvider) {
+        //   this.router.navigate(['provider/login'])
+        // }
+        // else {
+        //   this.router.navigate(['patient/intro']);
+        // }
       }
     });
   }
