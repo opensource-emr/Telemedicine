@@ -169,7 +169,7 @@ namespace FewaTelemedicine.Controllers
 
         }
 
-        public List<Patient> GetPatientsAttended([Optional] string searchString)
+        public List<Patient> GetPatientsAttended(string provider,[Optional] string searchString)
         {
             var attendedPatients = new List<Patient>();
             //Add Optional paramter if value is in parameter then filter.
@@ -177,13 +177,13 @@ namespace FewaTelemedicine.Controllers
             // if no search text then today's all records and if no today's records
             // then top 10 records.
             // if value in search text then  return values matching with search text.
-            if (string.IsNullOrEmpty(searchString))
+            if (string.IsNullOrEmpty(searchString)|| string.IsNullOrEmpty(provider))
             {
                 DateTime startDateTime = DateTime.Today; //Today at 00:00:00
                 DateTime endDateTime = DateTime.Today.AddDays(1).AddTicks(-1); //Today at 23:59:59
                 /* Display Today's Records */
                 attendedPatients = (from temp in FewaDbContext.patients
-                                    where (temp.appointmentDate >= startDateTime && temp.appointmentDate <= endDateTime)
+                                    where (temp.appointmentDate >= startDateTime && temp.appointmentDate <= endDateTime&&temp.url==provider)
                                     orderby temp.startTime descending
                                     select temp
                                    ).ToList<Patient>();
@@ -191,13 +191,14 @@ namespace FewaTelemedicine.Controllers
                 if (attendedPatients.Count <= 0)
                 {
                     attendedPatients = (from temp in FewaDbContext.patients
+                                        where(temp.url==provider)
                                         orderby temp.startTime, temp.appointmentDate descending
                                         select temp
                                   ).OrderByDescending(a => a.startTime).Take(10).ToList<Patient>();
 
                 }
             }
-            else if (!string.IsNullOrEmpty(searchString))
+            else if (!string.IsNullOrEmpty(searchString)|| !string.IsNullOrEmpty(provider))
             {
                 /* Display Records Matching With SearchString */
                 attendedPatients = (from temp in FewaDbContext.patients
