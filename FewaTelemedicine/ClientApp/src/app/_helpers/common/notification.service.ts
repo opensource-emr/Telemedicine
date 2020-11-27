@@ -4,6 +4,7 @@ import { Global } from './global.model';
 import { Patient } from '../models/domain-model';
 import { Router } from '@angular/router';
 import { ChatModel, MessageModel } from '../models/chat.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,8 @@ export class NotificationService {
   private _hubConnection: HubConnection;
 
   constructor(public global: Global,
-    private router: Router) {
+    private router: Router,
+    private _snackBar: MatSnackBar) {
   }
   public GetAllPatients() {
     this._hubConnection.invoke("GetPatientAll")
@@ -120,7 +122,7 @@ export class NotificationService {
               this.startConnection();
             }, 1000);
           }
-        }  {
+        } {
           setTimeout(() => {
             this.startConnection();
           }, 1000);
@@ -222,6 +224,9 @@ export class NotificationService {
           n.receiver = data.receiver;
           n.time = new Date();
           t.message.push(n);
+          this._snackBar.open(data.message, data.sender, {
+            duration: 2000,
+          });
         }
       } else if (type == 'sentbyprovider') {
         var t = this.global.chatData.find(a => a.user == data.receiver);

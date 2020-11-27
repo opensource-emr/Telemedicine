@@ -6,6 +6,7 @@ import { Provider } from 'src/app/_helpers/models/domain-model';
 import { ChatModel, MessageModel } from 'src/app/_helpers/models/chat.model';
 import { DomSanitizer } from '@angular/platform-browser';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-chat',
@@ -26,7 +27,8 @@ export class ChatComponent implements OnInit, AfterViewInit {
     private cdr: ChangeDetectorRef,
     public global: Global,
     private sanitizer: DomSanitizer,
-    private httpClient: HttpClient) {
+    private httpClient: HttpClient,
+    private _snackBar: MatSnackBar) {
     this.initForm();
     this.initialize();
 
@@ -128,6 +130,15 @@ export class ChatComponent implements OnInit, AfterViewInit {
   }
 
   onChatEnter(event) {
+    if (this.currentChatUser == null || this.currentChatUser == undefined) {
+      this._snackBar.open('Please select patient from list', '', {
+        duration: 2000,
+      });
+    } else if (this.currentChatUser.user == null || this.currentChatUser.user == undefined || this.currentChatUser.user == "") {
+      this._snackBar.open('Please select patient from list', '', {
+        duration: 2000,
+      });
+    }
     if (event.keyCode === 13) {
       this.sendChatMsg();
     }

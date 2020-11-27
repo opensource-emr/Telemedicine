@@ -20,6 +20,7 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UploadDownloadService } from '../_helpers/common/upload-download.service';
 import { SharedModule } from '../_helpers/shared.module';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { SharedModule } from '../_helpers/shared.module';
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
-    SharedModule
+    SharedModule,
+    MatSnackBarModule
   ],
   providers: [
     UploadDownloadService
