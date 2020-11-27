@@ -108,6 +108,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.invitationButton = true;
     this.patientObj.email = this.form.value.email
     this.patientObj.mobileNumber = this.form.value.mobile_number;
+    this.patientObj.providerNameAttending = this.providerObj.userName;
     this.httpClient.post("/Messenger/SendEmail", this.patientObj)
     .subscribe(res => this.emailInvitationSuccess(res), err => this.error(err));
   }

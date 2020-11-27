@@ -114,7 +114,8 @@ export class LiveVideoComponent implements OnInit {
   }
   scrollToBottom() {
     var div = document.getElementById("scrollingContainer");
-    div.scrollIntoView(false);
+    if (div)
+      div.scrollIntoView(false);
   }
   onChatEnter(event) {
     if (event.keyCode === 13) {
@@ -130,7 +131,7 @@ export class LiveVideoComponent implements OnInit {
     this.patient.endTime = new Date();
     this.global.patientObj = this.patient;
     this.notificationService.CallEnds(this.patient);
-    
+
     var v: Patient = this.reportForm.getRawValue();
     this.patient.labOrdersSent = v.labOrdersSent;
     this.patient.newPrescriptionsSentToYourPharmacy = v.newPrescriptionsSentToYourPharmacy;
@@ -138,7 +139,7 @@ export class LiveVideoComponent implements OnInit {
     this.patient.medication = v.medication;
     this.patient.followUpNumber = v.followUpNumber.toString();
     this.patient.followUpMeasure = v.followUpMeasure;
-    if(this.patient.mobileNumber) {
+    if (this.patient.mobileNumber) {
       this.patient.mobileNumber = this.patient.mobileNumber.toString();
     }
     this.global.patientObj = this.patient;

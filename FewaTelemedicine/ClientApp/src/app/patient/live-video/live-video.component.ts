@@ -75,25 +75,25 @@ export class LiveVideoComponent implements OnInit {
     this.notificationService.EventConnectionEstablished.subscribe(() => {
       this.notificationService.LoadActiveDoctors();
     });
- 
+
     this.notificationService.EventChatMessage.subscribe(chatData => {
       //handle received messages
       //console.log(chatData)
-      var s=new MessageModel();
-      s.message=chatData.message;
+      var s = new MessageModel();
+      s.message = chatData.message;
       s.receiver = this.patientObj.name;
       s.sender = chatData.sender;
-      s.time=new Date();
+      s.time = new Date();
       this.currentChat.push(s);
       this.scrollToBottom();
     });
     this.notificationService.EventCallEnd
-    .subscribe(_patient => {
-      this.global.patientObj = _patient;
-      this.endMeet();
-    });
+      .subscribe(_patient => {
+        this.global.patientObj = _patient;
+        this.endMeet();
+      });
   }
- 
+
   sendChatMsg() {
     if (this.chatForm.invalid) {
       return;
@@ -107,9 +107,10 @@ export class LiveVideoComponent implements OnInit {
     this.scrollToBottom();
     this.chatForm.reset();
   }
- scrollToBottom() {
+  scrollToBottom() {
     var div = document.getElementById("scrollingContainer");
-    div.scrollIntoView(false);
+    if (div)
+      div.scrollIntoView(false);
   }
 
   onChatEnter(event) {

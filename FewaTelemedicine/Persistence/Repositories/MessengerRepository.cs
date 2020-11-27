@@ -32,7 +32,7 @@ namespace FewaTelemedicine.Persistence.Repositories
             _providerRepository = providerRepository;
         }
 
-        public async Task<bool> SendEmailAsync(string receiverEmail, string hostname = "")
+        public async Task<bool> SendEmailAsync(string receiverEmail, string providerUserName, string hostname = "")
         {
             var bResponse = false;
             try
@@ -44,7 +44,7 @@ namespace FewaTelemedicine.Persistence.Repositories
                 {
                     return false;
                 }
-                var provider = _providerRepository.getProviderByUserName(username);
+                var provider = _providerRepository.getProviderByUserName(providerUserName);
                 if (provider == null)
                 {
                     return false;
@@ -61,7 +61,10 @@ namespace FewaTelemedicine.Persistence.Repositories
                 htmlContent = htmlContent.Replace("{imageUrl}", practice.serverName + practice.logoPath);
                 htmlContent = htmlContent.Replace("{join}", practice.serverName + "/" + provider.practice + "/" + provider.url + "/#/patient/intro");
                 htmlContent = htmlContent.Replace("providerNameTitle", provider.nameTitle);
-                htmlContent = htmlContent.Replace("providerName", provider.name);
+                if (string.IsNullOrEmpty(provider.name))
+                    htmlContent = htmlContent.Replace("providerName", provider.userName);
+                else
+                    htmlContent = htmlContent.Replace("providerName", provider.name);
                 htmlContent = htmlContent.Replace("practiceName", practice.name);
                 htmlContent = htmlContent.Replace("{serverName}", practice.serverName);
                 htmlContent = htmlContent.Replace("PatientEmail", receiverEmail);
@@ -130,7 +133,7 @@ namespace FewaTelemedicine.Persistence.Repositories
                 {
                     practice.serverName = hostname;
                 }
-                name = (!string.IsNullOrEmpty(provider.name)) 
+                name = (!string.IsNullOrEmpty(provider.name))
                     ? ((!string.IsNullOrEmpty(provider.nameTitle) ? provider.nameTitle : "") + provider.name)
                     : provider.email;
 

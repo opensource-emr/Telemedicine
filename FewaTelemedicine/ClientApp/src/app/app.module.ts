@@ -10,6 +10,8 @@ import { GlobalErrorHandler } from './_helpers/common/global-error-handler';
 import { NotificationService } from './_helpers/common/notification.service';
 import { Global } from './_helpers/common/global.model';
 import { ConfigService } from './_helpers/common/config.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 const initializerConfigFn = (config: ConfigService) => {
   return () => {
@@ -28,7 +30,9 @@ const initializerConfigFn = (config: ConfigService) => {
     FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatSnackBarModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },

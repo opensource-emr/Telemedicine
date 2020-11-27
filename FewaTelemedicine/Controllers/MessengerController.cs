@@ -72,7 +72,7 @@ namespace FewaTelemedicine.Controllers
                 {
                     return false;
                 }
-                return await _messengerService.SendEmailAsync(email.email, Request.Scheme + "://" + Request.Host.Value);
+                return await _messengerService.SendEmailAsync(email.email, email.providerNameAttending, Request.Scheme + "://" + Request.Host.Value);
             }
             catch (Exception ex)
             {

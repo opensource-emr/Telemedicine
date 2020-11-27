@@ -3,7 +3,9 @@ import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
 import { Global } from './global.model';
 import { Patient } from '../models/domain-model';
 import { Router } from '@angular/router';
-import { MessageModel } from '../models/chat.model';
+import { ChatModel, MessageModel } from '../models/chat.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -19,7 +21,8 @@ export class NotificationService {
   private _hubConnection: HubConnection;
 
   constructor(public global: Global,
-    private router: Router) {
+    private router: Router,
+    private _snackBar: MatSnackBar) {
   }
   public GetAllPatients() {
     this._hubConnection.invoke("GetPatientAll")
@@ -46,6 +49,7 @@ export class NotificationService {
 
   public PatientAttended(attendPatient: Patient) {
     //console.log(attendPatient);
+    this.handleChatting("patientattended", attendPatient);
     this._hubConnection.invoke('PatientAttended', attendPatient)
       .catch(function (err) {
         console.log(err);
@@ -53,6 +57,7 @@ export class NotificationService {
   }
 
   public SendChatMessage(chatMessage) {
+    this.handleChatting('sentbyprovider', chatMessage);
     this._hubConnection.invoke('SendChatMessage', chatMessage)
       .catch(err => {
         console.log(err);
@@ -78,8 +83,15 @@ export class NotificationService {
     this._hubConnection = new HubConnectionBuilder()
       .withUrl(window.location.origin + '/NotificationHub?token=' + this.global.token)
       .build();
-    this._hubConnection.serverTimeoutInMilliseconds = 3600000; // 1 hour 
-    //console.log(this._hubConnection);
+    /**
+     * If the server hasn't sent a message in 1 minute, 
+     * the client considers the server disconnected and triggers the onclose event.
+     */
+    this._hubConnection.serverTimeoutInMilliseconds = 1000 * 60 * 2;//60 seconds
+    /**
+     * after 15 seeconds ping server
+     */
+    this._hubConnection.keepAliveIntervalInMilliseconds = 1000 * 15;//15 seconds
   }
 
   private startConnection(): void {
@@ -98,29 +110,49 @@ export class NotificationService {
         }, 1000);
       });
     this._hubConnection.onclose((e) => {
-      if (e == null || e == undefined) {
+      console.warn("disconnected")
+      console.log(e);
+      if (e) {
+        if (e.name == "Error") {
+          if (e.message.includes("WebSocket closed")) {
+            alert("Session timeout, please log in again!");
+            //this.disconnects(e);
+          } else {
+            setTimeout(() => {
+              this.startConnection();
+            }, 1000);
+          }
+        } {
+          setTimeout(() => {
+            this.startConnection();
+          }, 1000);
+        }
+        console.log(e.name, e.message);
+        //alert(e.message)
+      } else {
         console.log('Connection Closed.Logout Success.');
+        this.disconnects(e);
         return;
       }
-      else {
-        //console.error('Connection Closed unexpectedy, connecting again...');
-        // setTimeout(() => {
-        //   this.Connect();
-        // }, 1000);
-        alert("Session timeout, please log in again!");
-        if (this.global.isProvider) {
-          this.router.navigate(['provider/login'])
-        }
-        else {
-          this.router.navigate(['patient/intro']);
-        }
-      }
+      // else {
+      //   console.error('Connection Closed unexpectedly, connecting again...');
+      //   setTimeout(() => {
+      //     this.startConnection();
+      //   }, 1000);
+      //   if (this.global.isProvider) {
+      //     this.router.navigate(['provider/login'])
+      //   }
+      //   else {
+      //     this.router.navigate(['patient/intro']);
+      //   }
+      // }
     });
   }
 
   private registerOnServerEvents(): void {
     this._hubConnection.on('GetAllPatients', (data: any) => {
       var obj: any = JSON.parse(data)
+      this.handleChatting('adduser', obj);
       this.EventGetAllPatients.emit(obj);
     });
 
@@ -143,6 +175,7 @@ export class NotificationService {
     this._hubConnection.on('ChatMessage', (data: any) => {
       // console.log('Message' + data);
       const msg: any = JSON.parse(data);
+      this.handleChatting('sentbypatient', msg);
       this.EventChatMessage.emit(msg);
     });
 
@@ -150,5 +183,61 @@ export class NotificationService {
       const jsonData: any = JSON.parse(data);
       this.EventGetAllProviders.emit(jsonData);
     });
+  }
+
+  private disconnects(e: Error) {
+    if (this.global.isProvider) {
+      this.router.navigate(['provider/login'])
+    }
+    else {
+      this.router.navigate(['patient/intro']);
+    }
+  }
+
+  private handleChatting(type: string, data: any) {
+    if (this.global.isProvider == true) {
+      if (type == "adduser") {
+        data.forEach(p => {
+          if (p.name) {
+            let t = this.global.chatData.find(a => a.user == p.name);
+            if (t == undefined || t == null) {
+              let n = new ChatModel();
+              n.user = p.name;
+              this.global.chatData.push(n);
+            }
+          }
+        });
+        let t = this.global.chatData.filter(a => !data.find(b => b.name == a.user));
+        t.forEach(a => {
+          let idx = this.global.chatData.findIndex(b => b.user == a.user);
+          if (idx >= 0) {
+            this.global.chatData.splice(idx, 1);
+          }
+        })
+      } else if (type == "sentbypatient") {
+        //sender is patient
+        let t = this.global.chatData.find(a => a.user == data.sender);
+        if (t) {
+          var n = new MessageModel();
+          n.message = data.message;
+          n.sender = data.sender;
+          n.receiver = data.receiver;
+          n.time = new Date();
+          t.message.push(n);
+          this._snackBar.open(data.message, data.sender, {
+            duration: 2000,
+          });
+        }
+      } else if (type == 'sentbyprovider') {
+        var t = this.global.chatData.find(a => a.user == data.receiver);
+        if (t) {
+          t.message.push(data as MessageModel);
+        }
+      } else if (type == "patientattended") {
+        var idx = this.global.chatData.findIndex(a => a.user == data.name);
+        if (idx >= 0)
+          this.global.chatData.splice(idx, 1);
+      }
+    }
   }
 }
