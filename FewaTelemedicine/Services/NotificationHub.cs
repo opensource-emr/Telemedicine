@@ -20,14 +20,14 @@ namespace FewaTelemedicine.Services
         List<Provider> providers = null;
         List<ProviderCabin> providerCabins = null;
         FewaDbContext fewaDbContext = null;
-	    [Obsolete]
+        [Obsolete]
         private IHostingEnvironment _hostingEnvironment;
-	    [Obsolete]
+        [Obsolete]
         public NotificationHub(WaitingRoom _waitingroom,
                                 List<Provider> _providers,
                                 List<ProviderCabin> _providerCabins,
                                 FewaDbContext _fewaDbContext,
-				IHostingEnvironment hostingEnvironment)
+                IHostingEnvironment hostingEnvironment)
         {
             fewaDbContext = _fewaDbContext;
             waitingroom = _waitingroom;
@@ -152,7 +152,7 @@ namespace FewaTelemedicine.Services
         {
             foreach (var item in providerCabins)
             {
-                if (item.provider.userName== Context.User.Identity.Name)
+                if (item.provider.userName == Context.User.Identity.Name)
                 {
                     return item;
                 }
@@ -161,12 +161,15 @@ namespace FewaTelemedicine.Services
             return null;
         }
 
-
+        ///******SATRT Section: SignalR Default Events******///
+        ///OnConnected
+        ///OnDisconnected
+        ///
         public override Task OnConnectedAsync()
         {
             AttachUser(Context.User.Identity.Name,
                 Context.ConnectionId);
-	        
+
             // over here send message to all doctor that pateint has logged
 
             SendUpdatedPatients();
@@ -178,6 +181,10 @@ namespace FewaTelemedicine.Services
         }
         public override Task OnDisconnectedAsync(Exception exception)
         {
+            if (string.IsNullOrEmpty(Context.User.Identity.Name))
+            {
+                return base.OnDisconnectedAsync(new Exception("User Not Found"));
+            }
             RemoveUser(Context.User.Identity.Name);
             string folderName = "Upload";
             string webRootPath = _hostingEnvironment.WebRootPath;
@@ -199,8 +206,13 @@ namespace FewaTelemedicine.Services
             {
                 SendUpdatedProviders();
             }
+            if(exception == null)
+            {
+                return base.OnDisconnectedAsync(new Exception("User Logged Out"));
+            }
             return base.OnDisconnectedAsync(exception);
         }
+        ///******END Section: SignalR Default Events******///
 
         public async Task GetPatientAll()
         {
@@ -232,7 +244,7 @@ namespace FewaTelemedicine.Services
         public async Task PatientCall(Patient obj)
         {
             Patient p = GetPatientbyName(obj.name);
-            var param = fewaDbContext.practices.Select(a=>a.callingPlatform);
+            var param = fewaDbContext.practices.Select(a => a.callingPlatform);
 
             if (p is null)
             {
@@ -240,16 +252,16 @@ namespace FewaTelemedicine.Services
             }
             else
             {
-               
+
                 p.status = (int)TeleConstants.PatientCalled;
                 p.providerNameAttending = GetProviderByName(Context.User.Identity.Name).userName;
 
                 p.appointmentDate = DateTime.Now;
                 p.lastUpdated = DateTime.Now;
                 p.startTime = DateTime.Now;
-               
-          
-                
+
+
+
                 GetCurrentProviderCabin().patient = p;
                 var patient = JsonConvert.SerializeObject(p);
 
@@ -328,7 +340,7 @@ namespace FewaTelemedicine.Services
                     //fewaDbContext.SaveChanges();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -347,7 +359,7 @@ namespace FewaTelemedicine.Services
                 //sender is provider
                 connId = GetPatientbyName(chatMessage.receiver)?.signalRConnectionId;
             }
-            if(string.IsNullOrEmpty(connId))
+            if (string.IsNullOrEmpty(connId))
             {
                 throw new Exception("Client connection id not found");
             }

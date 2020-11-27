@@ -77,6 +77,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
   }
   ngOnInit() {
     this.providerObj = this.global.providerObj;
+    this.userChat = JSON.parse(JSON.stringify(this.global.chatData));
   }
 
   ngAfterViewInit() {

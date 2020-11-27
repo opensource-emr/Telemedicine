@@ -1,4 +1,5 @@
 
+import { ChatModel } from '../models/chat.model';
 import { Patient, Provider, Practice } from '../models/domain-model';
 
 export class Global {
@@ -13,6 +14,7 @@ export class Global {
     token: string;
     currentPractice: string = "";
     currentProvider: string = "";
+    chatData: Array<ChatModel> = new Array<ChatModel>();
     isMobile = /iPhone|webOS|mobile|CriOS|iPad|iPod|BlackBerry|IEMobile|'Android' + 'Chrome'|Opera Mini|Android/i;
     constructor() {
         this.providerObj = new Provider();

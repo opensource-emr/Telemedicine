@@ -16,9 +16,9 @@ namespace FewaTelemedicine.Services
             this._messengerRepository = messengerRepository;
         }
 
-        public async Task<bool> SendEmailAsync(string receiverEmail, string hostname = "")
+        public async Task<bool> SendEmailAsync(string receiverEmail,string provider, string hostname = "")
         {
-            return await this._messengerRepository.SendEmailAsync(receiverEmail, hostname);
+            return await this._messengerRepository.SendEmailAsync(receiverEmail, provider, hostname);
         }
         public async Task<bool> SendPatientReportEmailAsync(Patient patient, string hostname = "")
         {
