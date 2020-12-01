@@ -41,7 +41,7 @@
 
 .invitationForm {
   .row {
-    .col-lg-4 {
+    .col-lg-2 {
       .submitbtn {
         background: var(--primary);
         // width: 100%;
@@ -53,13 +53,17 @@
         height: calc(1.5em + 0.45rem + 2px);
         padding: 0.375rem 0.75rem;
       }
+    }
+    .col-lg-5{
       .form-group {
         .message {
           color: var(--primary);
         }
       }
     }
+  
   }
+  
   ul {
     margin-bottom: 0;
     li {
@@ -137,7 +141,7 @@
 }
 
 
-.tableFixHead          { overflow-y: auto; height: 157px; }
+.tableFixHead          { overflow-y: auto; height:500px; }
 .tableFixHead thead th { position: sticky; top: 0; }
 
 /* Just common table stuff. Really. */
