@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { HttpClient, HttpParams, HttpEventType, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Provider, Practice } from 'src/app/_helpers/models/domain-model';
+import { Provider, Practice, ProviderAdvice } from 'src/app/_helpers/models/domain-model';
 import { Global } from 'src/app/_helpers/common/global.model';
-import { FormGroup, Validators, FormBuilder, FormControl } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder, FormControl, FormArray } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
@@ -30,8 +30,10 @@ export class UserSettingComponent implements OnInit {
   userForm: FormGroup = new FormGroup({});
   practiceConfigForm: FormGroup = new FormGroup({});
   practiceObj: Practice = new Practice();
+  public providerAdvice: Array<ProviderAdvice> = [];
   hospitalLogo: string = "";
   htmlBody: string = "";
+  adviceForm: FormGroup = new FormGroup({});
 
   constructor(private routing: Router,
     public global: Global,
@@ -40,6 +42,7 @@ export class UserSettingComponent implements OnInit {
     private sanitizer: DomSanitizer) {
     this.initUserForm();
     this.initPracticeForm();
+    this.initAdviceForm();
   }
 
   ngOnInit() {
@@ -48,6 +51,100 @@ export class UserSettingComponent implements OnInit {
     this.loadEmailTemplate();
     this.providerObj = this.global.providerObj;
     this.setUserFormValue(this.providerObj);
+  }
+
+  loadAdvice() {
+    this.httpClient.get<any>(this.global.practiceUrl + "GetAllAdvice")
+      .subscribe(res => {
+        if (res) {
+          this.providerAdvice = res;
+          for (let temp of res) {
+            var tempForm = this.fb.group({
+              advice: new FormControl({ value: temp.advice, disabled: true }, [Validators.required]),
+              id: new FormControl(temp.adviceId)
+            });
+            this.adviceArray.push(tempForm);
+          }
+        }
+        else {
+          this.adviceArray.push(this.addAdvice());
+        }
+      });
+  }
+
+  private initAdviceForm() {
+    this.adviceForm = this.fb.group({
+      adviceArray: this.fb.array([]),
+    });
+    this.loadAdvice();
+  }
+
+  private addAdvice() {
+    const form = this.fb.group({
+      advice: new FormControl({ value: '', disabled: true }, Validators.required),
+    });
+    return form;
+  }
+
+  addRow() {
+    const control = this.adviceForm.get('adviceArray') as FormArray;
+    control.push(this.addAdvice());
+  }
+
+  public removeRow(index: number): void {
+    const control = this.adviceForm.get('adviceArray') as FormArray;   
+    if (confirm("Are you sure you want to delete this ?")) {
+      if (this.adviceArray.getRawValue()[index].id) {    
+        var id = this.adviceArray.getRawValue()[index].id;
+        control.removeAt(index);
+        this.providerAdvice.splice(index, 1);
+        this.httpClient.delete<number>(this.global.practiceUrl + "DeleteAdvice/" + id).subscribe(() => {
+          console.info("Record Deleted Successfully");
+        });
+      }
+      else {
+        control.removeAt(index);
+      }
+    }
+  }
+
+  public editRow(index: number) {
+    const control = this.adviceForm.get('adviceArray') as FormArray;
+    control.at(index).enable();
+  }
+
+  get adviceArray(): FormArray {
+    return this.adviceForm.get("adviceArray") as FormArray;
+  }
+
+  saveAdvice() {
+    if (this.adviceForm.invalid) {
+      return;
+    }
+    for (let i = 0; i < this.adviceArray.length; i++) {
+      if (this.providerAdvice.length > 0 && this.providerAdvice[i]) {
+        for (let temp of this.providerAdvice) {
+          if (temp.adviceId === this.adviceArray.getRawValue()[i].id) {
+            temp.advice = this.adviceArray.getRawValue()[i].advice;
+          }
+        }
+      }
+      else {
+        var advice = new ProviderAdvice();
+        advice.advice = this.adviceArray.getRawValue()[i].advice;
+        if(this.global.providerObj.providerId > 0)
+        advice.providerId = this.global.providerObj.providerId;
+        this.providerAdvice.push(advice);
+      }
+    }
+
+    this.httpClient.
+      post<any>(this.global.practiceUrl + "SaveAdvice", this.providerAdvice)
+      .subscribe(res => {
+        this.practiceObj = res;
+        alert("Provider Advice is Saved Successfully.");
+      },
+        err => { console.log(err); });
   }
 
   private initUserForm() {
@@ -180,6 +277,10 @@ export class UserSettingComponent implements OnInit {
     this.logoMessage = null;
     this.selectedFile = null;
     this.practiceConfigForm.reset();
+  }
+
+  resetAdviceForm() {
+    this.adviceForm.reset();
   }
 
   updateProfile() {

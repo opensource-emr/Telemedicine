@@ -252,25 +252,18 @@ namespace FewaTelemedicine.Services
             }
             else
             {
-
                 p.status = (int)TeleConstants.PatientCalled;
                 p.providerNameAttending = GetProviderByName(Context.User.Identity.Name).userName;
-
                 p.appointmentDate = DateTime.Now;
                 p.lastUpdated = DateTime.Now;
                 p.startTime = DateTime.Now;
-
-
-
                 GetCurrentProviderCabin().patient = p;
                 var patient = JsonConvert.SerializeObject(p);
-
                 SendUpdatedPatients();
                 await this.Clients.Clients(GetPatientbyName(obj.name).signalRConnectionId)
                     .CallPatient(patient);
                 await this.Clients.Clients(GetProviderByName(Context.User.Identity.Name).signalRConnectionId)
                      .CallPatient(patient);
-
             }
         }
 
@@ -297,7 +290,6 @@ namespace FewaTelemedicine.Services
                     p.url = obj.url;
                     var patient = JsonConvert.SerializeObject(p);
                     await this.Clients.Clients(GetPatientbyName(obj.name).signalRConnectionId).CallEnds(patient);
-
                     fewaDbContext.patients.Add(p);
                     fewaDbContext.SaveChanges();
                 }
@@ -322,9 +314,10 @@ namespace FewaTelemedicine.Services
                 {
                     GetCurrentProviderCabin().patient = new Patient();
                     p.status = (int)TeleConstants.PatientCompleted;
-                    p.labOrdersSent = obj.labOrdersSent;
-                    p.newPrescriptionsSentToYourPharmacy = obj.newPrescriptionsSentToYourPharmacy;
-                    p.newPrescriptionsMailedToYou = obj.newPrescriptionsMailedToYou;
+                    //p.labOrdersSent = obj.labOrdersSent;
+                    //p.newPrescriptionsSentToYourPharmacy = obj.newPrescriptionsSentToYourPharmacy;
+                    //p.newPrescriptionsMailedToYou = obj.newPrescriptionsMailedToYou;
+                    p.advice = obj.advice;
                     p.endTime = DateTime.Now;
                     p.medication = obj.medication;
                     p.followUpNumber = obj.followUpNumber;
@@ -332,7 +325,6 @@ namespace FewaTelemedicine.Services
                     p.url = obj.url;
                     var patient = JsonConvert.SerializeObject(p);
                     await this.Clients.Clients(GetPatientbyName(obj.name).signalRConnectionId).CompletePatient(patient);
-
                     waitingroom.patients.Remove(p);
                     SendUpdatedPatients();
 

@@ -6,7 +6,7 @@ import { Global } from 'src/app/_helpers/common/global.model';
 import { NotificationService } from 'src/app/_helpers/common/notification.service';
 import { UploadDownloadService } from 'src/app/_helpers/common/upload-download.service';
 import { MessageModel } from 'src/app/_helpers/models/chat.model';
-import { Patient } from 'src/app/_helpers/models/domain-model';
+import { Patient, ProviderAdvice } from 'src/app/_helpers/models/domain-model';
 
 @Component({
   selector: 'app-live-video',
@@ -20,8 +20,9 @@ export class LiveVideoComponent implements OnInit {
   remoteUserDisplayName = "Fewa User";
   isMeetStart = false;
   chatForm: FormGroup;
-  currentChat: Array<MessageModel> = new Array<MessageModel>();
   reportForm: FormGroup;
+  currentChat: Array<MessageModel> = new Array<MessageModel>();
+  public providerAdvice: Array<ProviderAdvice> = [];
 
   constructor(public httpClient: HttpClient,
     public router: Router,
@@ -40,6 +41,19 @@ export class LiveVideoComponent implements OnInit {
 
   toggleDisplay() {
     this.isDisplayed = !this.isDisplayed
+  }
+
+  loadAdvice() {
+    this.httpClient.get<any>(this.global.practiceUrl + "GetAllAdvice")
+      .subscribe(res => {
+        if (res) {
+          for (let temp of res) {
+            if(temp.providerId === this.global.providerObj.providerId){                       
+              this.providerAdvice.push(temp);
+            }
+          }
+        }
+      });
   }
 
   initVideoConference() {
@@ -82,9 +96,9 @@ export class LiveVideoComponent implements OnInit {
       chatMessage: ['', Validators.required]
     });
     this.reportForm = this.formBuilder.group({
-      labOrdersSent: new FormControl(true, Validators.nullValidator),
-      newPrescriptionsSentToYourPharmacy: new FormControl(true, Validators.nullValidator),
-      newPrescriptionsMailedToYou: new FormControl(true, Validators.nullValidator),
+      // labOrdersSent: new FormControl(true, Validators.nullValidator),
+      // newPrescriptionsSentToYourPharmacy: new FormControl(true, Validators.nullValidator),
+      // newPrescriptionsMailedToYou: new FormControl(true, Validators.nullValidator),
       medication: new FormControl('', Validators.nullValidator),
       followUpNumber: new FormControl('', Validators.nullValidator),
       followUpMeasure: new FormControl('', Validators.nullValidator),
@@ -92,6 +106,7 @@ export class LiveVideoComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loadAdvice();
   }
 
   error(res) {
@@ -125,25 +140,30 @@ export class LiveVideoComponent implements OnInit {
   get getValidationControl() {
     return this.chatForm.controls;
   }
+
   completeVisit() {
     this.isMeetStart = false;
     this.patient.url = this.global.providerObj.url;
     this.patient.endTime = new Date();
     this.global.patientObj = this.patient;
     this.notificationService.CallEnds(this.patient);
-
     var v: Patient = this.reportForm.getRawValue();
-    this.patient.labOrdersSent = v.labOrdersSent;
-    this.patient.newPrescriptionsSentToYourPharmacy = v.newPrescriptionsSentToYourPharmacy;
-    this.patient.newPrescriptionsMailedToYou = v.newPrescriptionsMailedToYou;
+    this.patient.advice = new Array<ProviderAdvice>();
+    for (let temp of this.providerAdvice) {
+            this.patient.advice.push(temp);
+     }    
+    // this.patient.labOrdersSent = v.labOrdersSent;
+    // this.patient.newPrescriptionsSentToYourPharmacy = v.newPrescriptionsSentToYourPharmacy;
+    // this.patient.newPrescriptionsMailedToYou = v.newPrescriptionsMailedToYou;
     this.patient.medication = v.medication;
     this.patient.followUpNumber = v.followUpNumber.toString();
     this.patient.followUpMeasure = v.followUpMeasure;
-    if (this.patient.mobileNumber) {
+    if(this.patient.mobileNumber) {
       this.patient.mobileNumber = this.patient.mobileNumber.toString();
     }
     this.global.patientObj = this.patient;
     this.notificationService.PatientAttended(this.patient);
     this.router.navigate(['/provider/dashboard']);
   }
+ 
 }

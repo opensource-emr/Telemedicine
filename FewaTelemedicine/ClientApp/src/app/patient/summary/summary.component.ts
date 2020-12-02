@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Global } from 'src/app/_helpers/common/global.model';
 import { NotificationService } from 'src/app/_helpers/common/notification.service';
-import { Patient } from 'src/app/_helpers/models/domain-model';
+import { Patient, ProviderAdvice } from 'src/app/_helpers/models/domain-model';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 
@@ -11,10 +11,10 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./summary.component.scss']
 })
 export class SummaryComponent implements OnInit {
-
   patient: Patient;// = new Patient();
   emailForm: FormGroup;
   disableButton: boolean = false;
+  public providerAdvice: Array<ProviderAdvice> = [];
 
   constructor(
     private notificationService: NotificationService,
@@ -27,7 +27,22 @@ export class SummaryComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loadAdvice();
   }
+
+  loadAdvice() {
+    this.httpClient.get<any>(this.global.practiceUrl + "GetAllAdvice")
+      .subscribe(res => {
+        if (res) {
+          for (let temp of res) {
+            if(temp.providerId === this.global.providerObj.providerId){
+              this.providerAdvice.push(temp);
+            }
+          }
+        }
+      });
+  }
+  
   private initConn() {
     this.initForm();
     this.notificationService.Connect();

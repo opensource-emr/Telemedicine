@@ -77,28 +77,12 @@
                                     <h3>Visit Summary</h3>
                                     <div class="formDetails">
                                         <label>What we did today?</label>
-                                        <div class="custom-control custom-checkbox ">
-                                            <!-- <input type="checkbox" id="customRadioInline1" (ngModel)="patient.labOrdersSent" disabled
-                                                name="customRadioInline1" class="custom-control-input">
-                                            <label class="custom-control-label" for="customRadioInline1">Lab Orders Sent:</label> -->
-                                            <label>Lab Orders
-                                                Sent:</label>&nbsp;{{patient.labOrdersSent|yesNoPipe}}
-                                        </div>
-                                        <div class="custom-control custom-checkbox ">
-                                            <!-- <input type="checkbox" id="customRadioInline2" disabled (ngModel)="patient.newPrescriptionsMailedToYou"
-                                                name="customRadioInline1" class="custom-control-input">
-                                            <label class="custom-control-label" for="customRadioInline2">New
-                                                prescriptions mailed to you:</label> -->
-                                                <label>New prescriptions sent to your
-                                                pharmacy:</label>&nbsp;{{patient.newPrescriptionsSentToYourPharmacy|yesNoPipe}}
-                                        </div>
-                                        <div class="custom-control custom-checkbox ">
-                                            <!-- <input type="checkbox" id="customRadioInline2" disabled (ngModel)="patient.newPrescriptionsMailedToYou"
-                                                name="customRadioInline1" class="custom-control-input">
-                                            <label class="custom-control-label" for="customRadioInline2">New
-                                                prescriptions mailed to you:</label> -->
-                                                <label>New prescriptions mailed to
-                                                you:</label>&nbsp;{{patient.newPrescriptionsMailedToYou|yesNoPipe}}
+                                        <div *ngIf="patient.advice?.length > 0">
+                                            <div class="custom-control"
+                                                *ngFor="let adv of patient.advice">
+                                            <label>{{adv.advice}}:</label>
+                                            &nbsp;{{adv.isChecked|yesNoPipe}}
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="formDetails">

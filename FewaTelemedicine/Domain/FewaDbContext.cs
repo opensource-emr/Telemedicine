@@ -51,22 +51,23 @@ namespace FewaTelemedicine.Domain
         public DbSet<Practice> practices { get; set; }
         public DbSet<Provider> providers { get; set; }
         public DbSet<Patient> patients { get; set; }
+        public DbSet<ProviderAdvice> advice { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //  Seeding for provider and practice
             var practiceSeed = CreatePractice(1, "practice", "1234567890", "abc@gmail.com", "Jitsi", "/img/logo.png", "https://localhost:44304", "Welcome to the demo of Fewa. This is the place where you can put your hospital description. Fewa is a application which helps to connect doctors and patient using video. Patient can print advice , share documents with provider and provider also knows how much time he has given to attend the patient. To start using the demo login as username-provider,password provider , send a invitation to the patient and then both can communicate", "Fewa Telemedicine Call Today Schedule", "Please attend the provider", "EmailAdditionalContent");
             var providerSeed = CreateProvider(1, "provider", "FHBsjQhfB78CnRY7uVquqA==", "provider", "practice", 1);
-
             var practiceSeed1 = CreatePractice(2, "practice1", "0987654321", "pqr@gmail.com", "Jitsi", "/img/logo.png", "https://localhost:44304", "Welcome to the demo of Fewa. This is the place where you can put your hospital description. Fewa is a application which helps to connect doctors and patient using video. Patient can print advice , share documents with provider and provider also knows how much time he has given to attend the patient. To start using the demo login as username-doctor,password doctor , send a invitation to the patient and then both can communicate", "Fewa Telemedicine Call Today Schedule", "Please attend the provider", "EmailAdditionalContent");
             var providerSeed1 = CreateProvider(2, "doctor", "ajNJkHEqM5bu0szpIIhwzw==", "provider1", "practice1", 2);
-
             modelBuilder.Entity<Practice>().ToTable("Practice");
             modelBuilder.Entity<Provider>().ToTable("Provider");
             modelBuilder.Entity<Patient>().ToTable("Patient");
-
+            modelBuilder.Entity<ProviderAdvice>().ToTable("ProviderAdvice");
             modelBuilder.Entity<Practice>().HasIndex(b => b.url).IsUnique();
             modelBuilder.Entity<Practice>().HasData(practiceSeed, practiceSeed1);
             modelBuilder.Entity<Provider>().HasData(providerSeed, providerSeed1); // he does not create this table
+            modelBuilder.Entity<ProviderAdvice>().Property(et => et.adviceId).ValueGeneratedOnAdd();
+            modelBuilder.Entity<ProviderAdvice>().Property(e => e.isChecked).HasColumnType("boolean").HasDefaultValueSql("false").ValueGeneratedOnAdd();
             modelBuilder.Entity<Patient>().Property(et => et.patientId).ValueGeneratedOnAdd();
         }
         public Provider CreateProvider(int _id,
@@ -86,7 +87,6 @@ namespace FewaTelemedicine.Domain
                 url = _url,
                 practiceId = _practiceId
             };
-
             return provider;
         }
         public Practice CreatePractice(int _id,

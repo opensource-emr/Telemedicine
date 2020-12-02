@@ -13,6 +13,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20201202063943_v1.cs" />
+    <Compile Remove="Migrations\20201202063943_v1.Designer.cs" />
+    <Compile Remove="Migrations\20201202065309_v1.cs" />
+    <Compile Remove="Migrations\20201202065309_v1.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.3" />

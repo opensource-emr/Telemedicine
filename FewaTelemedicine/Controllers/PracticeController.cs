@@ -1,4 +1,5 @@
 ﻿
+
 #region Hospital Controller Description 
 /* This file contains Definition of  Methods for Login Patient, Get and Add Waiting Room,Doctor Cabin,Updated Doctor,
  * ProfileUpdate and Update Parameter.
@@ -463,7 +464,7 @@ namespace FewaTelemedicine.Controllers
                 var newEmailContent = list.emailAdditionalContent;
                 var oldEmailContent = FewaDbContext.practices.Select(a => a.emailAdditionalContent).FirstOrDefault();
                 var htmlContent = FewaDbContext.practices.Select(a => a.emailHtmlBody).FirstOrDefault();
-                htmlContent = htmlContent.Replace("{imageUrl}", list.serverName + list.logoPath);
+                htmlContent = htmlContent.Replace("{imageUrl}", list.serverName + list.logoPath);             
                 htmlContent = htmlContent.Replace("{join}", list.serverName + "/" + provider.practice + "/" + provider.url + "/#/patient/intro");
                 htmlContent = htmlContent.Replace("{serverName}", list.serverName);
                 htmlContent = htmlContent.Replace("providerNameTitle", provider.nameTitle);
@@ -498,6 +499,70 @@ namespace FewaTelemedicine.Controllers
             {
                 return Ok("Cannot Load Preview.");
             }
+        }
+
+        public IActionResult GetAllAdvice()
+        {
+            try
+            {
+                List<ProviderAdvice> getAllAdvice = FewaDbContext.advice.ToList();
+                if (getAllAdvice.Count > 0)
+                {
+                    return Ok(getAllAdvice);
+                }
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return Ok("Error In Retrieving Records" + ex.Message);
+            }
+        }
+        public IActionResult SaveAdvice([FromBody] List<ProviderAdvice> adviceList)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (adviceList == null)
+                    {
+                        return BadRequest();
+                    }
+                    foreach (var i in adviceList)
+                    {
+                        if (i.adviceId > 0)
+                        {
+                            FewaDbContext.advice.Update(i);
+                        }
+                        else
+                        {
+                            FewaDbContext.advice.Add(i);
+                        }
+
+
+                        FewaDbContext.SaveChanges();
+                    }
+                    return Ok();
+                }
+                catch (Exception ex)
+                {
+                    return Ok("Error Adding New Advice: " + ex.Message);
+                }
+            }
+            else
+            {
+                return Ok("Unable to Save Advice.");
+            }
+        }
+        public IActionResult DeleteAdvice(int id)
+        {
+            ProviderAdvice removeAdvice = FewaDbContext.advice.Find(id);
+            if (removeAdvice == null)
+            {
+                return NotFound();
+            }
+            FewaDbContext.advice.Remove(removeAdvice);
+            FewaDbContext.SaveChanges();
+            return Ok(removeAdvice);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -1,5 +1,3 @@
-
-
 export class Practice {
     practiceId: number;
     name: string = "";
@@ -72,8 +70,16 @@ export class Patient {
     practice: any = "";
     url: any = "";
     provider: Provider;
+    advice: Array<ProviderAdvice> = [];
 }
 export class ProviderCabin {
     public patient: Patient;
     public provider: Provider;
+}
+export class ProviderAdvice {
+    adviceId: number;
+    advice: string = "";
+    inputType: string = "";
+    providerId: number;
+    isChecked: boolean = false;
 }

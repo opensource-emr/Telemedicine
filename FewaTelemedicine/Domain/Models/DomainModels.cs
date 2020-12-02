@@ -20,18 +20,14 @@ namespace FewaTelemedicine.Domain.Models
         public string callingPlatform { get; set; }
         public string url { get; set; }
         public string logoPath { get; set; }
-
         // email configration 
-
         public string emailApiKey { get; set; }
         public string emailApiName { get; set; }
         public string emailPlainBody { get; set; }
         public string emailSubject{ get; set; }
         public string emailHtmlBody { get; set; }
         public string emailAdditionalContent { get; set; }
-
         public string emailMessage { get; set; }
-
         // sms configration
         public string smsApiAccountSID { get; set; }
         public string smsApiAuthToken { get; set; }
@@ -116,8 +112,7 @@ namespace FewaTelemedicine.Domain.Models
         [NotMapped]
         public string followUpMeasure { get; set; }
         [NotMapped]
-        public string message { get; set; }
-        
+        public string message { get; set; }        
         [NotMapped]
         public string signalRConnectionId { get; set; }
         [NotMapped]
@@ -125,8 +120,9 @@ namespace FewaTelemedicine.Domain.Models
         public string url { get; set; }
         
         public Provider provider { get; set; }
-        
 
+        [NotMapped]
+        public List<ProviderAdvice> advice { get; set; }
     }
     public class WaitingRoom
     {
@@ -147,5 +143,14 @@ namespace FewaTelemedicine.Domain.Models
         public string sender { get; set; }
         [NotMapped]
         public string receiver { get; set; }
+    }
+    public class ProviderAdvice
+    {
+        [Key]
+        public int adviceId { get; set; }
+        public string advice { get; set; }
+        public string? inputType { get; set; }
+        public bool isChecked { get; set; }
+        public int providerId { get; set; }
     }
 }
