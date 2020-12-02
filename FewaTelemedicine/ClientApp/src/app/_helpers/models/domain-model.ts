@@ -10,6 +10,7 @@ export class Practice {
     url: any = "";
     email: string = "";
     logoPath: any;
+    otp:string="";
 
     // email configration 
     emailApiKey: any = "";

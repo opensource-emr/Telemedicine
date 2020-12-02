@@ -185,6 +185,53 @@ namespace FewaTelemedicine.Controllers
                 return false;
             }
         }
+        [Route("SendRegistrationOTP")]
+        [HttpPost]
+        public async Task<bool> SendRegistrationOTP([FromBody] Practice obj)
+        {
+
+            try
+            {
+                if (obj is null)
+                {
+                    return false;
+                }
+                obj.otp = GenerateOtp(obj.email);
+                var result = await _messengerService.SendRegistrationOTP(obj.name, obj.email, obj.otp, Request.Scheme + "://" + Request.Host.Value);
+                if (result == true)
+                {
+                    HttpContext.Session.SetString("registrationOtp", JsonConvert.SerializeObject(obj));
+                }
+                return result;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"file: MessengerController.cs method: SendEmail() error: {ex.Message} ");
+                return false;
+            }
+        }
+        [Route("ResendRegistrationOTP")]
+        [HttpGet]
+        public async Task<bool> ResendRegistrationOTP()
+        {
+
+            try
+            {
+                Practice practice = JsonConvert.DeserializeObject<Practice>(HttpContext.Session.GetString("registrationOtp"));
+                if (practice == null)
+                {
+                    return false;
+                }
+                var result = await _messengerService.SendRegistrationOTP(practice.name, practice.email, practice.otp, Request.Scheme + "://" + Request.Host.Value);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"file: MessengerController.cs method: SendEmail() error: {ex.Message} ");
+                return false;
+            }
+        }
         private string GenerateOtp(string plainText)
         {
             string alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

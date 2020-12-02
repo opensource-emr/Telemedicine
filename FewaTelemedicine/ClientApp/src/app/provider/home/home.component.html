@@ -13,7 +13,7 @@
                         <li><a href="#ContactSection">Contact Us</a></li>
                         <li>|</li>
                         <li><a class="signupBtn" routerLink="/provider/register">Sign Up</a></li>
-                        <li><a class="signupBtn" routerLink="/provider/login">Sign In</a></li>
+                        <li *ngIf="showSignIn"><a class="signupBtn" routerLink="/provider/login">Sign In</a></li>
                     </ul>
                 </div>
             </div>

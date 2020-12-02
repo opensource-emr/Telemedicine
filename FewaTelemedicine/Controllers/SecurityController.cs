@@ -57,7 +57,6 @@ namespace FewaTelemedicine.Controllers
         {
             try
             {
-
                 if (provider == null)
                 {
                     return BadRequest();
@@ -72,7 +71,7 @@ namespace FewaTelemedicine.Controllers
                 {
                     return Unauthorized();
                 }
-                if(pro.url != provider.url)
+                if (pro.url != provider.url)
                 {
                     return Unauthorized();
                 }
@@ -186,6 +185,65 @@ namespace FewaTelemedicine.Controllers
                 return StatusCode(500, ex);
             }
         }
+        [HttpPost("VerifyRegistrationOTP")]
+        public ActionResult VerifyRegistrationOTP([FromBody] Practice obj)
+        {
+            try
+            {
+                if (obj == null)
+                {
+                    return BadRequest();
+                }
+                if (string.IsNullOrEmpty(obj.email) && (string.IsNullOrEmpty(obj.email) || string.IsNullOrEmpty(obj.name)))
+                {
+                    return BadRequest();
+                }
+                var otp = HttpContext.Session.GetString("registrationOtp");
+                if (string.IsNullOrEmpty(otp))
+                {
+                    return NotFound("Otp is not generated");
+                }
+                Practice practice = JsonConvert.DeserializeObject<Practice>(otp);
+                if (practice == null)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "practice is not found");
+                }
+                if (practice.otp == obj.otp && (practice.email == obj.email && practice.name == obj.name))
+                {
+                    Practice pra = new Practice();
+                    pra.practiceId = FewaDbContext.practices.Max(a => a.practiceId)+1;
+                    pra.name = obj.name;
+                    pra.email = obj.email;
+                    pra.url = obj.name.ToLower().Trim();
+                    FewaDbContext.practices.Add(pra);
+                    FewaDbContext.SaveChanges();
+                    Provider pro = new Provider();
+                    pro.userName = "admin";
+                    pro.password = Cipher.Encrypt(pro.userName, pro.userName);
+                    pro.roomName = Guid.NewGuid().ToString() + "-" + "name";
+                    pro.practice = obj.name;
+                    pro.url = pro.userName;
+                    pro.practice = pra.url;
+                    pro.practiceId = pra.practiceId;
+                    pro.providerId = FewaDbContext.providers.Max(a => a.providerId) + 1;
+                    FewaDbContext.providers.Add(pro);
+                    FewaDbContext.SaveChanges();
+
+                    return Ok(new { message = "Account created successfully! Please login with username:admin and password:admin",practice=pra,provider=pro});
+                }
+                else
+                {
+                    return Unauthorized(new { message = "invalid otp" });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+
+        }
+
         private string GenerateJSONWebToken(string username, string usertype)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));

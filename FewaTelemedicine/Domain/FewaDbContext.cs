@@ -68,6 +68,8 @@ namespace FewaTelemedicine.Domain
             modelBuilder.Entity<Practice>().HasData(practiceSeed, practiceSeed1);
             modelBuilder.Entity<Provider>().HasData(providerSeed, providerSeed1); // he does not create this table
             modelBuilder.Entity<Patient>().Property(et => et.patientId).ValueGeneratedOnAdd();
+            modelBuilder.Entity<Practice>().Property(et => et.practiceId).ValueGeneratedOnAdd();
+            modelBuilder.Entity<Provider>().Property(et => et.providerId).ValueGeneratedOnAdd();
         }
         public Provider CreateProvider(int _id,
                                string _userName,
