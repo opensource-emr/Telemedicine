@@ -464,7 +464,7 @@ namespace FewaTelemedicine.Controllers
                 var newEmailContent = list.emailAdditionalContent;
                 var oldEmailContent = FewaDbContext.practices.Select(a => a.emailAdditionalContent).FirstOrDefault();
                 var htmlContent = FewaDbContext.practices.Select(a => a.emailHtmlBody).FirstOrDefault();
-                htmlContent = htmlContent.Replace("{imageUrl}", list.serverName + list.logoPath);
+                htmlContent = htmlContent.Replace("{imageUrl}", list.serverName + list.logoPath);             
                 htmlContent = htmlContent.Replace("{join}", list.serverName + "/" + provider.practice + "/" + provider.url + "/#/patient/intro");
                 htmlContent = htmlContent.Replace("{serverName}", list.serverName);
                 htmlContent = htmlContent.Replace("providerNameTitle", provider.nameTitle);

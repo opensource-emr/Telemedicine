@@ -27,13 +27,13 @@ export class UserSettingComponent implements OnInit {
   public fileLimitExceeded: boolean = false;
   public showEditor: boolean = false;
   public showInvitationTemplate: boolean = false;
-  public providerAdvice: Array<ProviderAdvice> = [];
   userForm: FormGroup = new FormGroup({});
   practiceConfigForm: FormGroup = new FormGroup({});
-  adviceForm: FormGroup = new FormGroup({});
   practiceObj: Practice = new Practice();
+  public providerAdvice: Array<ProviderAdvice> = [];
   hospitalLogo: string = "";
   htmlBody: string = "";
+  adviceForm: FormGroup = new FormGroup({});
 
   constructor(private routing: Router,
     public global: Global,
@@ -71,7 +71,7 @@ export class UserSettingComponent implements OnInit {
         }
       });
   }
-  
+
   private initAdviceForm() {
     this.adviceForm = this.fb.group({
       adviceArray: this.fb.array([]),
@@ -132,6 +132,7 @@ export class UserSettingComponent implements OnInit {
       else {
         var advice = new ProviderAdvice();
         advice.advice = this.adviceArray.getRawValue()[i].advice;
+        if(this.global.providerObj.providerId > 0)
         advice.providerId = this.global.providerObj.providerId;
         this.providerAdvice.push(advice);
       }

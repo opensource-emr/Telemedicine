@@ -104,7 +104,6 @@ namespace FewaTelemedicine.Controllers
             }
         }
 
-
         [Route("SendOTP")]
         [HttpPost]
         public async Task<bool> SendOTP([FromBody] Provider obj)
@@ -153,7 +152,6 @@ namespace FewaTelemedicine.Controllers
         [HttpGet]
         public async Task<bool> ResendOTP()
         {
-
             try
             {
                 Provider pro = JsonConvert.DeserializeObject<Provider>(HttpContext.Session.GetString("otp"));

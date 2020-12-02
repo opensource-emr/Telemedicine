@@ -327,7 +327,17 @@
                 <form *ngIf="patient" [formGroup]="reportForm">
                     <div class="form-group">
                         <label>What we did today?</label>
-                        <div class="custom-control custom-checkbox ">
+                        <div *ngIf="providerAdvice?.length > 0">
+                            <div *ngFor="let adv of providerAdvice;let i=index">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" id="{{i}}" name="customRadioInline1"
+                                        class="custom-control-input" 
+                                        [checked]="adv.isChecked" (change)="adv.isChecked = !adv.isChecked">
+                                    <label class="custom-control-label" for="{{i}}">{{adv.advice}}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="custom-control custom-checkbox ">
                             <input type="checkbox" id="customRadioInline1" name="customRadioInline1"
                                 class="custom-control-input" formControlName="labOrdersSent">
                             <label class="custom-control-label" for="customRadioInline1">Lab Orders Sent</label>
@@ -343,7 +353,7 @@
                                 formControlName="newPrescriptionsMailedToYou" class="custom-control-input">
                             <label class="custom-control-label" for="customRadioInline3">New prescriptions mailed to
                                 you</label>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="form-group">
                         <label>Advice</label>
