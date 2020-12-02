@@ -7,11 +7,14 @@ import { Global } from 'src/app/_helpers/common/global.model';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-
+showSignIn:boolean=true;
   constructor(private global: Global) { }
 
   ngOnInit(): void {
     this.global.isProvider = true;
     this.global.isPatient = false;
+    if(!this.global.currentPractice){
+      this.showSignIn=false;
+    }
   }
 }

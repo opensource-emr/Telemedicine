@@ -28,6 +28,10 @@ namespace FewaTelemedicine.Services
         {
             return await this._messengerRepository.SendOTP(receiverEmail, otp, hostname);
         }
+        public async Task<bool> SendRegistrationOTP(string name,string receiverEmail, string otp, string hostname = "")
+        {
+            return await this._messengerRepository.SendRegistrationOTP(name,receiverEmail, otp, hostname);
+        }
         public bool SendSMS(string message, string receiverContact)
         {
             return this._messengerRepository.SendSMS(message, receiverContact);
