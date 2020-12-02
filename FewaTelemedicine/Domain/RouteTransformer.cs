@@ -27,10 +27,10 @@ namespace FewaTelemedicine.Domain
 
             var practice = (string)values["controller"];
             var provider = (string)values["action"];
-            if (practice == "Home" && provider == "Index")
-            {
-                return null;
-            }
+            //if (practice == "Home" && provider == "Index")
+            //{
+            //    return null;
+            //}
             IConfiguration config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddEnvironmentVariables()
@@ -40,13 +40,28 @@ namespace FewaTelemedicine.Domain
 
             using (var context = new FewaDbContext(optionsBuilder.Options))
             {
-                var t = context.providers.Where(a => a.url == provider && a.practice == practice).FirstOrDefault();
-                if (t != null)
+                var tp = context.practices.Where(a => a.url == practice).FirstOrDefault();
+                if (tp != null)
                 {
-                    values["controller"] = "Home";
-                    values["action"] = "Index";
-                    //values["id"] = "";
+                    if (provider == "admin")
+                    {
+                        values["controller"] = "Home";
+                        values["action"] = "Index";
+                        //values["id"] = "";
+                    }
+                    else
+                    {
+                        var t = context.providers.Where(a => a.url == provider && a.practiceId == tp.practiceId).FirstOrDefault();
+                        if (t != null)
+                        {
+                            values["controller"] = "Home";
+                            values["action"] = "Index";
+                            //values["id"] = "";
+                        }
+
+                    }
                 }
+
             }
             return values;
         }

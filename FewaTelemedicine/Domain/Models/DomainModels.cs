@@ -35,7 +35,8 @@ namespace FewaTelemedicine.Domain.Models
         public string serverName { get; set; }
         // all configuration as properies
         public List<Provider> providers { get; set; }
-
+        [NotMapped]
+        public string otp { get; set; }
     }
     public class Provider
     {

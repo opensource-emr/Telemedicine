@@ -69,6 +69,8 @@ namespace FewaTelemedicine.Domain
             modelBuilder.Entity<ProviderAdvice>().Property(et => et.adviceId).ValueGeneratedOnAdd();
             modelBuilder.Entity<ProviderAdvice>().Property(e => e.isChecked).HasColumnType("boolean").HasDefaultValueSql("false").ValueGeneratedOnAdd();
             modelBuilder.Entity<Patient>().Property(et => et.patientId).ValueGeneratedOnAdd();
+            modelBuilder.Entity<Practice>().Property(et => et.practiceId).ValueGeneratedOnAdd();
+            modelBuilder.Entity<Provider>().Property(et => et.providerId).ValueGeneratedOnAdd();
         }
         public Provider CreateProvider(int _id,
                                string _userName,
