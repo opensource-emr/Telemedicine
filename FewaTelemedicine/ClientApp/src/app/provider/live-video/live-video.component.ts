@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { Global } from 'src/app/_helpers/common/global.model';
 import { NotificationService } from 'src/app/_helpers/common/notification.service';
 import { UploadDownloadService } from 'src/app/_helpers/common/upload-download.service';
-import { MessageModel } from 'src/app/_helpers/models/chat.model';
+import { ChatModel, MessageModel } from 'src/app/_helpers/models/chat.model';
 import { Patient, ProviderAdvice } from 'src/app/_helpers/models/domain-model';
 
 @Component({
@@ -106,6 +106,8 @@ export class LiveVideoComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    var userChat: Array<ChatModel> = JSON.parse(JSON.stringify(this.global.chatData));
+    this.currentChat = userChat?.find(a => a.user == this.global.patientObj.name)?.message;
     this.loadAdvice();
   }
 
@@ -165,5 +167,4 @@ export class LiveVideoComponent implements OnInit {
     this.notificationService.PatientAttended(this.patient);
     this.router.navigate(['/provider/dashboard']);
   }
- 
 }

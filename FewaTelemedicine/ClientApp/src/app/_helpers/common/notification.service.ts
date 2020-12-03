@@ -87,7 +87,7 @@ export class NotificationService {
      * If the server hasn't sent a message in 1 minute, 
      * the client considers the server disconnected and triggers the onclose event.
      */
-    this._hubConnection.serverTimeoutInMilliseconds = 1000 * 60 * 2;//60 seconds
+    this._hubConnection.serverTimeoutInMilliseconds = 1000 * 60 * 120;//120 min
     /**
      * after 15 seeconds ping server
      */
