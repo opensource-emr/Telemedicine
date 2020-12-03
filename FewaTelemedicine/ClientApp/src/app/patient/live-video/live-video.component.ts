@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { HttpParams, HttpClient } from '@angular/common/http';
 import { Provider, Patient } from '../../_helpers/models/domain-model';
 import { NotificationService } from 'src/app/_helpers/common/notification.service';
@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
   templateUrl: './live-video.component.html',
   styleUrls: ['./live-video.component.scss']
 })
-export class LiveVideoComponent implements OnInit {
+export class LiveVideoComponent implements OnInit, AfterViewInit {
   isSubmitting: boolean = true;
   patientObj: Patient = new Patient();
   providerObj: Provider = new Provider();
@@ -22,7 +22,7 @@ export class LiveVideoComponent implements OnInit {
   roomName = "FewaTelemedicine";
   remoteUserDisplayName = "Fewa User";
   isMeetStart = false;
-  isWaiting: boolean = true;
+  isWaiting: boolean = false;
 
   constructor(public httpClient: HttpClient,
     private notificationService: NotificationService,
@@ -51,6 +51,10 @@ export class LiveVideoComponent implements OnInit {
   }
 
   ngAfterViewInit() {
+    setTimeout(() => {
+      this.isWaiting = true;
+      this.cdr.detectChanges();
+    }, 1000);
     this.scrollToBottom();
   }
   private initForm() {

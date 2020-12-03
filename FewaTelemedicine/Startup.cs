@@ -85,7 +85,7 @@ namespace FewaTelemedicine
             {
                 options.EnableDetailedErrors = true;
                 options.KeepAliveInterval = TimeSpan.FromSeconds(30);
-                options.ClientTimeoutInterval = TimeSpan.FromMinutes(2);
+                options.ClientTimeoutInterval = TimeSpan.FromMinutes(120);
             }));
             services.AddControllersWithViews();
 
