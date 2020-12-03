@@ -46,18 +46,17 @@ namespace FewaTelemedicine.Domain
             : base(options)
         {
             //this.accessor = httpContextAccessor;
-            template = "this value from fewa db context";
 
         }
         public DbSet<Practice> practices { get; set; }
         public DbSet<Provider> providers { get; set; }
         public DbSet<Patient> patients { get; set; }
         public DbSet<ProviderAdvice> advice { get; set; }
-        public string template { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //  Seeding for provider and practice
-            var practiceSeed = CreatePractice(1, "practice", "1234567890", "abc@gmail.com", "Jitsi", "/img/logo.png", "https://localhost:44304",  "Fewa Telemedicine Call Today Schedule", "Please attend the provider","EmailAdditionalContent");
+            var practiceSeed = CreatePractice(1, "practice", "1234567890", "abc@gmail.com", "Jitsi", "/img/logo.png", "https://localhost:44304", "Fewa Telemedicine Call Today Schedule", "Please attend the provider", "EmailAdditionalContent");
             var providerSeed = CreateProvider(1, "provider", "FHBsjQhfB78CnRY7uVquqA==", "provider", "practice", 1);
             var practiceSeed1 = CreatePractice(2, "practice1", "0987654321", "pqr@gmail.com", "Jitsi", "/img/logo.png", "https://localhost:44304", "Fewa Telemedicine Call Today Schedule", "Please attend the provider", "EmailAdditionalContent");
             var providerSeed1 = CreateProvider(2, "doctor", "ajNJkHEqM5bu0szpIIhwzw==", "provider1", "practice1", 2);
@@ -100,13 +99,13 @@ namespace FewaTelemedicine.Domain
                                string _callingPlatform,
                                string _logoPath,
                                string _serverName,
-                              // string _description,
+                               // string _description,
                                string _emailSubject,
                                string _emailPlainBody,
                                string _emailAdditionalContent
                                )
         {
-            
+
 
             var practice = new Practice
             {
@@ -128,7 +127,7 @@ namespace FewaTelemedicine.Domain
             return practice;
         }
         public static string _description = "Welcome to the demo of Fewa. This is the place where you can put your practice description. Fewa is a application which helps to connect providers and patient using video. Patient can print advice , share documents with provider and provider also knows how much time he has given to attend the patient. Send a invitation to the patient and then both can communicate";
-        public  static string _emailHtmlBody = "   <!DOCTYPE html>  " +
+        public static string _emailHtmlBody = "   <!DOCTYPE html>  " +
                                  "   <html lang='en'>  " +
                                  "     " +
                                  "   <head>  " +
