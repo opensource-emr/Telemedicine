@@ -50,7 +50,9 @@
       <div class="card">
         <div class="card-body">
           <div class="fewa-title">
-          <h1>Invitation Link</h1> 
+            <h1 style="display: inline; cursor: pointer;" [matTooltipPosition]="position" 
+            matTooltip="Click to copy" 
+            (click)="copyToClipBoard()">Invitation Link</h1>
           </div>
           <div class="invitationForm" style="max-height: 56px;">
             <form [formGroup]="form">
@@ -67,8 +69,7 @@
                 </div>
                 <div class="col-lg-5">
                   <div class="form-group">
-                    <input class="form-control" placeholder="Phone number"
-                      formControlName="mobile_number">
+                    <input class="form-control" type="text" placeholder="Phone number" formControlName="mobile_number">
                     <div *ngIf="loginFormControls.mobile_number.touched && loginFormControls.mobile_number.invalid"
                       style="color: red;">
                       <div *ngIf="loginFormControls.mobile_number.errors.required">Phone is required.</div>
@@ -102,32 +103,28 @@
       <div class="card">
         <div class="card-body">
           <div class="fewa-title">
-            <h1>Completed Appoinments</h1>
-          </div>
-          <div class="row">
-            <div class="col-md-4 pb-2">
-              <div class="md-form">
-                <div class="input-group">
-                  <input class="form-control" placeholder="yyyy-mm-dd" (dateSelect)="onDateSelect($event)" name="dp"
-                    [(ngModel)]="selectedDate" ngbDatepicker #d="ngbDatepicker">
-
-                  <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" (click)="d.toggle()"
-                      style="background-color:transparent;outline:none;box-shadow: none;" type="button">
-                      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                        aria-hidden="true" focusable="false" width="1em" height="1em"
-                        style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);"
-                        preserveAspectRatio="xMidYMid meet" viewBox="0 0 8 8">
-                        <path
-                          d="M0 0v2h7V0H0zm0 3v4.91c0 .05.04.09.09.09H6.9c.05 0 .09-.04.09-.09V3h-7zm1 1h1v1H1V4zm2 0h1v1H3V4zm2 0h1v1H5V4zM1 6h1v1H1V6zm2 0h1v1H3V6z"
-                          fill="#626262" />
-                      </svg>
-                    </button>
-                  </div>
+            <h1 style="text-align: left; display: inline;">Completed Appointments</h1>
+            <div class="md-form position-relative" style="float:right;bottom:10px;">
+              <div class="input-group" style="width: 180px;">
+                <input class="form-control" placeholder="yyyy-mm-dd" (dateSelect)="onDateSelect($event)" name="dp"
+                  [(ngModel)]="selectedDate" ngbDatepicker #d="ngbDatepicker">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" (click)="d.toggle()"
+                    style="background-color:transparent;outline:none;box-shadow: none;" type="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                      aria-hidden="true" focusable="false" width="1em" height="1em"
+                      style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);"
+                      preserveAspectRatio="xMidYMid meet" viewBox="0 0 8 8">
+                      <path
+                        d="M0 0v2h7V0H0zm0 3v4.91c0 .05.04.09.09.09H6.9c.05 0 .09-.04.09-.09V3h-7zm1 1h1v1H1V4zm2 0h1v1H3V4zm2 0h1v1H5V4zM1 6h1v1H1V6zm2 0h1v1H3V6z"
+                        fill="#626262" />
+                    </svg>
+                  </button>
                 </div>
               </div>
             </div>
           </div>
+
           <div class="table-responsive tableFixHead">
             <table class="table table-bordered">
               <thead>
