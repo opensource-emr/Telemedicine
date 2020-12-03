@@ -52,12 +52,13 @@ namespace FewaTelemedicine.Domain
         public DbSet<Provider> providers { get; set; }
         public DbSet<Patient> patients { get; set; }
         public DbSet<ProviderAdvice> advice { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //  Seeding for provider and practice
-            var practiceSeed = CreatePractice(1, "practice", "1234567890", "abc@gmail.com", "Jitsi", "/img/logo.png", "https://localhost:44304", "Welcome to the demo of Fewa. This is the place where you can put your hospital description. Fewa is a application which helps to connect doctors and patient using video. Patient can print advice , share documents with provider and provider also knows how much time he has given to attend the patient. To start using the demo login as username-provider,password provider , send a invitation to the patient and then both can communicate", "Fewa Telemedicine Call Today Schedule", "Please attend the provider", "EmailAdditionalContent");
+            var practiceSeed = CreatePractice(1, "practice", "1234567890", "abc@gmail.com", "Jitsi", "/img/logo.png", "https://localhost:44304", "Fewa Telemedicine Call Today Schedule", "Please attend the provider", "EmailAdditionalContent");
             var providerSeed = CreateProvider(1, "provider", "FHBsjQhfB78CnRY7uVquqA==", "provider", "practice", 1);
-            var practiceSeed1 = CreatePractice(2, "practice1", "0987654321", "pqr@gmail.com", "Jitsi", "/img/logo.png", "https://localhost:44304", "Welcome to the demo of Fewa. This is the place where you can put your hospital description. Fewa is a application which helps to connect doctors and patient using video. Patient can print advice , share documents with provider and provider also knows how much time he has given to attend the patient. To start using the demo login as username-doctor,password doctor , send a invitation to the patient and then both can communicate", "Fewa Telemedicine Call Today Schedule", "Please attend the provider", "EmailAdditionalContent");
+            var practiceSeed1 = CreatePractice(2, "practice1", "0987654321", "pqr@gmail.com", "Jitsi", "/img/logo.png", "https://localhost:44304", "Fewa Telemedicine Call Today Schedule", "Please attend the provider", "EmailAdditionalContent");
             var providerSeed1 = CreateProvider(2, "doctor", "ajNJkHEqM5bu0szpIIhwzw==", "provider1", "practice1", 2);
             modelBuilder.Entity<Practice>().ToTable("Practice");
             modelBuilder.Entity<Provider>().ToTable("Provider");
@@ -98,13 +99,35 @@ namespace FewaTelemedicine.Domain
                                string _callingPlatform,
                                string _logoPath,
                                string _serverName,
-                               string _description,
+                               // string _description,
                                string _emailSubject,
                                string _emailPlainBody,
                                string _emailAdditionalContent
                                )
         {
-            var _emailHtmlBody = "   <!DOCTYPE html>  " +
+
+
+            var practice = new Practice
+            {
+                practiceId = _id,
+                url = _url,
+                contactNumber = _contactNumber,
+                email = _email,
+                callingPlatform = _callingPlatform,
+                logoPath = _logoPath,
+                serverName = _serverName,
+                description = FewaDbContext._description,
+                emailHtmlBody = FewaDbContext._emailHtmlBody,
+                emailSubject = _emailSubject,
+                emailPlainBody = _emailPlainBody,
+                emailAdditionalContent = _emailAdditionalContent
+
+            };
+
+            return practice;
+        }
+        public static string _description = "Welcome to the demo of Fewa. This is the place where you can put your practice description. Fewa is a application which helps to connect providers and patient using video. Patient can print advice , share documents with provider and provider also knows how much time he has given to attend the patient. Send a invitation to the patient and then both can communicate";
+        public static string _emailHtmlBody = "   <!DOCTYPE html>  " +
                                  "   <html lang='en'>  " +
                                  "     " +
                                  "   <head>  " +
@@ -391,26 +414,5 @@ namespace FewaTelemedicine.Domain
                                  "   </body>  " +
                                  "     " +
                                  "  </html>  ";
-
-            var practice = new Practice
-            {
-                practiceId = _id,
-                url = _url,
-                contactNumber = _contactNumber,
-                email = _email,
-                callingPlatform = _callingPlatform,
-                logoPath = _logoPath,
-                serverName = _serverName,
-                description = _description,
-                emailHtmlBody = _emailHtmlBody,
-                emailSubject = _emailSubject,
-                emailPlainBody = _emailPlainBody,
-                emailAdditionalContent = _emailAdditionalContent
-
-            };
-
-            return practice;
-        }
-
     }
 }
