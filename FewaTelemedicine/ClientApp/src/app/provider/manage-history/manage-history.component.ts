@@ -64,7 +64,7 @@ export class ManageHistoryComponent implements OnInit {
     diff = moment.utc(moment(endTime, "YYYY-MM-DD HH:mm:ss").diff(moment(startTime, "YYYY-MM-DD HH:mm:ss"))).format("HH:mm:ss");
     var ms = moment.utc(moment(endTime, "YYYY-MM-DD HH:mm:ss").diff(moment(startTime, "YYYY-MM-DD HH:mm:ss"))).format("HH:mm:ss");
     var d = moment.duration(ms);
-    var diff = d.get("minutes") + "min" + d.get("seconds") + "sec";
+    var diff = d.get("minutes") + " min " + d.get("seconds") + " sec";
     return diff;
   }
 

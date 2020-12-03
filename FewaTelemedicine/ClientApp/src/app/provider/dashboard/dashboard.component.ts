@@ -8,6 +8,10 @@ import { Router } from '@angular/router';
 import { NotificationService } from 'src/app/_helpers/common/notification.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Clipboard } from '@angular/cdk/clipboard'
+import { MatSnackBar } from '@angular/material/snack-bar';
+import {TooltipPosition} from '@angular/material/tooltip';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -21,6 +25,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   practiceObj: Practice = new Practice();
   patientObj: Patient = new Patient();
   searchText: string = "";
+  invitationLink:string = this.getInvitationLink();
   selectedDate: NgbDateStruct;
   patients: Array<Patient> = new Array<Patient>();
   public showPatDetail: boolean = false;
@@ -32,6 +37,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   public invitationSuccess: boolean = false;
   public invitationFailure: boolean = false;
   isCamOn: boolean;
+  position: TooltipPosition= "above";
 
   constructor(private cdr: ChangeDetectorRef,
     private routing: Router,
@@ -40,7 +46,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     private calendar: NgbCalendar,
     private sanitizer: DomSanitizer,
     private notificationService: NotificationService,
-    private fb: FormBuilder) {
+    private fb: FormBuilder,
+    public clipboard:Clipboard,
+    public _snackBar:MatSnackBar) {
     this.selectedDate = calendar.getToday();
     this.loadPatientsAttended();
     this.startCommunication();
@@ -111,6 +119,28 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.patientObj.providerNameAttending = this.providerObj.userName;
     this.httpClient.post("/Messenger/SendEmail", this.patientObj)
     .subscribe(res => this.emailInvitationSuccess(res), err => this.error(err));
+  }
+
+  getInvitationLink(){
+   // https://host/practiceurl/providerurl/#/patient/intro
+    let link  = "";
+    let host = window.location.host;
+    let protocol = window.location.protocol;
+    let practiceUrl = this.global.currentPractice;
+    let providerUrl = this.global.currentProvider;
+    return link = protocol + "//" + host + "/" + practiceUrl + "/" +  providerUrl + "/#/patient/intro"
+  }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 2000,
+      verticalPosition:'top'
+    });
+  }
+
+  copyToClipBoard(){
+    this.clipboard.copy(this.invitationLink)
+    this.openSnackBar('Link Copied to Clipboard','');
   }
 
   emailInvitationSuccess(res) {

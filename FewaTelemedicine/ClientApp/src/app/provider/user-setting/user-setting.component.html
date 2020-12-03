@@ -223,30 +223,30 @@
                         </div>
                         <div class="tab-forms">
                             <form [formGroup]="practiceConfigForm">
-                                <h2>Hospital Details :</h2>
+                                <h2>Practice Details :</h2>
                                 <div class="row">
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
-                                            <label>Hospital Name<span class="red-text">*</span></label>
+                                            <label>Practice Name<span class="red-text">*</span></label>
                                             <input type="text" class="form-control" name="hospital_name"
                                                 formControlName="hospital_name" />
                                             <div *ngIf="practiceFormControls.hospital_name.touched && practiceFormControls.hospital_name.invalid"
                                                 style="color: red;">
                                                 <div *ngIf="practiceFormControls.hospital_name.errors.required">
-                                                    Hospital Name is required.
+                                                    Practice Name is required.
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
-                                            <label>Hospital Contact No.<span class="red-text">*</span></label>
+                                            <label>Practice Contact No.<span class="red-text">*</span></label>
                                             <input type="number" class="form-control" name="hospital_contact"
                                                 formControlName="hospital_contact">
                                             <div *ngIf="practiceFormControls.hospital_contact.touched && practiceFormControls.hospital_contact.invalid"
                                                 style="color: red;">
                                                 <div *ngIf="practiceFormControls.hospital_contact.errors.required">
-                                                    Hospital Contact is
+                                                    Practice Contact is
                                                     required.</div>
                                             </div>
                                         </div>
@@ -259,7 +259,7 @@
                                 <div class="row">
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
-                                            <label>Hospital Logo (Optional)</label>
+                                            <label>Practice Logo (Optional)</label>
                                         </div>
                                         <input id="file-upload1" type="file" formControlName="hospital_logo"
                                             (change)="updatePracticeLogo($event.target.files)" accept="images/*" />
@@ -274,7 +274,7 @@
 
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
-                                            <label>Hospital Description</label>
+                                            <label>Practice Description</label>
                                             <textarea rows="4" class="form-control" name="hospital_description"
                                                 formControlName="hospital_description"></textarea>
                                         </div>

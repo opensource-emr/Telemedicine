@@ -133,10 +133,12 @@ export class ChatComponent implements OnInit, AfterViewInit {
     if (this.currentChatUser == null || this.currentChatUser == undefined) {
       this._snackBar.open('Please select patient from list', '', {
         duration: 2000,
-      });
+        verticalPosition: 'top'
+       });
     } else if (this.currentChatUser.user == null || this.currentChatUser.user == undefined || this.currentChatUser.user == "") {
       this._snackBar.open('Please select patient from list', '', {
         duration: 2000,
+        verticalPosition: 'top'
       });
     }
     if (event.keyCode === 13) {

@@ -21,6 +21,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UploadDownloadService } from '../_helpers/common/upload-download.service';
 import { SharedModule } from '../_helpers/shared.module';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import {ClipboardModule} from '@angular/cdk/clipboard';
+import {MatTooltipModule} from '@angular/material/tooltip';
+
+
 
 @NgModule({
   declarations: [
@@ -47,7 +51,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     ReactiveFormsModule,
     NgbModule,
     SharedModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    ClipboardModule,
+    MatTooltipModule
   ],
   providers: [
     UploadDownloadService

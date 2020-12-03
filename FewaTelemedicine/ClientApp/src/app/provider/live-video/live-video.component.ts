@@ -100,7 +100,7 @@ export class LiveVideoComponent implements OnInit {
       // newPrescriptionsSentToYourPharmacy: new FormControl(true, Validators.nullValidator),
       // newPrescriptionsMailedToYou: new FormControl(true, Validators.nullValidator),
       medication: new FormControl('', Validators.nullValidator),
-      followUpNumber: new FormControl('', Validators.nullValidator),
+      followUpNumber: new FormControl('', Validators.min(0)),
       followUpMeasure: new FormControl('', Validators.nullValidator),
     });
   }

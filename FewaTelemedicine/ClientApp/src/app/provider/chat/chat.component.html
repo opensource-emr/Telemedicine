@@ -57,16 +57,16 @@
                         <li class="active" *ngIf="currentChatUser.user==user.user">
                             <div style="cursor: pointer;" class="chatMembers" (click)="onChatUserChange(user)">
                                 {{ user.user }}
-                                <span *ngIf="user.message[0]">{{user.message[0].time | date:'shortTime'}}</span>
+                                <!-- <span *ngIf="user.message[0]">{{user.message[0].time | date:'shortTime'}}</span> -->
                             </div>
-                            <p *ngIf="user.message[0]">{{user.message[0].message}}</p>
+                            <!-- <p *ngIf="user.message[0]">{{user.message[0].message}}</p> -->
                         </li>
                         <li *ngIf="currentChatUser.user!=user.user">
                             <div style="cursor: pointer;" class="chatMembers" (click)="onChatUserChange(user)">
                                 {{ user.user }}
-                                <span *ngIf="user.message[0]">{{user.message[0].time | date:'shortTime'}}</span>
+                                <!-- <span *ngIf="user.message[0]">{{user.message[0].time | date:'shortTime'}}</span> -->
                             </div>
-                            <p *ngIf="user.message[0]">{{user.message[0].message}}</p>
+                            <!-- <p *ngIf="user.message[0]">{{user.message[0].message}}</p> -->
                         </li>
                     </ng-container>
                 </ul>

@@ -100,7 +100,7 @@
                                 <p>Please wait Doctor will provide Report</p>
                             </div>
                             <div class="reportShare no-print" *ngIf="patient">
-                                <div class="reportMail">
+                                <div style="padding-right: 100px;" class="reportMail">
                                     <h3>Send your report to your email!.</h3>
                                     <form [formGroup]="emailForm">
                                         <div class="display-flex">
@@ -116,6 +116,7 @@
                                                     </div>
                                             </div>
                                             <button class="btn submitBtn" [disabled]="this.disableButton" (click)="sendReport()">Send</button>
+                                            <p style="left: 40px;position: relative;">OR</p>
                                         </div>
                                     </form>
                                 </div>
