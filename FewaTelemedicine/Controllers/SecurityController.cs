@@ -210,26 +210,45 @@ namespace FewaTelemedicine.Controllers
                 }
                 if (practice.otp == obj.otp && (practice.email == obj.email && practice.name == obj.name))
                 {
-                    Practice pra = new Practice();
-                    pra.practiceId = FewaDbContext.practices.Max(a => a.practiceId)+1;
-                    pra.name = obj.name;
-                    pra.email = obj.email;
-                    pra.url = obj.name.ToLower().Trim();
-                    FewaDbContext.practices.Add(pra);
+                    /// getting default values from database 
+                    //Practice pra = FewaDbContext.practices.Where(a => a.url == "practice").FirstOrDefault();
+                    //if (pra == null)
+                    //{
+                    //    return BadRequest();
+                    //}
+
+                    /// to add new practice 
+
+                    Practice newPractice = new Practice();
+                    newPractice.practiceId = FewaDbContext.practices.Max(a => a.practiceId)+1;
+                    newPractice.name = obj.name;
+                    newPractice.email = obj.email;
+                    newPractice.emailHtmlBody = FewaDbContext._emailHtmlBody;
+                    newPractice.description = FewaDbContext._description;
+                    newPractice.emailSubject = "Fewa Telemedicine Call Today Schedule";
+                    newPractice.emailPlainBody = "Please attend the provider";
+                    newPractice.emailAdditionalContent = "EmailAdditionalContent";
+                    newPractice.callingPlatform = "Jitsi";
+                    newPractice.logoPath = "/img/logo.png";
+                    newPractice.url = obj.name.ToLower().Trim();
+                    FewaDbContext.practices.Add(newPractice);
                     FewaDbContext.SaveChanges();
-                    Provider pro = new Provider();
-                    pro.userName = "admin";
-                    pro.password = Cipher.Encrypt(pro.userName, pro.userName);
-                    pro.roomName = Guid.NewGuid().ToString() + "-" + "name";
-                    pro.practice = obj.name;
-                    pro.url = pro.userName;
-                    pro.practice = pra.url;
-                    pro.practiceId = pra.practiceId;
-                    pro.providerId = FewaDbContext.providers.Max(a => a.providerId) + 1;
-                    FewaDbContext.providers.Add(pro);
+                    
+                    /// to add new provider
+        
+                    Provider provider = new Provider();
+                    provider.userName = "admin";
+                    provider.password = Cipher.Encrypt(provider.userName, provider.userName);
+                    provider.roomName = Guid.NewGuid().ToString() + "-" + "name";
+                    provider.practice = obj.name;
+                    provider.url = provider.userName;
+                    provider.practice = newPractice.url;
+                    provider.practiceId = newPractice.practiceId;
+                    provider.providerId = FewaDbContext.providers.Max(a => a.providerId) + 1;
+                    FewaDbContext.providers.Add(provider);
                     FewaDbContext.SaveChanges();
 
-                    return Ok(new { message = "Account created successfully! Please login with username:admin and password:admin",practice=pra,provider=pro});
+                    return Ok(new { message = "Account created successfully! Please login with username:admin and password:admin",practice= newPractice, provider= provider });
                 }
                 else
                 {
@@ -265,7 +284,12 @@ namespace FewaTelemedicine.Controllers
     }
     public static class Cipher
     {
-
+        /// <summary>
+        /// Encrypt text
+        /// </summary>
+        /// <param name="plainText"> Text to be encrypt</param>
+        /// <param name="password"> Key to encrypt text</param>
+        /// <returns> Encrypted text</returns>
         public static string Encrypt(string plainText, string password)
         {
             if (plainText == null)
