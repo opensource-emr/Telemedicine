@@ -19,17 +19,14 @@ namespace FewaTelemedicine.Services
         WaitingRoom waitingroom = null;
         List<Provider> providers = null;
         List<ProviderCabin> providerCabins = null;
-        FewaDbContext fewaDbContext = null;
         [Obsolete]
         private IHostingEnvironment _hostingEnvironment;
         [Obsolete]
         public NotificationHub(WaitingRoom _waitingroom,
                                 List<Provider> _providers,
                                 List<ProviderCabin> _providerCabins,
-                                FewaDbContext _fewaDbContext,
                 IHostingEnvironment hostingEnvironment)
         {
-            fewaDbContext = _fewaDbContext;
             waitingroom = _waitingroom;
             providers = _providers;
             providerCabins = _providerCabins;
@@ -244,8 +241,6 @@ namespace FewaTelemedicine.Services
         public async Task PatientCall(Patient obj)
         {
             Patient p = GetPatientbyName(obj.name);
-            var param = fewaDbContext.practices.Select(a => a.callingPlatform);
-
             if (p is null)
             {
                 return;
@@ -288,10 +283,10 @@ namespace FewaTelemedicine.Services
                     p.followUpNumber = obj.followUpNumber;
                     p.followUpMeasure = obj.followUpMeasure;
                     p.url = obj.url;
+                    p.practice = obj.practice;
+                    p.advice = obj.advice;
                     var patient = JsonConvert.SerializeObject(p);
                     await this.Clients.Clients(GetPatientbyName(obj.name).signalRConnectionId).CallEnds(patient);
-                    fewaDbContext.patients.Add(p);
-                    fewaDbContext.SaveChanges();
                 }
             }
             catch (Exception ex)
@@ -314,15 +309,16 @@ namespace FewaTelemedicine.Services
                 {
                     GetCurrentProviderCabin().patient = new Patient();
                     p.status = (int)TeleConstants.PatientCompleted;
-                    //p.labOrdersSent = obj.labOrdersSent;
-                    //p.newPrescriptionsSentToYourPharmacy = obj.newPrescriptionsSentToYourPharmacy;
-                    //p.newPrescriptionsMailedToYou = obj.newPrescriptionsMailedToYou;
-                    p.advice = obj.advice;
+                    p.labOrdersSent = obj.labOrdersSent;
+                    p.newPrescriptionsSentToYourPharmacy = obj.newPrescriptionsSentToYourPharmacy;
+                    p.newPrescriptionsMailedToYou = obj.newPrescriptionsMailedToYou;
                     p.endTime = DateTime.Now;
                     p.medication = obj.medication;
                     p.followUpNumber = obj.followUpNumber;
                     p.followUpMeasure = obj.followUpMeasure;
                     p.url = obj.url;
+                    p.practice = obj.practice;
+                    p.advice = obj.advice;
                     var patient = JsonConvert.SerializeObject(p);
                     await this.Clients.Clients(GetPatientbyName(obj.name).signalRConnectionId).CompletePatient(patient);
                     waitingroom.patients.Remove(p);
