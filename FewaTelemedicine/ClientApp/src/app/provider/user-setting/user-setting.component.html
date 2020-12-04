@@ -163,7 +163,7 @@
                                             <label>Profile Image</label>
                                             <input id="file-upload1" class="form-control" type="file"
                                                 placeholder="Choose File" formControlName="profile_image"
-                                                (change)="onFileChanged($event)" />
+                                                (change)="onFileChanged($event)" accept=".png,.jpg,.jpeg"/>
                                             <div *ngIf="userFormControls.profile_image.touched && userFormControls.profile_image.invalid"
                                                 style="color: red;">
                                                 <div *ngIf="userFormControls.profile_image.errors.required">Image is
@@ -262,7 +262,7 @@
                                             <label>Practice Logo (Optional)</label>
                                         </div>
                                         <input id="file-upload1" type="file" formControlName="hospital_logo"
-                                            (change)="updatePracticeLogo($event.target.files)" accept="images/*" />
+                                            (change)="updatePracticeLogo($event.target.files)" accept=".png,.jpg,.jpeg"/>
                                         <label *ngIf="logoToUpload">{{logoToUpload.name}}</label>
                                         <span class="upload" *ngIf="logoProgress > 0">
                                             {{logoProgress}}%

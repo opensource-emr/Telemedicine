@@ -253,13 +253,22 @@ export class UserSettingComponent implements OnInit {
       return;
     }
     this.selectedFile = <File>event.target.files[0];
-    if (this.selectedFile.size > 2000000) {
+    let ext = this.selectedFile.name.split('.').pop();
+    if(ext != "jpg" && ext != "png" && ext != "jpeg"){
+      alert("upload only image, file format not allowed");
+      this.userForm.get('profile_image')?.reset();
+      this.selectedFile=undefined;
+      return;
+    }
+    if(this.selectedFile.size > 2000000) 
+    {
       alert("Please upload file less than 2MB");
       this.userForm.get('profile_image').reset();
       this.selectedFile = undefined;
       return;
     }
-  }
+    
+ }
 
   loadInvitationTemplate() {
     this.showInvitationTemplate = !this.showInvitationTemplate;
@@ -327,6 +336,7 @@ export class UserSettingComponent implements OnInit {
 
   updatePracticeLogo(file: FileList) {
     this.logoToUpload = file.item(0);
+    
     //show image preview
     var reader = new FileReader();
     reader.onload = (event: any) => {
@@ -334,8 +344,16 @@ export class UserSettingComponent implements OnInit {
     }
     reader.readAsDataURL(this.logoToUpload);
     //upload image
+    let ext = this.logoToUpload.name.split('.').pop();
+    if(ext != "jpg" && ext != "png" && ext != "jpeg"){
+    alert("upload only logo, file format not allowed");
+    this.practiceConfigForm.get('hospital_logo')?.reset();
+    this.logoToUpload=undefined;
+    return;
+}
     const formData = new FormData();
     formData.append('image', this.logoToUpload, this.logoToUpload.name);
+   
     //call to server
     this.httpClient.post(this.global.practiceUrl + "UploadPracticeLogo", formData, { reportProgress: true, observe: 'events', responseType: 'text' })
       .subscribe(event => {
@@ -349,6 +367,7 @@ export class UserSettingComponent implements OnInit {
         else {
           this.message = 'Upload Failed.';
         }
+      
       });
   }
 
