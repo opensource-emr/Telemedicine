@@ -106,8 +106,6 @@ export class LiveVideoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    var userChat: Array<ChatModel> = JSON.parse(JSON.stringify(this.global.chatData));
-    this.currentChat = userChat?.find(a => a.user == this.global.patientObj.name)?.message;
     this.loadAdvice();
   }
 
