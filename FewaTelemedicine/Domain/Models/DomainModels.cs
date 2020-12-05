@@ -88,12 +88,12 @@ namespace FewaTelemedicine.Domain.Models
         public DateTime appointmentDate { get; set; }
         public DateTime startTime { get; set; }
         public DateTime endTime { get; set; }
+        public string url { get; set; }
 
         [NotMapped]
         public string providerNameAttending { get; set; }
         [NotMapped]
         public int status { get; set; }
-
         [NotMapped]
         public DateTime lastUpdated { get; set; }
         [NotMapped]
@@ -117,13 +117,12 @@ namespace FewaTelemedicine.Domain.Models
         [NotMapped]
         public string signalRConnectionId { get; set; }
         [NotMapped]
-        public string medication { get; set; }
-        public string url { get; set; }
-        
+        public string medication { get; set; }        
         public Provider provider { get; set; }
-
         [NotMapped]
         public List<ProviderAdvice> advice { get; set; }
+        [NotMapped]
+        public string practice { get; set; }
     }
     public class WaitingRoom
     {

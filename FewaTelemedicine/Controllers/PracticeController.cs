@@ -342,16 +342,14 @@ namespace FewaTelemedicine.Controllers
                 p.medication = obj.medication;
                 p.followUpNumber = obj.followUpNumber;
                 p.followUpMeasure = obj.followUpMeasure;
-                _waitingroom.patients.Remove(p);
-
-                //var dd = JsonSerializer.Serialize(_waitingroom.PatientsAttendedModels);
-                //_notify.Clients.All.BroadcastMessage("PatientLoggedIn", dd);
-
-                //var patient = JsonSerializer.Serialize(p);
-                //_notify.Clients.All.BroadcastMessage("PatientCompleted", patient);
-                RemoveIdle();
-
-
+                p.endTime = DateTime.Now;
+                p.medication = obj.medication;
+                p.followUpNumber = obj.followUpNumber;
+                p.followUpMeasure = obj.followUpMeasure;
+                p.url = obj.url;
+                p.advice = obj.advice;
+                FewaDbContext.patients.Add(p);
+                FewaDbContext.SaveChanges();
                 return Ok(p);
             }
         }
