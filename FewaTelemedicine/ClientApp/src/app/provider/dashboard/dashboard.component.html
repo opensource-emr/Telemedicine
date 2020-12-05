@@ -43,12 +43,11 @@
         </div>
         <div class="welcomeContent">
           <h1>Hello! {{providerObj.nameTitle}} &nbsp;{{providerObj.name}}</h1>
-          <!-- <p>Choose following actions to proceed.</p> -->
         </div>
       </div>
       <div class="clearfix"></div>
       <div class="card">
-        <div class="card-body">
+        <div class="card-body" style="width:42rem;">
           <div class="fewa-title">
             <h1 style="display: inline; cursor: pointer;" [matTooltipPosition]="position" 
             matTooltip="Click to copy" 
@@ -67,6 +66,9 @@
                     </div>
                   </div>
                 </div>
+                <div class="col-lg-1">
+                <span style="font-size:20px;font-weight:bold;position:absolute;top:10px;left:10px">OR</span>
+                 </div> 
                 <div class="col-lg-5">
                   <div class="form-group">
                     <input class="form-control" type="text" placeholder="Phone number" formControlName="mobile_number">
@@ -75,9 +77,9 @@
                       <div *ngIf="loginFormControls.mobile_number.errors.required">Phone is required.</div>
                       <div *ngIf="loginFormControls.mobile_number.errors.pattern">Invalid mobile number.</div>
                     </div>
-                  </div>
                 </div>
-                <div class="col-lg-2">
+                </div>
+                <div class="col-lg-1">
                   <button class="submitbtn" type="submit" [disabled]="this.invitationButton" value="Send"
                     (click)="sendInvitation()">send</button>
                 </div>
@@ -129,7 +131,6 @@
             <table class="table table-bordered">
               <thead>
                 <tr>
-                  <!-- <th>SrNo</th> -->
                   <th>Date</th>
                   <th>Call Start Time</th>
                   <th>Call End Time</th>
@@ -137,8 +138,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let temp of filteredCompletedPatients; let i = index">
-                  <!-- <td>{{i+1}}</td> -->
+                <tr *ngFor="let temp of filteredCompletedPatients">
                   <td>{{temp.appointmentDate |  date: 'MMMM dd, yyyy'}}</td>
                   <td>{{temp.startTime| date:'hh:mm:ss a'}}</td>
                   <td>{{temp.endTime| date:'hh:mm:ss a'}}</td>
