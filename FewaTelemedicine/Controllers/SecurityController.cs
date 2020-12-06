@@ -65,7 +65,7 @@ namespace FewaTelemedicine.Controllers
                 {
                     return BadRequest();
                 }
-                var pro = _providerRepository.getProviderByUserName(provider.userName);
+                var pro = _providerRepository.getProviderByUserName(provider.practice,provider.userName);
                 pro.roomName = pro.roomName.Replace("name", provider.userName);
                 if (pro == null)
                 {

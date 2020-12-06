@@ -117,7 +117,6 @@ namespace FewaTelemedicine.Controllers
                 return StatusCode(500, "Patient already logged in");
             }
             obj.lastUpdated = DateTime.Now;
-
             _waitingroom.patients.Add(obj);
 
 
@@ -402,7 +401,7 @@ namespace FewaTelemedicine.Controllers
                     }
                 }
             }
-            var provider = _providerRepository.getProviderByUserName(obj.userName);
+            var provider = _providerRepository.getProviderByUserName(obj.practice,obj.userName);
             if (provider is null)
             {
                 return StatusCode(500);
@@ -460,7 +459,7 @@ namespace FewaTelemedicine.Controllers
                 }
                 // var oldEmail = "";
                 var username = accessor.HttpContext.Session.GetString("name");
-                var provider = _providerRepository.getProviderByUserName(username);
+                var provider = _providerRepository.getProviderByUserName(list.name,username);
                 var newEmailContent = list.emailAdditionalContent;
                 var oldEmailContent = FewaDbContext.practices.Select(a => a.emailAdditionalContent).FirstOrDefault();
                 var htmlContent = FewaDbContext.practices.Select(a => a.emailHtmlBody).FirstOrDefault();

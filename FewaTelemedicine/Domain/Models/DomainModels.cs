@@ -124,6 +124,8 @@ namespace FewaTelemedicine.Domain.Models
 
         [NotMapped]
         public List<ProviderAdvice> advice { get; set; }
+        [NotMapped]
+        public string practice { get; set; }
     }
     public class WaitingRoom
     {

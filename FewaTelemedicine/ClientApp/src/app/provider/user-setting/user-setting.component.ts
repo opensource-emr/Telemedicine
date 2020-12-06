@@ -368,6 +368,7 @@ export class UserSettingComponent implements OnInit {
     this.showEditor = false;
     var v = this.practiceConfigForm.getRawValue();
     this.practiceObj.emailAdditionalContent = v.addContent;
+    this.practiceObj.name=this.global.currentPractice;
     this.httpClient.
       post<any>(this.global.practiceUrl + "PreviewEmailTemplate", this.practiceObj)
       .subscribe(res => {
@@ -384,6 +385,7 @@ export class UserSettingComponent implements OnInit {
     this.showEditor = false;
     var v = this.practiceConfigForm.getRawValue();
     this.practiceObj.emailAdditionalContent = v.addContent;
+    this.practiceObj.name=this.global.currentPractice;
     this.httpClient.
       post<any>(this.global.practiceUrl + "PreviewEmailTemplate", this.practiceObj)
       .subscribe(res => {

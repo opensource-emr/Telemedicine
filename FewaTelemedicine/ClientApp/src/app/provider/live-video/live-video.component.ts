@@ -148,6 +148,7 @@ export class LiveVideoComponent implements OnInit {
     this.patient.url = this.global.providerObj.url;
     this.patient.endTime = new Date();
     this.global.patientObj = this.patient;
+    this.patient.practice=this.global.currentPractice;
     this.notificationService.CallEnds(this.patient);
     var v: Patient = this.reportForm.getRawValue();
     this.patient.advice = new Array<ProviderAdvice>();

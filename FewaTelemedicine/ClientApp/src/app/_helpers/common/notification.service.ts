@@ -226,6 +226,7 @@ export class NotificationService {
           t.message.push(n);
           this._snackBar.open(data.message, data.sender, {
             duration: 2000,
+            verticalPosition:'top'
           });
         }
       } else if (type == 'sentbyprovider') {
