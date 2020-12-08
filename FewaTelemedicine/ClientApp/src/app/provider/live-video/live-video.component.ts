@@ -154,7 +154,8 @@ export class LiveVideoComponent implements OnInit {
     var v: Patient = this.reportForm.getRawValue();
     this.patient.medication = v.medication;
     this.patient.followUpNumber = v.followUpNumber.toString();
-    this.patient.followUpMeasure = v.followUpMeasure;
+    this.patient.followUpMeasure = v.followUpMeasure != "" ? v.followUpMeasure
+      : (parseInt(v.followUpNumber) <= 1 ? "Week" : "Weeks");
     if (this.patient.mobileNumber) {
       this.patient.mobileNumber = this.patient.mobileNumber.toString();
     }
