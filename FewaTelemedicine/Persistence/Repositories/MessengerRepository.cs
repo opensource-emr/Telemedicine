@@ -319,10 +319,9 @@ namespace FewaTelemedicine.Persistence.Repositories
                     adviceList += "<tr><td align='left' valign='top' style = 'font-family:\"Open Sans\", Arial, sans-serif; font-size:14px; line-height:22px; color:#666;padding-bottom:12px;'>" +
                                   "<b style='color:#000;'>" + adv + ":</b>&nbsp;" + value + "</td></tr>";          
                 }
-
-                var labOrdersSent = patient.labOrdersSent == true ? "Yes" : "No";
-                var newPrescriptionsSentToYourPharmacy = patient.newPrescriptionsSentToYourPharmacy == true ? "Yes" : "No";
-                var newPrescriptionsMailedToYou = patient.newPrescriptionsMailedToYou == true ? "Yes" : "No";
+                //var labOrdersSent = patient.labOrdersSent == true ? "Yes" : "No";
+                //var newPrescriptionsSentToYourPharmacy = patient.newPrescriptionsSentToYourPharmacy == true ? "Yes" : "No";
+                //var newPrescriptionsMailedToYou = patient.newPrescriptionsMailedToYou == true ? "Yes" : "No";
                 var htmlContent = "   <!DOCTYPE html>  " +
                                  "   <html lang='en'>  " +
                                  "     " +

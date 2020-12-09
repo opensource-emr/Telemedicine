@@ -136,7 +136,6 @@ namespace FewaTelemedicine.Domain.Models
     {
         [NotMapped]
         public bool isProvider{ get; set; }
-
         [NotMapped]
         public string message { get; set; }
         [NotMapped]

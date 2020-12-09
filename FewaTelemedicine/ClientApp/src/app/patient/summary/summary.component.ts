@@ -59,7 +59,6 @@ export class SummaryComponent implements OnInit {
   get emailFormControls() {
     return this.emailForm.controls;
   }
-
   sendReport() {
     if (this.emailForm.invalid) {
       return;

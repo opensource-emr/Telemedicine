@@ -14,7 +14,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
-
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -33,7 +32,7 @@ namespace FewaTelemedicine
 
         public IConfiguration Configuration { get; }
 
-        private List<Provider> loadProviders( )
+        private List<Provider> loadProviders()
         {
             
             var optionsBuilder = new DbContextOptionsBuilder<FewaDbContext>();
