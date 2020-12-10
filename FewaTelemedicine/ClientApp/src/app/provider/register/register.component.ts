@@ -41,7 +41,7 @@ export class RegisterComponent implements OnInit {
         if (this.countDownTime === 0) {
           this.resendOtpButton = false;
           clearInterval(countDown);
-        }
+        } 
       } else {
         clearInterval(countDown);
       }
@@ -67,6 +67,7 @@ export class RegisterComponent implements OnInit {
       , this.practiceObj)
     observable.subscribe(res => this.successVerify(res),
       res => this.errorObserver(res));
+    alert("OTP Verified"); 
   }
   resendOTP() {
     this.resendOtpButton = true;

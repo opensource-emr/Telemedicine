@@ -214,8 +214,11 @@
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
                                             <label>Practice Contact No.<span class="red-text">*</span></label>
-                                            <input type="text" placeholder="Enter Contact No" class="form-control" name="hospital_contact" formControlName="hospital_contact">
-                                            <div *ngIf="practiceFormControls.hospital_contact.touched && practiceFormControls.hospital_contact.invalid" style="color: red;">
+                                            <input type="text" placeholder="Enter Contact No" class="form-control" name="hospital_contact"
+                                                formControlName="hospital_contact">
+                                            <!-- <div *ngIf="practiceConfigForm.controls['hospital_contact'].hasError('pattern')"style="color: red;">Enter 10 digit Contact No.</div> -->
+                                            <div *ngIf="practiceFormControls.hospital_contact.touched && practiceFormControls.hospital_contact.invalid"
+                                                style="color: red;">
                                                 <div *ngIf="practiceFormControls.hospital_contact.errors.required">
                                                     Practice Contact is required.
                                                 </div>
@@ -274,7 +277,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <!-- <div class="row">
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
                                             <label>Email Name<span class="red-text">*</span></label>
@@ -299,7 +302,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="form-group">
