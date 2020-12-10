@@ -263,6 +263,31 @@ namespace FewaTelemedicine.Controllers
 
         }
 
+        [HttpPost("AddProvider")]
+        public IActionResult AddProvider([FromBody] Provider obj)
+        {
+            try
+            {
+                if (obj is null)
+                {
+                    return StatusCode(500);
+                }
+                obj.providerId= FewaDbContext.providers.Max(a => a.providerId) + 1;
+                obj.password = Cipher.Encrypt(obj.userName, obj.userName);
+                obj.roomName = Guid.NewGuid().ToString() + "-" + "name";
+                obj.practiceId = (from practice in FewaDbContext.practices
+                                  where obj.practice == practice.url
+                                  select practice.practiceId).FirstOrDefault();
+                FewaDbContext.providers.Add(obj);
+                FewaDbContext.SaveChanges();
+                return Ok(1);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest("Please try again");
+            }
+        }
+
         private string GenerateJSONWebToken(string username, string usertype)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
