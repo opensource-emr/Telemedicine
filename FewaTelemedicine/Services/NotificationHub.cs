@@ -274,6 +274,7 @@ namespace FewaTelemedicine.Services
                 else
                 {
                     GetCurrentProviderCabin().patient = new Patient();
+                    p.practice = obj.practice;
                     p.status = (int)TeleConstants.PatientCompleted;
                     p.labOrdersSent = obj.labOrdersSent;
                     p.newPrescriptionsSentToYourPharmacy = obj.newPrescriptionsSentToYourPharmacy;
@@ -308,6 +309,7 @@ namespace FewaTelemedicine.Services
                 else
                 {
                     GetCurrentProviderCabin().patient = new Patient();
+                    p.practice = obj.practice;
                     p.status = (int)TeleConstants.PatientCompleted;
                     p.labOrdersSent = obj.labOrdersSent;
                     p.newPrescriptionsSentToYourPharmacy = obj.newPrescriptionsSentToYourPharmacy;

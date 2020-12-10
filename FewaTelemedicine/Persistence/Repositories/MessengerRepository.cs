@@ -44,7 +44,7 @@ namespace FewaTelemedicine.Persistence.Repositories
                 {
                     return false;
                 }
-                var provider = _providerRepository.getProviderByUserName(providerUserName);
+                var provider = _providerRepository.getProviderByUserName(practice.name,providerUserName);
                 if (provider == null)
                 {
                     return false;

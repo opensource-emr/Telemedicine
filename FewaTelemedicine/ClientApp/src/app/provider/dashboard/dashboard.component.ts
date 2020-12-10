@@ -68,7 +68,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     }
     this.notificationService.EventGetAllPatients
       .subscribe(_patients => {
-        this.patients = _patients.filter(t => t.url == this.global.currentProvider);
+        this.patients = _patients.filter(t => t.url == this.global.currentProvider&&t.practice==this.global.currentPractice);
       });
     
     this.notificationService.EventCallPatient

@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectorRef, AfterViewInit } from '@angular/co
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { NotificationService } from 'src/app/_helpers/common/notification.service';
 import { Global } from 'src/app/_helpers/common/global.model';
-import { Provider } from 'src/app/_helpers/models/domain-model';
+import { Provider, Patient } from 'src/app/_helpers/models/domain-model';
 import { ChatModel, MessageModel } from 'src/app/_helpers/models/chat.model';
 import { DomSanitizer } from '@angular/platform-browser';
 import { HttpClient, HttpParams } from '@angular/common/http';
@@ -41,8 +41,9 @@ export class ChatComponent implements OnInit, AfterViewInit {
   private initialize() {
     this.notificationService.Connect();
 
-    this.notificationService.EventGetAllPatients.subscribe(_patients => {
-      _patients.forEach(p => {
+    this.notificationService.EventGetAllPatients.subscribe((_patients: Array<Patient>) => {
+      let pp=_patients.filter(a=>a.practice==this.global.currentPractice&&a.providerNameAttending==this.global.currentProvider)
+      pp.forEach(p => {
         if (p.name) {
           var t = this.userChat.find(a => a.user == p.name);
           if (t == undefined || t == null) {

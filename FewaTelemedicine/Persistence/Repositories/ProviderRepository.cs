@@ -26,12 +26,12 @@ namespace FewaTelemedicine.Persistence.Repositories
         {
             return _context.providers.Where(d => d.userName == username).FirstOrDefault();
         }
-        public Provider getProviderByUserName(string username, string email = "")
+        public Provider getProviderByUserName(string practiceName, string username, string email = "")
         {
             if (string.IsNullOrEmpty(email))
-                return _context.providers.Where(d => d.userName == username).FirstOrDefault();
+                return _context.providers.Where(d => d.userName == username&&d.practice==practiceName).FirstOrDefault();
             else
-                return _context.providers.Where(a => a.userName == username || a.email == email).FirstOrDefault();
+                return _context.providers.Where(a =>( a.userName == username || a.email == email)&&a.practice==practiceName).FirstOrDefault();
         }
     }
 }

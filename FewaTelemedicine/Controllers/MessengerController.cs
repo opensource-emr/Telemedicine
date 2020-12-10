@@ -160,7 +160,7 @@ namespace FewaTelemedicine.Controllers
                     return false;
                 }
                 //get provider by username or email
-                Provider provider = _providerRepo.getProviderByUserName(pro.userName);
+                Provider provider = _providerRepo.getProviderByUserName(pro.practice,pro.userName);
                 if (provider == null)
                 {
                     return false;
