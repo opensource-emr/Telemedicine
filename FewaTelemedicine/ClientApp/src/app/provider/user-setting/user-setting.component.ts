@@ -15,6 +15,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class UserSettingComponent implements OnInit {
   htmlContent = '';
   providerObj: Provider = new Provider();
+  addProviderObj : Provider = new Provider();
   retrieveResponse: any;
   receivedImageData: any;
   receivedPracticeImageData: any;
@@ -29,6 +30,7 @@ export class UserSettingComponent implements OnInit {
   public showInvitationTemplate: boolean = false;
   userForm: FormGroup = new FormGroup({});
   practiceConfigForm: FormGroup = new FormGroup({});
+  addProviderForm: FormGroup = new FormGroup({});
   practiceObj: Practice = new Practice();
   public providerAdvice: Array<ProviderAdvice> = [];
   hospitalLogo: string = "";
@@ -43,6 +45,7 @@ export class UserSettingComponent implements OnInit {
     this.initUserForm();
     this.initPracticeForm();
     this.initAdviceForm();
+    this.initAddProviderForm();
   }
 
   ngOnInit() {
@@ -92,9 +95,9 @@ export class UserSettingComponent implements OnInit {
   }
 
   public removeRow(index: number): void {
-    const control = this.adviceForm.get('adviceArray') as FormArray;   
+    const control = this.adviceForm.get('adviceArray') as FormArray;
     if (confirm("Are you sure you want to delete this ?")) {
-      if (this.adviceArray.getRawValue()[index].id) {    
+      if (this.adviceArray.getRawValue()[index].id) {
         var id = this.adviceArray.getRawValue()[index].id;
         control.removeAt(index);
         this.providerAdvice.splice(index, 1);
@@ -132,8 +135,8 @@ export class UserSettingComponent implements OnInit {
       else {
         var advice = new ProviderAdvice();
         advice.advice = this.adviceArray.getRawValue()[i].advice;
-        if(this.global.providerObj.providerId > 0)
-        advice.providerId = this.global.providerObj.providerId;
+        if (this.global.providerObj.providerId > 0)
+          advice.providerId = this.global.providerObj.providerId;
         this.providerAdvice.push(advice);
       }
     }
@@ -173,6 +176,21 @@ export class UserSettingComponent implements OnInit {
       calling_platform: ['', [Validators.required]],
       addContent: new FormControl(" "),
     })
+  }
+
+  private initAddProviderForm() {
+    this.addProviderForm = this.fb.group({
+      userName: ['', Validators.required],
+      password: ['', Validators.required],
+    });
+  }
+
+  addProvider() {
+    this.getProviderFormvalue();
+    this.httpClient.post<any>(this.global.apiUrl + "Security/AddProvider" + "", this.addProviderObj)
+      .subscribe(res => { alert("Provider Added succesfully, Now login with email password") },
+        err => { alert("There is a problem") });
+    this.resetAddProviderForm();
   }
 
   setUserFormValue(provider: Provider) {
@@ -229,6 +247,14 @@ export class UserSettingComponent implements OnInit {
     this.practiceObj.callingPlatform = v.calling_platform;
   }
 
+  getProviderFormvalue() {
+    var v = this.addProviderForm.getRawValue();
+    this.addProviderObj.userName = v.userName;
+    this.addProviderObj.password = v.password;
+    this.addProviderObj.url=this.addProviderObj.userName; // url same as username
+    this.addProviderObj.practice=this.global.currentPractice;
+  }
+
   config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -254,21 +280,20 @@ export class UserSettingComponent implements OnInit {
     }
     this.selectedFile = <File>event.target.files[0];
     let ext = this.selectedFile.name.split('.').pop();
-    if(ext != "jpg" && ext != "png" && ext != "jpeg"){
+    if (ext != "jpg" && ext != "png" && ext != "jpeg") {
       alert("upload only image, file format not allowed");
       this.userForm.get('profile_image')?.reset();
-      this.selectedFile=undefined;
+      this.selectedFile = undefined;
       return;
     }
-    if(this.selectedFile.size > 2000000) 
-    {
+    if (this.selectedFile.size > 2000000) {
       alert("Please upload file less than 2MB");
       this.userForm.get('profile_image').reset();
       this.selectedFile = undefined;
       return;
     }
-    
- }
+
+  }
 
   loadInvitationTemplate() {
     this.showInvitationTemplate = !this.showInvitationTemplate;
@@ -286,6 +311,10 @@ export class UserSettingComponent implements OnInit {
     this.logoMessage = null;
     this.selectedFile = null;
     this.practiceConfigForm.reset();
+  }
+
+  resetAddProviderForm() {
+    this.addProviderForm.reset();
   }
 
   resetAdviceForm() {
@@ -336,7 +365,7 @@ export class UserSettingComponent implements OnInit {
 
   updatePracticeLogo(file: FileList) {
     this.logoToUpload = file.item(0);
-    
+
     //show image preview
     var reader = new FileReader();
     reader.onload = (event: any) => {
@@ -345,15 +374,15 @@ export class UserSettingComponent implements OnInit {
     reader.readAsDataURL(this.logoToUpload);
     //upload image
     let ext = this.logoToUpload.name.split('.').pop();
-    if(ext != "jpg" && ext != "png" && ext != "jpeg"){
-    alert("upload only logo, file format not allowed");
-    this.practiceConfigForm.get('hospital_logo')?.reset();
-    this.logoToUpload=undefined;
-    return;
-}
+    if (ext != "jpg" && ext != "png" && ext != "jpeg") {
+      alert("upload only logo, file format not allowed");
+      this.practiceConfigForm.get('hospital_logo')?.reset();
+      this.logoToUpload = undefined;
+      return;
+    }
     const formData = new FormData();
     formData.append('image', this.logoToUpload, this.logoToUpload.name);
-   
+
     //call to server
     this.httpClient.post(this.global.practiceUrl + "UploadPracticeLogo", formData, { reportProgress: true, observe: 'events', responseType: 'text' })
       .subscribe(event => {
@@ -367,7 +396,7 @@ export class UserSettingComponent implements OnInit {
         else {
           this.message = 'Upload Failed.';
         }
-      
+
       });
   }
 
@@ -377,6 +406,10 @@ export class UserSettingComponent implements OnInit {
 
   get practiceFormControls() {
     return this.practiceConfigForm.controls;
+  }
+
+  get addProviderFormControls(){
+    return this.addProviderForm.controls;
   }
 
   emailTemplateUrl() {
