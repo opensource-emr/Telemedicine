@@ -208,12 +208,12 @@ namespace FewaTelemedicine.Persistence.Repositories
             }
             return bResponse;
         }
-        public async Task<bool> SendRegistrationOTP(string practiceName,string receiverEmail, string otp, string hostname = "")
+        public async Task<bool> SendRegistrationOTP(string practiceName, string receiverEmail, string otp, string hostname = "")
         {
             var bResponse = false;
             try
             {
-                Practice practice = FewaDbContext.practices.Where(a => a.email == receiverEmail||a.name==practiceName||a.url==practiceName.ToLower().Trim()).FirstOrDefault();
+                Practice practice = FewaDbContext.practices.Where(a => a.email == receiverEmail || a.name == practiceName || a.url == practiceName.ToLower().Trim()).FirstOrDefault();
                 if (practice != null)
                 {
                     return false;
@@ -265,8 +265,8 @@ namespace FewaTelemedicine.Persistence.Repositories
                                  "       </tr>  " +
                                  "  </table>  ";
                 var emailSubject = "Email verification for new practice";
-                Practice pra = FewaDbContext.practices.Where(a => a.url=="practice").FirstOrDefault();
-                if(pra==null)
+                Practice pra = FewaDbContext.practices.Where(a => a.url == "practice").FirstOrDefault();
+                if (pra == null)
                 {
                     return false;
                 }
@@ -274,7 +274,7 @@ namespace FewaTelemedicine.Persistence.Repositories
                 var from = new EmailAddress(pra.email);
                 var to = new EmailAddress(receiverEmail);
 
-                var msg = MailHelper.CreateSingleEmail(from, to,emailSubject,emailPlainBody, htmlContent);
+                var msg = MailHelper.CreateSingleEmail(from, to, emailSubject, emailPlainBody, htmlContent);
                 var res = await client.SendEmailAsync(msg);
                 if (res.StatusCode == System.Net.HttpStatusCode.OK || res.StatusCode == System.Net.HttpStatusCode.Accepted)
                 {
@@ -307,12 +307,21 @@ namespace FewaTelemedicine.Persistence.Repositories
                 {
                     practice.serverName = hostname;
                 }
+                var adviceList = "";
                 var client = new SendGridClient(practice.emailApiKey);
                 var from = new EmailAddress(practice.email);
-                var to = new EmailAddress(patient.email);
-                var labOrdersSent = patient.labOrdersSent == true ? "Yes" : "No";
-                var newPrescriptionsSentToYourPharmacy = patient.newPrescriptionsSentToYourPharmacy == true ? "Yes" : "No";
-                var newPrescriptionsMailedToYou = patient.newPrescriptionsMailedToYou == true ? "Yes" : "No";
+                var to = new EmailAddress(patient.email);                
+                List<ProviderAdvice> getAllAdvice = patient.advice.ToList();
+                for(var i= 0; i < getAllAdvice.Count; i++)
+                {                    
+                    var value = getAllAdvice[i].isChecked == true ? "Yes" : "No";
+                    var adv = getAllAdvice.ElementAt(i).advice;
+                    adviceList += "<tr><td align='left' valign='top' style = 'font-family:\"Open Sans\", Arial, sans-serif; font-size:14px; line-height:22px; color:#666;padding-bottom:12px;'>" +
+                                  "<b style='color:#000;'>" + adv + ":</b>&nbsp;" + value + "</td></tr>";          
+                }
+                //var labOrdersSent = patient.labOrdersSent == true ? "Yes" : "No";
+                //var newPrescriptionsSentToYourPharmacy = patient.newPrescriptionsSentToYourPharmacy == true ? "Yes" : "No";
+                //var newPrescriptionsMailedToYou = patient.newPrescriptionsMailedToYou == true ? "Yes" : "No";
                 var htmlContent = "   <!DOCTYPE html>  " +
                                  "   <html lang='en'>  " +
                                  "     " +
@@ -486,126 +495,111 @@ namespace FewaTelemedicine.Persistence.Repositories
                                  "                       </tr>  " +
                                  "                       <tr>  " +
                                  "                           <td height='5' class='em_h20' style='font-size:0px; line-height:0px; height:5px;'>&nbsp;</td>  " +
-                                 "                       </tr>  " +
-                                 "                       <tr>  " +
-                                 "                           <td align='left' valign='top'  " +
-                                 "                               style='font-family:\"Open Sans\", Arial, sans-serif; font-size:14px; line-height:22px; color:#666;padding-bottom:12px;'>  " +
-                                 "                                <b style='color:#000;'>Lab Orders Sent:</b>&nbsp;" + labOrdersSent + "</td>  " +
-                                 "                       </tr>  " +
-                                 "                       <tr>  " +
-                                 "                           <td align='left' valign='top'  " +
-                                 "                               style='font-family:\"Open Sans\", Arial, sans-serif; font-size:14px; line-height:22px; color:#666;padding-bottom:12px;'>  " +
-                                 "                                <b style='color:#000;'>New prescriptions sent to your pharmacy:</b>&nbsp;" + newPrescriptionsSentToYourPharmacy + "</td>  " +
-                                 "                       </tr>  " +
-                                 "                       <tr>  " +
-                                 "                           <td align='left' valign='top'  " +
-                                 "                               style='font-family:\"Open Sans\", Arial, sans-serif; font-size:14px; line-height:22px; color:#666;padding-bottom:12px;'>  " +
-                                 "                                <b style='color:#000;'>New prescriptions mailed to you:</b>&nbsp;" + newPrescriptionsMailedToYou + "</td>  " +
-                                 "                       </tr>  " +
+                                 "                       </tr>  " + adviceList +
                                  "   					 <tr>  " +
                                  "                           <td align='left' valign='top'  " +
-                                 "                               style='font-family:\"Open Sans\", Arial, sans-serif; font-size:14px; line-height:22px; color:#666;padding-bottom:12px;'>  " +
+                                 "                            style='font-family:\"Open Sans\", Arial, sans-serif; font-size:14px; line-height:22px; color:#666;padding-bottom:12px;'>  " +
                                  "                                <b style='color:#000;'>Advice:</b>&nbsp;" + patient.medication + "</td>  " +
                                  "                       </tr>  " +
                                  "   					 <tr>  " +
                                  "                           <td align='left' valign='top'  " +
                                  "                               style='font-family:\"Open Sans\", Arial, sans-serif; font-size:14px; line-height:22px; color:#666;padding-bottom:12px;'>  " +
                                  "                                <b style='color:#000;'>Follow Up in:</b>&nbsp;" + patient.followUpNumber + "/" + patient.followUpMeasure + "</td>  " +
-                                 "                       </tr>  " +
-                                 "                       <tr>  " +
-                                 "                           <td height='15' class='em_h20' style='font-size:0px; line-height:0px; height:15px;'>&nbsp;</td>  " +
-                                 "                       </tr>  " +
-                                 "                        " +
-                                 "                   </table>  " +
-                                 "               </td>  " +
-                                 "           </tr>  " +
-                                 "           <tr>  " +
-                                 "               <td valign='top' align='center' bgcolor='#f4f7ff' style='padding:38px 30px;' class='em_padd'>  " +
-                                 "                   <table align='center' width='100%' border='0' cellspacing='0' cellpadding='0'>  " +
-                                 "                       <tr>  " +
-                                 "                           <td align='center' valign='top' colspan='3' style='font-family:\"Open Sans\", Arial, sans-serif; font-size:20px;font-weight: 600; line-height:30px; color:#20325F;'>How Its Work</td>  " +
-                                 "                       </tr>  " +
-                                 "                       <tr>  " +
-                                 "                           <td height='20' class='em_h20' colspan='3' style='font-size:0px; line-height:0px; height:20px;'>&nbsp;</td>  " +
-                                 "                       </tr>  " +
-                                 "                       <tr>  " +
-                                 "                           <td align='center' valign='top'>  " +
-                                 "                               <table align='center' width='100%' border='0' cellspacing='0' cellpadding='0'>  " +
-                                 "                                   <tr>  " +
-                                 "                                       <td align='center' valign='top'><img src='" + practice.serverName + "/img/Ellipse-34.png'></td>  " +
-                                 "                                   </tr>  " +
-                                 "                                   <tr>  " +
-                                 "                                       <td align='center' valign='top' style='font-family:\"Open Sans\", Arial, sans-serif; font-size:17px;line-height:30px; color:#000;'>Join Conference</td>  " +
-                                 "                                   </tr>  " +
-                                 "                               </table>  " +
-                                 "                           </td>  " +
-                                 "                           <td align='center' valign='top'>  " +
-                                 "                               <table align='center' width='100%' border='0' cellspacing='0' cellpadding='0'>  " +
-                                 "                                   <tr>  " +
-                                 "                                       <td align='center' valign='top'><img src='" + practice.serverName + "/img/Ellipse-35.png'></td>  " +
-                                 "                                   </tr>  " +
-                                 "                                   <tr>  " +
-                                 "                                       <td align='center' valign='top' style='font-family:\"Open Sans\", Arial, sans-serif; font-size:17px;line-height:24px; color:#000;'>Communicates<br>with Doctor</td>  " +
-                                 "                                   </tr>  " +
-                                 "                               </table>  " +
-                                 "                           </td>  " +
-                                 "                           <td align='center' valign='top'>  " +
-                                 "                               <table align='center' width='100%' border='0' cellspacing='0' cellpadding='0'>  " +
-                                 "                                   <tr>  " +
-                                 "                                       <td align='center' valign='top'><img src='" + practice.serverName + "/img/Ellipse-36.png'></td>  " +
-                                 "                                   </tr>  " +
-                                 "                                   <tr>  " +
-                                 "                                       <td align='center' valign='top' style='font-family:\"Open Sans\", Arial, sans-serif; font-size:17px;line-height:24px; color:#000;'>chat with doctor<br>to Patient </td>  " +
-                                 "                                   </tr>  " +
-                                 "                               </table>  " +
-                                 "                           </td>  " +
-                                 "                       </tr>  " +
-                                 "                   </table>  " +
-                                 "               </td>  " +
-                                 "           </tr>  " +
-                                 "           <tr>  " +
-                                 "               <td valign='top' align='center' bgcolor='#20325f' style='padding:38px 30px;' class='em_padd'>  " +
-                                 "                   <table align='center' width='100%' border='0' cellspacing='0' cellpadding='0'>  " +
-                                 "                       <tr>  " +
-                                 "                           <td valign='top' align='center' style='padding-bottom:16px;'>  " +
-                                 "                               <table align='center' border='0' cellspacing='0' cellpadding='0'>  " +
-                                 "                                   <tr>  " +
-                                 "                                       <td valign='top' align='center'><a href='#' target='_blank'  " +
-                                 "                                               style='text-decoration:none;'><img src='" + practice.serverName + "/img/twitter.png' alt='fb'  " +
-                                 "                                                   style='display:block; font-family:Arial, sans-serif; font-size:14px; line-height:14px; color:#ffffff; max-width:20px;margin-right: 15px;max-height: 20px;'  " +
-                                 "                                                   border='0' width='26' height='26' /></a></td>  " +
-                                 "                                       <td width='6' style='width:6px;'>&nbsp;</td>  " +
-                                 "                                       <td valign='top' align='center'><a href='#' target='_blank'  " +
-                                 "                                               style='text-decoration:none;'><img src='" + practice.serverName + "/img/linkedin.png' alt='tw'  " +
-                                 "                                                   style='display:block; font-family:Arial, sans-serif; font-size:14px; line-height:14px; color:#ffffff; max-width:20px;margin-right: 15px;max-height: 20px'  " +
-                                 "                                                   border='0' width='27' height='26' /></a></td>  " +
-                                 "                                       <td width='6' style='width:6px;'>&nbsp;</td>  " +
-                                 "                                       <td valign='top' align='center'><a href='#' target='_blank'  " +
-                                 "                                               style='text-decoration:none;'><img src='" + practice.serverName + "/img/rss.png' alt='yt'  " +
-                                 "                                                   style='display:block; font-family:Arial, sans-serif; font-size:14px; line-height:14px; color:#ffffff; max-width:20px;margin-right: 15px;max-height: 20px'  " +
-                                 "                                                   border='0' width='26' height='26' /></a></td>  " +
-                                 "                                   </tr>  " +
-                                 "                               </table>  " +
-                                 "                           </td>  " +
-                                 "                       </tr>  " +
-                                 "                       <tr>  " +
-                                 "                           <td align='center' valign='top'  " +
-                                 "                               style='font-family:\"Open Sans\", Arial, sans-serif; font-size:11px; line-height:18px; color:#fff;'>  " +
-                                 "                               <a href='#' target='_blank' style='color:#fff; text-decoration:underline;'>PRIVACY  " +
-                                 "                                   STATEMENT</a> | <a href='#' target='_blank'  " +
-                                 "                                   style='color:#fff; text-decoration:underline;'>TERMS OF SERVICE</a> | <a href='#'  " +
-                                 "                                   target='_blank' style='color:#fff; text-decoration:underline;'>RETURNS</a><br />  " +
-                                 "                               &copy; 2020 Fewa Telemedicine. All Rights Reserved.<br />  " +
-                                 "                               If you do not wish to receive any further emails from us, please <a href='#' target='_blank'  " +
-                                 "                                   style='text-decoration:none; color:#fff;'>unsubscribe</a></td>  " +
-                                 "                       </tr>  " +
-                                 "                   </table>  " +
-                                 "               </td>  " +
-                                 "           </tr>  " +
-                                 "       </table>  " +
-                                 "   </body>  " +
-                                 "     " +
-                                 "  </html>  ";
+                                 "                          </tr>  " +
+                                 "                          <tr>  " +
+                                 "                              <td height='15' class='em_h20' style='font-size:0px; line-height:0px; height:15px;'>&nbsp;</td>  " +
+                                 "                          </tr>  " +
+                                 "                           " +
+                                 "                      </table>  " +
+                                 "                  </td>  " +
+                                 "              </tr>  " +
+                                 "              <tr>  " +
+                                 "                  <td valign='top' align='center' bgcolor='#f4f7ff' style='padding:38px 30px;' class='em_padd'>  " +
+                                 "                      <table align='center' width='100%' border='0' cellspacing='0' cellpadding='0'>  " +
+                                 "                          <tr>  " +
+                                 "                              <td align='center' valign='top' colspan='3' style='font-family:\"Open Sans\", Arial, sans-serif; font-size:20px;font-weight: 600; line-height:30px; color:#20325F;'>How Its Work</td>  " +
+                                 "                          </tr>  " +
+                                 "                          <tr>  " +
+                                 "                              <td height='20' class='em_h20' colspan='3' style='font-size:0px; line-height:0px; height:20px;'>&nbsp;</td>  " +
+                                 "                          </tr>  " +
+                                 "                          <tr>  " +
+                                 "                              <td align='center' valign='top'>  " +
+                                 "                                  <table align='center' width='100%' border='0' cellspacing='0' cellpadding='0'>  " +
+                                 "                                      <tr>  " +
+                                 "                                          <td align='center' valign='top'><img src='" + practice.serverName + "/img/Ellipse-34.png'></td>  " +
+                                 "                                      </tr>  " +
+                                 "                                      <tr>  " +
+                                 "                                          <td align='center' valign='top' style='font-family:\"Open Sans\", Arial, sans-serif; font-size:17px;line-height:30px; color:#000;'>Join Conference</td>  " +
+                                 "                                      </tr>  " +
+                                 "                                  </table>  " +
+                                 "                              </td>  " +
+                                 "                              <td align='center' valign='top'>  " +
+                                 "                                  <table align='center' width='100%' border='0' cellspacing='0' cellpadding='0'>  " +
+                                 "                                      <tr>  " +
+                                 "                                          <td align='center' valign='top'><img src='" + practice.serverName + "/img/Ellipse-35.png'></td>  " +
+                                 "                                      </tr>  " +
+                                 "                                      <tr>  " +
+                                 "                                          <td align='center' valign='top' style='font-family:\"Open Sans\", Arial, sans-serif; font-size:17px;line-height:24px; color:#000;'>Communicates<br>with Doctor</td>  " +
+                                 "                                      </tr>  " +
+                                 "                                  </table>  " +
+                                 "                              </td>  " +
+                                 "                              <td align='center' valign='top'>  " +
+                                 "                                  <table align='center' width='100%' border='0' cellspacing='0' cellpadding='0'>  " +
+                                 "                                      <tr>  " +
+                                 "                                          <td align='center' valign='top'><img src='" + practice.serverName + "/img/Ellipse-36.png'></td>  " +
+                                 "                                      </tr>  " +
+                                 "                                      <tr>  " +
+                                 "                                          <td align='center' valign='top' style='font-family:\"Open Sans\", Arial, sans-serif; font-size:17px;line-height:24px; color:#000;'>chat with doctor<br>to Patient </td>  " +
+                                 "                                      </tr>  " +
+                                 "                                  </table>  " +
+                                 "                              </td>  " +
+                                 "                          </tr>  " +
+                                 "                      </table>  " +
+                                 "                  </td>  " +
+                                 "              </tr>  " +
+                                 "              <tr>  " +
+                                 "                  <td valign='top' align='center' bgcolor='#20325f' style='padding:38px 30px;' class='em_padd'>  " +
+                                 "                      <table align='center' width='100%' border='0' cellspacing='0' cellpadding='0'>  " +
+                                 "                          <tr>  " +
+                                 "                              <td valign='top' align='center' style='padding-bottom:16px;'>  " +
+                                 "                                  <table align='center' border='0' cellspacing='0' cellpadding='0'>  " +
+                                 "                                      <tr>  " +
+                                 "                                          <td valign='top' align='center'><a href='#' target='_blank'  " +
+                                 "                                                  style='text-decoration:none;'><img src='" + practice.serverName + "/img/twitter.png' alt='fb'  " +
+                                 "                                                      style='display:block; font-family:Arial, sans-serif; font-size:14px; line-height:14px; color:#ffffff; max-width:20px;margin-right: 15px;max-height: 20px;'  " +
+                                 "                                                      border='0' width='26' height='26' /></a></td>  " +
+                                 "                                          <td width='6' style='width:6px;'>&nbsp;</td>  " +
+                                 "                                          <td valign='top' align='center'><a href='#' target='_blank'  " +
+                                 "                                                  style='text-decoration:none;'><img src='" + practice.serverName + "/img/linkedin.png' alt='tw'  " +
+                                 "                                                      style='display:block; font-family:Arial, sans-serif; font-size:14px; line-height:14px; color:#ffffff; max-width:20px;margin-right: 15px;max-height: 20px'  " +
+                                 "                                                      border='0' width='27' height='26' /></a></td>  " +
+                                 "                                          <td width='6' style='width:6px;'>&nbsp;</td>  " +
+                                 "                                          <td valign='top' align='center'><a href='#' target='_blank'  " +
+                                 "                                                  style='text-decoration:none;'><img src='" + practice.serverName + "/img/rss.png' alt='yt'  " +
+                                 "                                                      style='display:block; font-family:Arial, sans-serif; font-size:14px; line-height:14px; color:#ffffff; max-width:20px;margin-right: 15px;max-height: 20px'  " +
+                                 "                                                      border='0' width='26' height='26' /></a></td>  " +
+                                 "                                      </tr>  " +
+                                 "                                  </table>  " +
+                                 "                              </td>  " +
+                                 "                          </tr>  " +
+                                 "                          <tr>  " +
+                                 "                              <td align='center' valign='top'  " +
+                                 "                                  style='font-family:\"Open Sans\", Arial, sans-serif; font-size:11px; line-height:18px; color:#fff;'>  " +
+                                 "                                  <a href='#' target='_blank' style='color:#fff; text-decoration:underline;'>PRIVACY  " +
+                                 "                                      STATEMENT</a> | <a href='#' target='_blank'  " +
+                                 "                                      style='color:#fff; text-decoration:underline;'>TERMS OF SERVICE</a> | <a href='#'  " +
+                                 "                                      target='_blank' style='color:#fff; text-decoration:underline;'>RETURNS</a><br />  " +
+                                 "                                  &copy; 2020 Fewa Telemedicine. All Rights Reserved.<br />  " +
+                                 "                                  If you do not wish to receive any further emails from us, please <a href='#' target='_blank'  " +
+                                 "                                      style='text-decoration:none; color:#fff;'>unsubscribe</a></td>  " +
+                                 "                          </tr>  " +
+                                 "                      </table>  " +
+                                 "                  </td>  " +
+                                 "              </tr>  " +
+                                 "          </table>  " +
+                                 "      </body>  " +
+                                 "        " +
+                                 "     </html>  ";
 
                 var emailSubject = "After Visit Summary Report";
                 var msg = MailHelper.CreateSingleEmail(from, to, emailSubject, practice.emailPlainBody, htmlContent);
