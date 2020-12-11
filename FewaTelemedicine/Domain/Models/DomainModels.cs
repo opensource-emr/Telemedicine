@@ -118,7 +118,6 @@ namespace FewaTelemedicine.Domain.Models
         public string signalRConnectionId { get; set; }
         [NotMapped]
         public string medication { get; set; }
-        public string url { get; set; }
         
         public Provider provider { get; set; }
         [NotMapped]
