@@ -27,7 +27,7 @@ namespace FewaTelemedicine.Persistence.Repositories
         {
             return _context.providers.Where(d => d.userName == username&&d.practice==practice).FirstOrDefault();
         }
-        public Provider getProviderByUserName(string practiceName, string username, [Optional] string email = "")
+        public Provider getProviderByUserName(string practiceName, string username, string email = "")
         {
             if (string.IsNullOrEmpty(email))
                 return _context.providers.Where(d => d.userName == username&&d.practice==practiceName).FirstOrDefault();
