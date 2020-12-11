@@ -55,6 +55,7 @@ export class ProviderReportComponent implements OnInit {
     this.patient.medication = v.medication;
     this.patient.followUpNumber = v.followUpNumber.toString();
     this.patient.followUpMeasure = v.followUpMeasure;
+    this.patient.practice=this.global.currentPractice;
     if(this.patient.mobileNumber) {
       this.patient.mobileNumber = this.patient.mobileNumber.toString();
     }

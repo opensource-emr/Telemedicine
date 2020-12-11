@@ -154,6 +154,7 @@ export class NotificationService {
       var obj: any = JSON.parse(data)
       this.handleChatting('adduser', obj);
       this.EventGetAllPatients.emit(obj);
+      console.log(obj);
     });
 
     this._hubConnection.on('CallPatient', (data: any) => {
@@ -182,6 +183,7 @@ export class NotificationService {
     this._hubConnection.on('GetAllProviders', (data: any) => {
       const jsonData: any = JSON.parse(data);
       this.EventGetAllProviders.emit(jsonData);
+      console.log(jsonData);
     });
   }
 

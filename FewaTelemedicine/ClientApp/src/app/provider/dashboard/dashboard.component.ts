@@ -10,7 +10,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Clipboard } from '@angular/cdk/clipboard'
 import { MatSnackBar } from '@angular/material/snack-bar';
-import {TooltipPosition} from '@angular/material/tooltip';
+import { TooltipPosition } from '@angular/material/tooltip';
 
 
 @Component({
@@ -25,7 +25,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   practiceObj: Practice = new Practice();
   patientObj: Patient = new Patient();
   searchText: string = "";
-  invitationLink:string = this.getInvitationLink();
+  invitationLink: string = this.getInvitationLink();
   selectedDate: NgbDateStruct;
   patients: Array<Patient> = new Array<Patient>();
   public showPatDetail: boolean = false;
@@ -37,7 +37,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   public invitationSuccess: boolean = false;
   public invitationFailure: boolean = false;
   isCamOn: boolean;
-  position: TooltipPosition= "above";
+  position: TooltipPosition = "above";
 
   constructor(private cdr: ChangeDetectorRef,
     private routing: Router,
@@ -47,8 +47,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     private sanitizer: DomSanitizer,
     private notificationService: NotificationService,
     private fb: FormBuilder,
-    public clipboard:Clipboard,
-    public _snackBar:MatSnackBar) {
+    public clipboard: Clipboard,
+    public _snackBar: MatSnackBar) {
     this.selectedDate = calendar.getToday();
     this.loadPatientsAttended();
     this.startCommunication();
@@ -68,9 +68,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     }
     this.notificationService.EventGetAllPatients
       .subscribe(_patients => {
-        this.patients = _patients.filter(t => t.url == this.global.currentProvider&&t.practice==this.global.currentPractice);
+        this.patients = _patients.filter(t => t.url == this.global.currentProvider && t.practice == this.global.currentPractice);
       });
-    
+
     this.notificationService.EventCallPatient
       .subscribe(_patient => {
         this.global.patientObj = _patient;
@@ -118,29 +118,29 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.patientObj.mobileNumber = this.form.value.mobile_number;
     this.patientObj.providerNameAttending = this.providerObj.userName;
     this.httpClient.post("/Messenger/SendEmail", this.patientObj)
-    .subscribe(res => this.emailInvitationSuccess(res), err => this.error(err));
+      .subscribe(res => this.emailInvitationSuccess(res), err => this.error(err));
   }
 
-  getInvitationLink(){
-   // https://host/practiceurl/providerurl/#/patient/intro
-    let link  = "";
+  getInvitationLink() {
+    // https://host/practiceurl/providerurl/#/patient/intro
+    let link = "";
     let host = window.location.host;
     let protocol = window.location.protocol;
     let practiceUrl = this.global.currentPractice;
     let providerUrl = this.global.currentProvider;
-    return link = protocol + "//" + host + "/" + practiceUrl + "/" +  providerUrl + "/#/patient/intro"
+    return link = protocol + "//" + host + "/" + practiceUrl + "/" + providerUrl + "/#/patient/intro"
   }
 
   openSnackBar(message: string, action: string) {
     this._snackBar.open(message, action, {
       duration: 2000,
-      verticalPosition:'top'
+      verticalPosition: 'top'
     });
   }
 
-  copyToClipBoard(){
+  copyToClipBoard() {
     this.clipboard.copy(this.invitationLink)
-    this.openSnackBar('Link Copied to Clipboard','');
+    this.openSnackBar('Link Copied to Clipboard', '');
   }
 
   emailInvitationSuccess(res) {
@@ -163,9 +163,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   loadPatientsAttended() {
     this.completedPatients = [];
-    this.httpClient.get<any>(this.global.practiceUrl + "GetPatientsAttended?provider="
-                            +this.global.providerObj.url+"&searchString="+this.searchText)
-                    .subscribe(res => this.loadPatientSuccess(res), err => this.error(err));
+    this.httpClient.post<any>(this.global.practiceUrl + "GetPatientsAttended?searchString="
+      + this.searchText, this.global.providerObj)
+      .subscribe(res => this.loadPatientSuccess(res), err => this.error(err));
   }
 
   loadPatientSuccess(res) {
@@ -200,7 +200,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     diff = moment.utc(moment(endTime, "YYYY-MM-DD HH:mm:ss").diff(moment(startTime, "YYYY-MM-DD HH:mm:ss"))).format("HH:mm:ss");
     var ms = moment.utc(moment(endTime, "YYYY-MM-DD HH:mm:ss").diff(moment(startTime, "YYYY-MM-DD HH:mm:ss"))).format("HH:mm:ss");
     var d = moment.duration(ms);
-    var diff = d.get("minutes")  + " min " + d.get("seconds") + " sec ";
+    var diff = d.get("minutes") + " min " + d.get("seconds") + " sec ";
     return diff;
   }
 
@@ -209,7 +209,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.notificationService.DisconnectUser();
     this.routing.navigateByUrl('/provider/login');
   }
-  
+
   get loginFormControls() {
     return this.form.controls;
   }

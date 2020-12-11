@@ -116,7 +116,7 @@ namespace FewaTelemedicine.Controllers
                     return false;
                 }
                 //get provider by username or email
-                Provider provider = _providerRepo.getProviderByUserName(obj.email, obj.email);
+                Provider provider = _providerRepo.getProviderByUserName(obj.practice, obj.userName,obj.email);
                 if (provider == null)
                 {
                     return false;
@@ -160,7 +160,7 @@ namespace FewaTelemedicine.Controllers
                     return false;
                 }
                 //get provider by username or email
-                Provider provider = _providerRepo.getProviderByUserName(pro.practice,pro.userName);
+                Provider provider = _providerRepo.getProviderByUserName(pro.practice,pro.userName,pro.email);
                 if (provider == null)
                 {
                     return false;

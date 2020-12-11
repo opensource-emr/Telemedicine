@@ -13,7 +13,7 @@ import { DomSanitizer } from '@angular/platform-browser';
   styleUrls: ['./manage-history.component.scss']
 })
 export class ManageHistoryComponent implements OnInit {
-  public CompletedPatients: Array<Patient> = null;
+  public completedPatients: Array<Patient> = null;
   public filteredCompletedPatients: Array<Patient> = [];
   searchText: string = "";
   selectedDate: NgbDateStruct;
@@ -41,11 +41,11 @@ export class ManageHistoryComponent implements OnInit {
     this.searchText = finalDate;
     this.loadPatientsAttended();
   }
-
   loadPatientsAttended() {
-    this.CompletedPatients = [];
-    this.httpClient.get<any>(this.global.practiceUrl + "GetPatientsAttended?provider="+this.global.providerObj.url+"&searchString="+this.searchText)
-          .subscribe(res => this.loadPatientSuccess(res), err => this.error(err));
+    this.completedPatients = [];
+    this.httpClient.post<any>(this.global.practiceUrl + "GetPatientsAttended?searchString="
+      + this.searchText, this.global.providerObj)
+      .subscribe(res => this.loadPatientSuccess(res), err => this.error(err));
   }
 
   loadPatientSuccess(res) {

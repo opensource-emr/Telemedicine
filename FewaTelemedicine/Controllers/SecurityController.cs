@@ -66,7 +66,7 @@ namespace FewaTelemedicine.Controllers
                     return BadRequest();
                 }
                 var pro = _providerRepository.getProviderByUserName(provider.practice,provider.userName);
-                pro.roomName = pro.roomName.Replace("name", provider.userName);
+             
                 if (pro == null)
                 {
                     return Unauthorized();
@@ -75,6 +75,7 @@ namespace FewaTelemedicine.Controllers
                 {
                     return Unauthorized();
                 }
+                pro.roomName = pro.roomName.Replace("name", provider.userName);
                 var providerPwd = Cipher.Decrypt(pro.password, provider.userName);
                 if (provider.password != providerPwd)
                 {
@@ -85,7 +86,7 @@ namespace FewaTelemedicine.Controllers
                     HttpContext.Session.SetString("name", pro.userName);
                     HttpContext.Session.SetString("practice", pro.practice);
                     var token = GenerateJSONWebToken(pro.userName, "provider");
-                    AddProviderCabin(pro.userName);
+                    AddProviderCabin(pro);
                     var data = new
                     {
                         User = pro,
@@ -101,20 +102,20 @@ namespace FewaTelemedicine.Controllers
             }
         }
 
-        private void AddProviderCabin(string name)
+        private void AddProviderCabin(Provider provider)
         {
             foreach (var item in _providerCabins)
             {
-                if (item.provider.userName == name)
+                if (item.provider.userName == provider.userName&&item.provider.practice==provider.practice)
                 {
                     _providerCabins.Remove(item);
                     _providerCabins.Add(new ProviderCabin()
-                    { provider = new Provider() { userName = name } });
+                    { provider = provider});
                     return;
                 }
             }
             _providerCabins.Add(new ProviderCabin()
-            { provider = new Provider() { userName = name } });
+            { provider = provider});
 
         }
         [HttpPost("VerifyOTP")]
@@ -242,7 +243,7 @@ namespace FewaTelemedicine.Controllers
                     provider.roomName = Guid.NewGuid().ToString() + "-" + "name";
                     provider.practice = obj.name;
                     provider.url = provider.userName;
-                    provider.practice = newPractice.url;
+                    ///provider.practice = newPractice.url;
                     provider.practiceId = newPractice.practiceId;
                     provider.providerId = FewaDbContext.providers.Max(a => a.providerId) + 1;
                     FewaDbContext.providers.Add(provider);
