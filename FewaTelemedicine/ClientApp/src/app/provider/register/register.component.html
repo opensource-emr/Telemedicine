@@ -28,7 +28,7 @@
                         </div>
                     </div>
                     <button type="submit" class="btn submitBtn" (click)="onSubmit()">Sign Up</button>
-                    <p>Already have an account? <a href="javascript:" routerLink="/provider/login">Sign in</a></p>
+                    <!-- <p>Already have an account? <a href="javascript:" routerLink="/provider/login">Sign in</a></p> -->
                 </div>
             </form>
             <form [formGroup]="form" *ngIf="verifyOtpSection">
@@ -43,7 +43,7 @@
                     </div>
                     <button type="submit" class="btn submitBtn" (click)="verifyOTP()">Confirm</button><br><br>
                     <button type="submit" class="btn submitBtn" [disabled]="resendOtpButton" (click)="resendOTP()">Resend OTP</button> <div id="countdown">{{countDownTime}}</div>
-                    <p>Already have an account? <a href="javascript:" routerLink="/provider/login">Sign in</a></p>
+                    <!-- <p>Already have an account? <a href="javascript:" routerLink="/provider/login">Sign in</a></p> -->
                 </div>
             </form>
         </div>

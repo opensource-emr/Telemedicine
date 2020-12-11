@@ -64,6 +64,7 @@ export class LoginComponent implements OnInit {
     this.providerObj.userName = this.providerForm.value.providerUserName;
     this.providerObj.password = this.providerForm.value.providerPassword;
     this.providerObj.url = this.global.currentProvider;
+    this.providerObj.practice=this.global.currentPractice;
     this.global.providerObj = this.providerObj;
     this.httpClient.
       post<any>(this.global.apiUrl + "Security/Login", this.providerObj)

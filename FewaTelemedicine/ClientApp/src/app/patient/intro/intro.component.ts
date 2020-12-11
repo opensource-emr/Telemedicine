@@ -72,6 +72,8 @@ export class IntroComponent implements OnInit {
     var patient = new Patient();
     patient.name = this.patRegForm.controls.patientName.value;
     patient.url = this.global.currentProvider;
+    patient.practice=this.global.currentPractice;
+    patient.providerNameAttending=this.global.currentProvider;
     this.global.practiceObj.url = this.global.currentPractice;
     this.httpClient.
       post<any>(this.global.practiceUrl + "LoginPatient", patient)
@@ -85,6 +87,6 @@ export class IntroComponent implements OnInit {
       },
         res => {
           alert('User already logged in');
-        });
+    });
   }
 }

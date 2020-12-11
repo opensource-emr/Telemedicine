@@ -117,11 +117,11 @@ namespace FewaTelemedicine.Domain.Models
         [NotMapped]
         public string signalRConnectionId { get; set; }
         [NotMapped]
-        public string medication { get; set; }        
+        public string medication { get; set; }
+        
         public Provider provider { get; set; }
         [NotMapped]
         public List<ProviderAdvice> advice { get; set; }
-        [NotMapped]
         public string practice { get; set; }
     }
     public class WaitingRoom
