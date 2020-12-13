@@ -173,8 +173,8 @@ export class UserSettingComponent implements OnInit {
       hospital_description: new FormControl(" "),
       sender_email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
       email_api_key: ['', [Validators.required]],
-      email_name: ['', [Validators.required]],
-      calling_platform: ['', [Validators.required]],
+     //email_name: ['', [Validators.required]],
+     //calling_platform: ['', [Validators.required]],
       addContent: new FormControl(" "),
     })
   }
@@ -440,7 +440,7 @@ export class UserSettingComponent implements OnInit {
     this.practiceObj.emailAdditionalContent = v.addContent;
     this.practiceObj.name=this.global.currentPractice;
     this.httpClient.
-      post<any>(this.global.practiceUrl + " ", this.practiceObj)
+      post<any>(this.global.practiceUrl + "previewEmailTemplate", this.practiceObj)
       .subscribe(res => {
         this.htmlBody = res.EmailHTMLBody;
         this.htmlBody = this.htmlBody.replace("' id='edit'>", "border: 1px dashed #990000 !important;'>[<b> Note: Content In This Box Is Editable.</b>]<br>");
