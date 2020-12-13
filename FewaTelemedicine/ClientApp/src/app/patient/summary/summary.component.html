@@ -15,8 +15,8 @@
                                 <span *ngIf="global.providerObj.name">{{global.providerObj.name}}</span>
                                 <span *ngIf="!global.providerObj.name">{{global.providerObj.userName}}</span>
                             </h2>
-                            <p>Praesent et dolor eu diam lacinia vulputate. Maecenas hendrerit pharetra nunc, quis
-                                vulputate lorem elementum a</p>
+                            <!-- <p>Praesent et dolor eu diam lacinia vulputate. Maecenas hendrerit pharetra nunc, quis
+                                vulputate lorem elementum a</p> -->
                             <div class="display-flex" *ngIf="patient">
                                 <div class="wdt-50 ">
                                     <div class="printreport no-print" >
@@ -97,7 +97,7 @@
                             </div>
                             <br>
                             <div class="text-center no-print" *ngIf="patient == null || patient == undefined">
-                                <p>Please wait Doctor will provide Report</p>
+                                <p>Please wait, provider will provide report</p>
                             </div>
                             <div class="reportShare no-print" *ngIf="patient">
                                 <div style="padding-right: 100px;" class="reportMail">

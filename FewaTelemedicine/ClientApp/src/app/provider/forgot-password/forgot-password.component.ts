@@ -99,6 +99,7 @@ export class ForgotPasswordComponent implements OnInit {
     this.httpClient.post(this.global.apiUrl + "Security/VerifyOTP", this.providerObj)
       .subscribe(res => this.successVerify(res),
         res => this.error(res));
+    alert("OTP Verified");
   }
 
   resetPassword() {
@@ -129,10 +130,12 @@ export class ForgotPasswordComponent implements OnInit {
 
   successResendOTP(res) {
     if (res) {
-
-      this.disableResendButton = false;
+      
+      this.disableResendButton = true;
       // this.showResetPasswordSection=true;
       // this.disableResendButton=false;
+      this.countDownTime = 30;
+      this.countDown();
     }
     else {
       this.disableResendButton = false;

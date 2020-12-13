@@ -42,8 +42,10 @@
                         </div>
                     </div>
                     <button type="submit" class="btn submitBtn" (click)="verifyOTP()">Confirm</button><br><br>
-                    <button type="submit" class="btn submitBtn" [disabled]="resendOtpButton" (click)="resendOTP()">Resend OTP</button> <div id="countdown">{{countDownTime}}</div>
-                    <!-- <p>Already have an account? <a href="javascript:" routerLink="/provider/login">Sign in</a></p> -->
+
+                    <div id="countdown">{{countDownTime}}</div>
+                    <button type="submit" class="btn submitBtn" [disabled]="resendOtpButton" (click)="resendOTP()">Resend OTP</button> 
+                    <p>Already have an account? <a href="javascript:" routerLink="/provider/login">Sign in</a></p>
                 </div>
             </form>
         </div>

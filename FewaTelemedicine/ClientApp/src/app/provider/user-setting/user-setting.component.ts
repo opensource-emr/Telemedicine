@@ -168,6 +168,7 @@ export class UserSettingComponent implements OnInit {
       hospital_name: ['', [Validators.required]],
       //hospital_email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
       hospital_contact: ['', [Validators.required]],
+      // ,Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       hospital_logo: [''],
       hospital_description: new FormControl(" "),
       sender_email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
@@ -215,8 +216,8 @@ export class UserSettingComponent implements OnInit {
       hospital_description: practice.description,
       sender_email: practice.email,
       email_api_key: practice.emailApiKey,
-      email_name: practice.emailApiName,
-      calling_platform: practice.callingPlatform,
+      //email_name: practice.emailApiName,
+      //calling_platform: practice.callingPlatform,
       addContent: practice.emailAdditionalContent,
     })
   }
@@ -243,8 +244,8 @@ export class UserSettingComponent implements OnInit {
     //this.practiceObj.logoPath = v.hospital_logo;
     this.practiceObj.email = v.sender_email;
     this.practiceObj.emailApiKey = v.email_api_key;
-    this.practiceObj.emailApiName = v.email_name;
-    this.practiceObj.callingPlatform = v.calling_platform;
+    //this.practiceObj.emailApiName = v.email_name;
+    //this.practiceObj.callingPlatform = v.calling_platform;
   }
 
   getProviderFormvalue() {
@@ -439,7 +440,7 @@ export class UserSettingComponent implements OnInit {
     this.practiceObj.emailAdditionalContent = v.addContent;
     this.practiceObj.name=this.global.currentPractice;
     this.httpClient.
-      post<any>(this.global.practiceUrl + "PreviewEmailTemplate", this.practiceObj)
+      post<any>(this.global.practiceUrl + " ", this.practiceObj)
       .subscribe(res => {
         this.htmlBody = res.EmailHTMLBody;
         this.htmlBody = this.htmlBody.replace("' id='edit'>", "border: 1px dashed #990000 !important;'>[<b> Note: Content In This Box Is Editable.</b>]<br>");
