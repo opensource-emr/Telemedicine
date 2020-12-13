@@ -9,7 +9,6 @@ namespace FewaTelemedicine.Domain.Repositories
     public interface IProviderRepository
     {
         List<Provider> getProvidersList();
-        Provider getProviderByUserName(string username, string email = "");
-
+        Provider getProviderByUserName(string practiceName,string username, string email = "");
     }
 }

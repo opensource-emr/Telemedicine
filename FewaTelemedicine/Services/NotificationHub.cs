@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace FewaTelemedicine.Services
 {
@@ -106,9 +107,11 @@ namespace FewaTelemedicine.Services
         {
             return waitingroom.patients.Where(a => a.name == patName).FirstOrDefault();
         }
-        private Provider GetProviderByName(string providerName)
+        private Provider GetProviderByName(string providerName,string practiceUrl)
         {
-            return providers.Where(a => a.userName == providerName).FirstOrDefault();
+            
+            return providers.Where(a => a.userName == providerName&&a.practice==practiceUrl)
+                            .FirstOrDefault();
         }
 
         private Boolean IsProvider()
@@ -128,7 +131,7 @@ namespace FewaTelemedicine.Services
                 if (!(item.signalRConnectionId is null))
                 {
 
-                    this.Clients.Clients(GetProviderByName(item.userName)
+                    this.Clients.Clients(GetProviderByName(item.userName,item.practice)
                          .signalRConnectionId)
                              .GetAllPatients(json);
 
@@ -217,7 +220,7 @@ namespace FewaTelemedicine.Services
             if (IsProvider())
             {
                 var json = JsonConvert.SerializeObject(waitingroom.patients);
-                await this.Clients.Clients(GetProviderByName(Context.User.Identity.Name)
+                await this.Clients.Clients(GetProviderByName(Context.User.Identity.Name,Context.GetHttpContext().Session.GetString("practice"))
                         .signalRConnectionId)
                             .GetAllPatients(json);
             }
@@ -248,7 +251,7 @@ namespace FewaTelemedicine.Services
             else
             {
                 p.status = (int)TeleConstants.PatientCalled;
-                p.providerNameAttending = GetProviderByName(Context.User.Identity.Name).userName;
+                p.providerNameAttending = GetProviderByName(Context.User.Identity.Name, Context.GetHttpContext().Session.GetString("practice")).userName;
                 p.appointmentDate = DateTime.Now;
                 p.lastUpdated = DateTime.Now;
                 p.startTime = DateTime.Now;
@@ -257,7 +260,7 @@ namespace FewaTelemedicine.Services
                 SendUpdatedPatients();
                 await this.Clients.Clients(GetPatientbyName(obj.name).signalRConnectionId)
                     .CallPatient(patient);
-                await this.Clients.Clients(GetProviderByName(Context.User.Identity.Name).signalRConnectionId)
+                await this.Clients.Clients(GetProviderByName(Context.User.Identity.Name, Context.GetHttpContext().Session.GetString("practice")).signalRConnectionId)
                      .CallPatient(patient);
             }
         }
@@ -274,6 +277,7 @@ namespace FewaTelemedicine.Services
                 else
                 {
                     GetCurrentProviderCabin().patient = new Patient();
+                    p.practice = obj.practice;
                     p.status = (int)TeleConstants.PatientCompleted;
                     p.labOrdersSent = obj.labOrdersSent;
                     p.newPrescriptionsSentToYourPharmacy = obj.newPrescriptionsSentToYourPharmacy;
@@ -308,6 +312,7 @@ namespace FewaTelemedicine.Services
                 else
                 {
                     GetCurrentProviderCabin().patient = new Patient();
+                    p.practice = obj.practice;
                     p.status = (int)TeleConstants.PatientCompleted;
                     p.labOrdersSent = obj.labOrdersSent;
                     p.newPrescriptionsSentToYourPharmacy = obj.newPrescriptionsSentToYourPharmacy;
@@ -340,7 +345,7 @@ namespace FewaTelemedicine.Services
             if (!chatMessage.isProvider)
             {
                 //sender is patient
-                connId = GetProviderByName(chatMessage.receiver)?.signalRConnectionId;
+                connId = GetProviderByName(chatMessage.receiver, Context.GetHttpContext().Session.GetString("practice"))?.signalRConnectionId;
             }
             else
             {

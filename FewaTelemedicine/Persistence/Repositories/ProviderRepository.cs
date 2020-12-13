@@ -4,6 +4,7 @@ using FewaTelemedicine.Domain.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace FewaTelemedicine.Persistence.Repositories
@@ -22,16 +23,16 @@ namespace FewaTelemedicine.Persistence.Repositories
             return _context.providers.ToList();
         }
 
-        public Provider getProviderByUserName(string username)
+        public Provider getProviderByUserName(string username,string practice)
         {
-            return _context.providers.Where(d => d.userName == username).FirstOrDefault();
+            return _context.providers.Where(d => d.userName == username&&d.practice==practice).FirstOrDefault();
         }
-        public Provider getProviderByUserName(string username, string email = "")
+        public Provider getProviderByUserName(string practiceName, string username, string email = "")
         {
             if (string.IsNullOrEmpty(email))
-                return _context.providers.Where(d => d.userName == username).FirstOrDefault();
+                return _context.providers.Where(d => d.userName == username&&d.practice==practiceName).FirstOrDefault();
             else
-                return _context.providers.Where(a => a.userName == username || a.email == email).FirstOrDefault();
+                return _context.providers.Where(a =>( a.userName == username || a.email == email)&&a.practice==practiceName).FirstOrDefault();
         }
     }
 }
