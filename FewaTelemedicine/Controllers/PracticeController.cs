@@ -98,7 +98,7 @@ namespace FewaTelemedicine.Controllers
             {
                 if (!string.IsNullOrEmpty(practice))
                 {
-                    return Ok(FewaDbContext.practices.Where(a => a.url == practice).FirstOrDefault());
+                    return Ok(FewaDbContext.practices.Where(a => a.url.ToLower().Trim() == practice.ToLower().Trim()).FirstOrDefault());
                 }
                 List<Practice> result = FewaDbContext.practices.ToList();
                 return Ok(result);
@@ -184,7 +184,9 @@ namespace FewaTelemedicine.Controllers
                 DateTime endDateTime = DateTime.Today.AddDays(1).AddTicks(-1); //Today at 23:59:59
                 /* Display Today's Records */
                 attendedPatients = (from temp in FewaDbContext.patients
-                                    where (temp.appointmentDate >= startDateTime && temp.appointmentDate <= endDateTime)&&(temp.url==obj.url&&temp.practice==obj.practice)
+                                    where (temp.appointmentDate >=
+                                    startDateTime && temp.appointmentDate <= endDateTime)&&(temp.url.ToLower().Trim() == obj.url.ToLower().Trim() && 
+                                    temp.practice.ToLower().Trim() == obj.practice.ToLower().Trim())
                                     orderby temp.startTime descending
                                     select temp
                                    ).ToList<Patient>();
@@ -192,7 +194,7 @@ namespace FewaTelemedicine.Controllers
                 if (attendedPatients.Count <= 0)
                 {
                     attendedPatients = (from temp in FewaDbContext.patients
-                                        where(temp.url==obj.url&&temp.practice==obj.practice)
+                                        where(temp.url.ToLower().Trim() == obj.url.ToLower().Trim() && temp.practice.ToLower().Trim() == obj.practice.ToLower().Trim())
                                         orderby temp.startTime, temp.appointmentDate descending
                                         select temp
                                   ).OrderByDescending(a => a.startTime).Take(10).ToList<Patient>();
@@ -208,7 +210,7 @@ namespace FewaTelemedicine.Controllers
                                     temp.appointmentDate.Month.ToString().Contains(searchString) ||
                                     temp.appointmentDate.Date.ToString().Contains(searchString) ||
                                     temp.appointmentDate.Year.ToString().Contains(searchString))&&
-                                    (temp.url==obj.url&&temp.practice==obj.practice)
+                                    (temp.url.ToLower().Trim() == obj.url.ToLower().Trim() && temp.practice.ToLower().Trim() == obj.practice.ToLower().Trim())
                                     orderby temp.appointmentDate descending
                                     select temp).Take(10).AsEnumerable().ToList<Patient>();
             }
@@ -223,7 +225,7 @@ namespace FewaTelemedicine.Controllers
 
             var configuration = FewaDbContext.practices.ToList();
             var provider = (from temp in FewaDbContext.providers
-                            where temp.userName == username || temp.url == username
+                            where temp.userName.ToLower().Trim() == username.ToLower().Trim() || temp.url.ToLower().Trim() == username.ToLower().Trim()
                             select temp).FirstOrDefault();
             provider.roomName = provider.roomName.Replace("name", provider.userName);
             var data = new
@@ -464,7 +466,7 @@ namespace FewaTelemedicine.Controllers
                 var newEmailContent = list.emailAdditionalContent;
                 var oldEmailContent = FewaDbContext.practices.Select(a => a.emailAdditionalContent).FirstOrDefault();
                 var htmlContent = FewaDbContext.practices.Select(a => a.emailHtmlBody).FirstOrDefault();
-                htmlContent = htmlContent.Replace("{imageUrl}", list.serverName + list.logoPath);             
+                htmlContent = htmlContent.Replace("{imageUrl}", list.serverName + list.logoPath);
                 htmlContent = htmlContent.Replace("{join}", list.serverName + "/" + provider.practice + "/" + provider.url + "/#/patient/intro");
                 htmlContent = htmlContent.Replace("{serverName}", list.serverName);
                 htmlContent = htmlContent.Replace("providerNameTitle", provider.nameTitle);

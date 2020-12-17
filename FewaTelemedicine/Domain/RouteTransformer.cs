@@ -40,7 +40,7 @@ namespace FewaTelemedicine.Domain
 
             using (var context = new FewaDbContext(optionsBuilder.Options))
             {
-                var tp = context.practices.Where(a => a.url == practice).FirstOrDefault();
+                var tp = context.practices.Where(a => a.url.ToLower().Trim() == practice.ToLower().Trim()).FirstOrDefault();
                 if (tp != null)
                 {
                     if (provider == "admin")
@@ -51,7 +51,7 @@ namespace FewaTelemedicine.Domain
                     }
                     else
                     {
-                        var t = context.providers.Where(a => a.url == provider && a.practiceId == tp.practiceId).FirstOrDefault();
+                        var t = context.providers.Where(a => a.url.ToLower().Trim() == provider.ToLower().Trim() && a.practiceId == tp.practiceId).FirstOrDefault();
                         if (t != null)
                         {
                             values["controller"] = "Home";

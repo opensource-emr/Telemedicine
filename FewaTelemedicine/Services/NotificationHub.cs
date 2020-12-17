@@ -24,8 +24,10 @@ namespace FewaTelemedicine.Services
         private IHostingEnvironment _hostingEnvironment;
         [Obsolete]
         public NotificationHub(WaitingRoom _waitingroom,
-                                List<Provider> _providers,
-                                List<ProviderCabin> _providerCabins,
+          List<Provider> _providers,
+
+            List<ProviderCabin> _providerCabins,
+
                 IHostingEnvironment hostingEnvironment)
         {
             waitingroom = _waitingroom;
@@ -35,7 +37,7 @@ namespace FewaTelemedicine.Services
         }
 
         // This attaches user with Signalr connection id
-        private void AttachUser(string userName, string connectionId)
+        private void AttachUser(string userName, string practiceName, string connectionId)
         {
             var claims = Context.User.Claims;
             // Boolean isDoctor = true;
@@ -44,7 +46,7 @@ namespace FewaTelemedicine.Services
             {
                 foreach (var item in providers)
                 {
-                    if (item.userName == userName)
+                    if (item.userName == userName && item.practice==practiceName)
                     {
                         item.signalRConnectionId = connectionId;
                         return;
@@ -105,12 +107,12 @@ namespace FewaTelemedicine.Services
         }
         private Patient GetPatientbyName(string patName)
         {
-            return waitingroom.patients.Where(a => a.name == patName).FirstOrDefault();
+            return waitingroom.patients.Where(a => a.name.ToLower().Trim() == patName.ToLower().Trim()).FirstOrDefault();
         }
         private Provider GetProviderByName(string providerName,string practiceUrl)
         {
             
-            return providers.Where(a => a.userName == providerName&&a.practice==practiceUrl)
+            return providers.Where(a => a.userName.ToLower().Trim() == providerName.ToLower().Trim() && a.practice.ToLower().Trim()==practiceUrl.ToLower().Trim())
                             .FirstOrDefault();
         }
 
@@ -167,7 +169,8 @@ namespace FewaTelemedicine.Services
         ///
         public override Task OnConnectedAsync()
         {
-            AttachUser(Context.User.Identity.Name,
+            AttachUser(Context.User.Identity.Name, Context.GetHttpContext().Session.GetString("practice"),
+
                 Context.ConnectionId);
 
             // over here send message to all doctor that pateint has logged
@@ -251,7 +254,7 @@ namespace FewaTelemedicine.Services
             else
             {
                 p.status = (int)TeleConstants.PatientCalled;
-                p.providerNameAttending = GetProviderByName(Context.User.Identity.Name, Context.GetHttpContext().Session.GetString("practice")).userName;
+                p.providerNameAttending = GetProviderByName(Context.User.Identity.Name, obj.practice).userName;
                 p.appointmentDate = DateTime.Now;
                 p.lastUpdated = DateTime.Now;
                 p.startTime = DateTime.Now;
@@ -260,7 +263,7 @@ namespace FewaTelemedicine.Services
                 SendUpdatedPatients();
                 await this.Clients.Clients(GetPatientbyName(obj.name).signalRConnectionId)
                     .CallPatient(patient);
-                await this.Clients.Clients(GetProviderByName(Context.User.Identity.Name, Context.GetHttpContext().Session.GetString("practice")).signalRConnectionId)
+                await this.Clients.Clients(GetProviderByName(Context.User.Identity.Name, obj.practice).signalRConnectionId)
                      .CallPatient(patient);
             }
         }
