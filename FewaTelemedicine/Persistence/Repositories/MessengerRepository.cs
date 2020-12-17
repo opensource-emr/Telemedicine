@@ -39,12 +39,12 @@ namespace FewaTelemedicine.Persistence.Repositories
             {
                 var pra = accessor.HttpContext.Session.GetString("practice");
                 var username = accessor.HttpContext.Session.GetString("name");
-                Practice practice = FewaDbContext.practices.Where(a => a.url == pra).FirstOrDefault();
+                Practice practice = FewaDbContext.practices.Where(a => a.url.ToLower().Trim() == pra.ToLower().Trim()).FirstOrDefault();
                 if (practice == null)
                 {
                     return false;
                 }
-                var provider = _providerRepository.getProviderByUserName(practice.name,providerUserName);
+                var provider = _providerRepository.getProviderByUserName(practice.url,providerUserName);
                 if (provider == null)
                 {
                     return false;
@@ -59,7 +59,7 @@ namespace FewaTelemedicine.Persistence.Repositories
                 var to = new EmailAddress(receiverEmail);
                 var htmlContent = practice.emailHtmlBody;
                 htmlContent = htmlContent.Replace("{imageUrl}", practice.serverName + practice.logoPath);
-                htmlContent = htmlContent.Replace("{join}", practice.serverName + "/" + provider.practice + "/" + provider.url + "/#/patient/intro");
+                htmlContent = htmlContent.Replace("{join}", practice.serverName + "/" + provider.practice.ToLower().Trim() + "/" + provider.url.ToLower().Trim() + "/#/patient/intro");
                 htmlContent = htmlContent.Replace("providerNameTitle", provider.nameTitle);
                 if (string.IsNullOrEmpty(provider.name))
                     htmlContent = htmlContent.Replace("providerName", provider.userName);
@@ -124,7 +124,7 @@ namespace FewaTelemedicine.Persistence.Repositories
                 {
                     return false;
                 }
-                Practice practice = FewaDbContext.practices.Where(a => a.url == provider.practice).FirstOrDefault();
+                Practice practice = FewaDbContext.practices.Where(a => a.url.ToLower().Trim() == provider.practice.ToLower().Trim()).FirstOrDefault();
                 if (practice == null)
                 {
                     return false;
@@ -213,7 +213,7 @@ namespace FewaTelemedicine.Persistence.Repositories
             var bResponse = false;
             try
             {
-                Practice practice = FewaDbContext.practices.Where(a => a.email == receiverEmail || a.name == practiceName || a.url == practiceName.ToLower().Trim()).FirstOrDefault();
+                Practice practice = FewaDbContext.practices.Where(a => a.email == receiverEmail || a.name == practiceName.ToLower().Trim() || a.url.ToLower().Trim() == practiceName.ToLower().Trim()).FirstOrDefault();
                 if (practice != null)
                 {
                     return false;
@@ -265,7 +265,7 @@ namespace FewaTelemedicine.Persistence.Repositories
                                  "       </tr>  " +
                                  "  </table>  ";
                 var emailSubject = "Email verification for new practice";
-                Practice pra = FewaDbContext.practices.Where(a => a.url == "practice").FirstOrDefault();
+                Practice pra = FewaDbContext.practices.Where(a => a.url.ToLower().Trim() == "practice").FirstOrDefault();
                 if (pra == null)
                 {
                     return false;
@@ -292,12 +292,12 @@ namespace FewaTelemedicine.Persistence.Repositories
             var bResponse = false;
             try
             {
-                Provider provider = FewaDbContext.providers.Where(a => a.url == patient.url).FirstOrDefault();
+                Provider provider = FewaDbContext.providers.Where(a => a.url.ToLower().Trim() == patient.url.ToLower().Trim()).FirstOrDefault();
                 if (provider == null)
                 {
                     return false;
                 }
-                Practice practice = FewaDbContext.practices.Where(a => a.url == provider.practice).FirstOrDefault();
+                Practice practice = FewaDbContext.practices.Where(a => a.url.ToLower().Trim() == provider.practice.ToLower().Trim()).FirstOrDefault();
                 if (practice == null)
                 {
                     return false;

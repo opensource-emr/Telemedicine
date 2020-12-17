@@ -145,17 +145,13 @@ export class LiveVideoComponent implements OnInit {
     this.isMeetStart = false;
     this.patient.url = this.global.providerObj.url;
     this.patient.endTime = new Date();
-    this.global.patientObj = this.patient;
-    this.patient.practice=this.global.currentPractice;
-    this.notificationService.CallEnds(this.patient);
-    var v: Patient = this.reportForm.getRawValue();
+    this.patient.practice = this.global.currentPractice;
     this.patient.advice = new Array<ProviderAdvice>();
     for (let temp of this.providerAdvice) {
-            this.patient.advice.push(temp);
-     }    
-    // this.patient.labOrdersSent = v.labOrdersSent;
-    // this.patient.newPrescriptionsSentToYourPharmacy = v.newPrescriptionsSentToYourPharmacy;
-    // this.patient.newPrescriptionsMailedToYou = v.newPrescriptionsMailedToYou;
+      this.patient.advice.push(temp);
+    }
+    
+    var v: Patient = this.reportForm.getRawValue();
     this.patient.medication = v.medication;
     this.patient.followUpNumber = v.followUpNumber.toString();
     this.patient.followUpMeasure = v.followUpMeasure != "" ? v.followUpMeasure
@@ -163,8 +159,13 @@ export class LiveVideoComponent implements OnInit {
     if (this.patient.mobileNumber) {
       this.patient.mobileNumber = this.patient.mobileNumber.toString();
     }
-    this.global.patientObj = this.patient;
-    this.notificationService.PatientAttended(this.patient);
-    this.router.navigate(['/provider/dashboard']);
+    this.httpClient.post<any>(this.global.practiceUrl + "PatientAttended", this.patient).subscribe(res => {
+      if (res) {
+        this.notificationService.CallEnds(this.patient);
+        this.notificationService.PatientAttended(this.patient);
+        this.global.patientObj = this.patient;
+        this.router.navigate(['/provider/dashboard']);
+      }
+    });
   }
 }

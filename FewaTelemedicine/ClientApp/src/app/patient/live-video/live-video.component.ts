@@ -73,7 +73,7 @@ export class LiveVideoComponent implements OnInit, AfterViewInit {
 
     this.notificationService.EventGetAllProviders.subscribe(_providers => {
       //get current provider
-      this.providerObj = _providers.find(p => p.url == this.global.currentProvider && p.practice == this.global.currentPractice);
+      this.providerObj = _providers.find(p => p.url == this.global.currentProvider && p.practice.toLowerCase() == this.global.currentPractice);
     });
 
     this.notificationService.EventConnectionEstablished.subscribe(() => {

@@ -428,7 +428,7 @@ export class UserSettingComponent implements OnInit {
         this.htmlBody = res.EmailHTMLBody;
         this.htmlBody = this.htmlBody.replace("EmailAdditionalContent", res.PreviewEmailContent);
         this.htmlBody = this.htmlBody.replace("border: 1px dashed #990000 !important;'>[<b> Note: Content In This Box Is Editable.</b>]<br>", "' id='edit'");
-        this.practiceObj.emailHtmlBody = res.EmailHTMLBody;
+        //this.practiceObj.emailHtmlBody = res.EmailHTMLBody;
       },
         err => { console.log(err); });
   }
@@ -444,7 +444,7 @@ export class UserSettingComponent implements OnInit {
       .subscribe(res => {
         this.htmlBody = res.EmailHTMLBody;
         this.htmlBody = this.htmlBody.replace("' id='edit'>", "border: 1px dashed #990000 !important;'>[<b> Note: Content In This Box Is Editable.</b>]<br>");
-        this.practiceObj.emailHtmlBody = res.EmailHTMLBody;
+       // this.practiceObj.emailHtmlBody = res.EmailHTMLBody;
       },
         err => { console.log(err); });
   }

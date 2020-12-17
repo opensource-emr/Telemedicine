@@ -65,8 +65,8 @@ namespace FewaTelemedicine.Controllers
                 {
                     return BadRequest();
                 }
-                var pro = _providerRepository.getProviderByUserName(provider.practice,provider.userName);
-             
+                var pro = _providerRepository.getProviderByUserName(provider.practice, provider.userName);
+
                 if (pro == null)
                 {
                     return Unauthorized();
@@ -90,6 +90,7 @@ namespace FewaTelemedicine.Controllers
                     var data = new
                     {
                         User = pro,
+
                         Token = token
                     };
                     return Ok(data);
@@ -106,16 +107,16 @@ namespace FewaTelemedicine.Controllers
         {
             foreach (var item in _providerCabins)
             {
-                if (item.provider.userName == provider.userName&&item.provider.practice==provider.practice)
+                if (item.provider.userName == provider.userName && item.provider.practice == provider.practice)
                 {
                     _providerCabins.Remove(item);
                     _providerCabins.Add(new ProviderCabin()
-                    { provider = provider});
+                    { provider = provider });
                     return;
                 }
             }
             _providerCabins.Add(new ProviderCabin()
-            { provider = provider});
+            { provider = provider });
 
         }
         [HttpPost("VerifyOTP")]
@@ -221,7 +222,7 @@ namespace FewaTelemedicine.Controllers
                     /// to add new practice 
 
                     Practice newPractice = new Practice();
-                    newPractice.practiceId = FewaDbContext.practices.Max(a => a.practiceId)+1;
+                    newPractice.practiceId = FewaDbContext.practices.Max(a => a.practiceId) + 1;
                     newPractice.name = obj.name;
                     newPractice.email = obj.email;
                     newPractice.emailHtmlBody = FewaDbContext._emailHtmlBody;
@@ -234,9 +235,9 @@ namespace FewaTelemedicine.Controllers
                     newPractice.url = obj.name.ToLower().Trim();
                     FewaDbContext.practices.Add(newPractice);
                     FewaDbContext.SaveChanges();
-                    
+
                     /// to add new provider
-        
+
                     Provider provider = new Provider();
                     provider.userName = "admin";
                     provider.password = Cipher.Encrypt(provider.userName, provider.userName);
@@ -248,8 +249,13 @@ namespace FewaTelemedicine.Controllers
                     provider.providerId = FewaDbContext.providers.Max(a => a.providerId) + 1;
                     FewaDbContext.providers.Add(provider);
                     FewaDbContext.SaveChanges();
+                    _providers.Clear();
+                    foreach (var a in FewaDbContext.providers.ToList<Provider>())
+                    {
+                        _providers.Add(a);
 
-                    return Ok(new { message = "Account created successfully! Please login with username:admin and password:admin",practice= newPractice, provider= provider });
+                    }
+                    return Ok(new { message = "Account created successfully! Please login with username:admin and password:admin", practice = newPractice, provider = provider });
                 }
                 else
                 {
@@ -273,17 +279,23 @@ namespace FewaTelemedicine.Controllers
                 {
                     return StatusCode(500);
                 }
-                obj.providerId= FewaDbContext.providers.Max(a => a.providerId) + 1;
+                obj.providerId = FewaDbContext.providers.Max(a => a.providerId) + 1;
                 obj.password = Cipher.Encrypt(obj.userName, obj.userName);
                 obj.roomName = Guid.NewGuid().ToString() + "-" + "name";
                 obj.practiceId = (from practice in FewaDbContext.practices
-                                  where obj.practice == practice.url
+                                  where obj.practice.ToLower().Trim() == practice.url.ToLower().Trim()
                                   select practice.practiceId).FirstOrDefault();
                 FewaDbContext.providers.Add(obj);
                 FewaDbContext.SaveChanges();
+                _providers.Clear();
+                foreach (var a in FewaDbContext.providers.ToList<Provider>()) //fetch new provider 
+                {
+                    _providers.Add(a);
+
+                }
                 return Ok(1);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest("Please try again");
             }
