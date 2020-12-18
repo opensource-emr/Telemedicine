@@ -92,7 +92,7 @@ namespace FewaTelemedicine.Controllers
         {
             return View();
         }
-        public IActionResult GetPracticeConfiguration(string practice)
+        public IActionResult GetPracticeConfiguration(string practice) 
         {
             try
             {
