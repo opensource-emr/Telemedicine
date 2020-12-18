@@ -223,7 +223,7 @@ namespace FewaTelemedicine.Controllers
 
                     Practice newPractice = new Practice();
                     newPractice.practiceId = FewaDbContext.practices.Max(a => a.practiceId) + 1;
-                    newPractice.name = obj.name;
+                    newPractice.name = obj.name; 
                     newPractice.email = obj.email;
                     newPractice.emailHtmlBody = FewaDbContext._emailHtmlBody;
                     newPractice.description = FewaDbContext._description;
@@ -232,7 +232,7 @@ namespace FewaTelemedicine.Controllers
                     newPractice.emailAdditionalContent = "EmailAdditionalContent";
                     newPractice.callingPlatform = "Jitsi";
                     newPractice.logoPath = "/img/logo.png";
-                    newPractice.url = obj.name.ToLower().Trim();
+                    newPractice.url = obj.name; 
                     FewaDbContext.practices.Add(newPractice);
                     FewaDbContext.SaveChanges();
 
@@ -240,11 +240,11 @@ namespace FewaTelemedicine.Controllers
 
                     Provider provider = new Provider();
                     provider.userName = "admin";
-                    provider.password = Cipher.Encrypt(provider.userName, provider.userName);
+                    provider.password = "admin";
+                    provider.password = Cipher.Encrypt(provider.password, provider.userName);
                     provider.roomName = Guid.NewGuid().ToString() + "-" + "name";
-                    provider.practice = obj.name;
-                    provider.url = provider.userName;
-                    ///provider.practice = newPractice.url;
+                    provider.practice = obj.name; 
+                    provider.url = provider.userName; 
                     provider.practiceId = newPractice.practiceId;
                     provider.providerId = FewaDbContext.providers.Max(a => a.providerId) + 1;
                     FewaDbContext.providers.Add(provider);
@@ -280,7 +280,7 @@ namespace FewaTelemedicine.Controllers
                     return StatusCode(500);
                 }
                 obj.providerId = FewaDbContext.providers.Max(a => a.providerId) + 1;
-                obj.password = Cipher.Encrypt(obj.userName, obj.userName);
+                obj.password = Cipher.Encrypt(obj.password, obj.userName);
                 obj.roomName = Guid.NewGuid().ToString() + "-" + "name";
                 obj.practiceId = (from practice in FewaDbContext.practices
                                   where obj.practice.ToLower().Trim() == practice.url.ToLower().Trim()
@@ -328,7 +328,7 @@ namespace FewaTelemedicine.Controllers
         /// <param name="plainText"> Text to be encrypt</param>
         /// <param name="password"> Key to encrypt text</param>
         /// <returns> Encrypted text</returns>
-        public static string Encrypt(string plainText, string password)
+        public static string Encrypt(string plainText, string password) //password,key:username
         {
             if (plainText == null)
             {
@@ -352,7 +352,7 @@ namespace FewaTelemedicine.Controllers
             return Convert.ToBase64String(bytesEncrypted);
         }
 
-        public static string Decrypt(string encryptedText, string password)
+        public static string Decrypt(string encryptedText, string password) //encryptedpass,key:username
         {
             if (encryptedText == null)
             {
