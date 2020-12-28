@@ -7,10 +7,12 @@ import { Global } from 'src/app/_helpers/common/global.model';
   styleUrls: ['./sidemenu.component.scss']
 })
 export class SidemenuComponent implements OnInit {
-
+  adminFlag: boolean = false;
   constructor(public global: Global) { }
 
   ngOnInit(): void {
+    if (this.global.providerObj.userName == "admin") {
+      this.adminFlag = true;
+    }
   }
-
 }

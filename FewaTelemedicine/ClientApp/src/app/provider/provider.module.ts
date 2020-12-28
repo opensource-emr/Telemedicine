@@ -23,7 +23,7 @@ import { SharedModule } from '../_helpers/shared.module';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import {ClipboardModule} from '@angular/cdk/clipboard';
 import {MatTooltipModule} from '@angular/material/tooltip';
-
+import { AdminSettingComponent} from './admin-setting/admin-setting.component';
 
 
 @NgModule({
@@ -42,6 +42,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     SidemenuComponent,
     //VideoConferenceComponent,
     //ProviderReportComponent
+    AdminSettingComponent,
   ],
   imports: [
     CommonModule,

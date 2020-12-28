@@ -151,5 +151,6 @@ namespace FewaTelemedicine.Domain.Models
         public string? inputType { get; set; }
         public bool isChecked { get; set; }
         public int providerId { get; set; }
+        public int practiceId { get; set; }
     }
 }

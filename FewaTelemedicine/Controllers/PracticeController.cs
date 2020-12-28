@@ -503,12 +503,13 @@ namespace FewaTelemedicine.Controllers
             }
         }
 
-        public IActionResult GetAllAdvice()
+        public IActionResult GetAllAdvice([FromBody] Provider obj)
         {
             try
             {
-                List<ProviderAdvice> getAllAdvice = FewaDbContext.advice.ToList();
-                if (getAllAdvice.Count > 0)
+                List<ProviderAdvice> getAllAdvice = FewaDbContext.advice.Where(a => a.practiceId == obj.practiceId 
+                                                    && a.providerId == obj.providerId).ToList(); 
+                if (getAllAdvice.Count > 0 )
                 {
                     return Ok(getAllAdvice);
                 }
@@ -590,6 +591,22 @@ namespace FewaTelemedicine.Controllers
               signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+        public IActionResult GetAllProvider(string practice)
+        {
+            try
+            {
+                List<Provider> getAllProvider = FewaDbContext.providers.Where(a => a.practice == practice).ToList();
+                if (getAllProvider.Count > 0)
+                {
+                    return Ok(getAllProvider);
+                }
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return Ok("Error In Retrieving Records" + ex.Message);
+            }
         }
     }
 }

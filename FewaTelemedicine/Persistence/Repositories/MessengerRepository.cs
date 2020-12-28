@@ -44,7 +44,7 @@ namespace FewaTelemedicine.Persistence.Repositories
                 {
                     return false;
                 }
-                var provider = _providerRepository.getProviderByUserName(practice.url,providerUserName);
+                var provider = _providerRepository.getProviderByUserName(practice.url, providerUserName);
                 if (provider == null)
                 {
                     return false;
@@ -54,8 +54,13 @@ namespace FewaTelemedicine.Persistence.Repositories
                     practice.serverName = hostname;
                 }
                 //var TodaysDate =DateTime.Now.ToString("MM-dd-yyyy HH:mm:ss");
-                var client = new SendGridClient(practice.emailApiKey);
-                var from = new EmailAddress(practice.email);
+                Practice prac = FewaDbContext.practices.Where(a => a.url.ToLower().Trim() == "practice").FirstOrDefault();
+                if (prac == null)
+                {
+                    return false;
+                }
+                var client = new SendGridClient(prac.emailApiKey);
+                var from = new EmailAddress(prac.email);
                 var to = new EmailAddress(receiverEmail);
                 var htmlContent = practice.emailHtmlBody;
                 htmlContent = htmlContent.Replace("{imageUrl}", practice.serverName + practice.logoPath);
@@ -80,6 +85,7 @@ namespace FewaTelemedicine.Persistence.Repositories
                 var res = await client.SendEmailAsync(msg);
                 if (res.StatusCode == System.Net.HttpStatusCode.OK || res.StatusCode == System.Net.HttpStatusCode.Accepted)
                 {
+
                     bResponse = true;
                 }
             }
@@ -191,8 +197,13 @@ namespace FewaTelemedicine.Persistence.Repositories
                                  "       </tr>  " +
                                  "  </table>  ";
                 practice.emailSubject = "Password verification";
-                var client = new SendGridClient(practice.emailApiKey);
-                var from = new EmailAddress(practice.email);
+                Practice pra = FewaDbContext.practices.Where(a => a.url.ToLower().Trim() == "practice").FirstOrDefault();
+                if (pra == null)
+                {
+                    return false;
+                }
+                var client = new SendGridClient(pra.emailApiKey);
+                var from = new EmailAddress(pra.email);
                 var to = new EmailAddress(provider.email);
 
                 var msg = MailHelper.CreateSingleEmail(from, to, practice.emailSubject, practice.emailPlainBody, htmlContent);
@@ -308,16 +319,21 @@ namespace FewaTelemedicine.Persistence.Repositories
                     practice.serverName = hostname;
                 }
                 var adviceList = "";
-                var client = new SendGridClient(practice.emailApiKey);
-                var from = new EmailAddress(practice.email);
-                var to = new EmailAddress(patient.email);                
+                Practice pra = FewaDbContext.practices.Where(a => a.url.ToLower().Trim() == "practice").FirstOrDefault();
+                if (pra == null)
+                {
+                    return false;
+                }
+                var client = new SendGridClient(pra.emailApiKey);
+                var from = new EmailAddress(pra.email);
+                var to = new EmailAddress(patient.email);
                 List<ProviderAdvice> getAllAdvice = patient.advice.ToList();
-                for(var i= 0; i < getAllAdvice.Count; i++)
-                {                    
+                for (var i = 0; i < getAllAdvice.Count; i++)
+                {
                     var value = getAllAdvice[i].isChecked == true ? "Yes" : "No";
                     var adv = getAllAdvice.ElementAt(i).advice;
                     adviceList += "<tr><td align='left' valign='top' style = 'font-family:\"Open Sans\", Arial, sans-serif; font-size:14px; line-height:22px; color:#666;padding-bottom:12px;'>" +
-                                  "<b style='color:#000;'>" + adv + ":</b>&nbsp;" + value + "</td></tr>";          
+                                  "<b style='color:#000;'>" + adv + ":</b>&nbsp;" + value + "</td></tr>";
                 }
                 //var labOrdersSent = patient.labOrdersSent == true ? "Yes" : "No";
                 //var newPrescriptionsSentToYourPharmacy = patient.newPrescriptionsSentToYourPharmacy == true ? "Yes" : "No";

@@ -1,12 +1,13 @@
-import { Component, OnInit, ChangeDetectorRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, AfterViewInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { NotificationService } from 'src/app/_helpers/common/notification.service';
 import { Global } from 'src/app/_helpers/common/global.model';
-import { Provider, Patient } from 'src/app/_helpers/models/domain-model';
+import { Provider, Patient, Practice } from 'src/app/_helpers/models/domain-model';
 import { ChatModel, MessageModel } from 'src/app/_helpers/models/chat.model';
 import { DomSanitizer } from '@angular/platform-browser';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-chat',
@@ -22,13 +23,24 @@ export class ChatComponent implements OnInit, AfterViewInit {
   disableSendButton: boolean = true;
   filteredPatients: Array<ChatModel> = [];
   searchPatient: string = "";
+  hideChatSection :boolean = false;
+  public completedPatients: Array<Patient> = null;
+  public filteredCompletedPatients: Array<Patient> = [];
+  patientObj: Patient = new Patient();
+  practiceObj: Practice = new Practice();
+  public showPatDetail: boolean = false;
+  searchText: string = "";
+  @ViewChild('pcam') video: any;
+  Video: any;
+  tokbox: string = 'Tokbox';
   constructor(private notificationService: NotificationService,
     private fb: FormBuilder,
     private cdr: ChangeDetectorRef,
     public global: Global,
     private sanitizer: DomSanitizer,
     private httpClient: HttpClient,
-    private _snackBar: MatSnackBar) {
+    private _snackBar: MatSnackBar,
+    private routing: Router,) {
     this.initForm();
     this.initialize();
 
@@ -98,11 +110,43 @@ export class ChatComponent implements OnInit, AfterViewInit {
   }
 
   onChatUserChange(currentUser) {
+    this.hideChatSection = true;
     this.currentChatUser = currentUser;
     this.disableSendButton = false;
     this.scrollToBottom();
   }
 
+  loadPatientsAttended() {
+    this.completedPatients = [];
+    this.httpClient.get<any>(this.global.practiceUrl + "GetPatientsAttended?provider="
+                            +this.global.providerObj.url+"&searchString="+this.searchText)
+                    .subscribe(res => this.loadPatientSuccess(res), err => this.error(err));
+  }
+
+  loadPatientSuccess(res) {
+    this.filteredCompletedPatients = res;
+    this.cdr.detectChanges();
+  }
+  error(err) {
+    alert(err.status);
+  } 
+  callPatient(currentChatUser){
+    if (this.patientObj.status == 1) {
+      this.patientObj = new Patient();
+    }
+    this.showPatDetail = true;
+    let dateTime = new Date();
+    this.patientObj.appointmentDate = dateTime;
+    this.patientObj.name = currentChatUser.user;
+    this.patientObj.practice = this.global.currentPractice;
+    this.notificationService.CallPatientChat(this.patientObj);
+
+    if (this.practiceObj.callingPlatform == this.tokbox) {
+      this.routing.navigate(['/provider/live'], { state: this.global });
+    }
+    else
+      this.routing.navigate(['/provider/live']);
+  }
   sendChatMsg() {
     try {
       if (this.chatForm.invalid) {
