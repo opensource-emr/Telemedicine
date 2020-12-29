@@ -117,11 +117,17 @@ namespace FewaTelemedicine.Controllers
                 return StatusCode(500, "Patient already logged in");
             }
             HttpContext.Session.SetString("practice",obj.practice);
+            var provider = (from temp in FewaDbContext.providers
+                            where temp.url == obj.providerNameAttending 
+                               && temp.practice==obj.practice
+                            select temp).FirstOrDefault();
             obj.lastUpdated = DateTime.Now;
+            obj.providerId = provider.providerId;
+            obj.practiceId = provider.practiceId;
             _waitingroom.patients.Add(obj);
 
 
-            var token = GenerateJSONWebToken(obj.name, "Patient");
+            var token = GenerateJSONWebToken(obj.name, "Patient",obj.providerId,obj.practiceId);
             var result = new
             {
                 User = obj,
@@ -185,8 +191,8 @@ namespace FewaTelemedicine.Controllers
                 /* Display Today's Records */
                 attendedPatients = (from temp in FewaDbContext.patients
                                     where (temp.appointmentDate >=
-                                    startDateTime && temp.appointmentDate <= endDateTime)&&(temp.url.ToLower().Trim() == obj.url.ToLower().Trim() && 
-                                    temp.practice.ToLower().Trim() == obj.practice.ToLower().Trim())
+                                    startDateTime && temp.appointmentDate <= endDateTime)&&(temp.providerId == obj.providerId&& 
+                                   temp.practiceId==obj.practiceId)
                                     orderby temp.startTime descending
                                     select temp
                                    ).ToList<Patient>();
@@ -194,7 +200,7 @@ namespace FewaTelemedicine.Controllers
                 if (attendedPatients.Count <= 0)
                 {
                     attendedPatients = (from temp in FewaDbContext.patients
-                                        where(temp.url.ToLower().Trim() == obj.url.ToLower().Trim() && temp.practice.ToLower().Trim() == obj.practice.ToLower().Trim())
+                                        where(temp.providerId== obj.providerId&& temp.practiceId == obj.practiceId)
                                         orderby temp.startTime, temp.appointmentDate descending
                                         select temp
                                   ).OrderByDescending(a => a.startTime).Take(10).ToList<Patient>();
@@ -210,7 +216,7 @@ namespace FewaTelemedicine.Controllers
                                     temp.appointmentDate.Month.ToString().Contains(searchString) ||
                                     temp.appointmentDate.Date.ToString().Contains(searchString) ||
                                     temp.appointmentDate.Year.ToString().Contains(searchString))&&
-                                    (temp.url.ToLower().Trim() == obj.url.ToLower().Trim() && temp.practice.ToLower().Trim() == obj.practice.ToLower().Trim())
+                                    (temp.providerId == obj.providerId && temp.practiceId == obj.practiceId)
                                     orderby temp.appointmentDate descending
                                     select temp).Take(10).AsEnumerable().ToList<Patient>();
             }
@@ -574,13 +580,15 @@ namespace FewaTelemedicine.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        private string GenerateJSONWebToken(string username, string usertype)
+        private string GenerateJSONWebToken(string username, string usertype,int providerId,int practiceId)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var claims = new[] {
                 new Claim("Issuer", _config["Jwt:Issuer"]),
                 new Claim("UserType",usertype),
+                new Claim("ProviderId",providerId.ToString()),
+                new Claim("PracticeId",practiceId.ToString()),
                 new Claim(JwtRegisteredClaimNames.UniqueName, username)
             };
 

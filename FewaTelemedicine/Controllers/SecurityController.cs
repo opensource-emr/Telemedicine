@@ -85,7 +85,7 @@ namespace FewaTelemedicine.Controllers
                 {
                     HttpContext.Session.SetString("name", pro.userName);
                     HttpContext.Session.SetString("practice", pro.practice);
-                    var token = GenerateJSONWebToken(pro.userName, "provider");
+                    var token = GenerateJSONWebToken(pro.userName, "provider",pro.providerId,pro.practiceId);
                     AddProviderCabin(pro);
                     var data = new
                     {
@@ -301,13 +301,15 @@ namespace FewaTelemedicine.Controllers
             }
         }
 
-        private string GenerateJSONWebToken(string username, string usertype)
+        private string GenerateJSONWebToken(string username, string usertype,int providerId,int practiceId)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var claims = new[] {
                 new Claim("Issuer", _config["Jwt:Issuer"]),
                 new Claim("UserType",usertype),
+                new Claim("ProviderId",providerId.ToString()),
+                new Claim("PracticeId",practiceId.ToString()),
                 new Claim(JwtRegisteredClaimNames.UniqueName, username)
             };
 

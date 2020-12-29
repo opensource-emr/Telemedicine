@@ -17,6 +17,7 @@ export class RegisterComponent implements OnInit {
   verifyOtpSection: boolean = false;
   resendOtpButton: boolean = true;
   countDownTime: number = 30;
+  clicked: boolean = false;
 
   constructor(public global: Global,
     private fb: FormBuilder,
@@ -51,8 +52,9 @@ export class RegisterComponent implements OnInit {
     if (this.form.get("email").invalid && this.form.get("name").invalid) {
       return;
     }
-    this.practiceObj.name = this.form.value.name;
+    this.practiceObj.name = this.form.value.name.replace(/\s/g, "").toLowerCase();
     this.practiceObj.email = this.form.value.email;
+    this.clicked=true;
     var observable = this.httpClient.post("/Messenger/SendRegistrationOTP"
       , this.practiceObj);
     observable.subscribe(res => this.successObserver(res),
@@ -76,6 +78,7 @@ export class RegisterComponent implements OnInit {
       res => this.errorObserver(res));
   }
   successObserver(res) {
+    this.clicked=false;
     if (res) {
       this.sendOtpSection = false;
       this.verifyOtpSection = true;
@@ -98,7 +101,7 @@ export class RegisterComponent implements OnInit {
     }
   }
   errorObserver(res) {
-
+    this.clicked=false;
   }
   get formControls() {
     return this.form.controls;

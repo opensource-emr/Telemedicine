@@ -37,16 +37,18 @@ namespace FewaTelemedicine.Services
         }
 
         // This attaches user with Signalr connection id
-        private void AttachUser(string userName, string practiceName, string connectionId)
+        private void AttachUser(string userName, string connectionId)
         {
             var claims = Context.User.Claims;
+            string practiceId = claims.FirstOrDefault(c => c.Type == "PracticeId")?.Value; //get practiceId from Jwtclaims
+            string providerId = claims.FirstOrDefault(c => c.Type == "ProviderId")?.Value; //get providerId from Jwtclaim
             // Boolean isDoctor = true;
 
             if (IsProvider())
             {
                 foreach (var item in providers)
                 {
-                    if (item.userName == userName && item.practice==practiceName)
+                    if (item.userName == userName &&item.providerId==int.Parse(providerId)&&item.practiceId==int.Parse(practiceId))
                     {
                         item.signalRConnectionId = connectionId;
                         return;
@@ -109,10 +111,9 @@ namespace FewaTelemedicine.Services
         {
             return waitingroom.patients.Where(a => a.name.ToLower().Trim() == patName.ToLower().Trim()).FirstOrDefault();
         }
-        private Provider GetProviderByName(string providerName,string practiceUrl)
-        {
-            
-            return providers.Where(a => a.userName.ToLower().Trim() == providerName.ToLower().Trim() && a.practice.ToLower().Trim()==practiceUrl.ToLower().Trim())
+        private Provider GetProviderByName(string userName,int providerId,int practiceId)
+        {  
+            return providers.Where(a => a.userName== userName && a.providerId==providerId&&a.practiceId==practiceId)
                             .FirstOrDefault();
         }
 
@@ -126,14 +127,15 @@ namespace FewaTelemedicine.Services
 
         private void SendUpdatedPatients()
         {
-            var json = JsonConvert.SerializeObject(waitingroom.patients);
-
             foreach (var item in providers)
             {
                 if (!(item.signalRConnectionId is null))
                 {
-
-                    this.Clients.Clients(GetProviderByName(item.userName,item.practice)
+         
+                    var json = JsonConvert.SerializeObject(waitingroom.patients
+                                        .Where(a => a.providerId ==item.providerId
+                                            && a.practiceId == item.practiceId));
+                    this.Clients.Clients(GetProviderByName(item.userName,item.providerId,item.practiceId)
                          .signalRConnectionId)
                              .GetAllPatients(json);
 
@@ -169,8 +171,7 @@ namespace FewaTelemedicine.Services
         ///
         public override Task OnConnectedAsync()
         {
-            AttachUser(Context.User.Identity.Name, Context.GetHttpContext().Session.GetString("practice"),
-
+            AttachUser(Context.User.Identity.Name,
                 Context.ConnectionId);
 
             // over here send message to all doctor that pateint has logged
@@ -222,8 +223,14 @@ namespace FewaTelemedicine.Services
             // Only doctors can see patients and not patients
             if (IsProvider())
             {
-                var json = JsonConvert.SerializeObject(waitingroom.patients);
-                await this.Clients.Clients(GetProviderByName(Context.User.Identity.Name,Context.GetHttpContext().Session.GetString("practice"))
+               
+            var claims = Context.User.Claims;
+            string practiceId = claims.FirstOrDefault(c => c.Type == "PracticeId")?.Value; //get practiceId from Jwtclaims
+            string providerId = claims.FirstOrDefault(c => c.Type == "ProviderId")?.Value; //get providerId from Jwtclaim
+            var json = JsonConvert.SerializeObject(waitingroom.patients
+                                .Where(a => a.providerId == int.Parse(providerId)
+                                    && a.practiceId == int.Parse(practiceId)));
+                await this.Clients.Clients(GetProviderByName(Context.User.Identity.Name,int.Parse(providerId),int.Parse(practiceId))
                         .signalRConnectionId)
                             .GetAllPatients(json);
             }
@@ -254,7 +261,7 @@ namespace FewaTelemedicine.Services
             else
             {
                 p.status = (int)TeleConstants.PatientCalled;
-                p.providerNameAttending = GetProviderByName(Context.User.Identity.Name, obj.practice).userName;
+                p.providerNameAttending = GetProviderByName(Context.User.Identity.Name, obj.providerId,obj.practiceId).userName;
                 p.appointmentDate = DateTime.Now;
                 p.lastUpdated = DateTime.Now;
                 p.startTime = DateTime.Now;
@@ -263,7 +270,7 @@ namespace FewaTelemedicine.Services
                 SendUpdatedPatients();
                 await this.Clients.Clients(GetPatientbyName(obj.name).signalRConnectionId)
                     .CallPatient(patient);
-                await this.Clients.Clients(GetProviderByName(Context.User.Identity.Name, obj.practice).signalRConnectionId)
+                await this.Clients.Clients(GetProviderByName(Context.User.Identity.Name, obj.providerId,obj.practiceId).signalRConnectionId)
                      .CallPatient(patient);
             }
         }
@@ -345,10 +352,13 @@ namespace FewaTelemedicine.Services
         public async Task SendChatMessage(ChatMessage chatMessage)
         {
             string connId = "";
+            var claims = Context.User.Claims;
+            string practiceId = claims.FirstOrDefault(c => c.Type == "PracticeId")?.Value; //get practiceId from Jwtclaims
+            string providerId = claims.FirstOrDefault(c => c.Type == "ProviderId")?.Value; //get providerId from Jwtclaim
             if (!chatMessage.isProvider)
             {
                 //sender is patient
-                connId = GetProviderByName(chatMessage.receiver, Context.GetHttpContext().Session.GetString("practice"))?.signalRConnectionId;
+                connId = GetProviderByName(chatMessage.receiver,int.Parse(providerId),int.Parse(practiceId))?.signalRConnectionId;
             }
             else
             {
