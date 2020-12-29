@@ -186,6 +186,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.patientObj.appointmentDate = dateTime;
     this.patientObj.name = callPatient.name;
     this.patientObj.practice = this.global.currentPractice;
+    this.patientObj.providerId=this.global.providerObj.providerId;
+    this.patientObj.practiceId=this.global.providerObj.practiceId;
     this.notificationService.CallPatient(callPatient);
 
     if (this.practiceObj.callingPlatform == this.tokbox) {

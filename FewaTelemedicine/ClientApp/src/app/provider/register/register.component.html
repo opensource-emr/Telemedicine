@@ -27,7 +27,7 @@
                                 Address.</div>
                         </div>
                     </div>
-                    <button type="submit" class="btn submitBtn" (click)="onSubmit()">Sign Up</button>
+                    <button type="submit" class="btn submitBtn" [disabled]="clicked" (click)="onSubmit()">Sign Up</button>
                     <!-- <p>Already have an account? <a href="javascript:" routerLink="/provider/login">Sign in</a></p> -->
                 </div>
             </form>

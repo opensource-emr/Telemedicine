@@ -72,8 +72,8 @@ export class IntroComponent implements OnInit {
     var patient = new Patient();
     patient.name = this.patRegForm.controls.patientName.value;
     patient.url = this.global.currentProvider;
-    patient.practice=this.global.currentPractice;
-    patient.providerNameAttending=this.global.currentProvider;
+    patient.practice=this.global.currentPractice.replace(/\s/g, "").toLowerCase();
+    patient.providerNameAttending=this.global.currentProvider.replace(/\s/g, "").toLowerCase();
     this.global.practiceObj.url = this.global.currentPractice;
     this.httpClient.
       post<any>(this.global.practiceUrl + "LoginPatient", patient)

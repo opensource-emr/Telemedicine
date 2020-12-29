@@ -139,6 +139,8 @@ export class ChatComponent implements OnInit, AfterViewInit {
     this.patientObj.appointmentDate = dateTime;
     this.patientObj.name = currentChatUser.user;
     this.patientObj.practice = this.global.currentPractice;
+    this.patientObj.providerId=this.global.providerObj.providerId;
+    this.patientObj.practiceId=this.global.providerObj.practiceId;
     this.notificationService.CallPatientChat(this.patientObj);
 
     if (this.practiceObj.callingPlatform == this.tokbox) {

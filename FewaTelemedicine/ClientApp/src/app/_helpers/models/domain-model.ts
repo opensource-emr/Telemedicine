@@ -47,6 +47,7 @@ export class Provider {
     confirmedPassword: string = "";
     otp: string = "";
     profilePhoto: any;
+    practiceId:number;
 }
 export class Patient {
     patientId: number;
@@ -72,6 +73,8 @@ export class Patient {
     url: any = "";
     provider: Provider;
     advice: Array<ProviderAdvice> = [];
+    providerId:number;
+    practiceId:number;
 }
 export class ProviderCabin {
     public patient: Patient;
