@@ -56,6 +56,14 @@ export class NotificationService {
       });
   }
 
+  public CallPatientChat(currentChatUser) {
+    //console.log(callPatient);
+    this._hubConnection.invoke('PatientCall', currentChatUser)
+      .catch(function (err) {
+        console.log(err);
+      });
+  }
+
   public SendChatMessage(chatMessage) {
     this.handleChatting('sentbyprovider', chatMessage);
     this._hubConnection.invoke('SendChatMessage', chatMessage)

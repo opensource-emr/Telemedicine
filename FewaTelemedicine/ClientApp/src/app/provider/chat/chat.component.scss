@@ -71,6 +71,16 @@
       font-size: 18px;
       margin-bottom: 0;
     }
+    .patientBtn {
+      color: var(--primary);
+      span {
+        svg {
+          fill: var(--primary);
+          width: 16px;
+          height: 16px;
+        }
+      }
+    }
   }
   .chatSectionArea {
     height: calc(100vh - 210px);

@@ -83,4 +83,5 @@ export class ProviderAdvice {
     inputType: string = "";
     providerId: number;
     isChecked: boolean = false;
+    practiceId: number;
 }

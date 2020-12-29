@@ -70,7 +70,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       .subscribe(_patients => {
         this.patients = _patients.filter(t => t.url == this.global.currentProvider && t.practice == this.global.currentPractice);
       });
-    
+
     this.notificationService.EventCallPatient
       .subscribe(_patient => {
         this.global.patientObj = _patient;
@@ -185,6 +185,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     let dateTime = new Date();
     this.patientObj.appointmentDate = dateTime;
     this.patientObj.name = callPatient.name;
+    this.patientObj.practice = this.global.currentPractice;
     this.notificationService.CallPatient(callPatient);
 
     if (this.practiceObj.callingPlatform == this.tokbox) {

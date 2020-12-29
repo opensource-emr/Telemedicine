@@ -72,11 +72,18 @@
                 </ul>
             </div>
         </div>
-        <div class="col-12 col-md-9 brd-left">
+        <div *ngIf="hideChatSection" class="col-12 col-md-9 brd-left">
             <div class="position-relative">
                 <div class="patientDetail display-flex">
-                    <div class="activeUser"></div>
-                    <h2>{{currentChatUser.user}}</h2>
+                    <div class="activeUser">
+                        <h2 style="margin-left: 25px;">{{currentChatUser.user}}</h2>
+                    </div>
+                    <a class="patientBtn" href="javascript:;" (click)="callPatient(currentChatUser)"
+                        style="margin-left: 90%;"><span><svg height="472pt" viewBox="0 -87 472 472" width="472pt"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="m467.101562 26.527344c-3.039062-1.800782-6.796874-1.871094-9.898437-.179688l-108.296875 59.132813v-35.480469c-.03125-27.601562-22.398438-49.96875-50-50h-248.90625c-27.601562.03125-49.96875 22.398438-50 50v197.421875c.03125 27.601563 22.398438 49.96875 50 50h248.90625c27.601562-.03125 49.96875-22.398437 50-50v-34.835937l108.300781 59.132812c3.097657 1.691406 6.859375 1.625 9.894531-.175781 3.039063-1.804688 4.898438-5.074219 4.898438-8.601563v-227.816406c0-3.53125-1.863281-6.796875-4.898438-8.597656zm-138.203124 220.898437c-.015626 16.5625-13.4375 29.980469-30 30h-248.898438c-16.5625-.019531-29.980469-13.4375-30-30v-197.425781c.019531-16.558594 13.4375-29.980469 30-30h248.90625c16.558594.019531 29.980469 13.441406 30 30zm123.101562-1.335937-103.09375-56.289063v-81.535156l103.09375-56.285156zm0 0" />
+                            </svg></span> Call</a>
                 </div>
                 <div class="chatSectionArea">
                     <ul id="scrollingContainer">
@@ -87,14 +94,12 @@
                                     <div class="chatmessage">{{ msg.message }}</div>
                                     <div *ngIf="msg.time" class="chatTiming">{{ msg.time | date:'shortTime'}}</div>
                                 </div>
-
                             </div>
                             <div class="providerChatSec text-right" *ngIf="msg.receiver == currentChatUser.user">
                                 <div class="display-flex providerChat">
                                     <div *ngIf="msg.time" class="chatTiming">{{ msg.time | date:'shortTime'}}</div>
                                     <div class="chatmessage">{{ msg.message }}</div>
                                 </div>
-
                             </div>
                         </li>
                     </ul>
@@ -167,7 +172,8 @@
                         </div>
                         <div class="chatCOntent">
                             <form [formGroup]="chatForm">
-                                <input type="text" class="form-control" formControlName="chatMessage"
+                                <input type="text" style="border:1px solid" class="form-control"
+                                    placeholder="Type here.." formControlName="chatMessage"
                                     (keyup)="onChatEnter($event)">
                                 <!-- <div *ngIf="getValidationControl.chatMessage.touched && getValidationControl.chatMessage.invalid" style="color: red;">
                                     <div *ngIf="getValidationControl.chatMessage.errors.required">Chat message is required.</div>

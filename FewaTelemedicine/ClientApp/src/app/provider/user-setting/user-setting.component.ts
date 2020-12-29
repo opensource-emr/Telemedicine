@@ -15,7 +15,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class UserSettingComponent implements OnInit {
   htmlContent = '';
   providerObj: Provider = new Provider();
-  addProviderObj : Provider = new Provider();
+  addProviderObj: Provider = new Provider();
   retrieveResponse: any;
   receivedImageData: any;
   receivedPracticeImageData: any;
@@ -29,8 +29,8 @@ export class UserSettingComponent implements OnInit {
   public showEditor: boolean = false;
   public showInvitationTemplate: boolean = false;
   userForm: FormGroup = new FormGroup({});
-  practiceConfigForm: FormGroup = new FormGroup({});
-  addProviderForm: FormGroup = new FormGroup({});
+  //practiceConfigForm: FormGroup = new FormGroup({});
+  //addProviderForm: FormGroup = new FormGroup({});
   practiceObj: Practice = new Practice();
   public providerAdvice: Array<ProviderAdvice> = [];
   hospitalLogo: string = "";
@@ -43,21 +43,21 @@ export class UserSettingComponent implements OnInit {
     private fb: FormBuilder,
     private sanitizer: DomSanitizer) {
     this.initUserForm();
-    this.initPracticeForm();
+    //this.initPracticeForm();
     this.initAdviceForm();
-    this.initAddProviderForm();
+    //this.initAddProviderForm();
   }
 
   ngOnInit() {
     this.practiceObj = this.global.practiceObj;
-    this.setPracticeFormValue(this.practiceObj);
-    this.loadEmailTemplate();
+    //this.setPracticeFormValue(this.practiceObj);
+    //this.loadEmailTemplate();
     this.providerObj = this.global.providerObj;
     this.setUserFormValue(this.providerObj);
   }
 
   loadAdvice() {
-    this.httpClient.get<any>(this.global.practiceUrl + "GetAllAdvice")
+    this.httpClient.post<any>(this.global.practiceUrl + "GetAllAdvice", this.global.providerObj)
       .subscribe(res => {
         if (res) {
           this.providerAdvice = res;
@@ -137,6 +137,7 @@ export class UserSettingComponent implements OnInit {
         advice.advice = this.adviceArray.getRawValue()[i].advice;
         if (this.global.providerObj.providerId > 0)
           advice.providerId = this.global.providerObj.providerId;
+        advice.practiceId = this.global.practiceObj.practiceId;
         this.providerAdvice.push(advice);
       }
     }
@@ -163,36 +164,36 @@ export class UserSettingComponent implements OnInit {
     })
   }
 
-  private initPracticeForm() {
-    this.practiceConfigForm = this.fb.group({
-      hospital_name: ['', [Validators.required]],
-      //hospital_email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
-      hospital_contact: ['', [Validators.required]],
-      // ,Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
-      hospital_logo: [''],
-      hospital_description: new FormControl(" "),
-      sender_email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
-      email_api_key: ['', [Validators.required]],
-     //email_name: ['', [Validators.required]],
-     //calling_platform: ['', [Validators.required]],
-      addContent: new FormControl(" "),
-    })
-  }
+  // private initPracticeForm() {
+  //   this.practiceConfigForm = this.fb.group({
+  //     hospital_name: ['', [Validators.required]],
+  //     //hospital_email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
+  //     hospital_contact: ['', [Validators.required]],
+  //     // ,Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
+  //     hospital_logo: [''],
+  //     hospital_description: new FormControl(" "),
+  //     sender_email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
+  //     email_api_key: ['', [Validators.required]],
+  //    //email_name: ['', [Validators.required]],
+  //    //calling_platform: ['', [Validators.required]],
+  //     addContent: new FormControl(" "),
+  //   })
+  // }
 
-  private initAddProviderForm() {
-    this.addProviderForm = this.fb.group({
-      userName: ['', Validators.required],
-      password: ['', Validators.required],
-    });
-  }
+  // private initAddProviderForm() {
+  //   this.addProviderForm = this.fb.group({
+  //     userName: ['', Validators.required],
+  //     password: ['', Validators.required],
+  //   });
+  // }
 
-  addProvider() {
-    this.getProviderFormvalue();
-    this.httpClient.post<any>(this.global.apiUrl + "Security/AddProvider" + "", this.addProviderObj)
-      .subscribe(res => { alert("Provider Added succesfully, Now login with email password") },
-        err => { alert("There is a problem") });
-    this.resetAddProviderForm();
-  }
+  // addProvider() {
+  //   this.getProviderFormvalue();
+  //   this.httpClient.post<any>(this.global.apiUrl + "Security/AddProvider" + "", this.addProviderObj)
+  //     .subscribe(res => { alert("Provider Added succesfully, Now login with email password") },
+  //       err => { alert("There is a problem") });
+  //   this.resetAddProviderForm();
+  // }
 
   setUserFormValue(provider: Provider) {
     this.userForm.patchValue({
@@ -207,20 +208,20 @@ export class UserSettingComponent implements OnInit {
     })
   }
 
-  setPracticeFormValue(practice: Practice) {
-    this.practiceConfigForm.patchValue({
-      hospital_name: practice.name,
-      //hospital_email: practice.email,
-      hospital_contact: practice.contactNumber,
-      //hospital_logo: practice.logoPath,
-      hospital_description: practice.description,
-      sender_email: practice.email,
-      email_api_key: practice.emailApiKey,
-      //email_name: practice.emailApiName,
-      //calling_platform: practice.callingPlatform,
-      addContent: practice.emailAdditionalContent,
-    })
-  }
+  // setPracticeFormValue(practice: Practice) {
+  //   this.practiceConfigForm.patchValue({
+  //     hospital_name: practice.name,
+  //     //hospital_email: practice.email,
+  //     hospital_contact: practice.contactNumber,
+  //     //hospital_logo: practice.logoPath,
+  //     hospital_description: practice.description,
+  //     sender_email: practice.email,
+  //     email_api_key: practice.emailApiKey,
+  //     //email_name: practice.emailApiName,
+  //     //calling_platform: practice.callingPlatform,
+  //     addContent: practice.emailAdditionalContent,
+  //   })
+  // }
 
   getUserFormValue() {
     var v = this.userForm.getRawValue();
@@ -235,26 +236,26 @@ export class UserSettingComponent implements OnInit {
   }
 
 
-  getPracticeFormValue() {
-    var v = this.practiceConfigForm.getRawValue();
-    this.practiceObj.name = v.hospital_name;
-    //this.practiceObj.email = v.hospital_email;
-    this.practiceObj.contactNumber = v.hospital_contact;
-    this.practiceObj.description = v.hospital_description;
-    //this.practiceObj.logoPath = v.hospital_logo;
-    this.practiceObj.email = v.sender_email;
-    this.practiceObj.emailApiKey = v.email_api_key;
-    //this.practiceObj.emailApiName = v.email_name;
-    //this.practiceObj.callingPlatform = v.calling_platform;
-  }
+  // getPracticeFormValue() {
+  //   var v = this.practiceConfigForm.getRawValue();
+  //   this.practiceObj.name = v.hospital_name;
+  //   //this.practiceObj.email = v.hospital_email;
+  //   this.practiceObj.contactNumber = v.hospital_contact;
+  //   this.practiceObj.description = v.hospital_description;
+  //   //this.practiceObj.logoPath = v.hospital_logo;
+  //   this.practiceObj.email = v.sender_email;
+  //   this.practiceObj.emailApiKey = v.email_api_key;
+  //   //this.practiceObj.emailApiName = v.email_name;
+  //   //this.practiceObj.callingPlatform = v.calling_platform;
+  // }
 
-  getProviderFormvalue() {
-    var v = this.addProviderForm.getRawValue();
-    this.addProviderObj.userName = v.userName;
-    this.addProviderObj.password = v.password;
-    this.addProviderObj.url=this.addProviderObj.userName; // url same as username
-    this.addProviderObj.practice=this.global.currentPractice;
-  }
+  // getProviderFormvalue() {
+  //   var v = this.addProviderForm.getRawValue();
+  //   this.addProviderObj.userName = v.userName;
+  //   this.addProviderObj.password = v.password;
+  //   this.addProviderObj.url=this.addProviderObj.userName; // url same as username
+  //   this.addProviderObj.practice=this.global.currentPractice;
+  // }
 
   config: AngularEditorConfig = {
     editable: true,
@@ -296,9 +297,9 @@ export class UserSettingComponent implements OnInit {
 
   }
 
-  loadInvitationTemplate() {
-    this.showInvitationTemplate = !this.showInvitationTemplate;
-  }
+  // loadInvitationTemplate() {
+  //   this.showInvitationTemplate = !this.showInvitationTemplate;
+  // }
 
   resetUserForm() {
     this.progress = 0;
@@ -307,16 +308,16 @@ export class UserSettingComponent implements OnInit {
     this.userForm.reset();
   }
 
-  resetPracticeForm() {
-    this.logoProgress = 0;
-    this.logoMessage = null;
-    this.selectedFile = null;
-    this.practiceConfigForm.reset();
-  }
+  // resetPracticeForm() {
+  //   this.logoProgress = 0;
+  //   this.logoMessage = null;
+  //   this.selectedFile = null;
+  //   this.practiceConfigForm.reset();
+  // }
 
-  resetAddProviderForm() {
-    this.addProviderForm.reset();
-  }
+  // resetAddProviderForm() {
+  //   this.addProviderForm.reset();
+  // }
 
   resetAdviceForm() {
     this.adviceForm.reset();
@@ -349,108 +350,108 @@ export class UserSettingComponent implements OnInit {
         err => { console.log(err); });
   }
 
-  updatePracticeConfiguration() {
-    if (this.practiceConfigForm.invalid) {
-      return;
-    }
-    this.getPracticeFormValue();
-    this.httpClient.
-      post<any>(this.global.practiceUrl + "UpdatePracticeConfiguration", this.practiceObj)
-      .subscribe(res => {
-        this.practiceObj = res;
-        this.global.practiceObj = res;
-        alert("Practice Configuration updated");
-      },
-        err => { console.log(err); });
-  }
+  // updatePracticeConfiguration() {
+  //   if (this.practiceConfigForm.invalid) {
+  //     return;
+  //   }
+  //   this.getPracticeFormValue();
+  //   this.httpClient.
+  //     post<any>(this.global.practiceUrl + "UpdatePracticeConfiguration", this.practiceObj)
+  //     .subscribe(res => {
+  //       this.practiceObj = res;
+  //       this.global.practiceObj = res;
+  //       alert("Practice Configuration updated");
+  //     },
+  //       err => { console.log(err); });
+  // }
 
-  updatePracticeLogo(file: FileList) {
-    this.logoToUpload = file.item(0);
+  // updatePracticeLogo(file: FileList) {
+  //   this.logoToUpload = file.item(0);
 
-    //show image preview
-    var reader = new FileReader();
-    reader.onload = (event: any) => {
-      this.hospitalLogo = event.target.result;
-    }
-    reader.readAsDataURL(this.logoToUpload);
-    //upload image
-    let ext = this.logoToUpload.name.split('.').pop();
-    if (ext != "jpg" && ext != "png" && ext != "jpeg") {
-      alert("upload only logo, file format not allowed");
-      this.practiceConfigForm.get('hospital_logo')?.reset();
-      this.logoToUpload = undefined;
-      return;
-    }
-    const formData = new FormData();
-    formData.append('image', this.logoToUpload, this.logoToUpload.name);
+  //   //show image preview
+  //   var reader = new FileReader();
+  //   reader.onload = (event: any) => {
+  //     this.hospitalLogo = event.target.result;
+  //   }
+  //   reader.readAsDataURL(this.logoToUpload);
+  //   //upload image
+  //   let ext = this.logoToUpload.name.split('.').pop();
+  //   if (ext != "jpg" && ext != "png" && ext != "jpeg") {
+  //     alert("upload only logo, file format not allowed");
+  //     this.practiceConfigForm.get('hospital_logo')?.reset();
+  //     this.logoToUpload = undefined;
+  //     return;
+  //   }
+  //   const formData = new FormData();
+  //   formData.append('image', this.logoToUpload, this.logoToUpload.name);
 
-    //call to server
-    this.httpClient.post(this.global.practiceUrl + "UploadPracticeLogo", formData, { reportProgress: true, observe: 'events', responseType: 'text' })
-      .subscribe(event => {
-        if (event.type === HttpEventType.UploadProgress)
-          this.logoProgress = Math.round(100 * event.loaded / event.total);
-        else if (event.type === HttpEventType.Response) {
-          this.receivedPracticeImageData = event;
-          this.logoMessage = 'Upload Success.';
-          this.practiceObj.logoPath = this.receivedPracticeImageData.body;
-        }
-        else {
-          this.message = 'Upload Failed.';
-        }
+  //   //call to server
+  //   this.httpClient.post(this.global.practiceUrl + "UploadPracticeLogo", formData, { reportProgress: true, observe: 'events', responseType: 'text' })
+  //     .subscribe(event => {
+  //       if (event.type === HttpEventType.UploadProgress)
+  //         this.logoProgress = Math.round(100 * event.loaded / event.total);
+  //       else if (event.type === HttpEventType.Response) {
+  //         this.receivedPracticeImageData = event;
+  //         this.logoMessage = 'Upload Success.';
+  //         this.practiceObj.logoPath = this.receivedPracticeImageData.body;
+  //       }
+  //       else {
+  //         this.message = 'Upload Failed.';
+  //       }
 
-      });
-  }
+  //     });
+  // }
 
   get userFormControls() {
     return this.userForm.controls;
   }
 
-  get practiceFormControls() {
-    return this.practiceConfigForm.controls;
-  }
+  // get practiceFormControls() {
+  //   return this.practiceConfigForm.controls;
+  // }
 
-  get addProviderFormControls(){
-    return this.addProviderForm.controls;
-  }
+  // get addProviderFormControls(){
+  //   return this.addProviderForm.controls;
+  // }
 
-  emailTemplateUrl() {
-    return this.sanitizer.bypassSecurityTrustHtml(this.htmlBody);
-  }
+  // emailTemplateUrl() {
+  //   return this.sanitizer.bypassSecurityTrustHtml(this.htmlBody);
+  // }
 
-  previewEmailTemplate() {
-    this.showEditor = false;
-    var v = this.practiceConfigForm.getRawValue();
-    this.practiceObj.emailAdditionalContent = v.addContent;
-    this.practiceObj.name=this.global.currentPractice;
-    this.httpClient.
-      post<any>(this.global.practiceUrl + "PreviewEmailTemplate", this.practiceObj)
-      .subscribe(res => {
-        this.htmlBody = res.EmailHTMLBody;
-        this.htmlBody = this.htmlBody.replace("EmailAdditionalContent", res.PreviewEmailContent);
-        this.htmlBody = this.htmlBody.replace("border: 1px dashed #990000 !important;'>[<b> Note: Content In This Box Is Editable.</b>]<br>", "' id='edit'");
-        //this.practiceObj.emailHtmlBody = res.EmailHTMLBody;
-      },
-        err => { console.log(err); });
-  }
+  // previewEmailTemplate() {
+  //   this.showEditor = false;
+  //   var v = this.practiceConfigForm.getRawValue();
+  //   this.practiceObj.emailAdditionalContent = v.addContent;
+  //   this.practiceObj.name=this.global.currentPractice;
+  //   this.httpClient.
+  //     post<any>(this.global.practiceUrl + "PreviewEmailTemplate", this.practiceObj)
+  //     .subscribe(res => {
+  //       this.htmlBody = res.EmailHTMLBody;
+  //       this.htmlBody = this.htmlBody.replace("EmailAdditionalContent", res.PreviewEmailContent);
+  //       this.htmlBody = this.htmlBody.replace("border: 1px dashed #990000 !important;'>[<b> Note: Content In This Box Is Editable.</b>]<br>", "' id='edit'");
+  //       //this.practiceObj.emailHtmlBody = res.EmailHTMLBody;
+  //     },
+  //       err => { console.log(err); });
+  // }
 
 
-  loadEmailTemplate() {
-    this.showEditor = false;
-    var v = this.practiceConfigForm.getRawValue();
-    this.practiceObj.emailAdditionalContent = v.addContent;
-    this.practiceObj.name=this.global.currentPractice;
-    this.httpClient.
-      post<any>(this.global.practiceUrl + "previewEmailTemplate", this.practiceObj)
-      .subscribe(res => {
-        this.htmlBody = res.EmailHTMLBody;
-        this.htmlBody = this.htmlBody.replace("' id='edit'>", "border: 1px dashed #990000 !important;'>[<b> Note: Content In This Box Is Editable.</b>]<br>");
-       // this.practiceObj.emailHtmlBody = res.EmailHTMLBody;
-      },
-        err => { console.log(err); });
-  }
+  // loadEmailTemplate() {
+  //   this.showEditor = false;
+  //   var v = this.practiceConfigForm.getRawValue();
+  //   this.practiceObj.emailAdditionalContent = v.addContent;
+  //   this.practiceObj.name=this.global.currentPractice;
+  //   this.httpClient.
+  //     post<any>(this.global.practiceUrl + "previewEmailTemplate", this.practiceObj)
+  //     .subscribe(res => {
+  //       this.htmlBody = res.EmailHTMLBody;
+  //       this.htmlBody = this.htmlBody.replace("' id='edit'>", "border: 1px dashed #990000 !important;'>[<b> Note: Content In This Box Is Editable.</b>]<br>");
+  //      // this.practiceObj.emailHtmlBody = res.EmailHTMLBody;
+  //     },
+  //       err => { console.log(err); });
+  // }
 
-  editTemplate() {
-    this.showEditor = true;
-  }
+  // editTemplate() {
+  //   this.showEditor = true;
+  // }
 
 }

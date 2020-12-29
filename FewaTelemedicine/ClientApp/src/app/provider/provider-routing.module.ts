@@ -9,6 +9,7 @@ import { ChatComponent } from './chat/chat.component';
 import { ManageHistoryComponent } from './manage-history/manage-history.component';
 import { UserSettingComponent } from './user-setting/user-setting.component';
 import { LiveVideoComponent } from './live-video/live-video.component';
+import { AdminSettingComponent} from './admin-setting/admin-setting.component'
 //import { VideoConferenceComponent } from './video-conference/video-conference.component';
 //import { ProviderReportComponent } from './provider-report/provider-report.component';
 //import { ProviderComponent } from './provider.component';
@@ -24,6 +25,7 @@ const routes: Routes = [
   { path: 'manage_history', component: ManageHistoryComponent },
   { path: 'user_setting', component: UserSettingComponent },
   { path: 'live', component: LiveVideoComponent },
+  { path: 'admin_setting', component:AdminSettingComponent}
   //{ path: 'live-old', component: VideoConferenceComponent },
   //{ path: 'report', component: ProviderReportComponent }
 ];

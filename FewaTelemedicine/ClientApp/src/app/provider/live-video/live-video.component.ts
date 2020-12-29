@@ -44,7 +44,7 @@ export class LiveVideoComponent implements OnInit {
   }
 
   loadAdvice() {
-    this.httpClient.get<any>(this.global.practiceUrl + "GetAllAdvice")
+    this.httpClient.post<any>(this.global.practiceUrl + "GetAllAdvice", this.global.providerObj)
       .subscribe(res => {
         if (res) {
           for (let temp of res) {
