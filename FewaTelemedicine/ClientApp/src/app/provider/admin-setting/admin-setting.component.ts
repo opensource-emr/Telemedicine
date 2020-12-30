@@ -61,7 +61,7 @@ export class AdminSettingComponent implements OnInit {
   private initPracticeForm() {
     this.practiceConfigForm = this.fb.group({
       hospital_name: ['', [Validators.required]],
-      //hospital_email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
+      hospital_email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
       hospital_contact: ['', [Validators.required]],
       // ,Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       hospital_logo: [''],
@@ -114,7 +114,7 @@ export class AdminSettingComponent implements OnInit {
   setPracticeFormValue(practice: Practice) {
     this.practiceConfigForm.patchValue({
       hospital_name: practice.name,
-      //hospital_email: practice.email,
+      hospital_email: practice.email,
       hospital_contact: practice.contactNumber,
       //hospital_logo: practice.logoPath,
       hospital_description: practice.description,
@@ -137,7 +137,7 @@ export class AdminSettingComponent implements OnInit {
   getPracticeFormValue() {
     var v = this.practiceConfigForm.getRawValue();
     this.practiceObj.name = v.hospital_name;
-    //this.practiceObj.email = v.hospital_email;
+    this.practiceObj.email = v.hospital_email;
     this.practiceObj.contactNumber = v.hospital_contact;
     this.practiceObj.description = v.hospital_description;
     //this.practiceObj.logoPath = v.hospital_logo;

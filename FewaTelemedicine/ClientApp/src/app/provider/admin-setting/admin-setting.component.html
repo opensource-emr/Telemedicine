@@ -99,6 +99,15 @@
                                 <div class="row">
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
+                                            <label>Practice Email<span class="red-text">*</span></label>
+                                            <input type="email" class="form-control" name="email" formControlName="hospital_email" />
+                                            <div *ngIf="practiceFormControls.hospital_name.touched && practiceFormControls.hospital_name.invalid" style="color: red;">
+                                                <div *ngIf="practiceFormControls.hospital_name.errors.required">Email is required.
+                                                </div>
+                                                <div *ngIf="practiceFormControls.hospital_name.errors.pattern">Invalid Email Address.</div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
                                             <label>Practice Logo (Optional)</label>
                                         </div>
                                         <input id="file-upload1" type="file" formControlName="hospital_logo"
@@ -111,12 +120,13 @@
                                         <span class="upload" *ngIf="logoMessage">
                                             {{logoMessage}}
                                         </span>
+                                        
                                     </div>
 
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
                                             <label>Practice Description</label>
-                                            <textarea rows="4" class="form-control" name="hospital_description"
+                                            <textarea rows="6" class="form-control" name="hospital_description"
                                                 formControlName="hospital_description"></textarea>
                                         </div>
                                     </div>

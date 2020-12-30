@@ -78,6 +78,10 @@ export class ForgotPasswordComponent implements OnInit {
       return;
     }
     this.providerObj.email = this.form.value.email_username;
+    if(this.providerObj.email.search("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")){
+      this.providerObj.userName=this.providerObj.email;
+    }
+    this.providerObj.practice=this.global.currentPractice;
     this.disableSubmitButton = true;
     this.httpClient.post("/Messenger/SendOTP", this.providerObj)
       .subscribe(res => this.successOTP(res),
