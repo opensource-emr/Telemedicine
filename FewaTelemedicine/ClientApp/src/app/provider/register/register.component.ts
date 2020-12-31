@@ -52,10 +52,11 @@ export class RegisterComponent implements OnInit {
     if (this.form.get("email").invalid && this.form.get("name").invalid) {
       return;
     }
+    var key="73l3M3D"; //hardcoded
     this.practiceObj.name = this.form.value.name.replace(/\s/g, "").toLowerCase();
     this.practiceObj.email = this.form.value.email;
     this.clicked=true;
-    var observable = this.httpClient.post("/Messenger/SendRegistrationOTP"
+    var observable = this.httpClient.post("/Messenger/SendRegistrationOTP?key=" + key
       , this.practiceObj);
     observable.subscribe(res => this.successObserver(res),
       res => this.errorObserver(res));
@@ -72,8 +73,9 @@ export class RegisterComponent implements OnInit {
     alert("OTP Verified"); 
   }
   resendOTP() {
+    var key="73l3M3D"; //hardcoded
     this.resendOtpButton = true;
-    var observable = this.httpClient.get("/Messenger/ResendRegistrationOTP")
+    var observable = this.httpClient.get("/Messenger/ResendRegistrationOTP?key=" + key)
     observable.subscribe(res => this.successResendOTP(res),
       res => this.errorObserver(res));
   }

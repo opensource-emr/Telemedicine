@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef} from '@angular/core';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { HttpClient, HttpParams, HttpEventType, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -47,6 +47,7 @@ export class AdminSettingComponent implements OnInit {
     this.initPracticeForm();
     this.initAddProviderForm();
     this.initPracticeEmailForm();
+    this.displayProviderList();
   }
 
   ngOnInit() {
@@ -55,7 +56,6 @@ export class AdminSettingComponent implements OnInit {
     this.setPracticeEmailFormValue(this.practiceObj);
     this.loadEmailTemplate();
     this.providerObj = this.global.providerObj;
-    this.displayProviderList();
   }
 
   private initPracticeForm() {
@@ -84,36 +84,31 @@ export class AdminSettingComponent implements OnInit {
 
   private initAddProviderForm() {
     this.addProviderForm = this.fb.group({
-      userName: ['', Validators.required],
+    userName: ['', Validators.required],
       password: ['', Validators.required],
       providerList: this.fb.array([]),
     });
-
-  }
+}
 
   addProvider() {
     this.getProviderFormvalue();
-    this.httpClient.post<any>(this.global.apiUrl + "Security/AddProvider" + "", this.addProviderObj)
-      .subscribe(res => { alert("Provider Added succesfully, Now login with email password") },
-        err => { alert("There is a problem") });
-    this.displayProviderList();
+    this.httpClient.post<any>(this.global.apiUrl + "Security/AddProvider", this.addProviderObj)
+      .subscribe
+      (res => { alert("Provider Added succesfully, Now login with email password")
+      this.providerList = res},
+      err => { alert("There is a problem") });
     // this.changeDetection.detectChanges();
     this.resetAddProviderForm();
   }
 
   displayProviderList() {
      this.httpClient.get<any>(this.global.practiceUrl + "GetAllProvider?practice=" + this.global.currentPractice)
-      .subscribe(res => this.Success(res), err => this.Error(err));
-  }
-  Success(res) {
-    this.providerList = res;
-  }
-  Error(res) {
+      .subscribe(res => this.providerList = res, err => alert(err));
   }
 
   setPracticeFormValue(practice: Practice) {
     this.practiceConfigForm.patchValue({
-      hospital_name: practice.name,
+      hospital_name: practice.name.toUpperCase(),
       hospital_email: practice.email,
       hospital_contact: practice.contactNumber,
       //hospital_logo: practice.logoPath,
@@ -136,7 +131,7 @@ export class AdminSettingComponent implements OnInit {
 
   getPracticeFormValue() {
     var v = this.practiceConfigForm.getRawValue();
-    this.practiceObj.name = v.hospital_name;
+    this.practiceObj.name = v.hospital_name.replace(/\s/g, "").toLowerCase();
     this.practiceObj.email = v.hospital_email;
     this.practiceObj.contactNumber = v.hospital_contact;
     this.practiceObj.description = v.hospital_description;
@@ -156,9 +151,9 @@ export class AdminSettingComponent implements OnInit {
 
   getProviderFormvalue() {
     var v = this.addProviderForm.getRawValue();
-    this.addProviderObj.userName = v.userName;
+    this.addProviderObj.userName = v.userName.replace(/\s/g, "").toLowerCase();
     this.addProviderObj.password = v.password;
-    this.addProviderObj.url = this.addProviderObj.userName; // url same as username
+    this.addProviderObj.url = this.addProviderObj.userName // url same as username
     this.addProviderObj.practice = this.global.currentPractice;
   }
 

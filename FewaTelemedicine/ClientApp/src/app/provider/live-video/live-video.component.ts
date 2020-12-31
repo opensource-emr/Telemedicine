@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Global } from 'src/app/_helpers/common/global.model';
@@ -13,7 +13,7 @@ import { Patient, ProviderAdvice } from 'src/app/_helpers/models/domain-model';
   templateUrl: './live-video.component.html',
   styleUrls: ['./live-video.component.scss']
 })
-export class LiveVideoComponent implements OnInit {
+export class LiveVideoComponent implements OnInit,OnDestroy {
   isDisplayed = false;
   patient: Patient = null;
   roomName = "FewaTelemedicine";
@@ -30,13 +30,26 @@ export class LiveVideoComponent implements OnInit {
     public notificationService: NotificationService,
     public global: Global,
     private cdr: ChangeDetectorRef,
-    public service: UploadDownloadService) {
+    public service: UploadDownloadService,
+    public http: HttpClient) {
     this.patient = this.global.patientObj;
     this.initVideoConference();
     this.initForm();
     this.roomName = this.global.providerObj.roomName;
     this.remoteUserDisplayName = this.global.patientObj.name;
     this.isMeetStart = true;
+  }
+
+  ngOnInit(): void {
+    this.loadAdvice();
+    var previousChats = this.global.previousChats
+    previousChats.forEach(element => {
+      this.currentChat.push(element);
+    });
+}
+
+  ngOnDestroy() {
+    this.currentChat = [];
   }
 
   toggleDisplay() {
@@ -105,10 +118,6 @@ export class LiveVideoComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.loadAdvice();
-  }
-
   error(res) {
     alert(res.status);
   }
@@ -150,7 +159,6 @@ export class LiveVideoComponent implements OnInit {
     for (let temp of this.providerAdvice) {
       this.patient.advice.push(temp);
     }
-    
     var v: Patient = this.reportForm.getRawValue();
     this.patient.medication = v.medication;
     this.patient.followUpNumber = v.followUpNumber.toString();

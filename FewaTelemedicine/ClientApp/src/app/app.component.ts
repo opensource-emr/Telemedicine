@@ -10,8 +10,15 @@ export class AppComponent {
   title = 'fewa-web';
   constructor(private global: Global) {
     var p = location.pathname.split('/');
-    this.global.currentPractice = p[1];
-    this.global.currentProvider = p[2];
+    if(p[1].length>0 && p[2].length>0){
+      this.global.currentPractice = p[1].replace(/\s/g, "").toLowerCase();
+      this.global.currentProvider = p[2].replace(/\s/g, "").toLowerCase();
+    }
+    else{
+      this.global.currentPractice=p[1];
+      this.global.currentProvider=p[2];
+    }
+  
     this.global.providerObj.url = this.global.currentProvider;
   }
 

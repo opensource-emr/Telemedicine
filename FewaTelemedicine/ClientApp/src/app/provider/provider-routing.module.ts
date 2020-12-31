@@ -9,6 +9,7 @@ import { ChatComponent } from './chat/chat.component';
 import { ManageHistoryComponent } from './manage-history/manage-history.component';
 import { UserSettingComponent } from './user-setting/user-setting.component';
 import { LiveVideoComponent } from './live-video/live-video.component';
+import { SecurityLogic } from '../_helpers/common/authguard';
 import { AdminSettingComponent} from './admin-setting/admin-setting.component'
 //import { VideoConferenceComponent } from './video-conference/video-conference.component';
 //import { ProviderReportComponent } from './provider-report/provider-report.component';
@@ -20,12 +21,12 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'forgot_password', component: ForgotPasswordComponent },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'chat', component: ChatComponent },
-  { path: 'manage_history', component: ManageHistoryComponent },
-  { path: 'user_setting', component: UserSettingComponent },
-  { path: 'live', component: LiveVideoComponent },
-  { path: 'admin_setting', component:AdminSettingComponent}
+  { path: 'dashboard', component: DashboardComponent,canActivate:[SecurityLogic] },
+  { path: 'chat', component: ChatComponent,canActivate:[SecurityLogic] },
+  { path: 'manage_history', component: ManageHistoryComponent,canActivate:[SecurityLogic] },
+  { path: 'user_setting', component: UserSettingComponent,canActivate:[SecurityLogic] },
+  { path: 'live', component: LiveVideoComponent,canActivate:[SecurityLogic] },
+  { path: 'admin_setting', component:AdminSettingComponent,canActivate:[SecurityLogic]}
   //{ path: 'live-old', component: VideoConferenceComponent },
   //{ path: 'report', component: ProviderReportComponent }
 ];

@@ -24,6 +24,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import {ClipboardModule} from '@angular/cdk/clipboard';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { AdminSettingComponent} from './admin-setting/admin-setting.component';
+import { SecurityLogic } from '../_helpers/common/authguard';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpInterceptorService } from '../_helpers/common/http-interceptor.service';
 
 
 @NgModule({
@@ -57,7 +60,9 @@ import { AdminSettingComponent} from './admin-setting/admin-setting.component';
     MatTooltipModule
   ],
   providers: [
-    UploadDownloadService
+    UploadDownloadService,
+    SecurityLogic,
+    {provide:HTTP_INTERCEPTORS,useClass:HttpInterceptorService,multi:true},
   ]
 })
 export class ProviderModule { }

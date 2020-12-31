@@ -36,7 +36,8 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   private getPractice() {
-    this.httpClient.get<any>(this.global.practiceUrl + 'GetPracticeConfiguration?practice=' + this.global.currentPractice)
+    var key="73l3M3D"; //hardcoded
+    this.httpClient.get<any>(this.global.practiceUrl + 'GetPracticeConfiguration?practice=' + this.global.currentPractice + "&" + "key=" + key)
       .subscribe(res => {
         this.global.practiceObj = res;
         if (!this.global.practiceObj.logoPath) {
@@ -77,20 +78,22 @@ export class ForgotPasswordComponent implements OnInit {
     if (this.form.get("email_username").invalid) {
       return;
     }
+    var key="73l3M3D"; //hardcoded
     this.providerObj.email = this.form.value.email_username;
     if(this.providerObj.email.search("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")){
       this.providerObj.userName=this.providerObj.email;
     }
     this.providerObj.practice=this.global.currentPractice;
     this.disableSubmitButton = true;
-    this.httpClient.post("/Messenger/SendOTP", this.providerObj)
+    this.httpClient.post("/Messenger/SendOTP?key=" + key, this.providerObj)
       .subscribe(res => this.successOTP(res),
         res => this.error(res));
   }
 
   resendOTP() {
+    var key="73l3M3D"; //hardcoded
     this.disableResendButton = true;
-    this.httpClient.get("/Messenger/ResendOTP")
+    this.httpClient.get("/Messenger/ResendOTP?key=" + key)
       .subscribe(res => this.successResendOTP(res),
         res => this.error(res));
   }

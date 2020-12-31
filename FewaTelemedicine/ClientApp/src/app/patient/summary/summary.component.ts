@@ -31,11 +31,11 @@ export class SummaryComponent implements OnInit {
   }
 
   loadAdvice() {
-    this.httpClient.get<any>(this.global.practiceUrl + "GetAllAdvice")
+    this.httpClient.post<any>(this.global.practiceUrl + "GetAllAdvice", this.global.providerObj)
       .subscribe(res => {
         if (res) {
           for (let temp of res) {
-            if(temp.providerId === this.global.providerObj.providerId){
+            if (temp.providerId === this.global.providerObj.providerId) {
               this.providerAdvice.push(temp);
             }
           }
@@ -63,9 +63,10 @@ export class SummaryComponent implements OnInit {
     if (this.emailForm.invalid) {
       return;
     }
+    var key="73l3M3D"; //hardcoded
     this.disableButton = true;
     this.patient.email = this.emailForm.value.email;
-    this.httpClient.post("/Messenger/EmailPatientReport", this.patient)
+    this.httpClient.post("/Messenger/EmailPatientReport?key=" + key, this.patient)
       .subscribe(res => this.emailReportSuccess(res), err => this.error(err));
   }
 

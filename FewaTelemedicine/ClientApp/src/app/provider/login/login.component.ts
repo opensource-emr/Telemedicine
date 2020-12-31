@@ -27,9 +27,11 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.getPractice();
+   this.global.previousChats = []
   }
   private getPractice() {
-    this.httpClient.get<any>(this.global.practiceUrl + 'GetPracticeConfiguration?practice=' + this.global.currentPractice)
+    var key="73l3M3D"; //hardcoded
+    this.httpClient.get<any>(this.global.practiceUrl + 'GetPracticeConfiguration?practice=' + this.global.currentPractice + "&" + "key=" + key)
       .subscribe(res => {
         this.global.practiceObj = res;
         if (!this.global.practiceObj.logoPath) {
@@ -61,7 +63,7 @@ export class LoginComponent implements OnInit {
       this.clicked = false;
       return;
     }
-    this.providerObj.userName = this.providerForm.value.providerUserName;
+    this.providerObj.userName = this.providerForm.value.providerUserName.replace(/\s/g, "").toLowerCase();
     this.providerObj.password = this.providerForm.value.providerPassword;
     this.providerObj.url = this.global.currentProvider;
     this.providerObj.practice=this.global.currentPractice;

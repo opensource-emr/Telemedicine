@@ -234,6 +234,7 @@ export class NotificationService {
           n.receiver = data.receiver;
           n.time = new Date();
           t.message.push(n);
+          this.global.previousChats.push(n);
           this._snackBar.open(data.message, data.sender, {
             duration: 2000,
             verticalPosition:'top'
