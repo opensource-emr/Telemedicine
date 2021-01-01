@@ -42,6 +42,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace FewaTelemedicine.Controllers
 {
+    [Authorize]
     public class PracticeController : Controller
     {
         private readonly ILogger<PracticeController> _logger;
@@ -92,16 +93,25 @@ namespace FewaTelemedicine.Controllers
         {
             return View();
         }
-        public IActionResult GetPracticeConfiguration(string practice) 
+
+        [AllowAnonymous]
+        public IActionResult GetPracticeConfiguration(string practice, string key)
         {
             try
             {
-                if (!string.IsNullOrEmpty(practice))
+                if (key == "73l3M3D")
+                {
+                    if (!string.IsNullOrEmpty(practice))
                 {
                     return Ok(FewaDbContext.practices.Where(a => a.url.ToLower().Trim() == practice.ToLower().Trim()).FirstOrDefault());
                 }
                 List<Practice> result = FewaDbContext.practices.ToList();
                 return Ok(result);
+                }
+                else
+                {
+                    return Ok("wrongKey");
+                }
             }
             catch (Exception)
             {
@@ -125,9 +135,8 @@ namespace FewaTelemedicine.Controllers
             obj.providerId = provider.providerId;
             obj.practiceId = provider.practiceId;
             _waitingroom.patients.Add(obj);
-
-
-            var token = GenerateJSONWebToken(obj.name, "Patient",obj.providerId,obj.practiceId);
+            SecurityController securityController = new SecurityController(null, null, _config, null, null);
+            var token = securityController.GenerateJSONWebToken(obj.name, "Patient",obj.providerId,obj.practiceId);
             var result = new
             {
                 User = obj,
@@ -135,45 +144,6 @@ namespace FewaTelemedicine.Controllers
             };
             return Ok(result);
             // return Ok(Json(obj));
-        }
-        public IActionResult WaitingRoom()
-        {
-            return Json(_waitingroom);
-        }
-
-        public bool CheckProvider(string name, string password)
-        {
-            foreach (var item in _providers)
-            {
-                if (item.userName == name)
-                {
-                    if (item.password == password)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-            }
-            return false;
-        }
-        private void AddProviderCabin(string name)
-        {
-            foreach (var item in _providerCabins)
-            {
-                if (item.provider.userName == name)
-                {
-                    _providerCabins.Remove(item);
-                    _providerCabins.Add(new ProviderCabin()
-                    { provider = new Provider() { userName = name } });
-                    return;
-                }
-            }
-            _providerCabins.Add(new ProviderCabin()
-            { provider = new Provider() { userName = name } });
-
         }
 
         public List<Patient> GetPatientsAttended([FromBody] Provider obj,[Optional] string searchString)
@@ -580,26 +550,6 @@ namespace FewaTelemedicine.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        private string GenerateJSONWebToken(string username, string usertype,int providerId,int practiceId)
-        {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-            var claims = new[] {
-                new Claim("Issuer", _config["Jwt:Issuer"]),
-                new Claim("UserType",usertype),
-                new Claim("ProviderId",providerId.ToString()),
-                new Claim("PracticeId",practiceId.ToString()),
-                new Claim(JwtRegisteredClaimNames.UniqueName, username)
-            };
-
-            var token = new JwtSecurityToken(_config["Jwt:Issuer"],
-              _config["Jwt:Issuer"],
-              claims,
-              expires: DateTime.Now.AddMinutes(120),
-              signingCredentials: credentials);
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
         public IActionResult GetAllProvider(string practice)
         {
             try

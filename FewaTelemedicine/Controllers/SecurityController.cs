@@ -293,7 +293,7 @@ namespace FewaTelemedicine.Controllers
                     _providers.Add(a);
 
                 }
-                return Ok(1);
+                return Ok(_providers.Where(a => a.practiceId == obj.practiceId).ToList());
             }
             catch (Exception ex)
             {
@@ -301,7 +301,8 @@ namespace FewaTelemedicine.Controllers
             }
         }
 
-        private string GenerateJSONWebToken(string username, string usertype,int providerId,int practiceId)
+
+        public string GenerateJSONWebToken(string username, string usertype,int providerId,int practiceId)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);

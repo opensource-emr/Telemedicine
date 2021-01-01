@@ -40,7 +40,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
     private sanitizer: DomSanitizer,
     private httpClient: HttpClient,
     private _snackBar: MatSnackBar,
-    private routing: Router,) {
+    private routing: Router) {
     this.initForm();
     this.initialize();
 
@@ -71,8 +71,8 @@ export class ChatComponent implements OnInit, AfterViewInit {
     this.notificationService.EventChatMessage
       .subscribe(data => {
         if (data.sender) {
-          var n = new MessageModel();
-          var t = this.userChat.find(a => a.user == data.sender);
+          let n = new MessageModel();
+          let t = this.userChat.find(a => a.user == data.sender);
           if (t) {
             n.message = data.message;
             n.sender = data.sender;
@@ -171,6 +171,8 @@ export class ChatComponent implements OnInit, AfterViewInit {
           this.scrollToBottom();
         }
       }
+      this.global.previousChats.push(sendingChatMsg)
+
       this.notificationService.SendChatMessage(sendingChatMsg);
       this.chatForm.reset();
     } catch (e) { }

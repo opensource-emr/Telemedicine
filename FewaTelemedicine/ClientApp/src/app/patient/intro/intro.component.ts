@@ -44,7 +44,8 @@ export class IntroComponent implements OnInit {
   }
 
   private getPractice() {
-    this.httpClient.get<any>(this.global.practiceUrl + 'GetPracticeConfiguration?practice=' + this.global.currentPractice)
+    var key="73l3M3D"; //hardcoded
+    this.httpClient.get<any>(this.global.practiceUrl + 'GetPracticeConfiguration?practice=' + this.global.currentPractice + "&" + "key=" + key)
       .subscribe(res => {
         this.global.practiceObj = res;
         if (!this.global.practiceObj.logoPath) {

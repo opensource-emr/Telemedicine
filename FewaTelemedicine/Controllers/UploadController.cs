@@ -10,13 +10,15 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace FewaTelemedicine.Controllers
 {
     [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
-
+    [Authorize]
 
     public class UploadController : ControllerBase
     {

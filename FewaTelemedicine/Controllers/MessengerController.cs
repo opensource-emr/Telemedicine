@@ -59,20 +59,28 @@ namespace FewaTelemedicine.Controllers
 
         [Route("SendEmail")]
         [HttpPost]
-        public async Task<bool> SendEmail([FromBody] Patient email)
+        public async Task<bool> SendEmail(string key, [FromBody] Patient email)
         {
 
             try
             {
-                if (email is null)
+                if (key == "73l3M3D")
+                {
+                    if (email is null)
+                    {
+                        return false;
+                    }
+                    if (string.IsNullOrEmpty(email.email))
+                    {
+                        return false;
+                    }
+                    return await _messengerService.SendEmailAsync(email.email, email.providerNameAttending, Request.Scheme + "://" + Request.Host.Value);
+                }
+                else
                 {
                     return false;
                 }
-                if (string.IsNullOrEmpty(email.email))
-                {
-                    return false;
-                }
-                return await _messengerService.SendEmailAsync(email.email, email.providerNameAttending, Request.Scheme + "://" + Request.Host.Value);
+            
             }
             catch (Exception ex)
             {
@@ -83,11 +91,13 @@ namespace FewaTelemedicine.Controllers
 
         [Route("EmailPatientReport")]
         [HttpPost]
-        public async Task<bool> SendEmailPatientReport([FromBody] Patient obj)
+        public async Task<bool> SendEmailPatientReport(string key, [FromBody] Patient obj)
         {
             try
             {
-                if (obj is null)
+                if (key == "73l3M3D")
+                {
+                    if (obj is null)
                 {
                     return false;
                 }
@@ -96,6 +106,11 @@ namespace FewaTelemedicine.Controllers
                     return false;
                 }
                 return await _messengerService.SendPatientReportEmailAsync(obj, Request.Scheme + "://" + Request.Host.Value);
+                }
+                else
+                {
+                    return false;
+                }
             }
             catch (Exception ex)
             {
@@ -106,12 +121,14 @@ namespace FewaTelemedicine.Controllers
 
         [Route("SendOTP")]
         [HttpPost]
-        public async Task<bool> SendOTP([FromBody] Provider obj)
+        public async Task<bool> SendOTP(string key, [FromBody] Provider obj)
         {
 
             try
             {
-                if (obj is null)
+                if (key == "73l3M3D")
+                {
+                    if (obj is null)
                 {
                     return false;
                 }
@@ -141,6 +158,11 @@ namespace FewaTelemedicine.Controllers
                     }
                     return result;
                 }
+                }
+                else
+                {
+                    return false;
+                }
             }
             catch (Exception ex)
             {
@@ -150,11 +172,13 @@ namespace FewaTelemedicine.Controllers
         }
         [Route("ResendOTP")]
         [HttpGet]
-        public async Task<bool> ResendOTP()
+        public async Task<bool> ResendOTP(string key)
         {
             try
             {
-                Provider pro = JsonConvert.DeserializeObject<Provider>(HttpContext.Session.GetString("otp"));
+                if (key == "73l3M3D")
+                {
+                    Provider pro = JsonConvert.DeserializeObject<Provider>(HttpContext.Session.GetString("otp"));
                 if (pro == null)
                 {
                     return false;
@@ -175,7 +199,11 @@ namespace FewaTelemedicine.Controllers
                 {
                     return false;
                 }
-
+                }
+                else
+                {
+                    return false;
+                }
             }
             catch (Exception ex)
             {
@@ -185,12 +213,14 @@ namespace FewaTelemedicine.Controllers
         }
         [Route("SendRegistrationOTP")]
         [HttpPost]
-        public async Task<bool> SendRegistrationOTP([FromBody] Practice obj)
+        public async Task<bool> SendRegistrationOTP(string key, [FromBody] Practice obj)
         {
 
             try
             {
-                if (obj is null)
+                if (key == "73l3M3D")
+                {
+                    if (obj is null)
                 {
                     return false;
                 }
@@ -201,7 +231,11 @@ namespace FewaTelemedicine.Controllers
                     HttpContext.Session.SetString("registrationOtp", JsonConvert.SerializeObject(obj));
                 }
                 return result;
-
+                }
+                else
+                {
+                    return false;
+                }
             }
             catch (Exception ex)
             {
@@ -211,18 +245,25 @@ namespace FewaTelemedicine.Controllers
         }
         [Route("ResendRegistrationOTP")]
         [HttpGet]
-        public async Task<bool> ResendRegistrationOTP()
+        public async Task<bool> ResendRegistrationOTP(string key)
         {
 
             try
             {
-                Practice practice = JsonConvert.DeserializeObject<Practice>(HttpContext.Session.GetString("registrationOtp"));
+                if (key == "73l3M3D")
+                {
+                    Practice practice = JsonConvert.DeserializeObject<Practice>(HttpContext.Session.GetString("registrationOtp"));
                 if (practice == null)
                 {
                     return false;
                 }
                 var result = await _messengerService.SendRegistrationOTP(practice.name, practice.email, practice.otp, Request.Scheme + "://" + Request.Host.Value);
                 return result;
+                }
+                else
+                {
+                    return false;
+                }
             }
             catch (Exception ex)
             {

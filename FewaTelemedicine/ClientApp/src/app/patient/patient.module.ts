@@ -7,6 +7,9 @@ import { LiveVideoComponent } from './live-video/live-video.component';
 import { IntroComponent } from './intro/intro.component';
 import { SummaryComponent } from './summary/summary.component';
 import { SharedModule } from '../_helpers/shared.module';
+import { SecurityLogic } from '../_helpers/common/authguard';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpInterceptorService } from '../_helpers/common/http-interceptor.service';
 
 
 @NgModule({
@@ -22,6 +25,8 @@ import { SharedModule } from '../_helpers/shared.module';
     FormsModule, 
     ReactiveFormsModule,
     SharedModule
-  ]
+  ],
+  providers:[SecurityLogic,
+  {provide:HTTP_INTERCEPTORS,useClass:HttpInterceptorService,multi:true}]
 })
 export class PatientModule { }

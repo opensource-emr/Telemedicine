@@ -12,7 +12,6 @@ import { Clipboard } from '@angular/cdk/clipboard'
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TooltipPosition } from '@angular/material/tooltip';
 
-
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -113,11 +112,12 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     if (this.form.invalid) {
       return
     }
+    var key="73l3M3D"; //hardcoded
     this.invitationButton = true;
     this.patientObj.email = this.form.value.email
     this.patientObj.mobileNumber = this.form.value.mobile_number;
     this.patientObj.providerNameAttending = this.providerObj.userName;
-    this.httpClient.post("/Messenger/SendEmail", this.patientObj)
+    this.httpClient.post("/Messenger/SendEmail?key=" + key, this.patientObj)
       .subscribe(res => this.emailInvitationSuccess(res), err => this.error(err));
   }
 
@@ -210,6 +210,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   logout() {
     this.global.providerObj = new Provider();
     this.notificationService.DisconnectUser();
+    this.global.previousChats = [];
     this.routing.navigateByUrl('/provider/login');
   }
 

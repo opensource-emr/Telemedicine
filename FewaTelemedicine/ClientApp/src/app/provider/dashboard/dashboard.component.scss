@@ -1,150 +1,166 @@
 @import "../../../global.scss";
-
 .welcomeNote {
-  background-color: var(--primary);
-  display: flex;
-  align-items: center;
-  height: 140px;
-  background-image: url(../../../assets/img/dashboard-bg.png);
-  background-position: center right;
-  background-size: cover;
-  margin-top: 20px;
-  margin-bottom: 15px;
-  border-radius: 5px;
-  .welcomeImage {
-    width: 250px;
-    position: relative;
+    background-color: var(--primary);
+    display: flex;
+    align-items: center;
     height: 140px;
-    img {
-      position: absolute;
-      top: -32px;
-      left: 0;
-      bottom: 0;
+    background-image: url(../../../assets/img/dashboard-bg.png);
+    background-position: center right;
+    background-size: cover;
+    margin-top: 20px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    .welcomeImage {
+        width: 250px;
+        position: relative;
+        height: 140px;
+        img {
+            position: absolute;
+            top: -32px;
+            left: 0;
+            bottom: 0;
+        }
     }
-  }
-  .welcomeContent {
-    padding: 0 15px;
-    h1 {
-      color: $white;
-      font-size: 20px;
+    .welcomeContent {
+        padding: 0 15px;
+        h1 {
+            color: $white;
+            font-size: 20px;
+        }
+        p {
+            font-size: 16px;
+            color: var(--primary-light);
+            margin: 0;
+            padding: 0;
+        }
     }
-    p {
-      font-size: 16px;
-      color: var(--primary-light);
-      margin: 0;
-      padding: 0;
-    }
-  }
 }
 
 // invitation section
-
 .invitationForm {
-  .row {
-    .col-lg-1 {
-      .submitbtn {
-        background: var(--primary);
-        // width: 100%;
-        margin: 5px;
-        color: $white;
-        border: none;
-        border-radius: 5px;
-        font-size: 19px;
-        height: calc(1.5em + 0.45rem + 2px);
-        padding: 0.375rem 0.75rem;
-      }
-    }
-    .col-lg-5{
-      .form-group {
-        .message {
-          color: var(--primary);
+    .row {
+        .col-lg-1 {
+            .submitbtn {
+                background: var(--primary);
+                // width: 100%;
+                margin: 5px;
+                color: $white;
+                border: none;
+                border-radius: 5px;
+                font-size: 19px;
+                height: calc(1.5em + 0.45rem + 2px);
+                padding: 0.375rem 0.75rem;
+            }
         }
-      }
+        .col-lg-5 {
+            .form-group {
+                .message {
+                    color: var(--primary);
+                }
+            }
+        }
     }
-  
-  }
-  
-  ul {
-    margin-bottom: 0;
-    li {
-      width: 40%;
-      display: inline-block;
-      padding: 10px 10px 0;
-      &:first-child {
-        padding-left: 0;
-      }
-      &:last-child {
-        width: 20%;
-        padding-right: 0;
-      }
-      .submitbtn {
-        background: var(--primary);
-        width: 100%;
-        color: $white;
-        border: none;
-        border-radius: 5px;
-        font-size: 16px;
-        height: calc(1.5em + 0.45rem + 2px);
-        padding: 0.375rem 0.75rem;
-      }
-      .form-group {
+    ul {
         margin-bottom: 0;
-      }
+        li {
+            width: 40%;
+            display: inline-block;
+            padding: 10px 10px 0;
+            &:first-child {
+                padding-left: 0;
+            }
+            &:last-child {
+                width: 20%;
+                padding-right: 0;
+            }
+            .submitbtn {
+                background: var(--primary);
+                width: 100%;
+                color: $white;
+                border: none;
+                border-radius: 5px;
+                font-size: 16px;
+                height: calc(1.5em + 0.45rem + 2px);
+                padding: 0.375rem 0.75rem;
+            }
+            .form-group {
+                margin-bottom: 0;
+            }
+        }
     }
-  }
 }
 
 // prevideo section
 .pretestVideo {
-  width: 100%;
-  height: 310px;
-  overflow: hidden;
-  border-radius: 5px;
-  img {
     width: 100%;
-    height: 100% !important;
-  }
+    height: 310px;
+    overflow: hidden;
+    border-radius: 5px;
+    img {
+        width: 100%;
+        height: 100% !important;
+    }
 }
+
 // Patient table
 .patientWaiting {
-  display: flex;
-  align-items: center;
-  .activePatient {
-    width: 12px;
-    height: 12px;
-    background: $success;
-    border-radius: 50%;
-    margin: 0 10px 0 0;
-    display: inline-block;
-  }
-  .patientName {
-    p {
-      color: $gray;
-      margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    .activePatient {
+        width: 12px;
+        height: 12px;
+        background: $success;
+        border-radius: 50%;
+        margin: 0 10px 0 0;
+        display: inline-block;
     }
-    span {
-      color: $light-gray;
-      font-size: 12px;
-      display: block;
+    .patientName {
+        p {
+            color: $gray;
+            margin-bottom: 0;
+        }
+        span {
+            color: $light-gray;
+            font-size: 12px;
+            display: block;
+        }
     }
-  }
 }
+
 .patientBtn {
-  color: var(--primary);
-  span {
-    svg {
-      fill: var(--primary);
-      width: 16px;
-      height: 16px;
+    color: var(--primary);
+    span {
+        svg {
+            fill: var(--primary);
+            width: 16px;
+            height: 16px;
+        }
     }
-  }
 }
 
+.tableFixHead {
+    overflow-y: auto;
+    height: 204px;
+}
 
-.tableFixHead          { overflow-y: auto; height:2040px; }
-.tableFixHead thead th { position: sticky; top: 0; }
+.tableFixHead thead th {
+    position: sticky;
+    top: 0;
+}
+
 
 /* Just common table stuff. Really. */
-table  { border-collapse: collapse; width: 100%; }
-th, td { padding: 8px 16px; }
-th     { background:#eee; }
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th,
+td {
+    padding: 8px 16px;
+}
+
+th {
+    background: #eee;
+}
