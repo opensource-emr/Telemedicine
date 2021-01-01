@@ -84,25 +84,29 @@ export class AdminSettingComponent implements OnInit {
 
   private initAddProviderForm() {
     this.addProviderForm = this.fb.group({
-    userName: ['', Validators.required],
+      userName: ['', Validators.required],
       password: ['', Validators.required],
       providerList: this.fb.array([]),
     });
-}
+  }
 
   addProvider() {
     this.getProviderFormvalue();
     this.httpClient.post<any>(this.global.apiUrl + "Security/AddProvider", this.addProviderObj)
       .subscribe
-      (res => { alert("Provider Added succesfully, Now login with email password")
-      this.providerList = res},
-      err => { alert("There is a problem") });
-    // this.changeDetection.detectChanges();
+      (res => {
+        if (res.message) { alert(res.message) }
+        else {
+          alert("Provider Added succesfully, Now login with email password")
+          this.providerList = res
+        }
+      },
+        err => { alert("There is a problem") });
     this.resetAddProviderForm();
   }
 
   displayProviderList() {
-     this.httpClient.get<any>(this.global.practiceUrl + "GetAllProvider?practice=" + this.global.currentPractice)
+    this.httpClient.get<any>(this.global.practiceUrl + "GetAllProvider?practice=" + this.global.currentPractice)
       .subscribe(res => this.providerList = res, err => alert(err));
   }
 
@@ -155,6 +159,7 @@ export class AdminSettingComponent implements OnInit {
     this.addProviderObj.password = v.password;
     this.addProviderObj.url = this.addProviderObj.userName // url same as username
     this.addProviderObj.practice = this.global.currentPractice;
+    this.addProviderObj.practiceId = this.global.providerObj.practiceId;
   }
 
   config: AngularEditorConfig = {

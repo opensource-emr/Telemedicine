@@ -113,7 +113,7 @@ export class LiveVideoComponent implements OnInit,OnDestroy {
       // newPrescriptionsSentToYourPharmacy: new FormControl(true, Validators.nullValidator),
       // newPrescriptionsMailedToYou: new FormControl(true, Validators.nullValidator),
       medication: new FormControl('', Validators.nullValidator),
-      followUpNumber: new FormControl('', Validators.min(0)),
+      followUpNumber: new FormControl('', Validators.pattern("^(1[0-2]|[0-9])$")),
       followUpMeasure: new FormControl('', Validators.nullValidator),
     });
   }

@@ -255,7 +255,29 @@ namespace FewaTelemedicine.Controllers
                         _providers.Add(a);
 
                     }
-                    return Ok(new { message = "Account created successfully! Please login with username:admin and password:admin", practice = newPractice, provider = provider });
+                    //  to add new advice
+
+                    ProviderAdvice newAdvice= new ProviderAdvice();
+                    newAdvice.adviceId = FewaDbContext.advice.Max(a => a.adviceId) + 1;           
+                    newAdvice.inputType = newAdvice.inputType;
+                    newAdvice.isChecked = newAdvice.isChecked;
+                    newAdvice.practiceId = newPractice.practiceId;
+                    newAdvice.providerId = provider.providerId;
+                    newAdvice.advice = FewaDbContext._advice1;
+                   
+                    FewaDbContext.advice.Add(newAdvice);
+                    FewaDbContext.SaveChanges();
+                    newAdvice.advice = FewaDbContext._advice2;
+
+                    newAdvice.adviceId = newAdvice.adviceId + 1;
+                    FewaDbContext.advice.Add(newAdvice);
+                    FewaDbContext.SaveChanges();
+                    newAdvice.advice = FewaDbContext._advice3;
+
+                    newAdvice.adviceId = newAdvice.adviceId + 1;
+                    FewaDbContext.advice.Add(newAdvice);
+                    FewaDbContext.SaveChanges();
+                    return Ok(new { message = "Account created successfully! Please login with username:admin and password:admin", practice = newPractice, provider = provider, providerAdvice = newAdvice });
                 }
                 else
                 {
@@ -278,6 +300,11 @@ namespace FewaTelemedicine.Controllers
                 if (obj is null)
                 {
                     return StatusCode(500);
+                }
+                Provider provider = FewaDbContext.providers.Where(a => a.userName == obj.userName && a.practiceId == obj.practiceId).FirstOrDefault();
+                if (provider != null)
+                {
+                    return Ok(new { message = "Provider already exists" });
                 }
                 obj.providerId = FewaDbContext.providers.Max(a => a.providerId) + 1;
                 obj.password = Cipher.Encrypt(obj.password, obj.userName);
