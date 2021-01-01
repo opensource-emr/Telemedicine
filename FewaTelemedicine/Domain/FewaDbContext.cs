@@ -62,7 +62,7 @@ namespace FewaTelemedicine.Domain
             var providerSeed1 = CreateProvider(2, "doctor", "ajNJkHEqM5bu0szpIIhwzw==", "provider1", "practice1", 2);
             var provideradviceSeed = CreateProviderAdvice(1, "Lab Orders Sent", " ", 1, 1);
             var provideradviceSeed1 = CreateProviderAdvice(2, "New prescriptions sent to your pharmacy", " ", 1, 1);
-            var provideradviceSeed2 = CreateProviderAdvice(3, "New prescriptions mailed to you", " ", 1, 1);    
+            var provideradviceSeed2 = CreateProviderAdvice(3, "New prescriptions mailed to you", " ", 1, 1);
             modelBuilder.Entity<Practice>().ToTable("Practice");
             modelBuilder.Entity<Provider>().ToTable("Provider");
             modelBuilder.Entity<Patient>().ToTable("Patient");
@@ -148,6 +148,9 @@ namespace FewaTelemedicine.Domain
             };
             return providerAdvice;
         }
+        public static string _advice1 = "Lab Orders Sent";
+        public static string _advice2 = "New prescriptions sent to your pharmacy";
+        public static string _advice3 = "New prescriptions mailed to you";
         public static string _description = "Welcome to the demo of Fewa. This is the place where you can put your practice description. Fewa is a application which helps to connect providers and patient using video. Patient can print advice , share documents with provider and provider also knows how much time he has given to attend the patient. Send a invitation to the patient and then both can communicate";
         public static string _emailHtmlBody = "   <!DOCTYPE html>  " +
                                  "   <html lang='en'>  " +
