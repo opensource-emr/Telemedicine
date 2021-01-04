@@ -113,7 +113,7 @@ export class LiveVideoComponent implements OnInit,OnDestroy {
       // newPrescriptionsSentToYourPharmacy: new FormControl(true, Validators.nullValidator),
       // newPrescriptionsMailedToYou: new FormControl(true, Validators.nullValidator),
       medication: new FormControl('', Validators.nullValidator),
-      followUpNumber: new FormControl('', Validators.pattern("^(1[0-2]|[0-9])$")),
+      followUpNumber: new FormControl('', [Validators.required,Validators.pattern("^[0-9]{1,10}$")]),
       followUpMeasure: new FormControl('', Validators.nullValidator),
     });
   }
@@ -151,6 +151,9 @@ export class LiveVideoComponent implements OnInit,OnDestroy {
   }
 
   completeVisit() {
+    if (this.reportForm.invalid) {
+      return;
+    }
     this.isMeetStart = false;
     this.patient.url = this.global.providerObj.url;
     this.patient.endTime = new Date();
