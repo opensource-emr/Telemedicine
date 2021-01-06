@@ -78,7 +78,7 @@ export class JitsiComponent implements OnInit, OnDestroy {
 
   private handleAPI() {
     this.api.executeCommands({
-      displayName: [ this.remoteUserDisplayName ] 
+      displayName: this.remoteUserDisplayName 
     });
     this.api.executeCommand('subject', 'Fewa Telemedicine');
     //console.error('closing')
