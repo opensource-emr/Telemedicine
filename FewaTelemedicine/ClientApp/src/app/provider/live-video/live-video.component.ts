@@ -36,10 +36,7 @@ export class LiveVideoComponent implements OnInit,OnDestroy {
     this.initVideoConference();
     this.initForm();
     this.roomName = this.global.providerObj.roomName;
-    if(this.global.providerObj.name == null || this.global.providerObj.name==undefined || this.global.providerObj.name==""){
-      this.remoteUserDisplayName = this.global.providerObj.userName;
-    }
-    this.remoteUserDisplayName = this.global.providerObj.name;
+    this.remoteUserDisplayName = this.global.providerObj.userName;
     this.isMeetStart = true;
   }
 

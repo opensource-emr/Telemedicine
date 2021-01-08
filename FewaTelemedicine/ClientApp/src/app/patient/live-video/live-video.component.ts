@@ -35,7 +35,7 @@ export class LiveVideoComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    var params = new HttpParams().set('username', this.global.currentProvider);
+    var params = new HttpParams().set('username', this.global.currentProvider).set('practiceName',this.global.currentPractice);
     this.httpClient.
       get<any>(this.global.practiceUrl + "GetUpdatedProvider", { params: params })
       .subscribe(res => {

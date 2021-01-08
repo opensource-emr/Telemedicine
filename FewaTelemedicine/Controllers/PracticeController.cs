@@ -35,6 +35,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -194,14 +195,14 @@ namespace FewaTelemedicine.Controllers
             return attendedPatients;
         }
 
-        public IActionResult GetUpdatedProvider(string username)
+        public IActionResult GetUpdatedProvider(string username,string practiceName)
         {
             if (string.IsNullOrEmpty(username) || username == "undefined")
             { return BadRequest(); }
 
             var configuration = FewaDbContext.practices.ToList();
             var provider = (from temp in FewaDbContext.providers
-                            where temp.userName.ToLower().Trim() == username.ToLower().Trim() || temp.url.ToLower().Trim() == username.ToLower().Trim()
+                            where temp.userName.ToLower().Trim() == username.ToLower().Trim() && temp.practice.ToLower().Trim() == practiceName.ToLower().Trim()
                             select temp).FirstOrDefault();
             provider.roomName = provider.roomName.Replace("name", provider.userName);
             var data = new
@@ -498,8 +499,6 @@ namespace FewaTelemedicine.Controllers
         }
         public IActionResult SaveAdvice([FromBody] List<ProviderAdvice> adviceList)
         {
-            if (ModelState.IsValid)
-            {
                 try
                 {
                     if (adviceList == null)
@@ -508,16 +507,17 @@ namespace FewaTelemedicine.Controllers
                     }
                     foreach (var i in adviceList)
                     {
-                        if (i.adviceId > 0)
+                        var advice = FewaDbContext.advice.Where(a => a.adviceId == i.adviceId).AsQueryable().FirstOrDefault();
+                        if (advice != null)
                         {
-                            FewaDbContext.advice.Update(i);
+                          FewaDbContext.Entry(advice).State = EntityState.Detached;
+                          FewaDbContext.Entry(i).State = EntityState.Modified;
                         }
                         else
                         {
+                            i.adviceId = FewaDbContext.advice.Max(a => a.adviceId) + 1;
                             FewaDbContext.advice.Add(i);
                         }
-
-
                         FewaDbContext.SaveChanges();
                     }
                     return Ok();
@@ -526,11 +526,7 @@ namespace FewaTelemedicine.Controllers
                 {
                     return Ok("Error Adding New Advice: " + ex.Message);
                 }
-            }
-            else
-            {
-                return Ok("Unable to Save Advice.");
-            }
+          
         }
         public IActionResult DeleteAdvice(int id)
         {
