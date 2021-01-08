@@ -44,7 +44,6 @@ const initializerConfigFn = (config: ConfigService) => {
     { provide: APP_INITIALIZER, useFactory: initializerConfigFn, multi: true, deps: [ConfigService], },
     //{ provide: APP_BASE_HREF, useValue: window['base-href'] },
     {provide:HTTP_INTERCEPTORS,useClass:HttpInterceptorService,multi:true},
-    NotificationService,
     Global,
     SecurityLogic    
 

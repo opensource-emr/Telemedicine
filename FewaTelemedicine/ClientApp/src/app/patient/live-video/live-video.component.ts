@@ -41,7 +41,7 @@ export class LiveVideoComponent implements OnInit, AfterViewInit {
       .subscribe(res => {
         this.global.providerObj = res.User;
         this.roomName = this.global.providerObj.roomName;
-        this.remoteUserDisplayName = this.global.currentProvider;
+        this.remoteUserDisplayName = this.global.patientObj.name;
         for (let temp of res.Configuration) {
           if (temp.url == this.global.providerObj.practice) {
             this.global.practiceObj = temp;
