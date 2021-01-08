@@ -343,6 +343,8 @@ export class UserSettingComponent implements OnInit {
           this.progress = Math.round(100 * event.loaded / event.total);
         else if (event.type === HttpEventType.Response) {
           this.providerObj = JSON.parse(event.body);
+          var roomname = this.providerObj.roomName.replace("name",  this.providerObj.userName);
+          this.providerObj.roomName = roomname;
           this.global.providerObj = this.providerObj;
           alert("profile updated");
         }
