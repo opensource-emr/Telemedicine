@@ -12,16 +12,16 @@ declare var JitsiMeetExternalAPI: any;
   ]
 })
 export class JitsiComponent implements OnInit, OnDestroy {
-  @Input('roomName')
-  roomName = "FewaTelemedicine";
-  @Input('remoteUserDisplayName')
-  remoteUserDisplayName = "Fewa User";
-  localUserDisplayName = "me";
+  @Input('roomName') roomName = "FewaTelemedicine";
+  @Input('remoteUserDisplayName') remoteUserDisplayName = "Fewa User";
+ // @Input('localUserDisplayName') localUserDisplayName = "";
+  
   private api: any;
   ngOnInit() {
     this.api = new JitsiMeetExternalAPI("meet.jit.si", this.callOptions);
     this.handleAPI();
   }
+  
   ngOnDestroy() {
     this.api.executeCommand('hangup');
     this.api.dispose();
@@ -57,7 +57,7 @@ export class JitsiComponent implements OnInit, OnDestroy {
       CLOSE_PAGE_GUEST_HINT: false, // A html text to be shown to guests on the close page, false disables it
       CONNECTION_INDICATOR_DISABLED: false,
       DEFAULT_BACKGROUND: '#474747',
-      DEFAULT_LOCAL_DISPLAY_NAME: this.localUserDisplayName,
+    //  DEFAULT_LOCAL_DISPLAY_NAME: this.localUserDisplayName,
       DEFAULT_REMOTE_DISPLAY_NAME: this.remoteUserDisplayName,
       MOBILE_APP_PROMO: false,
       SHOW_CHROME_EXTENSION_BANNER: false,
@@ -77,10 +77,9 @@ export class JitsiComponent implements OnInit, OnDestroy {
   }
 
   private handleAPI() {
-    this.api.executeCommands({
-      displayName: this.remoteUserDisplayName 
-    });
+    this.api.executeCommand('displayName',this.remoteUserDisplayName);
     this.api.executeCommand('subject', 'Fewa Telemedicine');
+    this.api.executeCommand('setVideoQuality', 720);
     //console.error('closing')
     this.api.addEventListener('readyToClose', function () {
       console.warn('readyToClose');
@@ -93,6 +92,11 @@ export class JitsiComponent implements OnInit, OnDestroy {
       console.warn('videoConferenceJoined');
       console.warn(e);
     });
+    this.api.addEventListener('participantLeft', function (e) {
+      console.warn('participantLeft');
+      console.warn(e);
+    });
     //console.log(this.api);
   }
 }
+ 

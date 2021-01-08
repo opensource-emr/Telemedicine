@@ -22,7 +22,7 @@ export class SummaryComponent implements OnInit {
     private fb: FormBuilder,
     public httpClient: HttpClient
   ) {
-    //this.patient = this.global.patientObj;
+    this.patient = this.global.patientObj;
     this.initConn();
   }
 
@@ -46,10 +46,10 @@ export class SummaryComponent implements OnInit {
   private initConn() {
     this.initForm();
     this.notificationService.Connect();
-    this.notificationService.EventCompletePatient.subscribe(_patient => {
-      this.patient = _patient;
+    // this.notificationService.EventCompletePatient.subscribe(_patient => {
+    //   this.patient = _patient;
       //console.log(_patient);
-    })
+    //})
   }
   private initForm() {
     this.emailForm = this.fb.group({
