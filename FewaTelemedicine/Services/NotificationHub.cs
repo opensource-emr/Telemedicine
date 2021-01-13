@@ -142,6 +142,19 @@ namespace FewaTelemedicine.Services
                 }
             }
         }
+
+        public void sendDisconnectedPatient(string pat)
+        {
+            foreach (var item in providers)
+            {
+                if(item.signalRConnectionId != null)
+                {
+                    this.Clients.Clients(GetProviderByName(item.userName, item.providerId, item.practiceId).signalRConnectionId).GetDisconnectedPatient(pat);
+                }
+            }
+
+        }
+
         private void SendUpdatedProviders()
         {
             var activeProviders = providers.Where(a => a.signalRConnectionId != null).ToList();
@@ -189,6 +202,7 @@ namespace FewaTelemedicine.Services
             {
                 return base.OnDisconnectedAsync(new Exception("User Not Found"));
             }
+            sendDisconnectedPatient(Context.User.Identity.Name);
             RemoveUser(Context.User.Identity.Name);
             string folderName = "Upload";
             string webRootPath = _hostingEnvironment.WebRootPath;

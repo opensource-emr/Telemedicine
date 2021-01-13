@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router, NavigationExtras } from '@angular/router';
 import { Global } from 'src/app/_helpers/common/global.model';
 import { NotificationService } from 'src/app/_helpers/common/notification.service';
 import { UploadDownloadService } from 'src/app/_helpers/common/upload-download.service';
@@ -13,7 +14,7 @@ import { Patient, ProviderAdvice } from 'src/app/_helpers/models/domain-model';
   templateUrl: './live-video.component.html',
   styleUrls: ['./live-video.component.scss']
 })
-export class LiveVideoComponent implements OnInit,OnDestroy {
+export class LiveVideoComponent implements OnInit, OnDestroy {
   isDisplayed = false;
   patient: Patient = null;
   roomName = "FewaTelemedicine";
@@ -31,7 +32,8 @@ export class LiveVideoComponent implements OnInit,OnDestroy {
     public global: Global,
     private cdr: ChangeDetectorRef,
     public service: UploadDownloadService,
-    public http: HttpClient) {
+    public http: HttpClient,
+    public _snackBar:MatSnackBar) {
     this.patient = this.global.patientObj;
     this.initVideoConference();
     this.initForm();
@@ -46,7 +48,7 @@ export class LiveVideoComponent implements OnInit,OnDestroy {
     previousChats.forEach(element => {
       this.currentChat.push(element);
     });
-}
+  }
 
   ngOnDestroy() {
     this.currentChat = [];
@@ -85,6 +87,7 @@ export class LiveVideoComponent implements OnInit,OnDestroy {
       // gets doctor list
       this.notificationService.LoadActiveDoctors();
     }
+
     else {
       this.notificationService.Connect();
       this.notificationService.EventCallPatient.subscribe(_patient => {
@@ -113,7 +116,7 @@ export class LiveVideoComponent implements OnInit,OnDestroy {
       // newPrescriptionsSentToYourPharmacy: new FormControl(true, Validators.nullValidator),
       // newPrescriptionsMailedToYou: new FormControl(true, Validators.nullValidator),
       medication: new FormControl('', Validators.nullValidator),
-      followUpNumber: new FormControl('', [Validators.required,Validators.pattern("^[0-9]{1,10}$")]),
+      followUpNumber: new FormControl('', [Validators.required, Validators.pattern("^[0-9]{1,10}$")]),
       followUpMeasure: new FormControl('', Validators.nullValidator),
     });
   }
@@ -176,6 +179,10 @@ export class LiveVideoComponent implements OnInit,OnDestroy {
         this.notificationService.PatientAttended(this.patient);
         this.global.patientObj = this.patient;
         this.router.navigate(['/provider/dashboard']);
+        this._snackBar.open('Report Submitted Sucessfully','Dismiss', {
+          duration: 10000,
+          verticalPosition: 'top'
+         });
       }
     });
   }
