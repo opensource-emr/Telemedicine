@@ -2,7 +2,7 @@ import { Injectable, EventEmitter, Provider } from '@angular/core';
 import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
 import { Global } from './global.model';
 import { Patient } from '../models/domain-model';
-import { Router } from '@angular/router';
+import { Router,NavigationExtras } from '@angular/router';
 import { ChatModel, MessageModel } from '../models/chat.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -193,6 +193,25 @@ export class NotificationService {
       this.EventGetAllProviders.emit(jsonData);
       console.log(jsonData);
     });
+
+    //check for disconnected patient
+    this._hubConnection.on('GetDisconnectedPatient',(data: string)=>{
+      if (data == this.global.patientObj.name) {
+        this.directToDashboard();
+      }     
+    });
+  }
+
+
+  //direct to dashboard if patient left/disconnected
+  directToDashboard() {
+    let navigationExtras: NavigationExtras =
+    {
+      queryParams: {
+        "name": this.global.patientObj.name
+      }
+    };
+    this.router.navigate(['/provider/dashboard'], navigationExtras);
   }
 
   private disconnects(e: Error) {

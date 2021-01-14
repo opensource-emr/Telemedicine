@@ -21,5 +21,7 @@ namespace FewaTelemedicine.Domain.Services
 
         Task ChatMessage(string message);
         Task GetAllProviders(string payLoad);
+
+        Task GetDisconnectedPatient(string pat);
     }
 }

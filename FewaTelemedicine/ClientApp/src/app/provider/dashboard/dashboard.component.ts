@@ -4,7 +4,7 @@ import { Patient, Practice, Provider } from 'src/app/_helpers/models/domain-mode
 import { Global } from 'src/app/_helpers/common/global.model';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { NgbCalendar, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from 'src/app/_helpers/common/notification.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -27,6 +27,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   invitationLink: string = this.getInvitationLink();
   selectedDate: NgbDateStruct;
   patients: Array<Patient> = new Array<Patient>();
+  disconnectedPatient='';
   public showPatDetail: boolean = false;
   @ViewChild('pcam') video: any;
   Video: any;
@@ -47,11 +48,26 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     private notificationService: NotificationService,
     private fb: FormBuilder,
     public clipboard: Clipboard,
-    public _snackBar: MatSnackBar) {
+    public _snackBar: MatSnackBar,
+    public activatedRoute: ActivatedRoute) {
     this.selectedDate = calendar.getToday();
+    this.displayPatientDisconnectedMessage();
     this.loadPatientsAttended();
     this.startCommunication();
     this.initForm();
+  }
+
+  //if patient disconnected display message
+  displayPatientDisconnectedMessage(){
+    this.activatedRoute.queryParams.subscribe(m => {
+      this.disconnectedPatient = m['name'];
+    });
+    if(this.disconnectedPatient!=undefined){
+    this._snackBar.open(this.disconnectedPatient.toUpperCase() +'  has disconnected ','Dismiss', {
+      duration: 10000,
+      verticalPosition: 'top'
+     });
+    }
   }
 
   /*
