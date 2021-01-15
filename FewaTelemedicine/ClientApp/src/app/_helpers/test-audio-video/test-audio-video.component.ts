@@ -42,7 +42,7 @@ export class TestAudioVideoComponent implements OnInit, AfterViewInit, OnDestroy
                     video.srcObject = stream;
                 })
                 .catch((err0r) => {
-                    console.log("Something went wrong!");
+                    // console.log("Something went wrong!");
                 });
         }
         this.changeDetector.detectChanges();

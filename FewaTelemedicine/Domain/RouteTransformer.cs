@@ -23,10 +23,18 @@ namespace FewaTelemedicine.Domain
         /// <returns></returns>
         public override async ValueTask<RouteValueDictionary> TransformAsync(HttpContext httpContext, RouteValueDictionary values)
         {
-            if (!values.ContainsKey("controller") || !values.ContainsKey("action")) return values;
+            if (!values.ContainsKey("controller") || !values.ContainsKey("action"))
+                return values;
 
             var practice = (string)values["controller"];
             var provider = (string)values["action"];
+            int count = httpContext.Request.Path.Value.Count(x => (x == '/'));
+            if (provider == "Index"&&practice!="Home")
+            {
+                provider = "admin";
+                if (count == 1) httpContext.Session.SetString("admin", "/admin/");
+                else httpContext.Session.SetString("admin", "admin/");
+            }
             //if (practice == "Home" && provider == "Index")
             //{
             //    return null;

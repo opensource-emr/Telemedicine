@@ -148,7 +148,9 @@ export class UserSettingComponent implements OnInit {
         this.practiceObj = res;
         alert("Provider Advice is Saved Successfully.");
       },
-        err => { console.log(err); });
+        err => {
+          //  console.log(err); 
+      });
   }
 
   private initUserForm() {
@@ -349,7 +351,9 @@ export class UserSettingComponent implements OnInit {
           alert("profile updated");
         }
       },
-        err => { console.log(err); });
+        err => { 
+          // console.log(err);
+      });
   }
 
   // updatePracticeConfiguration() {

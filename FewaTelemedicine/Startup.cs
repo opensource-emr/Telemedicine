@@ -12,6 +12,7 @@ using FewaTelemedicine.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -63,10 +64,8 @@ namespace FewaTelemedicine
             services.AddScoped<IMessengerService, MessengerServ>();
 
             services.AddSingleton<RouteTransformer>();
-
+           
             services.AddHttpContextAccessor();
-
-
             services.AddControllers()
                 .AddJsonOptions(options =>
                 {
@@ -125,6 +124,7 @@ namespace FewaTelemedicine
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseSession();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -141,7 +141,7 @@ namespace FewaTelemedicine
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseSession();
+           
 
             app.UseEndpoints(endpoints =>
             {
