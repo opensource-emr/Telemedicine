@@ -27,7 +27,7 @@ export class NotificationService {
   public GetAllPatients() {
     this._hubConnection.invoke("GetPatientAll")
       .catch(function (err) {
-        console.log(err);
+        // console.log(err);
       });
   }
 
@@ -35,7 +35,7 @@ export class NotificationService {
     //console.log(callPatient);
     this._hubConnection.invoke('PatientCall', callPatient)
       .catch(function (err) {
-        console.log(err);
+        // console.log(err);
       });
   }
 
@@ -43,7 +43,7 @@ export class NotificationService {
     //console.log(patient);
     this._hubConnection.invoke('CallEnds', patient)
       .catch(function (err) {
-        console.log(err);
+        // console.log(err);
       });
   }
 
@@ -52,7 +52,7 @@ export class NotificationService {
     this.handleChatting("patientattended", attendPatient);
     this._hubConnection.invoke('PatientAttended', attendPatient)
       .catch(function (err) {
-        console.log(err);
+        // console.log(err);
       });
   }
 
@@ -60,7 +60,7 @@ export class NotificationService {
     //console.log(callPatient);
     this._hubConnection.invoke('PatientCall', currentChatUser)
       .catch(function (err) {
-        console.log(err);
+        // console.log(err);
       });
   }
 
@@ -68,13 +68,13 @@ export class NotificationService {
     this.handleChatting('sentbyprovider', chatMessage);
     this._hubConnection.invoke('SendChatMessage', chatMessage)
       .catch(err => {
-        console.log(err);
+        // console.log(err);
       });
   }
 
   public LoadActiveDoctors() {
     this._hubConnection.invoke('GetActiveProviders').catch(err => {
-      console.log(err);
+      // console.log(err);
     });
   }
 
@@ -107,8 +107,8 @@ export class NotificationService {
       .start()
       .then(() => {
         this.connectionIsEstablished = true;
-        console.info('Hub connection started');
-        console.log(new Date());
+        // console.info('Hub connection started');
+        // console.log(new Date());
         this.EventConnectionEstablished.emit(true);
       })
       .catch(err => {
@@ -118,8 +118,8 @@ export class NotificationService {
         }, 1000);
       });
     this._hubConnection.onclose((e) => {
-      console.warn("disconnected")
-      console.log(e);
+      // console.warn("disconnected")
+      // console.log(e);
       if (e) {
         if (e.name == "Error") {
           if (e.message.includes("WebSocket closed")) {
@@ -135,10 +135,10 @@ export class NotificationService {
             this.startConnection();
           }, 1000);
         }
-        console.log(e.name, e.message);
+        // console.log(e.name, e.message);
         //alert(e.message)
       } else {
-        console.log('Connection Closed.Logout Success.');
+        // console.log('Connection Closed.Logout Success.');
         this.disconnects(e);
         return;
       }
@@ -162,7 +162,7 @@ export class NotificationService {
       var obj: any = JSON.parse(data)
       this.handleChatting('adduser', obj);
       this.EventGetAllPatients.emit(obj);
-      console.log(obj);
+      // console.log(obj);
     });
 
     this._hubConnection.on('CallPatient', (data: any) => {
@@ -191,7 +191,7 @@ export class NotificationService {
     this._hubConnection.on('GetAllProviders', (data: any) => {
       const jsonData: any = JSON.parse(data);
       this.EventGetAllProviders.emit(jsonData);
-      console.log(jsonData);
+      // console.log(jsonData);
     });
 
     //check for disconnected patient

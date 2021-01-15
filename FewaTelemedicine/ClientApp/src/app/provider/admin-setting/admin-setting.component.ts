@@ -233,7 +233,9 @@ export class AdminSettingComponent implements OnInit {
         this.global.practiceObj = res;
         alert("Practice Configuration updated");
       },
-        err => { console.log(err); });
+        err => {
+          //  console.log(err);
+    });
   }
 
   updatePracticeLogo(file: FileList) {
@@ -285,7 +287,9 @@ export class AdminSettingComponent implements OnInit {
         this.global.practiceObj = res;
         alert("Email Configuration updated");
       },
-        err => { console.log(err); });
+        err => {
+          //  console.log(err); 
+      });
   }
 
   get practiceFormControls() {
@@ -317,7 +321,9 @@ export class AdminSettingComponent implements OnInit {
         this.htmlBody = this.htmlBody.replace("border: 1px dashed #990000 !important;'>[<b> Note: Content In This Box Is Editable.</b>]<br>", "' id='edit'");
         //this.practiceObj.emailHtmlBody = res.EmailHTMLBody;
       },
-        err => { console.log(err); });
+        err => {
+          //  console.log(err);
+      });
   }
 
 
@@ -333,7 +339,9 @@ export class AdminSettingComponent implements OnInit {
         this.htmlBody = this.htmlBody.replace("' id='edit'>", "border: 1px dashed #990000 !important;'>[<b> Note: Content In This Box Is Editable.</b>]<br>");
         //this.practiceObj.emailHtmlBody = res.EmailHTMLBody;
       },
-        err => { console.log(err); });
+        err => { 
+          // console.log(err); 
+      });
   }
 
   editTemplate() {

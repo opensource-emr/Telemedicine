@@ -10,6 +10,9 @@ export class AppComponent {
   title = 'fewa-web';
   constructor(private global: Global) {
     var p = location.pathname.split('/');
+    if(p.length<=2){
+      p.push('admin')
+    }
     if(p[1].length>0 && p[2].length>0){
       this.global.currentPractice = p[1].replace(/\s/g, "").toLowerCase();
       this.global.currentProvider = p[2].replace(/\s/g, "").toLowerCase();
