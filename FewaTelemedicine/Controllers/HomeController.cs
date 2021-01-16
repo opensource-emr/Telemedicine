@@ -22,7 +22,7 @@ namespace FewaTelemedicine.Controllers
         {
             var session =HttpContext.Session.GetString("admin");
             int count= HttpContext.Request.Path.Value.Count(x => (x == '/'));
-            if (session != null && count <= 2)
+            if (session != null && count ==1)
             {
                 ViewBag.BaseHref = HttpContext.Request.Path + session;
                 HttpContext.Session.Remove("admin");

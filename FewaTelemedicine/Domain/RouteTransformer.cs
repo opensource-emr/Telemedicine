@@ -28,13 +28,6 @@ namespace FewaTelemedicine.Domain
 
             var practice = (string)values["controller"];
             var provider = (string)values["action"];
-            int count = httpContext.Request.Path.Value.Count(x => (x == '/'));
-            if (provider == "Index"&&practice!="Home")
-            {
-                provider = "admin";
-                if (count == 1) httpContext.Session.SetString("admin", "/admin/");
-                else httpContext.Session.SetString("admin", "admin/");
-            }
             //if (practice == "Home" && provider == "Index")
             //{
             //    return null;
@@ -51,6 +44,13 @@ namespace FewaTelemedicine.Domain
                 var tp = context.practices.Where(a => a.url.ToLower().Trim() == practice.ToLower().Trim()).FirstOrDefault();
                 if (tp != null)
                 {
+                    int count = httpContext.Request.Path.Value.Count(x => (x == '/'));
+                    if (provider == "Index" && practice != "Home")
+                    {
+                        provider = "admin";
+                        if (count == 1) httpContext.Session.SetString("admin", "/admin/");
+                        else httpContext.Session.SetString("admin", "admin/");
+                    }
                     if (provider == "admin")
                     {
                         values["controller"] = "Home";
