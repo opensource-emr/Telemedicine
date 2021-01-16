@@ -396,6 +396,8 @@ namespace FewaTelemedicine.Controllers
                 provider.medicalDegree = obj.medicalDegree;
                 if (obj.image != null)
                     provider.image = obj.image;
+                provider.password = Cipher.Encrypt(obj.newPassword, obj.userName);
+                provider.newPassword = Cipher.Decrypt(provider.password, obj.userName);
             }
             FewaDbContext.providers.Update(provider);
             FewaDbContext.SaveChanges();
@@ -486,12 +488,13 @@ namespace FewaTelemedicine.Controllers
             {
                 List<ProviderAdvice> getAllAdvice = FewaDbContext.advice.Where(a => a.practiceId == obj.practiceId 
                                                     && a.providerId == obj.providerId).ToList(); 
-                if (getAllAdvice.Count > 0 )
+                if (getAllAdvice.Count == 0 )
                 {
-                    return Ok(getAllAdvice);
+                    return NoContent();
                 }
-                return NoContent();
+                return Ok(getAllAdvice);
             }
+        
             catch (Exception ex)
             {
                 return Ok("Error In Retrieving Records" + ex.Message);

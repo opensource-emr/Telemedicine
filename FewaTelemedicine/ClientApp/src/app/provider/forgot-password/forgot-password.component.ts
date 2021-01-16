@@ -5,6 +5,7 @@ import { Global } from 'src/app/_helpers/common/global.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Provider, Practice } from '../../_helpers/models/domain-model';
 import { ConfirmedValidator } from 'src/app/_helpers/common/confirmed-validator';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-forgot-password',
@@ -20,11 +21,12 @@ export class ForgotPasswordComponent implements OnInit {
   providerObj: Provider = new Provider();
   practiceObj: Practice = new Practice();
   providerForm: FormGroup;
-  countDownTime: number = 30;
+  countDownTime: number = 60;
   form: FormGroup = new FormGroup({});
   constructor(public httpClient: HttpClient,
     public routing: Router,
     public global: Global,
+    public _snackBar: MatSnackBar,
     public fb: FormBuilder) {
     this.initForm();
   }
@@ -62,15 +64,15 @@ export class ForgotPasswordComponent implements OnInit {
   countDown(): void {
     var countDown = setInterval(() => {
       this.countDownTime--;
-      if (document.getElementById('countdown')) {
-        document.getElementById('countdown').innerHTML = this.countDownTime.toString();
+      // if (document.getElementById('countdown')) {
+      //   document.getElementById('countdown').innerHTML = this.countDownTime.toString();
         if (this.countDownTime === 0) {
           this.disableResendButton = false;
           clearInterval(countDown);
         }
-      } else {
-        clearInterval(countDown);
-      }
+      // } else {
+      //   clearInterval(countDown);
+      // }
     }, 1000);
   }
 
@@ -90,6 +92,13 @@ export class ForgotPasswordComponent implements OnInit {
         res => this.error(res));
   }
 
+  popUpSnackBar() {
+    this._snackBar.open('You can resend otp after one minute', 'Dismiss', {
+      duration: 10000,   
+      verticalPosition: 'top'
+     });
+  }
+
   resendOTP() {
     var key="73l3M3D"; //hardcoded
     this.disableResendButton = true;
@@ -106,7 +115,7 @@ export class ForgotPasswordComponent implements OnInit {
     this.httpClient.post(this.global.apiUrl + "Security/VerifyOTP", this.providerObj)
       .subscribe(res => this.successVerify(res),
         res => this.error(res));
-    alert("OTP Verified");
+    //alert("OTP Verified");
   }
 
   resetPassword() {
@@ -125,6 +134,7 @@ export class ForgotPasswordComponent implements OnInit {
 
   successOTP(res) {
     if (res) {
+      this.popUpSnackBar();
       this.showOtpSection = false;
       this.showOtpVerifySection = true;
       this.disableSubmitButton = false;
@@ -137,11 +147,11 @@ export class ForgotPasswordComponent implements OnInit {
 
   successResendOTP(res) {
     if (res) {
-      
+      this.popUpSnackBar();
       this.disableResendButton = true;
       // this.showResetPasswordSection=true;
       // this.disableResendButton=false;
-      this.countDownTime = 30;
+      this.countDownTime = 60;
       this.countDown();
     }
     else {

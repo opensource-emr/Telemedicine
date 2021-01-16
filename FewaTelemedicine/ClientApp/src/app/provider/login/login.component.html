@@ -34,7 +34,7 @@
           <button type="submit" class="btn submitBtn" [disabled]="clicked" (click)="clicked = true; loginProvider();">
             Sign In
           </button>
-          <p>Don’t have an account? <a href="javascript:" routerLink="/provider/register">Sign Up</a></p>
+          <p>Don’t have an account? <a href="javascript:" (click)=getSignUpLink()>Sign Up</a></p>
         </div>
       </form>
     </div>

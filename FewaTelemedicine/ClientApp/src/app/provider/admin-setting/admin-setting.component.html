@@ -65,7 +65,7 @@
                                             <input type="text" class="form-control" name="hospital_name" formControlName="hospital_name" />
                                             <div *ngIf="practiceFormControls.hospital_name.touched && practiceFormControls.hospital_name.invalid" style="color: red;">
                                                 <div *ngIf="practiceFormControls.hospital_name.errors.required">
-                                                    Practice Name is required.
+                                                    Practice name is required.
                                                 </div>
                                             </div>
                                         </div>
@@ -73,11 +73,15 @@
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
                                             <label>Practice Contact No.<span class="red-text">*</span></label>
-                                            <input type="text" placeholder="Enter Contact No" class="form-control" name="hospital_contact" formControlName="hospital_contact">
+                                            <input type="text" placeholder="Enter Contact No." class="form-control" name="hospital_contact" formControlName="hospital_contact">
                                             <!-- <div *ngIf="practiceConfigForm.controls['hospital_contact'].hasError('pattern')"style="color: red;">Enter 10 digit Contact No.</div> -->
                                             <div *ngIf="practiceFormControls.hospital_contact.touched && practiceFormControls.hospital_contact.invalid" style="color: red;">
                                                 <div *ngIf="practiceFormControls.hospital_contact.errors.required">
-                                                    Practice Contact is required.</div>
+                                                    Practice contact is required.
+                                                </div>
+                                                <div *ngIf="practiceFormControls.hospital_contact.errors.pattern">
+                                                    Invalid contact no.
+                                                </div>
                                             </div>
                                         </div>
                                         <!-- <div class="form-group">
@@ -91,14 +95,14 @@
                                         <div class="form-group">
                                             <label>Practice Email<span class="red-text">*</span></label>
                                             <input type="email" class="form-control" name="email" formControlName="hospital_email" />
-                                            <div *ngIf="practiceFormControls.hospital_name.touched && practiceFormControls.hospital_name.invalid" style="color: red;">
-                                                <div *ngIf="practiceFormControls.hospital_name.errors.required">Email is required.
+                                            <div *ngIf="practiceFormControls.hospital_email.touched && practiceFormControls.hospital_email.invalid" style="color: red;">
+                                                <div *ngIf="practiceFormControls.hospital_email.errors.required">Email is required.
                                                 </div>
-                                                <div *ngIf="practiceFormControls.hospital_name.errors.pattern">Invalid Email Address.</div>
+                                                <div *ngIf="practiceFormControls.hospital_email.errors.pattern">Invalid email address.</div>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label>Practice Logo (Optional)</label>
+                                            <label>Practice Logo</label>
                                         </div>
                                         <input id="file-upload1" type="file" formControlName="hospital_logo" (change)="updatePracticeLogo($event.target.files)" accept=".png,.jpg,.jpeg" />
                                         <label *ngIf="logoToUpload">{{logoToUpload.name}}</label>
@@ -108,7 +112,6 @@
                                         <span class="upload" *ngIf="logoMessage">
                                             {{logoMessage}}
                                         </span>
-
                                     </div>
 
                                     <div class="col-12 col-md-6">

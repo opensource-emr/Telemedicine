@@ -88,6 +88,8 @@
                                                     style="color:red;">
                                                     <div *ngIf="userFormControls.name.errors.required">Name is required.
                                                     </div>
+                                                    <div *ngIf="userFormControls.name.errors.pattern">Name should not be number.                                                       
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -101,8 +103,8 @@
                                                 style="color: red;">
                                                 <div *ngIf="userFormControls.email.errors.required">Email is required.
                                                 </div>
-                                                <div *ngIf="userFormControls.email.errors.pattern">Invalid Email
-                                                    Address.
+                                                <div *ngIf="userFormControls.email.errors.pattern">Invalid email
+                                                    address.
                                                 </div>
                                             </div>
                                         </div>
@@ -111,15 +113,15 @@
                                 <div class="row">
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
-                                            <label>Phone<span class="red-text">*</span></label>
+                                            <label>Contact No.<span class="red-text">*</span></label>
                                             <input type="text" class="form-control" name="mobileNumber"
                                                 formControlName="phone">
                                             <div *ngIf="userFormControls.phone.touched && userFormControls.phone.invalid"
                                                 style="color: red;">
-                                                <div *ngIf="userFormControls.phone.errors.required">Mobile Number is
+                                                <div *ngIf="userFormControls.phone.errors.required">Contact number is
                                                     required.
                                                 </div>
-                                                <div *ngIf="userFormControls.phone.errors.pattern">Invalid mobile
+                                                <div *ngIf="userFormControls.phone.errors.pattern">Invalid contact
                                                     number.
                                                 </div>
                                             </div>
@@ -135,6 +137,9 @@
                                                 <div *ngIf="userFormControls.designation.errors.required">Designation is
                                                     required.
                                                 </div>
+                                                <div *ngIf="userFormControls.designation.errors.pattern">Designation should
+                                                    not be number.
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -142,13 +147,16 @@
                                 <div class="row">
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
-                                            <label>Medical degree<span class="red-text">*</span></label>
+                                            <label>Medical Degree<span class="red-text">*</span></label>
                                             <input type="text" class="form-control" name="medical_degree"
                                                 formControlName="medical_degree">
                                             <div *ngIf="userFormControls.medical_degree.touched && userFormControls.medical_degree.invalid"
                                                 style="color: red;">
                                                 <div *ngIf="userFormControls.medical_degree.errors.required">Medical
-                                                    Degree is required.
+                                                    degree is required.
+                                                </div>
+                                                <div *ngIf="userFormControls.medical_degree.errors.pattern">Medical
+                                                    degree should not be number.
                                                 </div>
                                             </div>
                                         </div>
@@ -183,9 +191,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
+                                    <!--<div class="row">
                                     <div class="col-12 col-md-6">
-                                        <!-- <div class="form-group">
+                                    <div class="form-group">
                                             <label>Profile Image</label>
                                             <input id="file-upload1" class="form-control" type="file"
                                                 placeholder="Choose File" formControlName="profile_image"
@@ -201,12 +209,14 @@
                                             <span class="upload" *ngIf="message">
                                                 {{message}}
                                             </span>
-                                        </div> -->
-                                    </div>
-                                </div>
+                                    </div> 
+                                    </div>-->
                                 <div class="row">
                                     <div class="col-12 col-md-6">
-
+                                        <div class="form-group">
+                                            <label>Reset Password</label>
+                                            <input type="password" placeholder="Enter Reset Password" class="form-control" name="password" formControlName="new_password">
+                                        </div>
                                     </div>
                                     <div class="col-12 col-md-6 text-right">
                                         <ul>

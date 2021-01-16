@@ -3,6 +3,7 @@ import { NgForm, Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Global } from 'src/app/_helpers/common/global.model';
 import { HttpClient } from '@angular/common/http';
 import { Practice } from 'src/app/_helpers/models/domain-model';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-register',
@@ -16,11 +17,12 @@ export class RegisterComponent implements OnInit {
   sendOtpSection: boolean = true;
   verifyOtpSection: boolean = false;
   resendOtpButton: boolean = true;
-  countDownTime: number = 30;
+  countDownTime: number = 60;
   clicked: boolean = false;
 
   constructor(public global: Global,
     private fb: FormBuilder,
+    public _snackBar: MatSnackBar,
     private httpClient: HttpClient) { this.initUserForm(); }
 
   ngOnInit(): void {
@@ -37,15 +39,15 @@ export class RegisterComponent implements OnInit {
   countDown(): void {
     var countDown = setInterval(() => {
       this.countDownTime--;
-      if (document.getElementById('countdown')) {
-        document.getElementById('countdown').innerHTML = this.countDownTime.toString();
+      // if (document.getElementById('countdown')) {
+      //   document.getElementById('countdown').innerHTML = this.countDownTime.toString();
         if (this.countDownTime === 0) {
           this.resendOtpButton = false;
           clearInterval(countDown);
         } 
-      } else {
-        clearInterval(countDown);
-      }
+      // } else {
+      //   clearInterval(countDown);
+      // }
     }, 1000);
   }
   onSubmit() {
@@ -70,8 +72,14 @@ export class RegisterComponent implements OnInit {
       , this.practiceObj)
     observable.subscribe(res => this.successVerify(res),
       res => this.errorObserver(res));
-    alert("OTP Verified"); 
+    //alert("OTP Verified"); 
   }
+  popUpSnackBar() {
+    this._snackBar.open('You can resend otp after one minute', 'Dismiss', {
+      duration: 10000,   
+      verticalPosition: 'top'
+     });
+    }
   resendOTP() {
     var key="73l3M3D"; //hardcoded
     this.resendOtpButton = true;
@@ -82,6 +90,7 @@ export class RegisterComponent implements OnInit {
   successObserver(res) {
     this.clicked=false;
     if (res) {
+      this.popUpSnackBar();
       this.sendOtpSection = false;
       this.verifyOtpSection = true;
       this.countDown();
@@ -97,8 +106,9 @@ export class RegisterComponent implements OnInit {
   }
   successResendOTP(res) {
     if (res) {
+      this.popUpSnackBar();
       this.resendOtpButton = true;
-      this.countDownTime = 30;
+      this.countDownTime = 60;
       this.countDown();
     }
   }

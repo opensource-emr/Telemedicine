@@ -72,6 +72,7 @@ export class SummaryComponent implements OnInit {
 
   emailReportSuccess(res) {
     this.disableButton = false;
+    this.emailForm.reset();
     if (res)
       alert("Report has been sent to your email");
     else
