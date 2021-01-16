@@ -86,4 +86,7 @@ export class LoginComponent implements OnInit {
           alert('Can not connect please talk with admin.')
         });
   }
+  getSignUpLink(){
+    window.location.assign(window.location.origin +'/#/provider/register');
+  }
 }

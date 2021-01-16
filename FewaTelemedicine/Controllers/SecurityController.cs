@@ -85,6 +85,7 @@ namespace FewaTelemedicine.Controllers
                 {
                     HttpContext.Session.SetString("name", pro.userName);
                     HttpContext.Session.SetString("practice", pro.practice);
+                    pro.newPassword = providerPwd;
                     var token = GenerateJSONWebToken(pro.userName, "provider",pro.providerId,pro.practiceId);
                     AddProviderCabin(pro);
                     var data = new
@@ -312,6 +313,28 @@ namespace FewaTelemedicine.Controllers
                 obj.practiceId = (from practice in FewaDbContext.practices
                                   where obj.practice.ToLower().Trim() == practice.url.ToLower().Trim()
                                   select practice.practiceId).FirstOrDefault();
+
+                ProviderAdvice newAdvice = new ProviderAdvice();
+                newAdvice.adviceId = FewaDbContext.advice.Max(a => a.adviceId) + 1;
+                newAdvice.inputType = newAdvice.inputType;
+                newAdvice.isChecked = newAdvice.isChecked;
+                newAdvice.practiceId = obj.practiceId;
+                newAdvice.providerId = obj.providerId;
+                newAdvice.advice = FewaDbContext._advice1;
+
+                FewaDbContext.advice.Add(newAdvice);
+                FewaDbContext.SaveChanges();
+                newAdvice.advice = FewaDbContext._advice2;
+
+                newAdvice.adviceId = newAdvice.adviceId + 1;
+                FewaDbContext.advice.Add(newAdvice);
+                FewaDbContext.SaveChanges();
+                newAdvice.advice = FewaDbContext._advice3;
+
+                newAdvice.adviceId = newAdvice.adviceId + 1;
+                FewaDbContext.advice.Add(newAdvice);
+                FewaDbContext.SaveChanges();
+
                 FewaDbContext.providers.Add(obj);
                 FewaDbContext.SaveChanges();
                 _providers.Clear();

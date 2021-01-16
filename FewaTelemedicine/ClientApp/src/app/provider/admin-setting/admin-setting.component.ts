@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef} from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { HttpClient, HttpParams, HttpEventType, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -62,8 +62,7 @@ export class AdminSettingComponent implements OnInit {
     this.practiceConfigForm = this.fb.group({
       hospital_name: ['', [Validators.required]],
       hospital_email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
-      hospital_contact: ['', [Validators.required]],
-      // ,Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
+      hospital_contact: ['', [Validators.required, Validators.pattern("^\\+?[0-9]{3}[0-9]{0,9}$")]],
       hospital_logo: [''],
       hospital_description: new FormControl(" "),
       //sender_email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
@@ -235,7 +234,7 @@ export class AdminSettingComponent implements OnInit {
       },
         err => {
           //  console.log(err);
-    });
+        });
   }
 
   updatePracticeLogo(file: FileList) {
@@ -285,11 +284,11 @@ export class AdminSettingComponent implements OnInit {
       .subscribe(res => {
         this.practiceObj = res;
         this.global.practiceObj = res;
-        alert("Email Configuration updated");
+        alert("Invitation email template updated");
       },
         err => {
           //  console.log(err); 
-      });
+        });
   }
 
   get practiceFormControls() {
@@ -323,7 +322,7 @@ export class AdminSettingComponent implements OnInit {
       },
         err => {
           //  console.log(err);
-      });
+        });
   }
 
 
@@ -339,9 +338,9 @@ export class AdminSettingComponent implements OnInit {
         this.htmlBody = this.htmlBody.replace("' id='edit'>", "border: 1px dashed #990000 !important;'>[<b> Note: Content In This Box Is Editable.</b>]<br>");
         //this.practiceObj.emailHtmlBody = res.EmailHTMLBody;
       },
-        err => { 
+        err => {
           // console.log(err); 
-      });
+        });
   }
 
   editTemplate() {

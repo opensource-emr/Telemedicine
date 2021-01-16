@@ -157,12 +157,13 @@ export class UserSettingComponent implements OnInit {
     this.userForm = this.fb.group({
       email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
       phone: ['', [Validators.required, Validators.pattern("^\\+?[0-9]{3}[0-9]{0,9}$")]],
-      name: ['', [Validators.required]],
-      designation: ['', [Validators.required]],
-      medical_degree: ['', [Validators.required]],
+      name: ['', [Validators.required, Validators.pattern("^[a-zA-Z]+$")]],
+      designation: ['', [Validators.required, Validators.pattern("^[a-zA-Z]+$")]],
+      medical_degree: ['', [Validators.required, Validators.pattern("^[a-zA-Z]+$")]],
       clinic: ['', [Validators.nullValidator]],
       name_title: ['', [Validators.required]],
       profile_image: ['', [Validators.nullValidator]],
+      new_password: ['',[Validators.nullValidator]],
     })
   }
 
@@ -207,6 +208,7 @@ export class UserSettingComponent implements OnInit {
       clinic: provider.clinic,
       name_title: provider.nameTitle,
       //profile_image:provider.image,
+      new_password: provider.newPassword,
     })
   }
 
@@ -235,6 +237,7 @@ export class UserSettingComponent implements OnInit {
     this.providerObj.clinic = v.clinic;
     this.providerObj.nameTitle = v.name_title;
     this.providerObj.profilePhoto = this.selectedFile;
+    this.providerObj.newPassword = v.new_password;
   }
 
 

@@ -56,9 +56,9 @@ namespace FewaTelemedicine.Domain
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //  Seeding for provider and practice
-            var practiceSeed = CreatePractice(1, "practice", "1234567890", "abc@gmail.com", "Jitsi", "/img/logo.png", "https://localhost:44304", "Fewa Telemedicine Call Today Schedule", "Please attend the provider", "EmailAdditionalContent");
+            var practiceSeed = CreatePractice(1, "practice", "1234567890", "abc@gmail.com", "Jitsi", "/img/logo.png", "Fewa Telemedicine Call Today Schedule", "Please attend the provider", "EmailAdditionalContent");
             var providerSeed = CreateProvider(1, "provider", "FHBsjQhfB78CnRY7uVquqA==", "provider", "practice", 1);
-            var practiceSeed1 = CreatePractice(2, "practice1", "0987654321", "pqr@gmail.com", "Jitsi", "/img/logo.png", "https://localhost:44304", "Fewa Telemedicine Call Today Schedule", "Please attend the provider", "EmailAdditionalContent");
+            var practiceSeed1 = CreatePractice(2, "practice1", "0987654321", "pqr@gmail.com", "Jitsi", "/img/logo.png", "Fewa Telemedicine Call Today Schedule", "Please attend the provider", "EmailAdditionalContent");
             var providerSeed1 = CreateProvider(2, "doctor", "ajNJkHEqM5bu0szpIIhwzw==", "provider1", "practice1", 2);
             var provideradviceSeed = CreateProviderAdvice(1, "Lab Orders Sent", " ", 1, 1);
             var provideradviceSeed1 = CreateProviderAdvice(2, "New prescriptions sent to your pharmacy", " ", 1, 1);
@@ -103,7 +103,7 @@ namespace FewaTelemedicine.Domain
                                string _email,
                                string _callingPlatform,
                                string _logoPath,
-                               string _serverName,
+                               //string _serverName,
                                // string _description,
                                string _emailSubject,
                                string _emailPlainBody,
@@ -120,7 +120,7 @@ namespace FewaTelemedicine.Domain
                 email = _email,
                 callingPlatform = _callingPlatform,
                 logoPath = _logoPath,
-                serverName = _serverName,
+                //serverName = _serverName,
                 description = FewaDbContext._description,
                 emailHtmlBody = FewaDbContext._emailHtmlBody,
                 emailSubject = _emailSubject,

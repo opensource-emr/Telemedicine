@@ -32,6 +32,7 @@ namespace FewaTelemedicine.Domain.Models
         public string smsApiAccountSID { get; set; }
         public string smsApiAuthToken { get; set; }
         public string smsPhoneNumber { get; set; }
+        [NotMapped]
         public string serverName { get; set; }
         // all configuration as properies
         public List<Provider> providers { get; set; }
