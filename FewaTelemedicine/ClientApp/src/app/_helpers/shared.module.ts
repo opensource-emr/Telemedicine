@@ -5,6 +5,8 @@ import { TestAudioVideoComponent } from './test-audio-video/test-audio-video.com
 import { JitsiComponent } from './jitsi/jitsi.component';
 import { YesNoPipe } from './common/yes-no.pipe';
 import { SafePipe } from './common/safe.pipe';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+
 
 @NgModule({
   declarations: [
@@ -23,6 +25,7 @@ import { SafePipe } from './common/safe.pipe';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    MatSnackBarModule
   ],
   providers: [
       
