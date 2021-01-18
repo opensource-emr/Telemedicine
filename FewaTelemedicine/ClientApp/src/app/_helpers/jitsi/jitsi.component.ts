@@ -1,5 +1,7 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { AfterContentChecked, AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 declare var JitsiMeetExternalAPI: any;
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'jitsi-call',
@@ -15,12 +17,16 @@ export class JitsiComponent implements OnInit, OnDestroy {
   @Input('roomName') roomName = "FewaTelemedicine";
   @Input('remoteUserDisplayName') remoteUserDisplayName = "Fewa User";
   @Input('localUserDisplayName') localUserDisplayName = "";
-  
+
+  constructor(public _snackBar: MatSnackBar){
+   
+  }
+
   private api: any;
   ngOnInit() {
     this.api = new JitsiMeetExternalAPI("meet.jit.si", this.callOptions);
     this.handleAPI();
-  }
+}
 
   ngOnDestroy() {
     this.api.executeCommand('hangup');
@@ -36,11 +42,12 @@ export class JitsiComponent implements OnInit, OnDestroy {
       configOverwrite: {
         doNotStoreRoom: true,
         disableInviteFunctions: true,
-        startWithVideoMuted: true,
-        startWithAudioMuted: true,
+        startWithVideoMuted: false,
+        startWithAudioMuted: false,
         enableWelcomePage: false,
         disableRemoteMute: true,
         prejoinPageEnabled: false,
+        disableLocalVideoFlip: true,
         remoteVideoMenu: {
           // If set to true the 'Kick out' button will be disabled.
           disableKick: true
@@ -77,13 +84,30 @@ export class JitsiComponent implements OnInit, OnDestroy {
   }
 
   private handleAPI() {
-    this.api.executeCommand('displayName',this.remoteUserDisplayName);
+    this.api.executeCommand('toggleFilmStrip');
+    this.api.executeCommand('displayName', this.remoteUserDisplayName);
     this.api.executeCommand('subject', 'Fewa Telemedicine');
     this.api.executeCommand('setVideoQuality', 720);
+
     //console.error('closing')
     this.api.addEventListener('readyToClose', function () {
       console.warn('readyToClose');
     });
+    this.api.addEventListener('cameraError', (e) => {
+      this._snackBar.open('Camera was not found, Please allow access to your camera', 'Dismiss', {
+        duration: 15000,
+        verticalPosition: 'top'
+       });
+    });
+
+    this.api.addEventListener('micError', (e) => {
+      this._snackBar.open('Mic was not found, Please allow access to your mic', 'Dismiss', {
+        duration: 15000,
+        verticalPosition: 'top'
+       });
+    });
+
+
     this.api.addEventListener('participantJoined', function (e) {
       console.warn('participantJoined');
       console.warn(e);
@@ -96,7 +120,8 @@ export class JitsiComponent implements OnInit, OnDestroy {
       console.warn('participantLeft');
       console.warn(e);
     });
+
     //console.log(this.api);
   }
 }
- 
+
