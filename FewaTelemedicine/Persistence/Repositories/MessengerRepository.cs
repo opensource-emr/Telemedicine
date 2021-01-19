@@ -303,7 +303,7 @@ namespace FewaTelemedicine.Persistence.Repositories
             var bResponse = false;
             try
             {
-                Provider provider = FewaDbContext.providers.Where(a => a.url.ToLower().Trim() == patient.url.ToLower().Trim()).FirstOrDefault();
+                Provider provider = FewaDbContext.providers.Where(a => a.url.ToLower().Trim() == patient.url.ToLower().Trim() && a.practice == patient.practice.ToLower().Trim()).FirstOrDefault();
                 if (provider == null)
                 {
                     return false;
