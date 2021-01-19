@@ -195,12 +195,12 @@ namespace FewaTelemedicine.Controllers
             return attendedPatients;
         }
 
-        public IActionResult GetUpdatedProvider(string username,string practiceName)
+        public IActionResult GetUpdatedProvider(string username, string practiceName)
         {
             if (string.IsNullOrEmpty(username) || username == "undefined")
             { return BadRequest(); }
 
-            var configuration = FewaDbContext.practices.ToList();
+            var configuration = FewaDbContext.practices.Where(x => x.url.ToLower().Trim() == practiceName.ToLower().Trim()).FirstOrDefault();
             var provider = (from temp in FewaDbContext.providers
                             where temp.userName.ToLower().Trim() == username.ToLower().Trim() && temp.practice.ToLower().Trim() == practiceName.ToLower().Trim()
                             select temp).FirstOrDefault();
