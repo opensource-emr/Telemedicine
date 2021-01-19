@@ -139,11 +139,19 @@ export class LiveVideoComponent implements OnInit, OnDestroy {
     this.scrollToBottom();
     this.chatForm.reset();
   }
+
+  onChatSectionUp(){
+    this.scrollToBottom();
+  }
+
   scrollToBottom() {
     var div = document.getElementById("scrollingContainer");
-    if (div)
+    if (div){
+    this.cdr.detectChanges();
       div.scrollIntoView(false);
+    }
   }
+
   onChatEnter(event) {
     if (event.keyCode === 13) {
       this.sendChatMsg();

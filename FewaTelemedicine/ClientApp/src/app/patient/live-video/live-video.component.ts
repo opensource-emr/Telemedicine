@@ -42,11 +42,7 @@ export class LiveVideoComponent implements OnInit, AfterViewInit {
         this.global.providerObj = res.User;
         this.roomName = this.global.providerObj.roomName;
         this.remoteUserDisplayName = this.global.patientObj.name;
-        for (let temp of res.Configuration) {
-          if (temp.url == this.global.providerObj.practice) {
-            this.global.practiceObj = temp;
-          }
-        }
+        this.global.practiceObj = res.Configuration;
       });
   }
 
@@ -111,10 +107,13 @@ export class LiveVideoComponent implements OnInit, AfterViewInit {
     this.scrollToBottom();
     this.chatForm.reset();
   }
+
   scrollToBottom() {
     var div = document.getElementById("scrollingContainer");
-    if (div)
+    if (div){
+    this.cdr.detectChanges();
       div.scrollIntoView(false);
+    }
   }
 
   onChatEnter(event) {

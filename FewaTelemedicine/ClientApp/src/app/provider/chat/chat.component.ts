@@ -96,13 +96,17 @@ export class ChatComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.scrollToBottom();
+   this.scrollToBottom();
   }
+
   scrollToBottom() {
     var div = document.getElementById("scrollingContainer");
-    if (div)
+    if (div){
+    this.cdr.detectChanges();
       div.scrollIntoView(false);
+    }
   }
+  
   searchPatients() {
     this.filteredPatients = [...this.userChat]
       .filter(a => a.user.toLowerCase()
