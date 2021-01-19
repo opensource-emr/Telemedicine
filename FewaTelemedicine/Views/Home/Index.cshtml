@@ -7,6 +7,7 @@
     <base href="@ViewBag.BaseHref">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="/ClientApp/favicon.ico">
     <meta name="description" content="">
     <meta name="author" content="">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
@@ -14,15 +15,15 @@
 </head>
 <body class="blueTheme">
     <app-root></app-root>
-    <script src="~/ClientApp/runtime.js" type="module"></script>
-    <script src="~/ClientApp/polyfills.js" type="module"></script>
-    <script src="~/ClientApp/styles.js" type="module"></script>
-    <script src="~/ClientApp/scripts.js" defer></script>
-    <script src="~/ClientApp/vendor.js" type="module"></script>
-    <script src="~/ClientApp/main.js" type="module"></script>
-    <script>
-        window['base-href'] = window.location.pathname;
-    </script>
-    <script src='https://meet.jit.si/external_api.js'></script>
+    <script src="/ClientApp/runtime.js" type="module"></script>
+    <script src="/ClientApp/polyfills.js" type="module"></script>
+    <script src="/ClientApp/styles.js" type="module"></script>
+    <script src="/ClientApp/scripts.js" defer></script>
+    <script src="/ClientApp/vendor.js" type="module"></script>
+    <script src="/ClientApp/main.js" type="module"></script>
+<script>
+    window['base-href'] = window.location.pathname;
+</script>
+<script src='https://meet.jit.si/external_api.js'></script>
 </body>
 </html>
