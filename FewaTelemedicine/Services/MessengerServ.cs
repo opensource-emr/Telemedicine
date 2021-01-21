@@ -24,9 +24,9 @@ namespace FewaTelemedicine.Services
         {
             return await this._messengerRepository.SendPatientReportEmailAsync(patient, hostname);
         }
-        public async Task<bool> SendOTP(string receiverEmail, string otp, string hostname = "")
+        public async Task<bool> SendOTP(int practiceId,string receiverEmail, string otp, string hostname = "")
         {
-            return await this._messengerRepository.SendOTP(receiverEmail, otp, hostname);
+            return await this._messengerRepository.SendOTP(practiceId,receiverEmail, otp, hostname);
         }
         public async Task<bool> SendRegistrationOTP(string name,string receiverEmail, string otp, string hostname = "")
         {
