@@ -172,7 +172,7 @@ namespace FewaTelemedicine.Controllers
                 {
                     return BadRequest();
                 }
-                Provider provider = FewaDbContext.providers.Where(a => a.email == obj.email || a.userName == obj.email).FirstOrDefault();
+                Provider provider = FewaDbContext.providers.Where(a =>( a.email == obj.email || a.userName == obj.email)&&a.practice.ToLower().Trim()==obj.practice.ToLower().Trim()).FirstOrDefault();
                 if (provider == null)
                 {
                     return Unauthorized(new { Message = "provider not found" });
