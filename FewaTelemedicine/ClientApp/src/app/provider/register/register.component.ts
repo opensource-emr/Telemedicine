@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { NgForm, Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Global } from 'src/app/_helpers/common/global.model';
 import { HttpClient } from '@angular/common/http';
@@ -19,11 +19,15 @@ export class RegisterComponent implements OnInit {
   resendOtpButton: boolean = true;
   countDownTime: number = 60;
   clicked: boolean = false;
+  inputPracticeName = 'practice';
+  urlLink=this.getInvitationLink();
+
 
   constructor(public global: Global,
     private fb: FormBuilder,
     public _snackBar: MatSnackBar,
-    private httpClient: HttpClient) { this.initUserForm(); }
+    private httpClient: HttpClient,
+    public cdr: ChangeDetectorRef) { this.initUserForm(); }
 
   ngOnInit(): void {
 
@@ -117,5 +121,21 @@ export class RegisterComponent implements OnInit {
   }
   get formControls() {
     return this.form.controls;
+  }
+
+  onInputChange(event){
+   // this.cdr.markForCheck();
+    this.inputPracticeName = event.target.value;
+    if(this.inputPracticeName == ""){
+      this.inputPracticeName = 'practice';
+    }
+    this.urlLink = this.getInvitationLink();
+  }
+
+  getInvitationLink() {
+    // https://host/practicename
+    let host = window.location.host;
+    let protocol = window.location.protocol;
+    return protocol + "//" + host + "/" + this.inputPracticeName;
   }
 }
