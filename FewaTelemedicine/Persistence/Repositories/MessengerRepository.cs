@@ -119,13 +119,13 @@ namespace FewaTelemedicine.Persistence.Repositories
             }
 
         }
-        public async Task<bool> SendOTP(string receiverEmail, string otp, string hostname = "")
+        public async Task<bool> SendOTP(int practiceId,string receiverEmail, string otp, string hostname = "")
         {
             var bResponse = false;
             var name = "";
             try
             {
-                Provider provider = FewaDbContext.providers.Where(a => a.email == receiverEmail || a.userName == receiverEmail).FirstOrDefault();
+                Provider provider = FewaDbContext.providers.Where(a => (a.email == receiverEmail || a.userName == receiverEmail)&&a.practiceId==practiceId).FirstOrDefault();
                 if (provider == null)
                 {
                     return false;

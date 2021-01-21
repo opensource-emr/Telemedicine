@@ -141,7 +141,7 @@ namespace FewaTelemedicine.Controllers
                 if (!string.IsNullOrEmpty(provider.email))
                 {
                     provider.otp = GenerateOtp(provider.email);
-                    var result = await _messengerService.SendOTP(provider.email, provider.otp, Request.Scheme + "://" + Request.Host.Value);
+                    var result = await _messengerService.SendOTP(provider.practiceId,provider.email, provider.otp, Request.Scheme + "://" + Request.Host.Value);
                     if (result == true)
                     {
                         HttpContext.Session.SetString("otp", JsonConvert.SerializeObject(provider));
@@ -151,7 +151,7 @@ namespace FewaTelemedicine.Controllers
                 else
                 {
                     provider.otp = GenerateOtp(provider.userName);
-                    var result = await _messengerService.SendOTP(provider.userName, provider.otp);
+                    var result = await _messengerService.SendOTP(provider.practiceId,provider.userName, provider.otp);
                     if (result == true)
                     {
                         HttpContext.Session.SetString("otp", JsonConvert.SerializeObject(provider));
@@ -192,7 +192,7 @@ namespace FewaTelemedicine.Controllers
 
                 if (pro.email == provider.email || provider.userName == pro.userName)
                 {
-                    var result = await _messengerService.SendOTP(pro.email, pro.otp);
+                    var result = await _messengerService.SendOTP(pro.practiceId,pro.email, pro.otp);
                     return result;
                 }
                 else
