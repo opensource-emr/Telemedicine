@@ -65,18 +65,12 @@ export class AdminSettingComponent implements OnInit {
       hospital_contact: ['', [Validators.required, Validators.pattern("^\\+?[0-9]{3}[0-9]{0,9}$")]],
       hospital_logo: [''],
       hospital_description: new FormControl(" "),
-      //sender_email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
-      //email_api_key: ['', [Validators.required]],
-      //email_name: ['', [Validators.required]],
-      //calling_platform: ['', [Validators.required]],
       //addContent: new FormControl(" "),
     })
   }
 
   private initPracticeEmailForm() {
     this.PracticeEmailForm = this.fb.group({
-      //sender_email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
-      // email_api_key: ['', [Validators.required]],
       addContent: new FormControl(" "),
     })
   }
@@ -116,18 +110,12 @@ export class AdminSettingComponent implements OnInit {
       hospital_contact: practice.contactNumber,
       //hospital_logo: practice.logoPath,
       hospital_description: practice.description,
-      //sender_email: practice.email,
-      //email_api_key: practice.emailApiKey,
-      //email_name: practice.emailApiName,
-      //calling_platform: practice.callingPlatform,
       //addContent: practice.emailAdditionalContent,
     })
   }
 
   setPracticeEmailFormValue(practice: Practice) {
     this.PracticeEmailForm.patchValue({
-      //sender_email: practice.email,
-      //email_api_key: practice.emailApiKey,
       addContent: practice.emailAdditionalContent,
     })
   }
@@ -139,16 +127,10 @@ export class AdminSettingComponent implements OnInit {
     this.practiceObj.contactNumber = v.hospital_contact;
     this.practiceObj.description = v.hospital_description;
     //this.practiceObj.logoPath = v.hospital_logo;
-    //this.practiceObj.email = v.sender_email;
-    // this.practiceObj.emailApiKey = v.email_api_key;
-    //this.practiceObj.emailApiName = v.email_name;
-    //this.practiceObj.callingPlatform = v.calling_platform;
   }
 
   getPracticeEmailFormValue() {
     var v = this.PracticeEmailForm.getRawValue();
-    //this.practiceObj.email = v.sender_email;
-    // this.practiceObj.emailApiKey = v.email_api_key;
     this.practiceObj.emailAdditionalContent = v.addContent;
   }
 
@@ -198,7 +180,6 @@ export class AdminSettingComponent implements OnInit {
       this.selectedFile = undefined;
       return;
     }
-
   }
 
   loadInvitationTemplate() {
@@ -255,7 +236,7 @@ export class AdminSettingComponent implements OnInit {
       return;
     }
     const formData = new FormData();
-    formData.append('image', this.logoToUpload, this.logoToUpload.name);
+    formData.append('image', this.logoToUpload, this.logoToUpload.name.replace(/\s/g, ""));
 
     //call to server
     this.httpClient.post(this.global.practiceUrl + "UploadPracticeLogo", formData, { reportProgress: true, observe: 'events', responseType: 'text' })
@@ -270,7 +251,6 @@ export class AdminSettingComponent implements OnInit {
         else {
           this.message = 'Upload Failed.';
         }
-
       });
   }
 
@@ -325,7 +305,6 @@ export class AdminSettingComponent implements OnInit {
         });
   }
 
-
   loadEmailTemplate() {
     this.showEditor = false;
     var v = this.PracticeEmailForm.getRawValue();
@@ -346,5 +325,4 @@ export class AdminSettingComponent implements OnInit {
   editTemplate() {
     this.showEditor = true;
   }
-
 }
