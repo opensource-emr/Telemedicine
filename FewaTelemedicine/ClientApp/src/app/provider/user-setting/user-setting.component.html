@@ -47,8 +47,6 @@
                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                     <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
                         aria-controls="v-pills-home" aria-selected="true">Profile</a>
-                    <!-- <a class="nav-link" id="v-pills-addProvider-tab" data-toggle="pill" href="#v-pills-addProvider" role="tab" aria-controls="v-pills-addProvider" aria-selected="true">Add Provider</a>
-                    <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false" (click)="loadEmailTemplate()">Configuration</a> -->
                     <a class="nav-link" id="v-pills-advice-tab" data-toggle="pill" href="#v-pills-advice" role="tab"
                         aria-controls="v-pills-advice" aria-selected="false">Advice</a>
                 </div>
@@ -88,7 +86,8 @@
                                                     style="color:red;">
                                                     <div *ngIf="userFormControls.name.errors.required">Name is required.
                                                     </div>
-                                                    <div *ngIf="userFormControls.name.errors.pattern">Name should not be number.                                                       
+                                                    <div *ngIf="userFormControls.name.errors.pattern">Name should not be
+                                                        number.
                                                     </div>
                                                 </div>
                                             </div>
@@ -137,8 +136,8 @@
                                                 <div *ngIf="userFormControls.designation.errors.required">Designation is
                                                     required.
                                                 </div>
-                                                <div *ngIf="userFormControls.designation.errors.pattern">Designation should
-                                                    not be number.
+                                                <div *ngIf="userFormControls.designation.errors.pattern">Designation
+                                                    should not be number.                                                 
                                                 </div>
                                             </div>
                                         </div>
@@ -162,14 +161,6 @@
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-6">
-                                        <!-- <div class="form-group">
-                                            <label>Affiliated Hospital or Clinic</label>
-                                            <input type="email" class="form-control" name="clinic"
-                                                formControlName="clinic">
-                                            <div *ngIf="userFormControls.clinic.touched && userFormControls.clinic.invalid" style="color: red;">
-                                                <div *ngIf="userFormControls.clinic.errors.required">Clinic is required.</div>
-                                            </div>
-                                        </div> -->
                                         <div class="form-group">
                                             <label>Profile Image</label>
                                             <input id="file-upload1" class="form-control" type="file"
@@ -191,31 +182,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                    <!--<div class="row">
-                                    <div class="col-12 col-md-6">
-                                    <div class="form-group">
-                                            <label>Profile Image</label>
-                                            <input id="file-upload1" class="form-control" type="file"
-                                                placeholder="Choose File" formControlName="profile_image"
-                                                (change)="onFileChanged($event)" />
-                                            <div *ngIf="userFormControls.profile_image.touched && userFormControls.profile_image.invalid"
-                                                style="color: red;">
-                                                <div *ngIf="userFormControls.profile_image.errors.required">Image is required.</div>
-                                            </div>
-                                            <label *ngIf="selectedFile"> {{selectedFile.name}}</label>
-                                            <span class="upload" *ngIf="progress > 0">
-                                                {{progress}}%
-                                            </span>
-                                            <span class="upload" *ngIf="message">
-                                                {{message}}
-                                            </span>
-                                    </div> 
-                                    </div>-->
                                 <div class="row">
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
                                             <label>Reset Password</label>
-                                            <input type="password" placeholder="Enter Reset Password" class="form-control" name="password" formControlName="new_password">
+                                            <input type="password" placeholder="Enter Reset Password"
+                                                class="form-control" name="password" formControlName="new_password">
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-6 text-right">
@@ -231,184 +203,6 @@
                             </form>
                         </div>
                     </div>
-
-                    <!-- Configuration -->
-                    <!-- <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                        <div class="fewa-title">
-                            <h1>Update Configuration</h1>
-                        </div>
-                        <div class="tab-forms">
-                            <form [formGroup]="practiceConfigForm">
-                                <h2>Practice Details :</h2>
-                                <div class="row">
-                                    <div class="col-12 col-md-6">
-                                        <div class="form-group">
-                                            <label>Practice Name<span class="red-text">*</span></label>
-                                            <input type="text" class="form-control" name="hospital_name" formControlName="hospital_name" />
-                                            <div *ngIf="practiceFormControls.hospital_name.touched && practiceFormControls.hospital_name.invalid" style="color: red;">
-                                                <div *ngIf="practiceFormControls.hospital_name.errors.required">
-                                                    Practice Name is required.
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-md-6">
-                                        <div class="form-group">
-                                            <label>Practice Contact No.<span class="red-text">*</span></label>
-                                            <input type="text" placeholder="Enter Contact No" class="form-control" name="hospital_contact"
-                                                formControlName="hospital_contact"> -->
-                    <!-- <div *ngIf="practiceConfigForm.controls['hospital_contact'].hasError('pattern')"style="color: red;">Enter 10 digit Contact No.</div> -->
-                    <!-- <div *ngIf="practiceFormControls.hospital_contact.touched && practiceFormControls.hospital_contact.invalid"
-                                                style="color: red;">
-                                                <div *ngIf="practiceFormControls.hospital_contact.errors.required">
-                                                    Practice Contact is required.</div>
-                                            </div>
-                                        </div> -->
-                    <!-- <div class="form-group">
-                                            <label>Hospital Email</label>
-                                            <input type="email" class="form-control" name="email" formControlName="hospital_email" />
-                                        </div> -->
-                    <!-- </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12 col-md-6">
-                                        <div class="form-group">
-                                            <label>Practice Logo (Optional)</label>
-                                        </div>
-                                        <input id="file-upload1" type="file" formControlName="hospital_logo" (change)="updatePracticeLogo($event.target.files)" accept=".png,.jpg,.jpeg" />
-                                        <label *ngIf="logoToUpload">{{logoToUpload.name}}</label>
-                                        <span class="upload" *ngIf="logoProgress > 0">
-                                            {{logoProgress}}%
-                                        </span>
-                                        <span class="upload" *ngIf="logoMessage">
-                                            {{logoMessage}}
-                                        </span>
-                                    </div>
-
-                                    <div class="col-12 col-md-6">
-                                        <div class="form-group">
-                                            <label>Practice Description</label>
-                                            <textarea rows="4" class="form-control" name="hospital_description" formControlName="hospital_description"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <h2>Email Details: </h2>
-                                <div class="row">
-                                    <div class="col-12 col-md-6">
-                                        <div class="form-group">
-                                            <label>Sender Email Id for Invitation<span class="red-text">*</span></label>
-                                            <input type="email" class="form-control" name="sender_email" formControlName="sender_email" />
-                                            <div *ngIf="practiceFormControls.sender_email.touched && practiceFormControls.sender_email.invalid" style="color: red;">
-                                                <div *ngIf="practiceFormControls.sender_email.errors.required">Email is required.
-                                                </div>
-                                                <div *ngIf="practiceFormControls.sender_email.errors.pattern">Invalid Email Address.</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-md-6">
-                                        <div class="form-group">
-                                            <label>Email API Key<span class="red-text">*</span></label>
-                                            <input type="text" class="form-control" name="email_api_key" formControlName="email_api_key" />
-                                            <div *ngIf="practiceFormControls.email_api_key.touched && practiceFormControls.email_api_key.invalid" style="color: red;">
-                                                <div *ngIf="practiceFormControls.email_api_key.errors.required">Email API Key is required.
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> -->
-                    <!-- <div class="row">
-                                    <div class="col-12 col-md-6">
-                                        <div class="form-group">
-                                            <label>Email Name<span class="red-text">*</span></label>
-                                            <input type="text" class="form-control" name="email_name" formControlName="email_name" />
-                                            <div *ngIf="practiceFormControls.email_name.touched && practiceFormControls.email_name.invalid" style="color: red;">
-                                                <div *ngIf="practiceFormControls.email_name.errors.required">Email Name is required.</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-md-6">
-                                        <div class="form-group">
-                                            <label>Video Call Platform<span class="red-text">*</span></label>
-                                            <div>
-                                                <div class="custom-control custom-radio custom-control-inline">
-                                                    <input formControlName="calling_platform" type="radio" value="Jitsi" name="calling_platform" id="Jitsi" class="custom-control-input">
-                                                    <label class="custom-control-label" for="Jitsi">Jitsi</label>
-                                                </div>
-                                                <div class="custom-control custom-radio custom-control-inline">
-                                                    <input formControlName="calling_platform" type="radio" value="Tokbox" id="Tokbox" name="calling_platform" class="custom-control-input">
-                                                    <label class="custom-control-label" for="Tokbox">Tokbox</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> -->
-                    <!-- <div class="row">
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <button type="submit" class="button-theme" (click)="loadInvitationTemplate()">Edit Invitation Email
-                                                        Template </button>
-                                                </div>
-                                            </div>
-                                            <div style="border:1px solid black;margin-top:3% !important" *ngIf="showInvitationTemplate">
-                                                <p *ngIf="!showEditor" style="height:auto;pointer-events:none;padding-top:2% !important" id="content" [innerHTML]="emailTemplateUrl()">
-                                                </p>
-                                                <div *ngIf="showEditor" style="margin:4%;">
-                                                    <angular-editor formControlName="addContent" [(ngModel)]="practiceObj.emailAdditionalContent" [config]="config"></angular-editor>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-12 col-md-8">
-
-                                                    </div>
-                                                    <div class="col-12 col-md-4 text-right mt-2 mb-2 pr-5">
-                                                        <button *ngIf="!showEditor" (click)="editTemplate()" class="cancelBtn" style="border-style:dashed;"><svg
-                                                                xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                height="24" viewBox="0 0 24 24" fill="none"
-                                                                stroke="#000000" stroke-width="2" stroke-linecap="round"
-                                                                stroke-linejoin="round">
-                                                                <path
-                                                                    d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34">
-                                                                </path>
-                                                                <polygon points="18 2 22 6 12 16 8 16 8 12 18 2">
-                                                                </polygon>
-                                                            </svg> Edit Template
-                                                        </button>
-                                                        <button *ngIf="showEditor" (click)="previewEmailTemplate()" class="saveBtn" style="border-style:dashed;">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                height="24" viewBox="0 0 24 24" fill="none"
-                                                                stroke="#000000" stroke-width="2" stroke-linecap="round"
-                                                                stroke-linejoin="round">
-                                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
-                                                                </path>
-                                                                <circle cx="12" cy="12" r="3"></circle>
-                                                            </svg>
-                                                            Preview Changes
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <div class="col-12 col-md-6">
-
-                                    </div>
-                                    <div class="col-12 col-md-6 text-right">
-                                        <ul>
-                                            <li><button class="cancelBtn" (click)="resetPracticeForm()">Cancel</button>
-                                            </li>
-                                            <li><button class="saveBtn" [disabled]="!practiceConfigForm.valid" (click)="updatePracticeConfiguration()">Save</button>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div> -->
 
                     <!-- Advice -->
                     <div class="tab-pane fade" id="v-pills-advice" role="tabpanel" aria-labelledby="v-pills-advice-tab">
@@ -472,7 +266,6 @@
                                 </table>
                                 <div class="row" style="margin-top:3% !important;">
                                     <div class="col-12 col-md-6">
-
                                     </div>
                                     <div class="col-12 col-md-6 text-right">
                                         <ul>
@@ -488,54 +281,6 @@
                             </form>
                         </div>
                     </div>
-
-                    <!-- Add Provider -->
-                    <!-- <div class="tab-pane fade" id="v-pills-addProvider" role="tabpanel" aria-labelledby="v-pills-addProvider-tab">
-                        <div class="fewa-title">
-                            <h1>Add Provider</h1>
-                        </div>
-                        <div class="tab-forms" style="max-height:546px;">
-                            <form [formGroup]="addProviderForm">
-                                <div class="row">
-                                    <div class="col-12 col-md-6">
-                                        <div class="form-group">
-                                            <label>User Name<span class="red-text">*</span></label>
-                                            <input type="text" class="form-control" name="userName" formControlName="userName">
-                                            <div *ngIf="addProviderFormControls.userName.touched && addProviderFormControls.userName.invalid" style="color: red;">
-                                                <div *ngIf="addProviderFormControls.userName.errors.required">User Name is required.
-                                                </div> -->
-                    <!-- <div *ngIf="userFormControls.userName.errors.pattern">Invalid mobile
-                                                    number.</div> -->
-                    <!-- </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-md-6">
-                                        <div class="form-group">
-                                            <label>Password<span class="red-text">*</span></label>
-                                            <input type="password" class="form-control" name="password" formControlName="password">
-                                            <div *ngIf="addProviderFormControls.password.touched && addProviderFormControls.password.invalid" style="color:red;">
-                                                <div *ngIf="addProviderFormControls.password.errors.required">Password is required.
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-12 col-md-6">
-
-                                    </div>
-                                    <div class="col-12 col-md-6 text-right">
-                                        <ul>
-                                            <li><button type="submit" (click)="resetAddProviderForm()" class="cancelBtn">Reset</button></li>
-                                            <li><button type="submit" [disabled]="!addProviderForm.valid" (click)="addProvider()" class="saveBtn">Save</button></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div> -->
-
                 </div>
             </div>
         </div>

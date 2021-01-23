@@ -44,7 +44,6 @@
         <div class="col-12">
             <div class="userTabsMenu">
                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                    <!-- <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Profile</a> -->
                     <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="true">Configuration</a>
                     <a class="nav-link" id="v-pills-email-tab" data-toggle="pill" href="#v-pills-email" role="tab" aria-controls="v-pills-email" aria-selected="true" (click)="loadEmailTemplate()">Edit Invitation
                         Email Template</a>
@@ -84,10 +83,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- <div class="form-group">
-                                            <label>Hospital Email</label>
-                                            <input type="email" class="form-control" name="email" formControlName="hospital_email" />
-                                        </div> -->
                                     </div>
                                 </div>
                                 <div class="row">
@@ -145,39 +140,9 @@
                         </div>
                         <div class="tab-forms">
                             <form [formGroup]="PracticeEmailForm">
-                                <!-- <h2>Email Details: </h2> -->
-                                <!-- <div class="row">
-                                    <div class="col-12 col-md-6">
-                                        <div class="form-group">
-                                            <label>Sender Email Id for Invitation<span class="red-text">*</span></label>
-                                            <input type="email" class="form-control" name="sender_email" formControlName="sender_email" />
-                                            <div *ngIf="practiceEmailFormControls.sender_email.touched && practiceEmailFormControls.sender_email.invalid" style="color: red;">
-                                                <div *ngIf="practiceFormControls.sender_email.errors.required">Email is required.
-                                                </div>
-                                                <div *ngIf="practiceEmailFormControls.sender_email.errors.pattern">Invalid Email Address.</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-md-6">
-                                        <div class="form-group">
-                                            <label>Email API Key<span class="red-text">*</span></label>
-                                            <input type="text" class="form-control" name="email_api_key" formControlName="email_api_key" />
-                                            <div *ngIf="practiceEmailFormControls.email_api_key.touched && practiceEmailFormControls.email_api_key.invalid" style="color: red;">
-                                                <div *ngIf="practiceEmailFormControls.email_api_key.errors.required">Email API Key is required.
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> -->
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="form-group">
-                                            <!-- <div class="row">
-                                                <div class="col-md-6">
-                                                    <button type="submit" class="button-theme">Edit Invitation Email
-                                                        Template </button>
-                                                </div>
-                                            </div> -->
                                             <div style="border:1px solid black;margin-top:3% !important">
                                                 <p *ngIf="!showEditor" style="height:auto;pointer-events:none;padding-top:2% !important" id="content" [innerHTML]="emailTemplateUrl()">
                                                 </p>
@@ -221,7 +186,6 @@
                                 <br>
                                 <div class="row">
                                     <div class="col-12 col-md-6">
-
                                     </div>
                                     <div class="col-12 col-md-6 text-right">
                                         <ul>

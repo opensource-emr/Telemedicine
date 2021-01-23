@@ -80,7 +80,7 @@ namespace FewaTelemedicine.Controllers
                 {
                     return false;
                 }
-            
+
             }
             catch (Exception ex)
             {
@@ -98,14 +98,14 @@ namespace FewaTelemedicine.Controllers
                 if (key == "73l3M3D")
                 {
                     if (obj is null)
-                {
-                    return false;
-                }
-                if (string.IsNullOrEmpty(obj.email))
-                {
-                    return false;
-                }
-                return await _messengerService.SendPatientReportEmailAsync(obj, Request.Scheme + "://" + Request.Host.Value);
+                    {
+                        return false;
+                    }
+                    if (string.IsNullOrEmpty(obj.email))
+                    {
+                        return false;
+                    }
+                    return await _messengerService.SendPatientReportEmailAsync(obj, Request.Scheme + "://" + Request.Host.Value);
                 }
                 else
                 {
@@ -129,35 +129,35 @@ namespace FewaTelemedicine.Controllers
                 if (key == "73l3M3D")
                 {
                     if (obj is null)
-                {
-                    return false;
-                }
-                //get provider by username or email
-                Provider provider = _providerRepo.getProviderByUserName(obj.practice, obj.userName,obj.email);
-                if (provider == null)
-                {
-                    return false;
-                }
-                if (!string.IsNullOrEmpty(provider.email))
-                {
-                    provider.otp = GenerateOtp(provider.email);
-                    var result = await _messengerService.SendOTP(provider.practiceId,provider.email, provider.otp, Request.Scheme + "://" + Request.Host.Value);
-                    if (result == true)
                     {
-                        HttpContext.Session.SetString("otp", JsonConvert.SerializeObject(provider));
+                        return false;
                     }
-                    return result;
-                }
-                else
-                {
-                    provider.otp = GenerateOtp(provider.userName);
-                    var result = await _messengerService.SendOTP(provider.practiceId,provider.userName, provider.otp);
-                    if (result == true)
+                    //get provider by username or email
+                    Provider provider = _providerRepo.getProviderByUserName(obj.practice, obj.userName, obj.email);
+                    if (provider == null)
                     {
-                        HttpContext.Session.SetString("otp", JsonConvert.SerializeObject(provider));
+                        return false;
                     }
-                    return result;
-                }
+                    if (!string.IsNullOrEmpty(provider.email))
+                    {
+                        provider.otp = GenerateOtp(provider.email);
+                        var result = await _messengerService.SendOTP(provider.practiceId, provider.email, provider.otp, Request.Scheme + "://" + Request.Host.Value);
+                        if (result == true)
+                        {
+                            HttpContext.Session.SetString("otp", JsonConvert.SerializeObject(provider));
+                        }
+                        return result;
+                    }
+                    else
+                    {
+                        provider.otp = GenerateOtp(provider.userName);
+                        var result = await _messengerService.SendOTP(provider.practiceId, provider.userName, provider.otp);
+                        if (result == true)
+                        {
+                            HttpContext.Session.SetString("otp", JsonConvert.SerializeObject(provider));
+                        }
+                        return result;
+                    }
                 }
                 else
                 {
@@ -179,26 +179,30 @@ namespace FewaTelemedicine.Controllers
                 if (key == "73l3M3D")
                 {
                     Provider pro = JsonConvert.DeserializeObject<Provider>(HttpContext.Session.GetString("otp"));
-                if (pro == null)
-                {
-                    return false;
-                }
-                //get provider by username or email
-                Provider provider = _providerRepo.getProviderByUserName(pro.practice,pro.userName,pro.email);
-                if (provider == null)
-                {
-                    return false;
-                }
-
-                if (pro.email == provider.email || provider.userName == pro.userName)
-                {
-                    var result = await _messengerService.SendOTP(pro.practiceId,pro.email, pro.otp);
-                    return result;
-                }
-                else
-                {
-                    return false;
-                }
+                    if (pro == null)
+                    {
+                        return false;
+                    }
+                    //get provider by username or email
+                    Provider provider = _providerRepo.getProviderByUserName(pro.practice, pro.userName, pro.email);
+                    if (provider == null)
+                    {
+                        return false;
+                    }
+                    if (pro.email == provider.email || provider.userName == pro.userName)
+                    {
+                        provider.otp = GenerateOtp(provider.email);
+                        var result = await _messengerService.SendOTP(provider.practiceId, provider.email, provider.otp, Request.Scheme + "://" + Request.Host.Value);
+                        if (result == true)
+                        {
+                            HttpContext.Session.SetString("otp", JsonConvert.SerializeObject(provider));
+                        }
+                        return result;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
                 else
                 {
@@ -221,16 +225,16 @@ namespace FewaTelemedicine.Controllers
                 if (key == "73l3M3D")
                 {
                     if (obj is null)
-                {
-                    return false;
-                }
-                obj.otp = GenerateOtp(obj.email);
-                var result = await _messengerService.SendRegistrationOTP(obj.name, obj.email, obj.otp, Request.Scheme + "://" + Request.Host.Value);
-                if (result == true)
-                {
-                    HttpContext.Session.SetString("registrationOtp", JsonConvert.SerializeObject(obj));
-                }
-                return result;
+                    {
+                        return false;
+                    }
+                    obj.otp = GenerateOtp(obj.email);
+                    var result = await _messengerService.SendRegistrationOTP(obj.name, obj.email, obj.otp, Request.Scheme + "://" + Request.Host.Value);
+                    if (result == true)
+                    {
+                        HttpContext.Session.SetString("registrationOtp", JsonConvert.SerializeObject(obj));
+                    }
+                    return result;
                 }
                 else
                 {
@@ -253,12 +257,17 @@ namespace FewaTelemedicine.Controllers
                 if (key == "73l3M3D")
                 {
                     Practice practice = JsonConvert.DeserializeObject<Practice>(HttpContext.Session.GetString("registrationOtp"));
-                if (practice == null)
-                {
-                    return false;
-                }
-                var result = await _messengerService.SendRegistrationOTP(practice.name, practice.email, practice.otp, Request.Scheme + "://" + Request.Host.Value);
-                return result;
+                    if (practice == null)
+                    {
+                        return false;
+                    }
+                    practice.otp = GenerateOtp(practice.email);
+                    var result = await _messengerService.SendRegistrationOTP(practice.name, practice.email, practice.otp, Request.Scheme + "://" + Request.Host.Value);
+                    if (result == true)
+                    {
+                        HttpContext.Session.SetString("registrationOtp", JsonConvert.SerializeObject(practice));
+                    }
+                    return result;
                 }
                 else
                 {
