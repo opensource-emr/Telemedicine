@@ -46,10 +46,10 @@
             <div class="clearfix"></div>
             <div class="card">
                 <div class="card-body" style="width:35rem;">
-                    <div class="fewa-title">
-                        <h1 style="display: inline; cursor: pointer;" [matTooltipPosition]="position" matTooltip="Click to copy" (click)="copyToClipBoard()">Copy Invitation Link</h1>
+                    <div class="fewa-title" style="width:265px;">
+                        <a href="javascript:;" style="display: inline; font-size:17px; cursor: pointer; text-decoration: underline;" (click)="copyToClipBoard()">Click Here To Copy Invitation Link</a>
                     </div>
-                    <div class="invitationForm" style="max-height: 56px;">
+                    <div class="invitationForm" style="max-height:56px; padding:5px;">
                         <form [formGroup]="form">
                             <div class="row">
                                 <div class="col-lg-5">
