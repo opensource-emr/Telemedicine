@@ -301,6 +301,7 @@ namespace FewaTelemedicine.Persistence.Repositories
         public async Task<bool> SendPatientReportEmailAsync(Patient patient, string hostname = "")
         {
             var bResponse = false;
+            var slash = "";
             try
             {
                 Provider provider = FewaDbContext.providers.Where(a => a.url.ToLower().Trim() == patient.url.ToLower().Trim() && a.practice == patient.practice.ToLower().Trim()).FirstOrDefault();
@@ -319,6 +320,8 @@ namespace FewaTelemedicine.Persistence.Repositories
                     practice.serverName = hostname;
                 }
                 var adviceList = "";
+                if (!string.IsNullOrEmpty(patient.followUpNumber))
+                    slash = "/";
                 Practice pra = FewaDbContext.practices.Where(a => a.url.ToLower().Trim() == "practice").FirstOrDefault();
                 if (pra == null)
                 {
@@ -520,7 +523,7 @@ namespace FewaTelemedicine.Persistence.Repositories
                                  "   					 <tr>  " +
                                  "                           <td align='left' valign='top'  " +
                                  "                               style='font-family:\"Open Sans\", Arial, sans-serif; font-size:14px; line-height:22px; color:#666;padding-bottom:12px;'>  " +
-                                 "                                <b style='color:#000;'>Follow Up in:</b>&nbsp;" + patient.followUpNumber + "/" + patient.followUpMeasure + "</td>  " +
+                                 "                                <b style='color:#000;'>Follow Up in:</b>&nbsp;" + patient.followUpNumber + slash + patient.followUpMeasure + "</td>  " +
                                  "                          </tr>  " +
                                  "                          <tr>  " +
                                  "                              <td height='15' class='em_h20' style='font-size:0px; line-height:0px; height:15px;'>&nbsp;</td>  " +

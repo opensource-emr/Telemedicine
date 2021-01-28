@@ -116,7 +116,7 @@ export class LiveVideoComponent implements OnInit, OnDestroy {
       // newPrescriptionsSentToYourPharmacy: new FormControl(true, Validators.nullValidator),
       // newPrescriptionsMailedToYou: new FormControl(true, Validators.nullValidator),
       medication: new FormControl('', Validators.nullValidator),
-      followUpNumber: new FormControl('', [Validators.required, Validators.pattern("^[0-9]{1,10}$")]),
+      followUpNumber: new FormControl('', [Validators.nullValidator, Validators.pattern("^[0-9]{1,10}$")]),
       followUpMeasure: new FormControl('', Validators.nullValidator),
     });
   }
@@ -162,8 +162,19 @@ export class LiveVideoComponent implements OnInit, OnDestroy {
   }
 
   completeVisit() {
-    if (this.reportForm.invalid) {
-      return;
+    if (this.reportForm.value.followUpNumber && !this.reportForm.value.followUpMeasure) {
+      this._snackBar.open('Please select follow up measure','Dismiss', {
+        duration: 10000,
+        verticalPosition: 'top'
+       });
+       return;
+    }
+    if(!this.reportForm.value.followUpNumber && this.reportForm.value.followUpMeasure) {
+        this._snackBar.open('Please enter follow up number','Dismiss', {
+          duration: 10000,
+          verticalPosition: 'top'
+         });
+       return;
     }
     this.isMeetStart = false;
     this.patient.url = this.global.providerObj.url;
@@ -176,11 +187,12 @@ export class LiveVideoComponent implements OnInit, OnDestroy {
     var v: Patient = this.reportForm.getRawValue();
     this.patient.medication = v.medication;
     this.patient.followUpNumber = v.followUpNumber.toString();
-    this.patient.followUpMeasure = v.followUpMeasure != "" ? v.followUpMeasure
-      : (parseInt(v.followUpNumber) <= 1 ? "Week" : "Weeks");
-    if (this.patient.mobileNumber) {
-      this.patient.mobileNumber = this.patient.mobileNumber.toString();
-    }
+    this.patient.followUpMeasure = v.followUpMeasure;
+    // this.patient.followUpMeasure = v.followUpMeasure != "" ? v.followUpMeasure
+    //   : (parseInt(v.followUpNumber) <= 1 ? "Week" : "Weeks");
+    // if (this.patient.mobileNumber) {
+    //   this.patient.mobileNumber = this.patient.mobileNumber.toString();
+    // }
     this.httpClient.post<any>(this.global.practiceUrl + "PatientAttended", this.patient).subscribe(res => {
       if (res) {
         this.notificationService.CallEnds(this.patient);

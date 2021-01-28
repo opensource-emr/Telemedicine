@@ -327,42 +327,26 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- <div class="custom-control custom-checkbox ">
-                            <input type="checkbox" id="customRadioInline1" name="customRadioInline1"
-                                class="custom-control-input" formControlName="labOrdersSent">
-                            <label class="custom-control-label" for="customRadioInline1">Lab Orders Sent</label>
-                        </div>
-                        <div class="custom-control custom-checkbox ">
-                            <input type="checkbox" id="customRadioInline2" name="customRadioInline1" class="custom-control-input" formControlName="newPrescriptionsSentToYourPharmacy">
-                            <label class="custom-control-label" for="customRadioInline2">New prescriptions sent to your
-                                pharmacy</label>
-                        </div>
-                        <div class="custom-control custom-checkbox ">
-                            <input type="checkbox" id="customRadioInline3" name="customRadioInline3" formControlName="newPrescriptionsMailedToYou" class="custom-control-input">
-                            <label class="custom-control-label" for="customRadioInline3">New prescriptions mailed to
-                                you</label>
-                        </div> -->
                     </div>
                     <div class="form-group">
                         <label>Advice</label>
                         <textarea class="form-control" rows="4" formControlName="medication"></textarea>
                     </div>
                     <div class="form-group">
-                        <label>Follow Up in<span class="red-text" style="color: red;">*</span></label>
+                        <label>Follow Up in</label>
                         <div class="display-flex">
                             <input #followUpNum maxlength="3" placeholder="Enter follow up no." type="text" class="form-control" formControlName="followUpNumber">
                             <small style="color: red;" *ngIf="reportForm.controls['followUpNumber'].hasError('pattern')">Value should be number
-                            </small>
-                            <small style="color: red;" *ngIf="reportForm.controls['followUpNumber'].touched && reportForm.controls['followUpNumber'].hasError('required')">Enter a number
-                            </small>
+                            </small>                    
                             <select class="form-control" formControlName="followUpMeasure">
+                                <option disabled selected value>--select--</option> 
                                 <option *ngIf="followUpNum.value==1 || followUpNum.value==0">Week</option>
                                 <option *ngIf="followUpNum.value==1 || followUpNum.value==0">Month</option>
                                 <option *ngIf="followUpNum.value==1 || followUpNum.value==0">Year</option>
                                 <option *ngIf="followUpNum.value>1">Weeks</option>
                                 <option *ngIf="followUpNum.value>1">Months</option>
                                 <option *ngIf="followUpNum.value>1">Years</option>
-                            </select>
+                            </select>  
                         </div>
                     </div>
                     <div class="submitButton">
