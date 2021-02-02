@@ -9,29 +9,39 @@
             <form [formGroup]="form" *ngIf="sendOtpSection">
                 <div class="intro-formList">
                     <div class="form-group">
-                        <input (keyup)="onInputChange($event)" type="text" class="form-control" placeholder="Enter your practice username" formControlName="name">
+                        <input (keyup)="onInputChange($event)" type="text" class="form-control"
+                            placeholder="Enter your practice username" formControlName="name">
                         <div *ngIf="formControls.name.touched && formControls.name.invalid" style="color:red;">
-                            <div *ngIf="formControls.name.errors.required">Practice name is required.
+                            <div *ngIf="formControls.name.errors.required">Practice username is required.
+                            </div>
+                            <div *ngIf="formControls.name.errors.validUserName">This username is already taken!
+                            </div>
+                            <div *ngIf="formControls.name.errors.pattern">Username should not have any special character
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <input type="email" class="form-control" placeholder="Enter email address for practice" formControlName="email">
+                        <input type="email" class="form-control" placeholder="Enter email address for practice"
+                            formControlName="email">
                         <div *ngIf="formControls.email.touched && formControls.email.invalid" style="color: red;">
                             <div *ngIf="formControls.email.errors.required">Email is required.
                             </div>
-                            <div *ngIf="formControls.email.errors.pattern">Invalid Email Address.
+                            <div *ngIf="formControls.email.errors.pattern">Invalid email Address.
+                            </div>
+                            <div *ngIf="formControls.email.errors.validEmail"> This email is already taken!
                             </div>
                         </div>
                     </div>
-                    <button type="submit" class="btn submitBtn" [disabled]="clicked" (click)="onSubmit()">Sign Up</button>
+                    <button type="submit" class="btn submitBtn" [disabled]="clicked" (click)="onSubmit()">Sign
+                        Up</button>
                     <!-- <p>Already have an account? <a href="javascript:" routerLink="/provider/login">Sign in</a></p> -->
                 </div>
             </form>
             <form [formGroup]="form" *ngIf="verifyOtpSection">
                 <div class="intro-formList">
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Enter one time password" formControlName="otp">
+                        <input type="text" class="form-control" placeholder="Enter one time password"
+                            formControlName="otp">
                         <div *ngIf="formControls.otp.touched && formControls.otp.invalid" style="color:red;">
                             <div *ngIf="formControls.otp.errors.required">One time password is required.
                             </div>
@@ -39,11 +49,12 @@
                     </div>
                     <button type="submit" class="btn submitBtn" (click)="verifyOTP()">Confirm</button><br><br>
                     <!-- <div id="countdown">{{countDownTime}}</div> -->
-                    <button type="submit" class="btn submitBtn" [disabled]="resendOtpButton" (click)="resendOTP()">Resend OTP</button>
+                    <button type="submit" class="btn submitBtn" [disabled]="resendOtpButton"
+                        (click)="resendOTP()">Resend OTP</button>
                     <p>Already have an account? <a href="javascript:" routerLink="/provider/login">Sign in</a></p>
                 </div>
             </form><br>
-            <div>URL will be:-
+            <div>Link will be:-
                 <span style="text-decoration: underline;">{{urlLink}}</span>
             </div>
         </div>
@@ -55,8 +66,11 @@
             </div>
             <div class="intro-bannercontent">
                 <p *ngIf="global.practiceObj.description">{{global.practiceObj.description}}</p>
-                <p *ngIf="!global.practiceObj.description">Welcome to the demo of Fewa. This is the place where you can put your practice description. Fewa is a application which helps to connect provider and patient using video. Patient can print advice , share documents with provider and provider
-                    also knows how much time he has given to attend the patient.Send a invitation to the patient and then both can communicate</p>
+                <p *ngIf="!global.practiceObj.description">Welcome to the demo of Fewa. This is the place where you can
+                    put your practice description. Fewa is a application which helps to connect provider and patient
+                    using video. Patient can print advice , share documents with provider and provider
+                    also knows how much time he has given to attend the patient.Send a invitation to the patient and
+                    then both can communicate</p>
                 <ul>
                     <li><span><svg id="Layer_1" enable-background="new 0 0 512.021 512.021" height="512"
                                 viewBox="0 0 512.021 512.021" width="512" xmlns="http://www.w3.org/2000/svg">
