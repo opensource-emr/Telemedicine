@@ -1,9 +1,10 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { NgForm, Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { NgForm, Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
 import { Global } from 'src/app/_helpers/common/global.model';
 import { HttpClient } from '@angular/common/http';
 import { Practice } from 'src/app/_helpers/models/domain-model';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ValidateEmail, ValidateUserName } from 'src/app/_helpers/common/confirmed-validator';
 
 @Component({
   selector: 'app-register',
@@ -20,48 +21,43 @@ export class RegisterComponent implements OnInit {
   countDownTime: number = 60;
   clicked: boolean = false;
   inputPracticeName = 'practice';
-  urlLink=this.getInvitationLink();
-
-
+  urlLink = this.getInvitationLink();
   constructor(public global: Global,
     private fb: FormBuilder,
     public _snackBar: MatSnackBar,
     private httpClient: HttpClient,
     public cdr: ChangeDetectorRef) { this.initUserForm(); }
 
-  ngOnInit(): void {
-
-  }
+  ngOnInit(): void {this.getAllPractices()}
   private initUserForm() {
     this.form = this.fb.group({
-      name: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
+      name: ['', [Validators.required,Validators.pattern("^[a-zA-Z0-9_ ]+$"),ValidateUserName.bind(this),]],
+      email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$"), ValidateEmail.bind(this)]],
       otp: ['', [Validators.required]]
     })
-
   }
   countDown(): void {
     var countDown = setInterval(() => {
       this.countDownTime--;
       // if (document.getElementById('countdown')) {
       //   document.getElementById('countdown').innerHTML = this.countDownTime.toString();
-        if (this.countDownTime === 0) {
-          this.resendOtpButton = false;
-          clearInterval(countDown);
-        } 
+      if (this.countDownTime === 0) {
+        this.resendOtpButton = false;
+        clearInterval(countDown);
+      }
       // } else {
       //   clearInterval(countDown);
       // }
     }, 1000);
   }
   onSubmit() {
-    if (this.form.get("email").invalid && this.form.get("name").invalid) {
+    if (this.form.get("email").invalid || this.form.get("name").invalid) {
       return;
     }
-    var key="73l3M3D"; //hardcoded
+    var key = "73l3M3D"; //hardcoded
     this.practiceObj.name = this.form.value.name.replace(/\s/g, "").toLowerCase();
     this.practiceObj.email = this.form.value.email;
-    this.clicked=true;
+    this.clicked = true;
     var observable = this.httpClient.post("/Messenger/SendRegistrationOTP?key=" + key
       , this.practiceObj);
     observable.subscribe(res => this.successObserver(res),
@@ -80,25 +76,25 @@ export class RegisterComponent implements OnInit {
   }
   popUpSnackBar() {
     this._snackBar.open('You can resend otp after one minute', 'Dismiss', {
-      duration: 10000,   
+      duration: 10000,
       verticalPosition: 'top'
-     });
-    }
+    });
+  }
   resendOTP() {
-    var key="73l3M3D"; //hardcoded
+    var key = "73l3M3D"; //hardcoded
     this.resendOtpButton = true;
     var observable = this.httpClient.get("/Messenger/ResendRegistrationOTP?key=" + key)
     observable.subscribe(res => this.successResendOTP(res),
       res => this.errorObserver(res));
   }
   successObserver(res) {
-    this.clicked=false;
+    this.clicked = false;
     if (res) {
       this.popUpSnackBar();
       this.sendOtpSection = false;
       this.verifyOtpSection = true;
       this.countDown();
-    }else{
+    } else {
       alert("we already have this practice");
     }
   }
@@ -117,16 +113,16 @@ export class RegisterComponent implements OnInit {
     }
   }
   errorObserver(res) {
-    this.clicked=false;
+    this.clicked = false;
   }
   get formControls() {
     return this.form.controls;
   }
 
-  onInputChange(event){
-   // this.cdr.markForCheck();
+  onInputChange(event) {
+    // this.cdr.markForCheck();
     this.inputPracticeName = event.target.value;
-    if(this.inputPracticeName == ""){
+    if (this.inputPracticeName == "") {
       this.inputPracticeName = 'practice';
     }
     this.urlLink = this.getInvitationLink();
@@ -137,5 +133,14 @@ export class RegisterComponent implements OnInit {
     let host = window.location.host;
     let protocol = window.location.protocol;
     return protocol + "//" + host + "/" + this.inputPracticeName;
+  }
+  getAllPractices() {
+    var key = "73l3M3D"; //hardcoded
+    this.httpClient.get<any>(this.global.practiceUrl + 'GetAllPractices?key=' + key)
+      .subscribe(res => {
+        this.global.practiceArray = res;
+      }, err => {
+        // alert('Can not load configuration please talk with admin.');
+      });
   }
 }

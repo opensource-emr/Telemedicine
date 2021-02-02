@@ -1,5 +1,5 @@
 
-import { ChatModel,MessageModel } from '../models/chat.model';
+import { ChatModel, MessageModel } from '../models/chat.model';
 import { Patient, Provider, Practice } from '../models/domain-model';
 
 export class Global {
@@ -11,10 +11,11 @@ export class Global {
     apiUrl: string = "/api/";
     practiceUrl: string = "/Practice/";
     config: any = null;
-    token: string="";
+    token: string = "";
     currentPractice: string = "";
     currentProvider: string = "";
     chatData: Array<ChatModel> = new Array<ChatModel>();
+    public practiceArray: Array<Practice> = [];
     previousChats: Array<MessageModel> = [];
     isMobile = /iPhone|webOS|mobile|CriOS|iPad|iPod|BlackBerry|IEMobile|'Android' + 'Chrome'|Opera Mini|Android/i;
     constructor() {

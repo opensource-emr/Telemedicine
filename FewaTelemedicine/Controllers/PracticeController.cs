@@ -565,5 +565,25 @@ namespace FewaTelemedicine.Controllers
                 return Ok("Error In Retrieving Records" + ex.Message);
             }
         }
+        [AllowAnonymous]
+        public IActionResult GetAllPractices(string key)
+        {
+            try
+            {
+                if (key == "73l3M3D")
+                {
+                    return Ok(FewaDbContext.practices.Select(a => new Practice{url = a.url,email = a.email}).ToList());
+                }
+                else
+                {
+                    return Ok("wrongKey");
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal server error.");
+            }
+
+        }
     }
 }
