@@ -251,14 +251,24 @@ export class NotificationService {
           n.message = data.message;
           n.sender = data.sender;
           n.receiver = data.receiver;
-          n.time = new Date();
+          n.fileBinary = data.fileBinary;
+          n.time = data.time;
+          n.fileHeader = data.fileHeader;
           t.message.push(n);
           this.global.previousChats.push(n);
-          this._snackBar.open(data.message, data.sender, {
-            duration: 2000,
-            verticalPosition:'top'
-          });
-        }
+          if(n.fileBinary!="" && n.fileBinary!=undefined && n.fileBinary !=null){
+            this._snackBar.open('FILE', data.sender, {
+              duration: 2000,
+              verticalPosition:'top'
+            });
+          }
+          else{
+            this._snackBar.open(data.message, data.sender, {
+              duration: 2000,
+              verticalPosition:'top'
+            });
+         }
+       }
       } else if (type == 'sentbyprovider') {
         var t = this.global.chatData.find(a => a.user == data.receiver);
         if (t) {

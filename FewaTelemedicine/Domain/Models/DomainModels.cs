@@ -137,13 +137,11 @@ namespace FewaTelemedicine.Domain.Models
     }
     public class ChatMessage
     {
-        [NotMapped]
-        public bool isProvider{ get; set; }
-        [NotMapped]
+        public bool isProvider { get; set; }
         public string message { get; set; }
-        [NotMapped]
+        public string fileBinary { get; set; }
+        public string fileHeader { get; set; }
         public string sender { get; set; }
-        [NotMapped]
         public string receiver { get; set; }
     }
     public class ProviderAdvice

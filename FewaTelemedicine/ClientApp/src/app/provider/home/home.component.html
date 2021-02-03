@@ -7,10 +7,10 @@
                 </div>
                 <div class="col-12 col-md-8">
                     <ul>
-                        <li><a href="#AboutSection">About Us</a></li>
-                        <li><a href="#HowItWork">How it works</a></li>
-                        <li><a href="#PlanSection">Subscription</a></li>
-                        <li><a href="#ContactSection">Contact Us</a></li>
+                        <!-- <li><a href="#AboutSection">About Us</a></li> -->
+                        <li><a routerLink="/provider/home" fragment="HowItWork">How it works</a></li>
+                        <!-- <li><a href="#PlanSection">Subscription</a></li> -->
+                        <li><a routerLink="/provider/home" fragment="ContactSection">Contact Us</a></li>
                         <li>|</li>
                         <li *ngIf="showSignUp"><a class="signupBtn" routerLink="/provider/register">Sign Up</a></li>
                         <li *ngIf="showSignIn"><a class="signupBtn" routerLink="/provider/login">Sign In</a></li>
@@ -26,9 +26,9 @@
                     <div class="bannerTexts">
                         <h2>Skip the travel!</h2>
                         <h2>Take Online provider Consultation</h2>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type
-                            specimen book. It has survived not only five centuries,</p>
-                        <a class="viewBtn">View More</a>
+                        <p>Telemedicine solution for the world! Simple to sign up and customizable with affordable pricing. </p>
+                        <a (click)="showViewMoreText()" class="viewBtn" style="cursor: pointer;">View More</a>
+                        <p *ngIf="showViewMoreInfo">Built and designed by the experts in the medical field with the flow that is optimal for patient-provider interaction.</p>
                     </div>
                 </div>
                 <div class="col-12 col-md-6">
@@ -43,18 +43,20 @@
         <div class="container">
             <div class="partnerList">
                 <ul>
-                    <li><img src="/assets/img/divi3.png" class="img-fluid"></li>
-                    <li><img src="/assets/img/divi1.png" class="img-fluid"></li>
-                    <li><img src="/assets/img/divi2.png" class="img-fluid"></li>
-                    <li><img src="/assets/img/divi3.png" class="img-fluid"></li>
-                    <li><img src="/assets/img/divi1.png" class="img-fluid"></li>
-                    <li><img src="/assets/img/divi2.png" class="img-fluid"></li>
+                    <li><img src="/assets/img/homepage-computer.png" class="img-fluid"></li>
+                    <li><img src="/assets/img/homepage-pills.png" class="img-fluid"></li>
+                    <li><img src="/assets/img/homepage-hospital.png" class="img-fluid"></li>
+                    <li><img src="/assets/img/homepage-logo.png" class="img-fluid"></li>
+                    <li><img src="/assets/img/homepage-injection.png" class="img-fluid"></li>
+                    <li><img src="/assets/img/homepage-heart.png" class="img-fluid"></li>
                 </ul>
             </div>
         </div>
     </div>
 </section>
-<section class="aboutsection" id="AboutSection">
+
+<!-- About US start -->
+<!-- <section class="aboutsection" id="AboutSection">
     <div class="container">
         <div class="row">
             <div class="col-12 col-md-5">
@@ -83,13 +85,15 @@
             </div>
         </div>
     </div>
-</section>
+</section> -->
+<!-- About US end -->
+
 <section class="howitsection" id="HowItWork">
     <div class="container">
         <div class="row">
             <div class="col-12 text-center">
                 <h1>How it works</h1>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
+                <p>Location independent - All that is needed is network connection.</p>
             </div>
         </div>
         <br>
@@ -104,7 +108,7 @@
                             <img src="/assets/img/what-we-do-1.png" class="img-fluid">
                         </div>
                         <h3>Select your Patient</h3>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled.</p>
+                        <p>Provider logs in and sends email and/or text to the patient with a link to sign in.</p>
                     </div>
                 </div>
             </div>
@@ -118,7 +122,7 @@
                             <img src="/assets/img/what-we-do-2.png" class="img-fluid">
                         </div>
                         <h3>Choose Patients then talk to provider</h3>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled.</p>
+                        <p>Patient clicks on the link from any browser and is placed in the virtual lobby.</p>
                     </div>
                 </div>
             </div>
@@ -134,7 +138,7 @@
                             <img src="/assets/img/what-we-do-3.png" class="img-fluid">
                         </div>
                         <h3>Communicates with Patient </h3>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled.</p>
+                        <p>Provider brings the patient in and consultation begins.</p>
                     </div>
                 </div>
             </div>
@@ -148,14 +152,18 @@
                             <img src="/assets/img/what-we-do-4.png" class="img-fluid">
                         </div>
                         <h3>Online chat with provider to patient </h3>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled.</p>
+                        <p>After-visit summary is automatically generated and shared with the patient.</p>
+                        <br>
                     </div>
                 </div>
             </div>
+            <p class="col-12 text-center">We take HIPPA very seriously and are concerned about patient privacy. <br> We NEVER save a patient's email or phone number in the system. </p>
         </div>
     </div>
 </section>
-<section class="plansection" id="PlanSection">
+
+<!-- Subscription starts -->
+<!-- <section class="plansection" id="PlanSection">
     <div class="container">
         <div class="row">
             <div class="col-12 text-center">
@@ -296,7 +304,9 @@
             </div>
         </div>
     </div>
-</section>
+</section> -->
+<!-- Subscription ends -->
+
 <section class="contactsection" id="ContactSection">
     <div class="container">
         <div class="row">
@@ -369,15 +379,15 @@
         <div class="row">
             <div class="col-12 col-md-4">
                 <h2>About FEWA</h2>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen
-                    book</p>
+                <p>Fewa telemedicine is a product of Imark USA LLC, a company registered in the state of PA, USA in 2017. The telemedicine application is designed by the medical professionals (medical doctors, nurses and clinical informaticians) in the USA.</p>
+
             </div>
             <div class="col-12 col-md-2">
                 <h2>Main Links</h2>
                 <ul>
-                    <li>About Us</li>
+                    <!-- <li>About Us</li> -->
                     <li>How it Works</li>
-                    <li>Subscription</li>
+                    <!-- <li>Subscription</li> -->
                     <li>Contact Us</li>
                 </ul>
             </div>

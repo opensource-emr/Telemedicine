@@ -36,20 +36,24 @@ export class RegisterComponent implements OnInit {
       otp: ['', [Validators.required]]
     })
   }
+
   countDown(): void {
     var countDown = setInterval(() => {
       this.countDownTime--;
-      // if (document.getElementById('countdown')) {
-      //   document.getElementById('countdown').innerHTML = this.countDownTime.toString();
-      if (this.countDownTime === 0) {
-        this.resendOtpButton = false;
+      document.getElementById('countdown').style.cssText = "display:block"
+      if (document.getElementById('countdown')) {
+        document.getElementById('countdown').innerHTML = "Resend OTP in " + this.countDownTime.toString() + "s";
+        if (this.countDownTime === 0) {
+          this.resendOtpButton = false;
+          clearInterval(countDown);
+          document.getElementById('countdown').style.cssText = "display:none";
+        }
+      } else {
         clearInterval(countDown);
       }
-      // } else {
-      //   clearInterval(countDown);
-      // }
     }, 1000);
   }
+
   onSubmit() {
     if (this.form.get("email").invalid || this.form.get("name").invalid) {
       return;
@@ -63,6 +67,20 @@ export class RegisterComponent implements OnInit {
     observable.subscribe(res => this.successObserver(res),
       res => this.errorObserver(res));
   }
+
+  successObserver(res) {
+    this.clicked = false;
+    if (res) {
+      let message = "Your OTP is sent to your email address. It may take few minutes for the email delivery. Please check your promotions/spam folder as well. You may request another OTP after a minute by clicking Resend OTP."
+      this.popUpSnackBar(message,25000);
+      this.sendOtpSection = false;
+      this.verifyOtpSection = true;
+      this.countDown();
+    } else {
+      alert("We already have this practice")
+    }
+  }
+
   verifyOTP() {
     if (this.form.get("otp").invalid) {
       return;
@@ -74,12 +92,21 @@ export class RegisterComponent implements OnInit {
       res => this.errorObserver(res));
     //alert("OTP Verified"); 
   }
-  popUpSnackBar() {
-    this._snackBar.open('You can resend otp after one minute', 'Dismiss', {
-      duration: 10000,
+
+  successVerify(res) {
+    if (res) {
+      alert(res.message);
+      window.location.assign(window.location.origin + "/" + res.practice.url + "/" + res.provider.url + "/");
+    }
+  }
+
+  popUpSnackBar(message: string,duration:number) {
+    this._snackBar.open(message, 'Dismiss', {
+      duration: duration,
       verticalPosition: 'top'
     });
   }
+
   resendOTP() {
     var key = "73l3M3D"; //hardcoded
     this.resendOtpButton = true;
@@ -87,34 +114,21 @@ export class RegisterComponent implements OnInit {
     observable.subscribe(res => this.successResendOTP(res),
       res => this.errorObserver(res));
   }
-  successObserver(res) {
-    this.clicked = false;
-    if (res) {
-      this.popUpSnackBar();
-      this.sendOtpSection = false;
-      this.verifyOtpSection = true;
-      this.countDown();
-    } else {
-      alert("we already have this practice");
-    }
-  }
-  successVerify(res) {
-    if (res) {
-      alert(res.message);
-      window.location.assign(window.location.origin + "/" + res.practice.url + "/" + res.provider.url + "/");
-    }
-  }
+
   successResendOTP(res) {
     if (res) {
-      this.popUpSnackBar();
+      let message = "Your OTP is sent to your email address again. It may take few minutes for the email delivery. Please check your promotions/spam folder as well. You may request another OTP after a minute by clicking Resend OTP."
+      this.popUpSnackBar(message,25000);
       this.resendOtpButton = true;
       this.countDownTime = 60;
       this.countDown();
     }
   }
+
   errorObserver(res) {
     this.clicked = false;
   }
+
   get formControls() {
     return this.form.controls;
   }
@@ -134,6 +148,7 @@ export class RegisterComponent implements OnInit {
     let protocol = window.location.protocol;
     return protocol + "//" + host + "/" + this.inputPracticeName;
   }
+
   getAllPractices() {
     var key = "73l3M3D"; //hardcoded
     this.httpClient.get<any>(this.global.practiceUrl + 'GetAllPractices?key=' + key)
@@ -143,4 +158,5 @@ export class RegisterComponent implements OnInit {
         // alert('Can not load configuration please talk with admin.');
       });
   }
+  
 }

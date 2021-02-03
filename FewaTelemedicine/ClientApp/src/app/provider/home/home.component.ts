@@ -9,6 +9,8 @@ import { Global } from 'src/app/_helpers/common/global.model';
 export class HomeComponent implements OnInit {
 showSignIn:boolean=true;
 showSignUp:boolean=true;
+showViewMoreInfo = false;
+
   constructor(private global: Global) { }
 
   ngOnInit(): void {
@@ -21,4 +23,7 @@ showSignUp:boolean=true;
       this.showSignUp=false;
     }
   }
+  showViewMoreText(){
+    this.showViewMoreInfo = true;
+    }
 }

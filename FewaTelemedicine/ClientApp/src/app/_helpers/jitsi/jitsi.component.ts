@@ -78,13 +78,15 @@ export class JitsiComponent implements OnInit, OnDestroy {
       DISPLAY_WELCOME_PAGE_TOOLBAR_ADDITIONAL_CONTENT: false,
       disable1On1Mode: false,
       REMOTE_THUMBNAIL_RATIO: 0, // 1:1
+      LOCAL_THUMBNAIL_RATIO:  3/3 ,
+      VIDEO_QUALITY_LABEL_DISABLED: true,
       filmStripOnly: false,
       TOOLBAR_BUTTONS: ['microphone', 'camera', 'videoquality', 'fullscreen']
     }
   }
 
   private handleAPI() {
-    this.api.executeCommand('toggleFilmStrip');
+    //this.api.executeCommand('toggleFilmStrip');
     this.api.executeCommand('displayName', this.remoteUserDisplayName);
     this.api.executeCommand('subject', 'Fewa Telemedicine');
     this.api.executeCommand('setVideoQuality', 720);
@@ -95,14 +97,14 @@ export class JitsiComponent implements OnInit, OnDestroy {
     });
     this.api.addEventListener('cameraError', (e) => {
       this._snackBar.open('Camera was not found, Please allow access to your camera', 'Dismiss', {
-        duration: 15000,
+        duration: 5000,
         verticalPosition: 'top'
        });
     });
 
     this.api.addEventListener('micError', (e) => {
       this._snackBar.open('Mic was not found, Please allow access to your mic', 'Dismiss', {
-        duration: 15000,
+        duration: 5000,
         verticalPosition: 'top'
        });
     });

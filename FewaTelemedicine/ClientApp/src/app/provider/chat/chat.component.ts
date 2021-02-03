@@ -8,6 +8,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { Observable, Subscriber } from 'rxjs';
 
 @Component({
   selector: 'app-chat',
@@ -33,6 +34,11 @@ export class ChatComponent implements OnInit, AfterViewInit {
   @ViewChild('pcam') video: any;
   Video: any;
   tokbox: string = 'Tokbox';
+  selectedFile: File;
+  myFile:Observable<any>;
+  fileBinaryFromClient:any;
+  fileHeaderFromClient:any;
+
   constructor(private notificationService: NotificationService,
     private fb: FormBuilder,
     private cdr: ChangeDetectorRef,
@@ -77,6 +83,8 @@ export class ChatComponent implements OnInit, AfterViewInit {
             n.message = data.message;
             n.sender = data.sender;
             n.receiver = data.receiver;
+            n.fileBinary = data.fileBinary;
+            n.fileHeader = data.fileHeader;
             n.time = new Date();
             t.message.push(n);
           }
@@ -153,9 +161,61 @@ export class ChatComponent implements OnInit, AfterViewInit {
     else
       this.routing.navigate(['/provider/live']);
   }
+
+  onFileChanged(event) {
+    if (event.target.files.length === 0) {
+      return;
+    }
+    this.selectedFile = <File>event.target.files[0];
+    let ext = this.selectedFile.name.split('.').pop().toLowerCase();
+    if (ext != "jpg" && ext != "png" && ext != "jpeg" && ext != "pdf") {
+      this._snackBar.open('upload only image or pdf file, other format not allowed', 'Dismiss', {
+        duration: 5000,
+        verticalPosition: 'top'
+      });
+      this.selectedFile = undefined;
+      return;
+    }
+    if (this.selectedFile.size > 2000000) {
+      this._snackBar.open('Please upload file less than 2MB', 'Dismiss', {
+        duration: 5000,
+        verticalPosition: 'top'
+      });
+      return;
+    }
+     this.convertToBase64(this.selectedFile,ext);
+  }
+
+  convertToBase64(file: File, ext:string) {
+    this.myFile = new Observable((subscriber: Subscriber<any>) => {
+      this.readFile(file, subscriber);
+    });
+    this.myFile.subscribe((d:string) => {
+      console.log(d);
+      this.fileBinaryFromClient = d;
+      this.fileHeaderFromClient = ext;
+      this.sendChatMsg();
+      d=undefined;
+    });
+  }
+
+  readFile(file: File, subscriber: Subscriber<any>) {
+    const filereader = new FileReader();
+    filereader.readAsDataURL(file);
+
+    filereader.onload = () => {
+      subscriber.next(filereader.result);
+      subscriber.complete();
+    };
+    filereader.onerror = (error) => {
+      subscriber.error(error);
+      subscriber.complete();
+    };
+  }
+
   sendChatMsg() {
     try {
-      if (this.chatForm.invalid) {
+      if (this.chatForm.invalid  && this.fileBinaryFromClient == null && this.fileBinaryFromClient == undefined) {
         return;
       }
       var sendingChatMsg = new MessageModel();
@@ -163,6 +223,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
       sendingChatMsg.sender = this.global.providerObj.userName;
       sendingChatMsg.receiver = this.currentChatUser.user;
       sendingChatMsg.message = this.chatForm.value.chatMessage;
+      sendingChatMsg.fileBinary = this.fileBinaryFromClient;
       var t = this.userChat.find(a => a.user == this.currentChatUser.user);
       if (t) {
         sendingChatMsg.time = new Date();
@@ -175,9 +236,12 @@ export class ChatComponent implements OnInit, AfterViewInit {
           this.scrollToBottom();
         }
       }
+      sendingChatMsg.fileHeader = sendingChatMsg.sender + sendingChatMsg.time.getHours() + sendingChatMsg.time.getMinutes() + sendingChatMsg.time.getSeconds() + "." + this.fileHeaderFromClient
       this.global.previousChats.push(sendingChatMsg)
 
       this.notificationService.SendChatMessage(sendingChatMsg);
+      this.fileBinaryFromClient=undefined;
+      this.fileHeaderFromClient=undefined;
       this.chatForm.reset();
     } catch (e) { }
   }

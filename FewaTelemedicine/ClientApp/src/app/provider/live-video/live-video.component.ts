@@ -3,6 +3,7 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, NavigationExtras } from '@angular/router';
+import { Observable, Subscriber } from 'rxjs';
 import { Global } from 'src/app/_helpers/common/global.model';
 import { NotificationService } from 'src/app/_helpers/common/notification.service';
 import { UploadDownloadService } from 'src/app/_helpers/common/upload-download.service';
@@ -24,6 +25,10 @@ export class LiveVideoComponent implements OnInit, OnDestroy {
   reportForm: FormGroup;
   currentChat: Array<MessageModel> = new Array<MessageModel>();
   public providerAdvice: Array<ProviderAdvice> = [];
+  selectedFile: File;
+  myFile:Observable<any>;
+  fileBinaryFromClient:any;
+  fileHeaderFromClient:any;
 
   constructor(public httpClient: HttpClient,
     public router: Router,
@@ -100,6 +105,8 @@ export class LiveVideoComponent implements OnInit, OnDestroy {
         s.message = chatData.message;
         s.receiver = chatData.receiver;
         s.sender = chatData.sender;
+        s.fileBinary = chatData.fileBinary;
+        s.fileHeader = chatData.fileHeader;
         s.time = new Date();
         this.currentChat.push(s);
         this.scrollToBottom();
@@ -125,8 +132,60 @@ export class LiveVideoComponent implements OnInit, OnDestroy {
     alert(res.status);
   }
 
+  onFileChanged(event) {
+    if (event.target.files.length === 0) {
+      return;
+    }
+    this.selectedFile = <File>event.target.files[0];
+    let ext = this.selectedFile.name.split('.').pop().toLowerCase();
+    if (ext != "jpg" && ext != "png" && ext != "jpeg" && ext != "pdf") {
+      this._snackBar.open('upload only image or pdf file, other format not allowed', 'Dismiss', {
+        duration: 5000,
+        verticalPosition: 'top'
+      });
+      this.selectedFile = undefined;
+      return;
+    }
+    if (this.selectedFile.size > 2000000) {
+      this._snackBar.open('Please upload file less than 2MB', 'Dismiss', {
+        duration: 5000,
+        verticalPosition: 'top'
+      });
+      alert("Please upload file less than 2MB");
+      return;
+    }
+     this.convertToBase64(this.selectedFile,ext);
+  }
+
+  convertToBase64(file: File,ext:string) {
+    this.myFile = new Observable((subscriber: Subscriber<any>) => {
+      this.readFile(file, subscriber);
+    });
+    this.myFile.subscribe((d:string) => {
+      console.log(d);
+      this.fileBinaryFromClient = d;
+      this.fileHeaderFromClient = ext;
+      this.sendChatMsg();
+      d=undefined;
+    });
+  }
+
+  readFile(file: File, subscriber: Subscriber<any>) {
+    const filereader = new FileReader();
+    filereader.readAsDataURL(file);
+
+    filereader.onload = () => {
+      subscriber.next(filereader.result);
+      subscriber.complete();
+    };
+    filereader.onerror = (error) => {
+      subscriber.error(error);
+      subscriber.complete();
+    };
+  }
+
   sendChatMsg() {
-    if (this.chatForm.invalid) {
+    if (this.chatForm.invalid  && this.fileBinaryFromClient == null && this.fileBinaryFromClient == undefined) {
       return;
     }
     var sendingChatMsg = new MessageModel();
@@ -134,9 +193,13 @@ export class LiveVideoComponent implements OnInit, OnDestroy {
     sendingChatMsg.sender = this.global.providerObj.userName
     sendingChatMsg.receiver = this.global.patientObj.name;
     sendingChatMsg.message = this.chatForm.value.chatMessage;
+    sendingChatMsg.fileBinary = this.fileBinaryFromClient;
+    sendingChatMsg.fileHeader = sendingChatMsg.sender + sendingChatMsg.time.getHours() + sendingChatMsg.time.getMinutes() + sendingChatMsg.time.getSeconds() + "." + this.fileHeaderFromClient 
     this.currentChat.push(sendingChatMsg);
     this.notificationService.SendChatMessage(sendingChatMsg);
     this.scrollToBottom();
+    this.fileBinaryFromClient=undefined;
+    this.fileHeaderFromClient=undefined;
     this.chatForm.reset();
   }
 
@@ -199,10 +262,6 @@ export class LiveVideoComponent implements OnInit, OnDestroy {
         this.notificationService.PatientAttended(this.patient);
         this.global.patientObj = this.patient;
         this.router.navigate(['/provider/dashboard']);
-        this._snackBar.open('Report Submitted Sucessfully','Dismiss', {
-          duration: 10000,
-          verticalPosition: 'top'
-         });
       }
     });
   }
