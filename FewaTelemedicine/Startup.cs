@@ -49,7 +49,7 @@ namespace FewaTelemedicine
             {
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
             });
-            services.AddSession(); // add session
+            services.AddSession(options => options.IdleTimeout = TimeSpan.FromHours(6)); // add session
             List<Provider> providers = null;
             providers = loadProviders();
             services.AddSingleton<List<ProviderCabin>>();
@@ -82,6 +82,7 @@ namespace FewaTelemedicine
             services.AddSignalR((options =>
             {
                 options.EnableDetailedErrors = true;
+                options.MaximumReceiveMessageSize = 2000000;
                 options.KeepAliveInterval = TimeSpan.FromSeconds(30);
                 options.ClientTimeoutInterval = TimeSpan.FromMinutes(120);
             }));

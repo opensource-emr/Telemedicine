@@ -11,6 +11,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+
 
 namespace FewaTelemedicine.Services
 {
@@ -363,7 +365,7 @@ namespace FewaTelemedicine.Services
             }
         }
 
-        public async Task SendChatMessage(ChatMessage chatMessage)
+        public async Task SendChatMessage([FromBody] ChatMessage chatMessage)
         {
             string connId = "";
             var claims = Context.User.Claims;

@@ -3,10 +3,12 @@ import { HttpParams, HttpClient } from '@angular/common/http';
 import { Provider, Patient } from '../../_helpers/models/domain-model';
 import { NotificationService } from 'src/app/_helpers/common/notification.service';
 import { Global } from 'src/app/_helpers/common/global.model';
-import { Observable } from 'rxjs';
+import { Observable, Subscriber } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageModel, ChatModel } from 'src/app/_helpers/models/chat.model';
 import { Router } from '@angular/router';
+import { DomSanitizer } from '@angular/platform-browser';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-live-video',
@@ -23,13 +25,19 @@ export class LiveVideoComponent implements OnInit, AfterViewInit {
   remoteUserDisplayName = "Fewa User";
   isMeetStart = false;
   isWaiting: boolean = false;
+  fileBinaryFromClient: any;
+  fileHeaderFromClient: any;
+  selectedFile: File;
+  myFile: Observable<any>;
 
   constructor(public httpClient: HttpClient,
     private notificationService: NotificationService,
     public global: Global,
     private fb: FormBuilder,
     private cdr: ChangeDetectorRef,
-    private router: Router) {
+    private router: Router,
+    public sanitizer: DomSanitizer,
+    public _snackBar:MatSnackBar) {
     this.initialize();
     this.initForm();
   }
@@ -82,6 +90,8 @@ export class LiveVideoComponent implements OnInit, AfterViewInit {
       var s = new MessageModel();
       s.message = chatData.message;
       s.receiver = this.patientObj.name;
+      s.fileBinary = chatData.fileBinary;
+      s.fileHeader = chatData.fileHeader;
       s.sender = chatData.sender;
       s.time = new Date();
       this.currentChat.push(s);
@@ -94,17 +104,73 @@ export class LiveVideoComponent implements OnInit, AfterViewInit {
       });
   }
 
+  onFileChanged(event) {
+    if (event.target.files.length === 0) {
+      return;
+    }
+    this.selectedFile = <File>event.target.files[0];
+    let ext = this.selectedFile.name.split('.').pop().toLowerCase();
+    if (ext != "jpg" && ext != "png" && ext != "jpeg" && ext != "pdf") {
+      this._snackBar.open('upload only image or pdf file, other format not allowed', 'Dismiss', {
+        duration: 5000,
+        verticalPosition: 'top'
+      });
+      this.selectedFile = undefined;
+      return;
+    }
+    if (this.selectedFile.size > 2000000) {
+      this._snackBar.open('Please upload file less than 2MB', 'Dismiss', {
+        duration: 5000,
+        verticalPosition: 'top'
+      });
+      return;
+    }
+    this.convertToBase64(this.selectedFile,ext);
+  }
+
+  convertToBase64(file: File,ext:string) {
+    this.myFile = new Observable((subscriber: Subscriber<any>) => {
+      this.readFile(file, subscriber);
+    });
+    this.myFile.subscribe((d: string) => {
+      console.log(d);
+      this.fileBinaryFromClient = d;
+      this.fileHeaderFromClient = ext;
+      this.sendChatMsg();
+      d = undefined;
+    });
+  }
+
+  readFile(file: File, subscriber: Subscriber<any>) {
+    const filereader = new FileReader();
+    filereader.readAsDataURL(file);
+
+    filereader.onload = () => {
+      subscriber.next(filereader.result);
+      subscriber.complete();
+    };
+    filereader.onerror = (error) => {
+      subscriber.error(error);
+      subscriber.complete();
+    };
+  }
+
   sendChatMsg() {
-    if (this.chatForm.invalid) {
+    if (this.chatForm.invalid && this.fileBinaryFromClient == null && this.fileBinaryFromClient == undefined) {
       return;
     }
     var sendingChatMsg = new MessageModel();
     sendingChatMsg.sender = sessionStorage.getItem("PatientName");;
     sendingChatMsg.receiver = this.providerObj.userName;
     sendingChatMsg.message = this.chatForm.value.chatMessage;
+    sendingChatMsg.fileBinary = this.fileBinaryFromClient;
+    sendingChatMsg.time = new Date();
+    sendingChatMsg.fileHeader = sendingChatMsg.sender + sendingChatMsg.time.getHours() + sendingChatMsg.time.getMinutes() + sendingChatMsg.time.getSeconds() + "." + this.fileHeaderFromClient
     this.currentChat.push(sendingChatMsg);
     this.notificationService.SendChatMessage(sendingChatMsg);
     this.scrollToBottom();
+    this.fileBinaryFromClient = undefined;
+    this.fileHeaderFromClient = undefined;
     this.chatForm.reset();
   }
 
