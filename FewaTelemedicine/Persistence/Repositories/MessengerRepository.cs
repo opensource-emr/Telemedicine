@@ -634,6 +634,323 @@ namespace FewaTelemedicine.Persistence.Repositories
             }
             return bResponse;
         }
+        public async Task<bool> SendContactUsEmailAsync(ContactUs contactUs, string hostname = "")
+        {
+            var bResponse = false;
+            try
+            { 
+                Practice pra = FewaDbContext.practices.Where(a => a.url.ToLower().Trim() == "practice").FirstOrDefault();
+                if (pra == null)
+                {
+                    return false;
+                }
+                if (!string.IsNullOrEmpty(hostname))
+                {
+                    pra.serverName = hostname;
+                }
+                var client = new SendGridClient(pra.emailApiKey);
+                var from = new EmailAddress(pra.email);
+                var to = new EmailAddress(pra.email);
+                var htmlContent = "   <!DOCTYPE html>  " +
+                                 "   <html lang='en'>  " +
+                                 "     " +
+                                 "   <head>  " +
+                                 "       <meta charset='UTF-8'>  " +
+                                 "       <meta name='viewport' content='width=device-width, initial-scale=1.0'>  " +
+                                 "       <title>Fema mailer</title>  " +
+                                 "       <link href=“https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800” rel=“stylesheet”>  " +
+                                 "     " +
+                                 "       <style type='text/css'>  " +
+                                 "           body {  " +
+                                 "               margin: 0 !important;  " +
+                                 "               padding: 0 !important;  " +
+                                 "               -webkit-text-size-adjust: 100% !important;  " +
+                                 "               -ms-text-size-adjust: 100% !important;  " +
+                                 "               -webkit-font-smoothing: antialiased !important;  " +
+                                 "           }  " +
+                                 "     " +
+                                 "           img {  " +
+                                 "               border: 0 !important;  " +
+                                 "               outline: none !important;  " +
+                                 "           }  " +
+                                 "     " +
+                                 "           p {  " +
+                                 "               Margin: 0px !important;  " +
+                                 "               Padding: 0px !important;  " +
+                                 "           }  " +
+                                 "     " +
+                                 "           table {  " +
+                                 "               border-collapse: collapse;  " +
+                                 "               mso-table-lspace: 0px;  " +
+                                 "               mso-table-rspace: 0px;  " +
+                                 "           }  " +
+                                 "     " +
+                                 "           td,  " +
+                                 "           a,  " +
+                                 "           span {  " +
+                                 "               border-collapse: collapse;  " +
+                                 "               mso-line-height-rule: exactly;  " +
+                                 "           }  " +
+                                 "     " +
+                                 "           .ExternalClass ' {  " +
+                                 "               line-height: 100%;  " +
+                                 "           }  " +
+                                 "     " +
+                                 "           .em_defaultlink a {  " +
+                                 "               color: inherit !important;  " +
+                                 "               text-decoration: none !important;  " +
+                                 "           }  " +
+                                 "     " +
+                                 "           span.MsoHyperlink {  " +
+                                 "               mso-style-priority: 99;  " +
+                                 "               color: inherit;  " +
+                                 "           }  " +
+                                 "     " +
+                                 "           span.MsoHyperlinkFollowed {  " +
+                                 "               mso-style-priority: 99;  " +
+                                 "               color: inherit;  " +
+                                 "           }  " +
+                                 "     " +
+                                 "           @media only screen and (min-width:481px) and (max-width:699px) {  " +
+                                 "               .em_main_table {  " +
+                                 "                   width: 100% !important;  " +
+                                 "               }  " +
+                                 "     " +
+                                 "               .em_wrapper {  " +
+                                 "                   width: 100% !important;  " +
+                                 "               }  " +
+                                 "     " +
+                                 "               .em_hide {  " +
+                                 "                   display: none !important;  " +
+                                 "               }  " +
+                                 "     " +
+                                 "               .em_img {  " +
+                                 "                   width: 100% !important;  " +
+                                 "                   height: auto !important;  " +
+                                 "               }  " +
+                                 "     " +
+                                 "               .em_h20 {  " +
+                                 "                   height: 20px !important;  " +
+                                 "               }  " +
+                                 "     " +
+                                 "               .em_padd {  " +
+                                 "                   padding: 20px 10px !important;  " +
+                                 "               }  " +
+                                 "           }  " +
+                                 "     " +
+                                 "           @media screen and (max-width: 480px) {  " +
+                                 "               .em_main_table {  " +
+                                 "                   width: 100% !important;  " +
+                                 "               }  " +
+                                 "     " +
+                                 "               .em_wrapper {  " +
+                                 "                   width: 100% !important;  " +
+                                 "               }  " +
+                                 "     " +
+                                 "               .em_hide {  " +
+                                 "                   display: none !important;  " +
+                                 "               }  " +
+                                 "     " +
+                                 "               .em_img {  " +
+                                 "                   width: 100% !important;  " +
+                                 "                   height: auto !important;  " +
+                                 "               }  " +
+                                 "     " +
+                                 "               .em_h20 {  " +
+                                 "                   height: 20px !important;  " +
+                                 "               }  " +
+                                 "     " +
+                                 "               .em_padd {  " +
+                                 "                   padding: 20px 10px !important;  " +
+                                 "               }  " +
+                                 "     " +
+                                 "               .em_text1 {  " +
+                                 "                   font-size: 16px !important;  " +
+                                 "                   line-height: 24px !important;  " +
+                                 "               }  " +
+                                 "     " +
+                                 "               u+.em_body .em_full_wrap {  " +
+                                 "                   width: 100% !important;  " +
+                                 "                   width: 100vw !important;  " +
+                                 "               }  " +
+                                 "           }  " +
+                                 "       </style>  " +
+                                 "     " +
+                                 "   </head>  " +
+                                 "     " +
+                                 "   <body style='margin:0px; padding:0px;'' bgcolor=' #efefef'>  " +
+                                 "       <table align='center' width='700' border='0' cellspacing='0' cellpadding='0' class='em_main_table'  " +
+                                 "           style='width:700px;'>  " +
+                                 "           <tr>  " +
+                                 "               <td style='padding:25px;' class='em_padd' valign='top' bgcolor='#fff' align='center'>  " +
+                                 "                   <table width='100%' cellspacing='0' cellpadding='0' border='0' align='center'>  " +
+                                 "                       <tbody>  " +
+                                 "                           <tr>  " +
+                                 "                               <td style='font-family:\"Open Sans\", Arial, sans-serif; font-size:21px; line-height:15px;font-weight: 600; color:#20325F;' valign='top' align='center'></td>  " +
+                                 "                           </tr>  " +
+                                 "                       </tbody>  " +
+                                 "                   </table>  " +
+                                 "               </td>  " +
+                                 "           </tr>  " +
+                                 "           <tr>  " +
+                                 "               <td valign='top' align='center'>  " +
+                                 "                   <table width='100%' cellspacing='0' cellpadding='0' border='0' align='center'>  " +
+                                 "                       <tbody>  " +
+                                 "                           <tr>  " +
+                                 "                           </tr>  " +
+                                 "                       </tbody>  " +
+                                 "                   </table>  " +
+                                 "               </td>  " +
+                                 "           </tr>  " +
+                                 "           <tr>  " +
+                                 "               <td valign='top' align='center' bgcolor='#fff' style='padding:35px 70px 30px;' class='em_padd'>  " +
+                                 "                   <table align='center' width='100%' border='0' cellspacing='0' cellpadding='0'>  " +
+                                 "                       <tr>  " +
+                                 "                           <td align='center' valign='top'  " +
+                                 "                               style='font-family:\"Open Sans\", Arial, sans-serif; font-size:20px;font-weight: 600; line-height:30px; color:#20325F;'>  " +
+                                 "                               fewa user feedback</td>  " +
+                                 "                       </tr>  " +
+                                 "                       <tr>  " +
+                                 "                           <td height='15' style='font-size:0px; line-height:0px; height:15px;'>&nbsp;</td>  " +
+                                 "                       </tr>  " +
+                                 "                       <tr>  " +
+                                 "                           <td align='left' valign='top'  " +
+                                 "                               style='font-family:\"Open Sans\", Arial, sans-serif; font-size:16px; line-height:22px;font-weight: 600; color:#000; letter-spacing:2px; padding-bottom:12px;'>  " +
+                                 "                               Hi " + pra.email + ",  " +
+                                 "                           </td>  " +
+                                 "                       </tr>  " +
+                                 "                       <tr>  " +
+                                 "   					 <tr>  " +
+                                 "                           <td align='left' valign='top'  " +
+                                 "                            style='font-family:\"Open Sans\", Arial, sans-serif; font-size:14px; line-height:22px; color:#666;padding-bottom:12px;'>  " +
+                                 "                                <b style='color:#000;'>Name:</b>&nbsp;" + contactUs.firstName + "&nbsp;" +contactUs.lastName+
+                                 "                          </td>  " +
+                                 "                       </tr>  " +
+                                  "   					 <tr>  " +
+                                 "                           <td align='left' valign='top'  " +
+                                 "                            style='font-family:\"Open Sans\", Arial, sans-serif; font-size:14px; line-height:22px; color:#666;padding-bottom:12px;'>  " +
+                                 "                                <b style='color:#000;'>Email:</b>&nbsp;" + contactUs.email +
+                                 "                       </tr>  " +
+                                  "   					 <tr>  " +
+                                 "                           <td align='left' valign='top'  " +
+                                 "                            style='font-family:\"Open Sans\", Arial, sans-serif; font-size:14px; line-height:22px; color:#666;padding-bottom:12px;'>  " +
+                                 "                                <b style='color:#000;'>Phone number:</b>&nbsp;" + contactUs.phoneNumber+
+                                 "                          </td>  " +
+                                 "                       </tr>  " +
+                                 "   					 <tr>  " +
+                                 "                           <td align='left' valign='top'  " +
+                                 "                            style='font-family:\"Open Sans\", Arial, sans-serif; font-size:14px; line-height:22px; color:#666;padding-bottom:12px;'>  " +
+                                 "                                <b style='color:#000;'>Message:</b>&nbsp;" + contactUs.message + "</td>  " +
+                                 "                       </tr>  " +
+                                 "                        <tr>  " +
+                                 "                           <td height='15' class='em_h20' style='font-size:0px; line-height:0px; height:15px;'>&nbsp;</td>  " +
+                                 "                        </tr>  " +
+                                 "                           " +
+                                 "                      </table>  " +
+                                 "                  </td>  " +
+                                 "              </tr>  " +
+                                 //"              <tr>  " +
+                                 //"                  <td valign='top' align='center' bgcolor='#f4f7ff' style='padding:38px 30px;' class='em_padd'>  " +
+                                 //"                      <table align='center' width='100%' border='0' cellspacing='0' cellpadding='0'>  " +
+                                 //"                          <tr>  " +
+                                 //"                              <td align='center' valign='top' colspan='3' style='font-family:\"Open Sans\", Arial, sans-serif; font-size:20px;font-weight: 600; line-height:30px; color:#20325F;'>How Its Work</td>  " +
+                                 //"                          </tr>  " +
+                                 //"                          <tr>  " +
+                                 //"                              <td height='20' class='em_h20' colspan='3' style='font-size:0px; line-height:0px; height:20px;'>&nbsp;</td>  " +
+                                 //"                          </tr>  " +
+                                 //"                          <tr>  " +
+                                 //"                              <td align='center' valign='top'>  " +
+                                 //"                                  <table align='center' width='100%' border='0' cellspacing='0' cellpadding='0'>  " +
+                                 //"                                      <tr>  " +
+                                 //"                                          <td align='center' valign='top'><img src='" + pra.serverName + "/img/Ellipse-34.png'></td>  " +
+                                 //"                                      </tr>  " +
+                                 //"                                      <tr>  " +
+                                 //"                                          <td align='center' valign='top' style='font-family:\"Open Sans\", Arial, sans-serif; font-size:17px;line-height:30px; color:#000;'>Join Conference</td>  " +
+                                 //"                                      </tr>  " +
+                                 //"                                  </table>  " +
+                                 //"                              </td>  " +
+                                 //"                              <td align='center' valign='top'>  " +
+                                 //"                                  <table align='center' width='100%' border='0' cellspacing='0' cellpadding='0'>  " +
+                                 //"                                      <tr>  " +
+                                 //"                                          <td align='center' valign='top'><img src='" + pra.serverName + "/img/Ellipse-35.png'></td>  " +
+                                 //"                                      </tr>  " +
+                                 //"                                      <tr>  " +
+                                 //"                                          <td align='center' valign='top' style='font-family:\"Open Sans\", Arial, sans-serif; font-size:17px;line-height:24px; color:#000;'>Communicates<br>with Doctor</td>  " +
+                                 //"                                      </tr>  " +
+                                 //"                                  </table>  " +
+                                 //"                              </td>  " +
+                                 //"                              <td align='center' valign='top'>  " +
+                                 //"                                  <table align='center' width='100%' border='0' cellspacing='0' cellpadding='0'>  " +
+                                 //"                                      <tr>  " +
+                                 //"                                          <td align='center' valign='top'><img src='" + pra.serverName + "/img/Ellipse-36.png'></td>  " +
+                                 //"                                      </tr>  " +
+                                 //"                                      <tr>  " +
+                                 //"                                          <td align='center' valign='top' style='font-family:\"Open Sans\", Arial, sans-serif; font-size:17px;line-height:24px; color:#000;'>chat with doctor<br>to Patient </td>  " +
+                                 //"                                      </tr>  " +
+                                 //"                                  </table>  " +
+                                 //"                              </td>  " +
+                                 //"                          </tr>  " +
+                                 //"                      </table>  " +
+                                 //"                  </td>  " +
+                                 //"              </tr>  " +
+                                 "              <tr>  " +
+                                 "                  <td valign='top' align='center' bgcolor='#20325f' style='padding:38px 30px;' class='em_padd'>  " +
+                                 "                      <table align='center' width='100%' border='0' cellspacing='0' cellpadding='0'>  " +
+                                 "                          <tr>  " +
+                                 "                              <td valign='top' align='center' style='padding-bottom:16px;'>  " +
+                                 "                                  <table align='center' border='0' cellspacing='0' cellpadding='0'>  " +
+                                 "                                      <tr>  " +
+                                 "                                          <td valign='top' align='center'><a href='#' target='_blank'  " +
+                                 "                                                  style='text-decoration:none;'><img src='" + pra.serverName + "/img/twitter.png' alt='fb'  " +
+                                 "                                                      style='display:block; font-family:Arial, sans-serif; font-size:14px; line-height:14px; color:#ffffff; max-width:20px;margin-right: 15px;max-height: 20px;'  " +
+                                 "                                                      border='0' width='26' height='26' /></a></td>  " +
+                                 "                                          <td width='6' style='width:6px;'>&nbsp;</td>  " +
+                                 "                                          <td valign='top' align='center'><a href='#' target='_blank'  " +
+                                 "                                                  style='text-decoration:none;'><img src='" + pra.serverName + "/img/linkedin.png' alt='tw'  " +
+                                 "                                                      style='display:block; font-family:Arial, sans-serif; font-size:14px; line-height:14px; color:#ffffff; max-width:20px;margin-right: 15px;max-height: 20px'  " +
+                                 "                                                      border='0' width='27' height='26' /></a></td>  " +
+                                 "                                          <td width='6' style='width:6px;'>&nbsp;</td>  " +
+                                 "                                          <td valign='top' align='center'><a href='#' target='_blank'  " +
+                                 "                                                  style='text-decoration:none;'><img src='" + pra.serverName + "/img/rss.png' alt='yt'  " +
+                                 "                                                      style='display:block; font-family:Arial, sans-serif; font-size:14px; line-height:14px; color:#ffffff; max-width:20px;margin-right: 15px;max-height: 20px'  " +
+                                 "                                                      border='0' width='26' height='26' /></a></td>  " +
+                                 "                                      </tr>  " +
+                                 "                                  </table>  " +
+                                 "                              </td>  " +
+                                 "                          </tr>  " +
+                                 "                          <tr>  " +
+                                 "                              <td align='center' valign='top'  " +
+                                 "                                  style='font-family:\"Open Sans\", Arial, sans-serif; font-size:11px; line-height:18px; color:#fff;'>  " +
+                                 "                                  <a href='#' target='_blank' style='color:#fff; text-decoration:underline;'>PRIVACY  " +
+                                 "                                      STATEMENT</a> | <a href='#' target='_blank'  " +
+                                 "                                      style='color:#fff; text-decoration:underline;'>TERMS OF SERVICE</a> | <a href='#'  " +
+                                 "                                      target='_blank' style='color:#fff; text-decoration:underline;'>RETURNS</a><br />  " +
+                                 "                                  &copy; 2020 Fewa Telemedicine. All Rights Reserved.<br />  " +
+                                 "                                  If you do not wish to receive any further emails from us, please <a href='#' target='_blank'  " +
+                                 "                                      style='text-decoration:none; color:#fff;'>unsubscribe</a></td>  " +
+                                 "                          </tr>  " +
+                                 "                      </table>  " +
+                                 "                  </td>  " +
+                                 "              </tr>  " +
+                                 "          </table>  " +
+                                 "      </body>  " +
+                                 "        " +
+                                 "     </html>  ";
+
+                var emailSubject = "Feedback from user";
+                var msg = MailHelper.CreateSingleEmail(from, to, emailSubject, pra.emailPlainBody, htmlContent);
+                var res = await client.SendEmailAsync(msg);
+                if (res.StatusCode == System.Net.HttpStatusCode.OK || res.StatusCode == System.Net.HttpStatusCode.Accepted)
+                {
+                    bResponse = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"file: MessengerController.cs method: SendEmailAsync() error: {ex.Message} ");
+            }
+            return bResponse;
+        }
 
     }
 }

@@ -88,3 +88,17 @@ export class ProviderAdvice {
     isChecked: boolean = false;
     practiceId: number;
 }
+export class ContactUs {
+    firstName:string;
+    lastName:string;
+    email:string;
+    phoneNumber:string;
+    message:string;
+    constructor() {
+        this.firstName="";
+        this.lastName="";
+        this.email="";
+        this.phoneNumber="";
+        this.message="";
+    }
+}

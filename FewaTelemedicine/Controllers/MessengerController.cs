@@ -301,5 +301,31 @@ namespace FewaTelemedicine.Controllers
             HttpContext.Session.SetString("otp", otp);
             return otp;
         }
+        [Route("ContactUs")]
+        [HttpPost]
+        public async Task<bool> ContactUs(string key, [FromBody] ContactUs obj)
+        {
+            try
+            {
+                if (key == "73l3M3D")
+                {
+                    if (obj is null)
+                    {
+                        return false;
+                    }
+                    return await _messengerService.SendContactUsEmailAsync(obj, Request.Scheme + "://" + Request.Host.Value);
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"file: MessengerController.cs method: SendEmailPatientReport() error: {ex.Message} ");
+                return false;
+            }
+        }
+
     }
 }
