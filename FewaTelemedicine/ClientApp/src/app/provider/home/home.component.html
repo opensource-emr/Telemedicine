@@ -323,18 +323,24 @@
             </div>
             <div class="col-12 col-md-6">
                 <div class="contact-form">
-                    <form>
+                    <form [formGroup]="form">
                         <div class="row">
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>First name</label>
-                                    <input type="text" class="form-control" placeholder="">
+                                    <input type="text" class="form-control" placeholder="" formControlName="first_name">
+                                    <div *ngIf="contactUsFormControls.first_name.touched && contactUsFormControls.first_name.invalid" style="color: red;">
+                                        <small *ngIf="contactUsFormControls.first_name.errors.required">First name is required.</small>
+                                      </div>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>Last name</label>
-                                    <input type="text" class="form-control" placeholder="">
+                                    <input type="text" class="form-control" placeholder="" formControlName="last_name">
+                                    <!-- <div *ngIf="contactUsFormControls.last_name.touched && contactUsFormControls.last_name.invalid" style="color: red;">
+                                        <small *ngIf="contactUsFormControls.last_name.errors.required">Last name is required.</small>
+                                      </div> -->
                                 </div>
                             </div>
                         </div>
@@ -342,13 +348,23 @@
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>Email</label>
-                                    <input type="text" class="form-control" placeholder="">
+                                    <input type="text" class="form-control" placeholder="" formControlName="email">
+                                    <div *ngIf="contactUsFormControls.email.touched && contactUsFormControls.email.invalid" style="color: red;">
+                                        <small *ngIf="contactUsFormControls.email.errors.required">Email name is required.</small>
+                                        <small *ngIf="contactUsFormControls.email.errors.pattern">Invalid email Address </small>
+                                      </div>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>Phone</label>
-                                    <input type="text" class="form-control" placeholder="">
+                                    <input type="text" class="form-control" placeholder="" formControlName="phone_number">
+                                    <!-- <input type="text" class="form-control" placeholder="" formControlName="phone_number" ng2TelInput  (ng2TelOutput)="getNumber($event)" (intlTelInputObject)="telInputObject($event)" 
+                                    (countryChange)="onCountryChange($event)"> -->
+                                    <div *ngIf="contactUsFormControls.phone_number.touched && contactUsFormControls.phone_number.invalid" style="color: red;">
+                                        <small *ngIf="contactUsFormControls.phone_number.errors.required">Phone number is required.</small>
+                                        <!-- <small *ngIf="contactUsFormControls.phone_number.errors.validPhoneNumber">Invalid phone number</small> -->
+                                      </div>
                                 </div>
                             </div>
                         </div>
@@ -356,16 +372,22 @@
                             <div class="col-12 col-md-12">
                                 <div class="form-group">
                                     <label>Message</label>
-                                    <textarea name="" id="" class="form-control" rows="2"></textarea>
+                                    <textarea name="" id="" class="form-control" rows="2" formControlName="message"></textarea>
+                                    <div *ngIf="contactUsFormControls.message.touched && contactUsFormControls.message.invalid" style="color: red;">
+                                        <small *ngIf="contactUsFormControls.message.errors.required">Message name is required.</small>
+                                      </div>
                                 </div>
+                               
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-12 col-md-6">
-
+                                <small *ngIf="contactUsflag" style="color:blue;">Thank you for contacting with us. we will back at you soon !</small>
+                                <small *ngIf="sendingFailed" style="color:red;">ops! sending failed</small>
                             </div>
                             <div class="col-12 col-md-6">
-                                <input type="submit" class="sendBtn" value="Send Message">
+                                <button type="submit" class="sendBtn" value="Send Message" [disabled]="buttonflag" (click)="contactUs()">Send message</button>
+                                <!-- <small style="color: aqua;">Thank you for contacting with us. we will back at you soon !</small> -->
                             </div>
                         </div>
                     </form>

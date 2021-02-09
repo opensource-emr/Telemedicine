@@ -12,6 +12,7 @@ namespace FewaTelemedicine.Domain.Repositories
         Task<bool> SendEmailAsync(string receiverEmail,string provider, string hostname = "");
         Task<bool> SendOTP(int practiceId,string receiverEmail, string otp, string hostname = "");
         Task<bool> SendRegistrationOTP(string name,string receiverEmail, string otp, string hostname = "");
-        Task<bool> SendPatientReportEmailAsync(Patient patient, string hostname = "");
+        Task<bool> SendPatientReportEmailAsync(Patient patient, string hostname = ""); 
+        Task<bool> SendContactUsEmailAsync(ContactUs contactUs, string hostname = "");
     }
 }

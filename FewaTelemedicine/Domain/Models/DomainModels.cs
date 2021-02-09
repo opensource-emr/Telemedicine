@@ -154,4 +154,12 @@ namespace FewaTelemedicine.Domain.Models
         public int providerId { get; set; }
         public int practiceId { get; set; }
     }
+    public class ContactUs
+    {
+        public string firstName { get; set; }
+        public string lastName { get; set; }
+        public string email { get; set; }
+        public string phoneNumber { get; set; }
+        public string message { get; set; }
+    }
 }
