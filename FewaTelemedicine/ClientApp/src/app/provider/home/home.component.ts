@@ -17,6 +17,7 @@ contactUsObj:ContactUs;
 contactUsflag:boolean;
 buttonflag:boolean;
 sendingFailed:boolean;
+showViewMoreInfo = false;
   constructor(private global: Global,
               private fb: FormBuilder,
               private httpClient:HttpClient) {
@@ -41,6 +42,9 @@ sendingFailed:boolean;
       this.showSignUp=false;
     }
   }
+  showViewMoreText(){
+    this.showViewMoreInfo = true;
+    }
   //=>^\([0-9]{3}\)[0-9]{3}-[0-9]{4}$
   //=>^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$
   private initContactUsForm() {
