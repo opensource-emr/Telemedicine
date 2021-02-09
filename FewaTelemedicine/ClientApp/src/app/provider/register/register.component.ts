@@ -1,10 +1,12 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { NgForm, Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
 import { Global } from 'src/app/_helpers/common/global.model';
+import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { Practice } from 'src/app/_helpers/models/domain-model';
+import { Practice, Provider } from 'src/app/_helpers/models/domain-model';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ValidateEmail, ValidateUserName } from 'src/app/_helpers/common/confirmed-validator';
+import { ConfirmedValidator, ValidateEmail, ValidateUserName } from 'src/app/_helpers/common/confirmed-validator';
+import { promise } from 'protractor';
 
 @Component({
   selector: 'app-register',
@@ -15,6 +17,8 @@ export class RegisterComponent implements OnInit {
   model: any = {};
   form: FormGroup = new FormGroup({});
   practiceObj = new Practice();
+  providerObj: Provider = new Provider();
+  providerForm: FormGroup;
   sendOtpSection: boolean = true;
   verifyOtpSection: boolean = false;
   resendOtpButton: boolean = true;
@@ -22,31 +26,48 @@ export class RegisterComponent implements OnInit {
   clicked: boolean = false;
   inputPracticeName = 'practice';
   urlLink = this.getInvitationLink();
+  disableSubmitButton: boolean = false;
+  showSetPasswordSection = false;
+  showCountDown = true;
+
   constructor(public global: Global,
     private fb: FormBuilder,
     public _snackBar: MatSnackBar,
     private httpClient: HttpClient,
-    public cdr: ChangeDetectorRef) { this.initUserForm(); }
+    public cdr: ChangeDetectorRef,
+    public routing: Router,
+  ) {
+    this.initUserForm();
+  }
 
-  ngOnInit(): void {this.getAllPractices()}
+  ngOnInit(): void { this.getAllPractices() }
   private initUserForm() {
     this.form = this.fb.group({
-      name: ['', [Validators.required,Validators.pattern("^[a-zA-Z0-9_ ]+$"),ValidateUserName.bind(this),]],
+      name: ['', [Validators.required, Validators.pattern("^[a-zA-Z0-9_ ]+$"), ValidateUserName.bind(this),]],
       email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$"), ValidateEmail.bind(this)]],
-      otp: ['', [Validators.required]]
+      otp: ['', [Validators.required]],
+      password: ['', [Validators.required]],
+      confirm_password: ['', [Validators.required]],
+      adminEmail: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$"), ValidateEmail.bind(this)]],
+    }, {
+      validator: ConfirmedValidator('password', 'confirm_password')
     })
   }
 
+  get loginFormControls() {
+    return this.form.controls;
+  }
+
   countDown(): void {
+    this.showCountDown=true;
     var countDown = setInterval(() => {
       this.countDownTime--;
-      document.getElementById('countdown').style.cssText = "display:block"
       if (document.getElementById('countdown')) {
         document.getElementById('countdown').innerHTML = "Resend OTP in " + this.countDownTime.toString() + "s";
         if (this.countDownTime === 0) {
           this.resendOtpButton = false;
           clearInterval(countDown);
-          document.getElementById('countdown').style.cssText = "display:none";
+          this.showCountDown=false;
         }
       } else {
         clearInterval(countDown);
@@ -72,7 +93,7 @@ export class RegisterComponent implements OnInit {
     this.clicked = false;
     if (res) {
       let message = "Your OTP is sent to your email address. It may take few minutes for the email delivery. Please check your promotions/spam folder as well. You may request another OTP after a minute by clicking Resend OTP."
-      this.popUpSnackBar(message,25000);
+      this.popUpSnackBar(message, 25000);
       this.sendOtpSection = false;
       this.verifyOtpSection = true;
       this.countDown();
@@ -89,18 +110,51 @@ export class RegisterComponent implements OnInit {
     var observable = this.httpClient.post(this.global.apiUrl + "Security/VerifyRegistrationOTP"
       , this.practiceObj)
     observable.subscribe(res => this.successVerify(res),
-      res => this.errorObserver(res));
-    //alert("OTP Verified"); 
+    err => {
+      let message = "OTP entered is wrong! Please check again"
+      this.popUpSnackBar(message,5000);
+    });
   }
 
   successVerify(res) {
     if (res) {
-      alert(res.message);
-      window.location.assign(window.location.origin + "/" + res.practice.url + "/" + res.provider.url + "/");
+      this.sendOtpSection = false;
+      this.verifyOtpSection = false;
+      this.popUpSnackBar(res.message, 10000)
+      this.global.currentPractice = res.practice.url;
+      this.global.currentProvider = res.provider.url;
+      this.showSetPasswordSection = true;
     }
   }
 
-  popUpSnackBar(message: string,duration:number) {
+  adminSetPassword() {
+    if (this.form.get("password").invalid || this.form.get("confirm_password").invalid || this.form.get("adminEmail").invalid) {
+      return;
+    }
+    this.disableSubmitButton = true;
+    this.providerObj.email = this.form.value.adminEmail;
+    this.providerObj.newPassword = this.form.value.password;
+    this.providerObj.confirmedPassword = this.form.value.confirm_password;
+    this.providerObj.userName = this.global.currentProvider; //admin
+    this.providerObj.practice = this.global.currentPractice;
+    this.httpClient.post(this.global.apiUrl + "Security/AdminSetPassword", this.providerObj)
+      .subscribe(res => this.successSetPassword(res),
+        res => this.error(res));
+  }
+
+  successSetPassword(res) {
+    if (res) {
+      this.disableSubmitButton = false;
+      window.location.assign(window.location.origin + "/" +  this.global.currentPractice + "/" + this.global.currentProvider + "/#/provider/login");
+    }
+  }
+
+  error(res) {
+    if (res.error.Message)
+      alert(res.error.Message);
+  }
+
+  popUpSnackBar(message: string, duration: number) {
     this._snackBar.open(message, 'Dismiss', {
       duration: duration,
       verticalPosition: 'top'
@@ -112,13 +166,16 @@ export class RegisterComponent implements OnInit {
     this.resendOtpButton = true;
     var observable = this.httpClient.get("/Messenger/ResendRegistrationOTP?key=" + key)
     observable.subscribe(res => this.successResendOTP(res),
-      res => this.errorObserver(res));
+      err => {
+        let message = "OTP entered is wrong! Please check again"
+        this.popUpSnackBar(message,5000);
+      });
   }
 
   successResendOTP(res) {
     if (res) {
       let message = "Your OTP is sent to your email address again. It may take few minutes for the email delivery. Please check your promotions/spam folder as well. You may request another OTP after a minute by clicking Resend OTP."
-      this.popUpSnackBar(message,25000);
+      this.popUpSnackBar(message, 25000);
       this.resendOtpButton = true;
       this.countDownTime = 60;
       this.countDown();
@@ -158,5 +215,5 @@ export class RegisterComponent implements OnInit {
         // alert('Can not load configuration please talk with admin.');
       });
   }
-  
+
 }

@@ -159,6 +159,38 @@ namespace FewaTelemedicine.Controllers
             }
 
         }
+
+        [HttpPost("AdminSetPassword")]
+        public ActionResult AdminSetPassword([FromBody] Provider obj)
+        {
+            try
+            {
+                if (obj == null)
+                {
+                    return BadRequest();
+                }
+                if (string.IsNullOrEmpty(obj.email) && (string.IsNullOrEmpty(obj.email) || string.IsNullOrEmpty(obj.userName)))
+                {
+                    return BadRequest();
+                }
+                Provider provider = FewaDbContext.providers.Where(a => a.userName == obj.userName && a.practice.ToLower().Trim() == obj.practice.ToLower().Trim()).FirstOrDefault();
+                if (provider == null)
+                {
+                    return Unauthorized(new { Message = "provider not found" });
+                }
+                provider.email = obj.email;
+                provider.password = Cipher.Encrypt(obj.newPassword, provider.userName);
+                FewaDbContext.providers.Update(provider);
+                FewaDbContext.SaveChanges();
+                return Ok(new { Message = "admin password has been set successfully" });
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+        }
+
         [HttpPost("ResetPassword")]
         public ActionResult ResetPassword([FromBody] Provider obj)
         {
@@ -188,6 +220,7 @@ namespace FewaTelemedicine.Controllers
                 return StatusCode(500, ex);
             }
         }
+
         [HttpPost("VerifyRegistrationOTP")]
         public ActionResult VerifyRegistrationOTP([FromBody] Practice obj)
         {
@@ -278,7 +311,7 @@ namespace FewaTelemedicine.Controllers
                     newAdvice.adviceId = newAdvice.adviceId + 1;
                     FewaDbContext.advice.Add(newAdvice);
                     FewaDbContext.SaveChanges();
-                    return Ok(new { message = "Account created successfully! Please login with username:admin and password:admin", practice = newPractice, provider = provider, providerAdvice = newAdvice });
+                    return Ok(new { message = "Your practice account is created successfully! Please set admin email and password", practice = newPractice, provider = provider, providerAdvice = newAdvice });
                 }
                 else
                 {
