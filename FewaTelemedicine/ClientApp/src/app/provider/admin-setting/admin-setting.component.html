@@ -208,7 +208,7 @@
                         <div class="tab-forms" style="max-height:546px;">
                             <form [formGroup]="addProviderForm">
                                 <div class="row">
-                                    <div class="col-12 col-md-6">
+                                    <div class="col-12 col-md-4">
                                         <div class="form-group">
                                             <label>User Name<span class="red-text">*</span></label>
                                             <input type="text" placeholder="User Name (without space)" class="form-control" name="userName" formControlName="userName">
@@ -220,7 +220,22 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-12 col-md-6">
+                                    <div class="col-12 col-md-4">
+                                        <div class="form-group">
+                                            <label>User Email<span class="red-text">*</span></label>
+                                            <input type="text" placeholder="User Email" class="form-control"
+                                                name="email" formControlName="email">
+                                            <div *ngIf="addProviderFormControls.email.touched && addProviderFormControls.email.invalid"
+                                                style="color: red;">
+                                                <div *ngIf="addProviderFormControls.email.errors.required">User Email is
+                                                    required.
+                                                </div>
+                                                <div *ngIf="addProviderFormControls.email.errors.pattern">Invalid email
+                                                    address.</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-4">
                                         <div class="form-group">
                                             <label>Password<span class="red-text">*</span></label>
                                             <input type="password" placeholder="Password" class="form-control" name="password" formControlName="password">
@@ -230,7 +245,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                 </div>
 
                                 <div class="row">
                                     <div class="col-12 col-md-6">
@@ -239,7 +254,10 @@
                                     <div class="col-12 col-md-6 text-right">
                                         <ul>
                                             <li><button type="submit" (click)="resetAddProviderForm()" class="cancelBtn">Reset</button></li>
-                                            <li><button type="submit" [disabled]="!addProviderForm.valid" (click)="addProvider()" class="saveBtn">Save</button></li>
+                                            <li><button type="submit" [disabled]="!addProviderForm.valid"
+                                                (click)="addProvider()" class="saveBtn">Save</button></li>&nbsp;&nbsp;
+                                            <li><button type="submit" [disabled]="!addProviderForm.valid"
+                                                (click)="editProvider()" class="saveBtn">Update</button></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -256,13 +274,35 @@
                                                         <thead>
                                                             <tr>
                                                                 <th>Sr. No</th>
-                                                                <th> Providers</th>
+                                                                <th>Providers</th>
+                                                                <th>Email</th>
+                                                                <th>Password</th>
+                                                                <th>Action</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             <tr *ngFor="let array of providerList; let i=index">
-                                                                <td> {{i+1}} </td>
-                                                                <td> {{array.userName}} </td>
+                                                                <td>{{i+1}}</td>
+                                                                <td>{{array.userName}}</td>
+                                                                <td>{{array.email}}</td>
+                                                                <td>{{array.password}}</td>
+                                                                <td>
+                                                                    <a (click)="edit(array)" href="javascript:;">
+                                                                        <svg fill="#000000" xmlns="http://www.w3.org/2000/svg"
+                                                                            viewBox="0 0 24 24" width="28px" height="28px">
+                                                                            <path
+                                                                                d="M14.5 5.5L3 17 3 21 7 21 18.5 9.5zM21.707 4.879l-2.586-2.586c-.391-.391-1.024-.391-1.414 0L16 4l4 4 1.707-1.707C22.098 5.902 22.098 5.269 21.707 4.879z" />
+                                                                        </svg>
+                                                                    </a>
+                                                                    &nbsp;&nbsp;
+                                                                    <a (click)="removeProvider(array.userName)" href="javascript:;">
+                                                                        <svg fill="#000000" xmlns="http://www.w3.org/2000/svg"
+                                                                            viewBox="0 0 24 24" width="28px" height="28px">
+                                                                            <path
+                                                                                d="M 10 2 L 9 3 L 4 3 L 4 5 L 20 5 L 20 3 L 15 3 L 14 2 L 10 2 z M 5 7 L 5 20 C 5 21.1 5.9 22 7 22 L 17 22 C 18.1 22 19 21.1 19 20 L 19 7 L 5 7 z M 8 9 L 10 9 L 10 20 L 8 20 L 8 9 z M 14 9 L 16 9 L 16 20 L 14 20 L 14 9 z" />
+                                                                        </svg>
+                                                                    </a>
+                                                                </td>
                                                             </tr>
                                                         </tbody>
                                                     </table>

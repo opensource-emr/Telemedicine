@@ -7,6 +7,7 @@ import { Global } from 'src/app/_helpers/common/global.model';
 import { FormGroup, Validators, FormBuilder, FormControl, FormArray } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NotificationService } from 'src/app/_helpers/common/notification.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-admin-setting',
@@ -27,6 +28,7 @@ export class AdminSettingComponent implements OnInit {
   public message: string;
   public logoProgress: number;
   public logoMessage: string;
+  public providerId: number;
   public fileLimitExceeded: boolean = false;
   public showEditor: boolean = false;
   public showInvitationTemplate: boolean = false;
@@ -43,6 +45,7 @@ export class AdminSettingComponent implements OnInit {
     public httpClient: HttpClient,
     private fb: FormBuilder,
     private changeDetection: ChangeDetectorRef,
+    private _snackBar: MatSnackBar,
     private sanitizer: DomSanitizer) {
     this.initPracticeForm();
     this.initAddProviderForm();
@@ -56,6 +59,104 @@ export class AdminSettingComponent implements OnInit {
     this.setPracticeEmailFormValue(this.practiceObj);
     this.loadEmailTemplate();
     this.providerObj = this.global.providerObj;
+  }
+
+  displayProviderList() {
+    this.httpClient.get<any>(this.global.practiceUrl + "GetAllProvider?practice=" + this.global.currentPractice)
+      .subscribe(res => {
+        if (res) {
+          this.providerList = res;
+        }
+      });
+  }
+
+  private initAddProviderForm() {
+    this.addProviderForm = this.fb.group({
+      userName: ['', Validators.required],
+      password: ['', Validators.required],
+      email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
+    });
+    this.displayProviderList();
+  }
+
+
+  addProvider() {
+    this.getProviderFormvalue();
+    this.httpClient.post<any>(this.global.apiUrl + "Security/AddProvider", this.addProviderObj)
+      .subscribe
+      (res => {
+        if (res.message) {
+          alert(res.message)
+        }
+        else {
+          let message = "Successfully added a provider " + this.addProviderObj.userName + ". User can now login using their assigned username and password at your practice website - https://www.fewatele.com/" + this.addProviderObj.practice + "/  or the user’s personal website https://www.fewatele.com/" + this.addProviderObj.practice + "/" + this.addProviderObj.userName
+          this.addProviderSnackBar(message, 25000);
+          this.displayProviderList();
+        }
+      },
+        err => { alert("There is a problem") });
+    this.resetAddProviderForm();
+  }
+
+  addProviderSnackBar(message: string, duration: number) {
+    this._snackBar.open(message, 'Dismiss', {
+      duration: duration,
+      verticalPosition: 'top'
+    });
+  }
+
+  editProvider() {
+    this.getProviderFormvalue();
+    this.addProviderObj.providerId = this.providerId;
+    this.httpClient.post<any>(this.global.apiUrl + "Security/EditProvider", this.addProviderObj)
+      .subscribe
+      (res => {
+        if (res.message) { alert(res.message) }
+        else {
+          let message = "Successfully updated a provider. User can now login using their assigned username and password at your practice website - https://www.fewatele.com/" + this.addProviderObj.practice + "/  or the user’s personal website https://www.fewatele.com/" + this.addProviderObj.practice + "/" + this.addProviderObj.userName
+          this.editProviderSnackBar(message, 25000);                                                                                                                                                                                                                       
+          this.displayProviderList();
+        }
+      },
+        err => { alert("There is a problem") });
+    this.resetAddProviderForm();
+  }
+
+  editProviderSnackBar(message: string, duration: number) {
+    this._snackBar.open(message, 'Dismiss', {
+      duration: duration,
+      verticalPosition: 'top'
+    });
+  }
+
+  public removeProvider(username: string): void {
+    this.httpClient.get<any>(this.global.practiceUrl + 'DeleteProvider?practice=' + this.global.currentPractice + "&" + "username=" + username)
+      .subscribe
+      (res => {
+        if (res) {
+          let message = "Successfully deleted a provider " + username + "."
+          this.removeProviderSnackBar(message, 25000);
+          this.displayProviderList();
+        }
+      });
+  }
+
+  removeProviderSnackBar(message: string, duration: number) {
+    this._snackBar.open(message, 'Dismiss', {
+      duration: duration,
+      verticalPosition: 'top'
+    });
+  }
+
+  public edit(provider: Provider) {
+    console.log(provider)
+    this.providerId = provider.providerId;
+    this.addProviderForm.patchValue({
+      userName: provider.userName,
+      password: provider.password,
+      email: provider.email,
+      url: provider.userName,
+    })
   }
 
   private initPracticeForm() {
@@ -73,34 +174,6 @@ export class AdminSettingComponent implements OnInit {
     this.PracticeEmailForm = this.fb.group({
       addContent: new FormControl(" "),
     })
-  }
-
-  private initAddProviderForm() {
-    this.addProviderForm = this.fb.group({
-      userName: ['', Validators.required],
-      password: ['', Validators.required],
-      providerList: this.fb.array([]),
-    });
-  }
-
-  addProvider() {
-    this.getProviderFormvalue();
-    this.httpClient.post<any>(this.global.apiUrl + "Security/AddProvider", this.addProviderObj)
-      .subscribe
-      (res => {
-        if (res.message) { alert(res.message) }
-        else {
-          alert("Provider Added succesfully, Now login with email password")
-          this.providerList = res
-        }
-      },
-        err => { alert("There is a problem") });
-    this.resetAddProviderForm();
-  }
-
-  displayProviderList() {
-    this.httpClient.get<any>(this.global.practiceUrl + "GetAllProvider?practice=" + this.global.currentPractice)
-      .subscribe(res => this.providerList = res, err => alert(err));
   }
 
   setPracticeFormValue(practice: Practice) {
@@ -138,6 +211,7 @@ export class AdminSettingComponent implements OnInit {
     var v = this.addProviderForm.getRawValue();
     this.addProviderObj.userName = v.userName.replace(/\s/g, "").toLowerCase();
     this.addProviderObj.password = v.password;
+    this.addProviderObj.email = v.email;
     this.addProviderObj.url = this.addProviderObj.userName // url same as username
     this.addProviderObj.practice = this.global.currentPractice;
     this.addProviderObj.practiceId = this.global.providerObj.practiceId;

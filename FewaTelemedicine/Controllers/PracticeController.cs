@@ -486,7 +486,7 @@ namespace FewaTelemedicine.Controllers
         {
             try
             {
-                List<ProviderAdvice> getAllAdvice = FewaDbContext.advice.Where(a => a.practiceId == obj.practiceId 
+                List<ProviderAdvice> getAllAdvice = FewaDbContext.advices.Where(a => a.practiceId == obj.practiceId 
                                                     && a.providerId == obj.providerId).ToList(); 
                 if (getAllAdvice.Count == 0 )
                 {
@@ -510,7 +510,7 @@ namespace FewaTelemedicine.Controllers
                     }
                     foreach (var i in adviceList)
                     {
-                        var advice = FewaDbContext.advice.Where(a => a.adviceId == i.adviceId).AsQueryable().FirstOrDefault();
+                        var advice = FewaDbContext.advices.Where(a => a.adviceId == i.adviceId).AsQueryable().FirstOrDefault();
                         if (advice != null)
                         {
                           FewaDbContext.Entry(advice).State = EntityState.Detached;
@@ -518,8 +518,8 @@ namespace FewaTelemedicine.Controllers
                         }
                         else
                         {
-                            i.adviceId = FewaDbContext.advice.Max(a => a.adviceId) + 1;
-                            FewaDbContext.advice.Add(i);
+                            i.adviceId = FewaDbContext.advices.Max(a => a.adviceId) + 1;
+                            FewaDbContext.advices.Add(i);
                         }
                         FewaDbContext.SaveChanges();
                     }
@@ -533,12 +533,12 @@ namespace FewaTelemedicine.Controllers
         }
         public IActionResult DeleteAdvice(int id)
         {
-            ProviderAdvice removeAdvice = FewaDbContext.advice.Find(id);
+            ProviderAdvice removeAdvice = FewaDbContext.advices.Find(id);
             if (removeAdvice == null)
             {
                 return NotFound();
             }
-            FewaDbContext.advice.Remove(removeAdvice);
+            FewaDbContext.advices.Remove(removeAdvice);
             FewaDbContext.SaveChanges();
             return Ok(removeAdvice);
         }
@@ -554,6 +554,10 @@ namespace FewaTelemedicine.Controllers
             try
             {
                 List<Provider> getAllProvider = FewaDbContext.providers.Where(a => a.practice == practice).ToList();
+                foreach (var item in getAllProvider)
+                {
+                    item.password = Cipher.Decrypt(item.password, item.userName);
+                }
                 if (getAllProvider.Count > 0)
                 {
                     return Ok(getAllProvider);
@@ -565,6 +569,33 @@ namespace FewaTelemedicine.Controllers
                 return Ok("Error In Retrieving Records" + ex.Message);
             }
         }
+
+        public IActionResult DeleteProvider(string practice, string username)
+        {
+            Provider removeProvider = FewaDbContext.providers.Where(a => a.userName == username && a.practice == practice).FirstOrDefault();
+            if (removeProvider == null)
+            {
+                return NotFound();
+            }
+            FewaDbContext.providers.Remove(removeProvider);
+            FewaDbContext.SaveChanges();
+            List<ProviderAdvice> getAllAdvice = FewaDbContext.advices.Where(a => a.providerId == removeProvider.providerId).ToList();
+            foreach (var item in getAllAdvice)
+            {
+                FewaDbContext.advices.Remove(item);
+                FewaDbContext.SaveChanges();
+
+            }
+            _providers.Clear();
+            foreach (var a in FewaDbContext.providers.ToList<Provider>()) //fetch new provider 
+            {
+                _providers.Add(a);
+
+            }
+            return Ok(_providers.Where(a => a.practiceId == removeProvider.practiceId).ToList());
+
+        }
+
         [AllowAnonymous]
         public IActionResult GetAllPractices(string key)
         {

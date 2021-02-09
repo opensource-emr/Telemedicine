@@ -51,7 +51,7 @@ namespace FewaTelemedicine.Domain
         public DbSet<Practice> practices { get; set; }
         public DbSet<Provider> providers { get; set; }
         public DbSet<Patient> patients { get; set; }
-        public DbSet<ProviderAdvice> advice { get; set; }
+        public DbSet<ProviderAdvice> advices { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
