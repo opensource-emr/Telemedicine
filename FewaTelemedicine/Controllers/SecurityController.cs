@@ -292,24 +292,24 @@ namespace FewaTelemedicine.Controllers
                     //  to add new advice
 
                     ProviderAdvice newAdvice= new ProviderAdvice();
-                    newAdvice.adviceId = FewaDbContext.advice.Max(a => a.adviceId) + 1;           
+                    newAdvice.adviceId = FewaDbContext.advices.Max(a => a.adviceId) + 1;           
                     newAdvice.inputType = newAdvice.inputType;
                     newAdvice.isChecked = newAdvice.isChecked;
                     newAdvice.practiceId = newPractice.practiceId;
                     newAdvice.providerId = provider.providerId;
                     newAdvice.advice = FewaDbContext._advice1;
                    
-                    FewaDbContext.advice.Add(newAdvice);
+                    FewaDbContext.advices.Add(newAdvice);
                     FewaDbContext.SaveChanges();
                     newAdvice.advice = FewaDbContext._advice2;
 
                     newAdvice.adviceId = newAdvice.adviceId + 1;
-                    FewaDbContext.advice.Add(newAdvice);
+                    FewaDbContext.advices.Add(newAdvice);
                     FewaDbContext.SaveChanges();
                     newAdvice.advice = FewaDbContext._advice3;
 
                     newAdvice.adviceId = newAdvice.adviceId + 1;
-                    FewaDbContext.advice.Add(newAdvice);
+                    FewaDbContext.advices.Add(newAdvice);
                     FewaDbContext.SaveChanges();
                     return Ok(new { message = "Your practice account is created successfully! Please set admin email and password", practice = newPractice, provider = provider, providerAdvice = newAdvice });
                 }
@@ -348,24 +348,24 @@ namespace FewaTelemedicine.Controllers
                                   select practice.practiceId).FirstOrDefault();
 
                 ProviderAdvice newAdvice = new ProviderAdvice();
-                newAdvice.adviceId = FewaDbContext.advice.Max(a => a.adviceId) + 1;
+                newAdvice.adviceId = FewaDbContext.advices.Max(a => a.adviceId) + 1;
                 newAdvice.inputType = newAdvice.inputType;
                 newAdvice.isChecked = newAdvice.isChecked;
                 newAdvice.practiceId = obj.practiceId;
                 newAdvice.providerId = obj.providerId;
                 newAdvice.advice = FewaDbContext._advice1;
 
-                FewaDbContext.advice.Add(newAdvice);
+                FewaDbContext.advices.Add(newAdvice);
                 FewaDbContext.SaveChanges();
                 newAdvice.advice = FewaDbContext._advice2;
 
                 newAdvice.adviceId = newAdvice.adviceId + 1;
-                FewaDbContext.advice.Add(newAdvice);
+                FewaDbContext.advices.Add(newAdvice);
                 FewaDbContext.SaveChanges();
                 newAdvice.advice = FewaDbContext._advice3;
 
                 newAdvice.adviceId = newAdvice.adviceId + 1;
-                FewaDbContext.advice.Add(newAdvice);
+                FewaDbContext.advices.Add(newAdvice);
                 FewaDbContext.SaveChanges();
 
                 FewaDbContext.providers.Add(obj);
@@ -377,6 +377,44 @@ namespace FewaTelemedicine.Controllers
 
                 }
                 return Ok(_providers.Where(a => a.practiceId == obj.practiceId).ToList());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Please try again");
+            }
+        }
+
+        [HttpPost("EditProvider")]
+        public IActionResult EditProvider([FromBody] Provider obj)
+        {
+            try
+            {
+                if (obj is null)
+                {
+                    return StatusCode(500);
+                }
+                Provider provider = FewaDbContext.providers.Where(a => a.providerId == obj.providerId && a.practiceId == obj.practiceId).FirstOrDefault();
+                if (provider == null)
+                {
+                    return Ok(new { message = "Provider doesn't exists" });
+                }
+                else
+                {
+                    provider.userName = obj.userName;
+                    provider.email = obj.email;
+                    provider.password = Cipher.Encrypt(obj.password, obj.userName);
+                    provider.url = obj.url;
+                }
+                FewaDbContext.providers.Update(provider);
+                FewaDbContext.SaveChanges();
+                _providers.Clear();
+                foreach (var a in FewaDbContext.providers.ToList<Provider>())
+                {
+                    _providers.Add(a);
+
+                }
+                return Ok(_providers.Where(a => a.practiceId == obj.practiceId).ToList());
+
             }
             catch (Exception ex)
             {

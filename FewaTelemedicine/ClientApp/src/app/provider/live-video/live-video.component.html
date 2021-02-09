@@ -350,18 +350,27 @@
                             <small style="color: red;" *ngIf="reportForm.controls['followUpNumber'].hasError('pattern')">Value should be number
                             </small>
                             <select class="form-control" formControlName="followUpMeasure">
-                                <option disabled selected value>--select--</option> 
+                                <option *ngIf="followUpNum.value==1 || followUpNum.value==0">Day</option>
                                 <option *ngIf="followUpNum.value==1 || followUpNum.value==0">Week</option>
                                 <option *ngIf="followUpNum.value==1 || followUpNum.value==0">Month</option>
-                                <option *ngIf="followUpNum.value==1 || followUpNum.value==0">Year</option>
+                                <option *ngIf="followUpNum.value>1">Days</option>
                                 <option *ngIf="followUpNum.value>1">Weeks</option>
                                 <option *ngIf="followUpNum.value>1">Months</option>
-                                <option *ngIf="followUpNum.value>1">Years</option>
                             </select>
+                        </div>
+                        <div>
+                            <p *ngIf="reportForm.controls['followUpNumber'].touched && reportForm.controls['followUpNumber'].invalid"
+                                style="color:red;">
+                                <small *ngIf="reportForm.controls['followUpNumber'].hasError('pattern')">Value should be
+                                    number
+                                </small>
+                                <small *ngIf="reportForm.controls['followUpNumber'].hasError('required')">Follow up number required.
+                                </small>
+                            </p>
                         </div>
                     </div>
                     <div class="submitButton">
-                        <a class="visitBtn" (click)="completeVisit()" href="javascript:;">Complete Visit</a>
+                        <button class="visitBtn" (click)="completeVisit()" href="javascript:;">Complete Visit</button>
                     </div>
                 </form>
             </div>

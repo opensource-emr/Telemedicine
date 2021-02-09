@@ -6,6 +6,7 @@ import { Provider, Practice, ProviderAdvice } from 'src/app/_helpers/models/doma
 import { Global } from 'src/app/_helpers/common/global.model';
 import { FormGroup, Validators, FormBuilder, FormControl, FormArray } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-user-setting',
@@ -39,6 +40,7 @@ export class UserSettingComponent implements OnInit {
     public global: Global,
     public httpClient: HttpClient,
     private fb: FormBuilder,
+     private _snackBar: MatSnackBar,
     private sanitizer: DomSanitizer) {
     this.initUserForm();
     this.initAdviceForm();
@@ -84,8 +86,16 @@ export class UserSettingComponent implements OnInit {
   }
 
   addRow() {
+    if((this.adviceArray.length) >= 10){
+      this._snackBar.open('You can add only 10 advices', 'Dismiss', {
+        duration: 10000,
+        verticalPosition: 'top'
+      });
+    }
+    else{
     const control = this.adviceForm.get('adviceArray') as FormArray;
     control.push(this.addAdvice());
+    }
   }
 
   public removeRow(index: number): void {

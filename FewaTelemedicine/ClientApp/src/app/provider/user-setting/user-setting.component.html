@@ -226,7 +226,7 @@
                                         </tr>
                                     </thead>
                                     <tbody formArrayName="adviceArray">
-                                        <tr *ngFor="let array of adviceArray.controls; let i=index" [formGroupName]="i">
+                                        <tr *ngFor="let array of adviceArray.controls.slice(0, 10); let i=index" [formGroupName]="i">
                                             <td>
                                                 {{i+1}}
                                             </td>
