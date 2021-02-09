@@ -23,11 +23,13 @@ export class ForgotPasswordComponent implements OnInit {
   providerForm: FormGroup;
   countDownTime: number = 60;
   form: FormGroup = new FormGroup({});
+  showCountDown = true;
   constructor(public httpClient: HttpClient,
     public routing: Router,
     public global: Global,
     public _snackBar: MatSnackBar,
-    public fb: FormBuilder) {
+    public fb: FormBuilder,
+    public router: Router) {
     this.initForm();
   }
 
@@ -62,17 +64,19 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   countDown(): void {
+    this.showCountDown=true;
     var countDown = setInterval(() => {
       this.countDownTime--;
-      // if (document.getElementById('countdown')) {
-      //   document.getElementById('countdown').innerHTML = this.countDownTime.toString();
+      if (document.getElementById('countdown')) {
+        document.getElementById('countdown').innerHTML = "Resend OTP in " + this.countDownTime.toString() + "s";
         if (this.countDownTime === 0) {
           this.disableResendButton = false;
           clearInterval(countDown);
+          this.showCountDown=false;
         }
-      // } else {
-      //   clearInterval(countDown);
-      // }
+      } else {
+        clearInterval(countDown);
+      }
     }, 1000);
   }
 
@@ -92,11 +96,11 @@ export class ForgotPasswordComponent implements OnInit {
         res => this.error(res));
   }
 
-  popUpSnackBar() {
-    this._snackBar.open('You can resend otp after one minute', 'Dismiss', {
-      duration: 10000,   
+  popUpSnackBar(message: string,duration:number) {
+    this._snackBar.open(message, 'Dismiss', {
+      duration: duration,
       verticalPosition: 'top'
-     });
+    });
   }
 
   resendOTP() {
@@ -115,7 +119,7 @@ export class ForgotPasswordComponent implements OnInit {
     this.httpClient.post(this.global.apiUrl + "Security/VerifyOTP", this.providerObj)
       .subscribe(res => this.successVerify(res),
         res => this.error(res));
-    //alert("OTP Verified");
+    
   }
 
   resetPassword() {
@@ -134,7 +138,8 @@ export class ForgotPasswordComponent implements OnInit {
 
   successOTP(res) {
     if (res) {
-      this.popUpSnackBar();
+      let message = "Your OTP is sent to your email address. It may take few minutes for the email delivery. Please check your promotions/spam folder as well. You may request another OTP after a minute by clicking Resend OTP."
+      this.popUpSnackBar(message,25000);
       this.showOtpSection = false;
       this.showOtpVerifySection = true;
       this.disableSubmitButton = false;
@@ -147,7 +152,8 @@ export class ForgotPasswordComponent implements OnInit {
 
   successResendOTP(res) {
     if (res) {
-      this.popUpSnackBar();
+      let message = "Your OTP is sent to your email address again. It may take few minutes for the email delivery. Please check your promotions/spam folder as well. You may request another OTP after a minute by clicking Resend OTP."
+      this.popUpSnackBar(message,25000);
       this.disableResendButton = true;
       // this.showResetPasswordSection=true;
       // this.disableResendButton=false;
@@ -166,6 +172,8 @@ export class ForgotPasswordComponent implements OnInit {
       this.showOtpVerifySection = false;
       this.showResetPasswordSection = true;
       this.disableSubmitButton = false;
+      let message = "OTP is verified! Please reset your password"
+      this.popUpSnackBar(message,6000);
     }
     else
       alert(res);
@@ -175,7 +183,12 @@ export class ForgotPasswordComponent implements OnInit {
   successResetPassword(res) {
     if (res) {
       this.disableSubmitButton = false;
-      this.routing.navigate(["/provider/login"]);
+      this.router.navigate(['/provider/login']).then((navigated: boolean) => {
+        if(navigated) {
+          let message = "Your new password is set successfully! Please login with your username and new password"
+          this.popUpSnackBar(message , 7000)
+        }
+    });
     }
     else
       alert(res);

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Practice, Provider } from 'src/app/_helpers/models/domain-model';
@@ -21,14 +22,23 @@ export class LoginComponent implements OnInit {
   constructor(private httpClient: HttpClient,
     private routing: Router,
     public global: Global,
-    private formBuilder: FormBuilder) {
+    private formBuilder: FormBuilder,
+    public _snackBar: MatSnackBar) {
     this.initForm();
   }
 
   ngOnInit(): void {
     this.getPractice();
-   this.global.previousChats = []
+    this.global.previousChats = [];
   }
+
+  popUpSnackBar(message: string,duration:number) {
+    this._snackBar.open(message, 'Dismiss', {
+      duration: duration,
+      verticalPosition: 'top'
+    });
+  }
+
   private getPractice() {
     var key="73l3M3D"; //hardcoded
     this.httpClient.get<any>(this.global.practiceUrl + 'GetPracticeConfiguration?practice=' + this.global.currentPractice + "&" + "key=" + key)

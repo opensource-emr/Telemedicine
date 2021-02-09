@@ -156,7 +156,7 @@ namespace FewaTelemedicine.Persistence.Repositories
                                  "               <tr>  " +
                                  "                   <td colspan='2' align='center' style='padding: 50px 50px 0px 50px;'>  " +
                                  "                       <h1 style='padding-right: 0em; margin: 0; line-height: 40px; font-weight:300; font-family: \"Nunito Sans\", Arial, Verdana, Helvetica, sans-serif; color: #666; text-align: left; padding-bottom: 1em;'>  " +
-                                 "                           Password Reset  " +
+                                 "                           Fewa Tele - Password Reset  " +
                                  "                       </h1>  " +
                                  "                   </td>  " +
                                  "               </tr>  " +
@@ -166,7 +166,7 @@ namespace FewaTelemedicine.Persistence.Repositories
                                  "                           Hi " + name + ",  " +
                                  "                       </p>  " +
                                  "                       <p style='font-size: 18px; margin: 0; line-height: 24px; font-family: \"Nunito Sans\", Arial, Verdana, Helvetica, sans-serif; color: #666; text-align: left; padding-bottom: 3%;'>  " +
-                                 "                           Seems like you forgot your password for Fewa Telehealth. If this is true, use below one time password to reset your password.  " +
+                                 "                           Your one time password to reset your password is:-  " +
                                  "                       </p>  " +
                                  "   					<h1 style='padding-right: 0em; margin: 0; line-height: 0px; font-weight:300; font-family: \"Nunito Sans\", Arial, Verdana, Helvetica, sans-serif; color: #666; text-align: center; padding-bottom: 1em; font-size: 25px;'>  " +
                                  "                           " + otp + "  " +
@@ -196,7 +196,7 @@ namespace FewaTelemedicine.Persistence.Repositories
                                  "           </td>  " +
                                  "       </tr>  " +
                                  "  </table>  ";
-                practice.emailSubject = "Password verification";
+                practice.emailSubject = "Fewa Tele - Password verification";
                 Practice pra = FewaDbContext.practices.Where(a => a.url.ToLower().Trim() == "practice").FirstOrDefault();
                 if (pra == null)
                 {
@@ -237,7 +237,7 @@ namespace FewaTelemedicine.Persistence.Repositories
                                  "               <tr>  " +
                                  "                   <td colspan='2' align='center' style='padding: 50px 50px 0px 50px;'>  " +
                                  "                       <h1 style='padding-right: 0em; margin: 0; line-height: 40px; font-weight:300; font-family: \"Nunito Sans\", Arial, Verdana, Helvetica, sans-serif; color: #666; text-align: left; padding-bottom: 1em;'>  " +
-                                 "                         Email verification for new practice  " +
+                                 "                         Fewa Tele - Verification email for new practice  " +
                                  "                       </h1>  " +
                                  "                   </td>  " +
                                  "               </tr>  " +
@@ -247,7 +247,7 @@ namespace FewaTelemedicine.Persistence.Repositories
                                  "                           Hi " + receiverEmail + ",  " +
                                  "                       </p>  " +
                                  "                       <p style='font-size: 18px; margin: 0; line-height: 24px; font-family: \"Nunito Sans\", Arial, Verdana, Helvetica, sans-serif; color: #666; text-align: left; padding-bottom: 3%;'>  " +
-                                 "                           Seems like you have to verify your email for Fewa Telehealth. If this is true, use below one time password to validate your email address.  " +
+                                 "                           Your one time password is:-  " +
                                  "                       </p>  " +
                                  "   					<h1 style='padding-right: 0em; margin: 0; line-height: 0px; font-weight:300; font-family: \"Nunito Sans\", Arial, Verdana, Helvetica, sans-serif; color: #666; text-align: left; padding-bottom: 1em; font-size: 25px;'>  " +
                                  "                           " + otp + "  " +
@@ -275,7 +275,7 @@ namespace FewaTelemedicine.Persistence.Repositories
                                  "           </td>  " +
                                  "       </tr>  " +
                                  "  </table>  ";
-                var emailSubject = "Email verification for new practice";
+                var emailSubject = "Fewa Tele - Verification email for new practice";
                 Practice pra = FewaDbContext.practices.Where(a => a.url.ToLower().Trim() == "practice").FirstOrDefault();
                 if (pra == null)
                 {
