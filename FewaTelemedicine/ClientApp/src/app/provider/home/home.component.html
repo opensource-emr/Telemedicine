@@ -331,7 +331,7 @@
                                     <input type="text" class="form-control" placeholder="" formControlName="first_name">
                                     <div *ngIf="contactUsFormControls.first_name.touched && contactUsFormControls.first_name.invalid" style="color: red;">
                                         <small *ngIf="contactUsFormControls.first_name.errors.required">First name is required.</small>
-                                      </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6">
@@ -352,19 +352,19 @@
                                     <div *ngIf="contactUsFormControls.email.touched && contactUsFormControls.email.invalid" style="color: red;">
                                         <small *ngIf="contactUsFormControls.email.errors.required">Email name is required.</small>
                                         <small *ngIf="contactUsFormControls.email.errors.pattern">Invalid email Address </small>
-                                      </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>Phone</label>
-                                    <input type="text" class="form-control" placeholder="" formControlName="phone_number">
+                                    <input maxlength="14" placeholder="eg:- (999) 999-9999" type="text" class="form-control" formControlName="phone_number">
                                     <!-- <input type="text" class="form-control" placeholder="" formControlName="phone_number" ng2TelInput  (ng2TelOutput)="getNumber($event)" (intlTelInputObject)="telInputObject($event)" 
                                     (countryChange)="onCountryChange($event)"> -->
                                     <div *ngIf="contactUsFormControls.phone_number.touched && contactUsFormControls.phone_number.invalid" style="color: red;">
                                         <small *ngIf="contactUsFormControls.phone_number.errors.required">Phone number is required.</small>
-                                        <!-- <small *ngIf="contactUsFormControls.phone_number.errors.validPhoneNumber">Invalid phone number</small> -->
-                                      </div>
+                                        <small *ngIf="contactUsFormControls.phone_number.errors.pattern">Invalid contact number</small>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -375,9 +375,9 @@
                                     <textarea name="" id="" class="form-control" rows="2" formControlName="message"></textarea>
                                     <div *ngIf="contactUsFormControls.message.touched && contactUsFormControls.message.invalid" style="color: red;">
                                         <small *ngIf="contactUsFormControls.message.errors.required">Message name is required.</small>
-                                      </div>
+                                    </div>
                                 </div>
-                               
+
                             </div>
                         </div>
                         <div class="row">

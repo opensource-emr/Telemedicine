@@ -2,7 +2,7 @@ export class Practice {
     practiceId: number;
     name: string = "";
     address: string = "";
-    contactNumber: number;
+    contactNumber: string;
     description: string = "";
     callingPlatform: string;
     url: any = "";
@@ -35,7 +35,7 @@ export class Provider {
     email: string = "";
     designation: string = "";
     medicalDegree: string = "";
-    mobileNumber: number;
+    mobileNumber: string;
     clinic: string = "";
     image: string = "";
     roomName: string = "";
