@@ -160,7 +160,7 @@ export class UserSettingComponent implements OnInit {
   private initUserForm() {
     this.userForm = this.fb.group({
       email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
-      phone: ['', [Validators.required, Validators.pattern("^\\+?[0-9]{3}[0-9]{0,9}$")]],
+      phone: ['', [Validators.required, Validators.pattern("^\\([0-9]{3}\\)\\s[0-9]{3}-[0-9]{4}$")]],
       name: ['', [Validators.required, Validators.pattern("^[a-zA-Z]+$")]],
       designation: ['', [Validators.required, Validators.pattern("^[a-zA-Z.]+$")]],
       medical_degree: ['', [Validators.required, Validators.pattern("^[a-zA-Z]+$")]],

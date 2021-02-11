@@ -16,8 +16,7 @@
             <ul>
                 <li>
                     <div class="dropdown">
-                        <div class="profileHeader dropdown-toggle" type="button" id="dropdownMenuButton"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <div class="profileHeader dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <p *ngIf="(global.providerObj.name==null && providerObj.name==null)||(global.providerObj.name=='' && providerObj.name=='')">
                                 Upload Profile</p>
                             <p> {{providerObj.nameTitle}}&nbsp;{{providerObj.name}}&nbsp;</p>
@@ -45,15 +44,12 @@
         <div class="col-12">
             <div class="userTabsMenu">
                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                    <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
-                        aria-controls="v-pills-home" aria-selected="true">Profile</a>
-                    <a class="nav-link" id="v-pills-advice-tab" data-toggle="pill" href="#v-pills-advice" role="tab"
-                        aria-controls="v-pills-advice" aria-selected="false">Advice</a>
+                    <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Profile</a>
+                    <a class="nav-link" id="v-pills-advice-tab" data-toggle="pill" href="#v-pills-advice" role="tab" aria-controls="v-pills-advice" aria-selected="false">Advice</a>
                 </div>
                 <!-- Profile-->
                 <div class="tab-content" id="v-pills-tabContent">
-                    <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
-                        aria-labelledby="v-pills-home-tab">
+                    <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
                         <div class="fewa-title">
                             <h1>Update Profile</h1>
                         </div>
@@ -64,8 +60,7 @@
                                         <div class="form-group">
                                             <label>Name<span class="red-text">*</span></label>
                                             <div class="display-flex">
-                                                <select name="" class="form-control wdt-30" id=""
-                                                    formControlName="name_title">
+                                                <select name="" class="form-control wdt-30" id="" formControlName="name_title">
                                                     <option>Dr.</option>
                                                     <option>Mr.</option>
                                                     <option>Mrs.</option>
@@ -73,21 +68,16 @@
                                                     <option>Ms.</option>
                                                     <option>Other</option>
                                                 </select>
-                                                <div *ngIf="userFormControls.name_title.touched && userFormControls.name_title.invalid"
-                                                    style="color: red;">
-                                                    <div *ngIf="userFormControls.name_title.errors.required"> Title is
-                                                        required.
+                                                <div *ngIf="userFormControls.name_title.touched && userFormControls.name_title.invalid" style="color: red;">
+                                                    <div *ngIf="userFormControls.name_title.errors.required"> Title is required.
                                                     </div>
                                                 </div>
 
-                                                <input type="text" class="form-control wdt-70" name="name"
-                                                    formControlName="name">
-                                                <div *ngIf="userFormControls.name.touched && userFormControls.name.invalid"
-                                                    style="color:red;">
+                                                <input type="text" class="form-control wdt-70" name="name" formControlName="name">
+                                                <div *ngIf="userFormControls.name.touched && userFormControls.name.invalid" style="color:red;">
                                                     <div *ngIf="userFormControls.name.errors.required">Name is required.
                                                     </div>
-                                                    <div *ngIf="userFormControls.name.errors.pattern">Name should not be
-                                                        number.
+                                                    <div *ngIf="userFormControls.name.errors.pattern">Name should not be number.
                                                     </div>
                                                 </div>
                                             </div>
@@ -96,14 +86,11 @@
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
                                             <label>Email<span class="red-text">*</span></label>
-                                            <input type="email" class="form-control" name="email"
-                                                formControlName="email">
-                                            <div *ngIf="userFormControls.email.touched && userFormControls.email.invalid"
-                                                style="color: red;">
+                                            <input type="email" class="form-control" name="email" formControlName="email">
+                                            <div *ngIf="userFormControls.email.touched && userFormControls.email.invalid" style="color: red;">
                                                 <div *ngIf="userFormControls.email.errors.required">Email is required.
                                                 </div>
-                                                <div *ngIf="userFormControls.email.errors.pattern">Invalid email
-                                                    address.
+                                                <div *ngIf="userFormControls.email.errors.pattern">Invalid email address.
                                                 </div>
                                             </div>
                                         </div>
@@ -113,15 +100,11 @@
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
                                             <label>Contact No.<span class="red-text">*</span></label>
-                                            <input type="text" class="form-control" name="mobileNumber"
-                                                formControlName="phone">
-                                            <div *ngIf="userFormControls.phone.touched && userFormControls.phone.invalid"
-                                                style="color: red;">
-                                                <div *ngIf="userFormControls.phone.errors.required">Contact number is
-                                                    required.
+                                            <input maxlength="14" placeholder="eg:- (999) 999-9999" type="text" class="form-control" name="mobileNumber" formControlName="phone">
+                                            <div *ngIf="userFormControls.phone.touched && userFormControls.phone.invalid" style="color: red;">
+                                                <div *ngIf="userFormControls.phone.errors.required">Contact number is required.
                                                 </div>
-                                                <div *ngIf="userFormControls.phone.errors.pattern">Invalid contact
-                                                    number.
+                                                <div *ngIf="userFormControls.phone.errors.pattern">Invalid contact number.
                                                 </div>
                                             </div>
                                         </div>
@@ -129,15 +112,11 @@
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
                                             <label>Designation<span class="red-text">*</span></label>
-                                            <input type="text" class="form-control" name="designation"
-                                                formControlName="designation">
-                                            <div *ngIf="userFormControls.designation.touched && userFormControls.designation.invalid"
-                                                style="color:red;">
-                                                <div *ngIf="userFormControls.designation.errors.required">Designation is
-                                                    required.
+                                            <input type="text" class="form-control" name="designation" formControlName="designation">
+                                            <div *ngIf="userFormControls.designation.touched && userFormControls.designation.invalid" style="color:red;">
+                                                <div *ngIf="userFormControls.designation.errors.required">Designation is required.
                                                 </div>
-                                                <div *ngIf="userFormControls.designation.errors.pattern">Designation
-                                                    should not be number.                                                 
+                                                <div *ngIf="userFormControls.designation.errors.pattern">Designation should not be number.
                                                 </div>
                                             </div>
                                         </div>
@@ -147,15 +126,11 @@
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
                                             <label>Medical Degree<span class="red-text">*</span></label>
-                                            <input type="text" class="form-control" name="medical_degree"
-                                                formControlName="medical_degree">
-                                            <div *ngIf="userFormControls.medical_degree.touched && userFormControls.medical_degree.invalid"
-                                                style="color: red;">
-                                                <div *ngIf="userFormControls.medical_degree.errors.required">Medical
-                                                    degree is required.
+                                            <input type="text" class="form-control" name="medical_degree" formControlName="medical_degree">
+                                            <div *ngIf="userFormControls.medical_degree.touched && userFormControls.medical_degree.invalid" style="color: red;">
+                                                <div *ngIf="userFormControls.medical_degree.errors.required">Medical degree is required.
                                                 </div>
-                                                <div *ngIf="userFormControls.medical_degree.errors.pattern">Medical
-                                                    degree should not be number.
+                                                <div *ngIf="userFormControls.medical_degree.errors.pattern">Medical degree should not be number.
                                                 </div>
                                             </div>
                                         </div>
@@ -163,19 +138,13 @@
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
                                             <label>Profile Image</label>
-                                            <input id="file-upload1" class="form-control" type="file"
-                                                placeholder="Choose File" formControlName="profile_image"
-                                                (change)="onFileChanged($event)" accept=".png,.jpg,.jpeg" />
-                                            <div *ngIf="userFormControls.profile_image.touched && userFormControls.profile_image.invalid"
-                                                style="color: red;">
-                                                <div *ngIf="userFormControls.profile_image.errors.required">Image is
-                                                    required.
+                                            <input id="file-upload1" class="form-control" type="file" placeholder="Choose File" formControlName="profile_image" (change)="onFileChanged($event)" accept=".png,.jpg,.jpeg" />
+                                            <div *ngIf="userFormControls.profile_image.touched && userFormControls.profile_image.invalid" style="color: red;">
+                                                <div *ngIf="userFormControls.profile_image.errors.required">Image is required.
                                                 </div>
                                             </div>
-                                            <div *ngIf="userFormControls.profile_image.touched && userFormControls.profile_image.invalid"
-                                                style="color: red;">
-                                                <div *ngIf="userFormControls.profile_image.errors.required">Image is
-                                                    required.
+                                            <div *ngIf="userFormControls.profile_image.touched && userFormControls.profile_image.invalid" style="color: red;">
+                                                <div *ngIf="userFormControls.profile_image.errors.required">Image is required.
                                                 </div>
                                             </div>
                                             <label *ngIf="selectedFile"> {{selectedFile.name}}</label>
@@ -186,17 +155,13 @@
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
                                             <label>Reset Password</label>
-                                            <input type="password" placeholder="Enter Reset Password"
-                                                class="form-control" name="password" formControlName="new_password">
+                                            <input type="password" placeholder="Enter Reset Password" class="form-control" name="password" formControlName="new_password">
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-6 text-right">
                                         <ul>
-                                            <li><button type="submit" (click)="resetUserForm()"
-                                                    class="cancelBtn">Cancel</button></li>
-                                            <li><button type="submit"
-                                                    [disabled]="!userForm.valid || this.fileLimitExceeded"
-                                                    (click)="updateProfile()" class="saveBtn">Save</button></li>
+                                            <li><button type="submit" (click)="resetUserForm()" class="cancelBtn">Cancel</button></li>
+                                            <li><button type="submit" [disabled]="!userForm.valid || this.fileLimitExceeded" (click)="updateProfile()" class="saveBtn">Save</button></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -231,21 +196,18 @@
                                                 {{i+1}}
                                             </td>
                                             <td>
-                                                <input type="text" class="form-control disable" name="advice"
-                                                    formControlName="advice" />
+                                                <input type="text" class="form-control disable" name="advice" formControlName="advice" />
                                             </td>
                                             <td>
                                                 <a (click)="editRow(i)" href="javascript:;">
-                                                    <svg fill="#000000" xmlns="http://www.w3.org/2000/svg"
-                                                        viewBox="0 0 24 24" width="28px" height="28px">
+                                                    <svg fill="#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28px" height="28px">
                                                         <path
                                                             d="M14.5 5.5L3 17 3 21 7 21 18.5 9.5zM21.707 4.879l-2.586-2.586c-.391-.391-1.024-.391-1.414 0L16 4l4 4 1.707-1.707C22.098 5.902 22.098 5.269 21.707 4.879z" />
                                                     </svg>
                                                 </a>
                                                 &nbsp;&nbsp;
                                                 <a (click)="removeRow(i)" href="javascript:;">
-                                                    <svg fill="#000000" xmlns="http://www.w3.org/2000/svg"
-                                                        viewBox="0 0 24 24" width="28px" height="28px">
+                                                    <svg fill="#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28px" height="28px">
                                                         <path
                                                             d="M 10 2 L 9 3 L 4 3 L 4 5 L 20 5 L 20 3 L 15 3 L 14 2 L 10 2 z M 5 7 L 5 20 C 5 21.1 5.9 22 7 22 L 17 22 C 18.1 22 19 21.1 19 20 L 19 7 L 5 7 z M 8 9 L 10 9 L 10 20 L 8 20 L 8 9 z M 14 9 L 16 9 L 16 20 L 14 20 L 14 9 z" />
                                                     </svg>
@@ -256,8 +218,7 @@
                                     <tbody>
                                         <tr>
                                             <td colspan="3">
-                                                <button type="button" class="button-theme" style="width:100%;"
-                                                    (click)="addRow()">
+                                                <button type="button" class="button-theme" style="width:100%;" (click)="addRow()">
                                                     Add New Advice
                                                 </button>
                                             </td>
@@ -271,9 +232,7 @@
                                         <ul>
                                             <li><button class="cancelBtn" (click)="resetAdviceForm()">Cancel</button>
                                             </li>
-                                            <li><button class="saveBtn"
-                                                    [disabled]="!adviceForm.valid || adviceArray.length == 0"
-                                                    (click)="saveAdvice()">Save</button>
+                                            <li><button class="saveBtn" [disabled]="!adviceForm.valid || adviceArray.length == 0" (click)="saveAdvice()">Save</button>
                                             </li>
                                         </ul>
                                     </div>

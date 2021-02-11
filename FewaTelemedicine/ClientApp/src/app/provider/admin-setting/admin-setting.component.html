@@ -72,14 +72,14 @@
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
                                             <label>Practice Contact No.<span class="red-text">*</span></label>
-                                            <input type="text" placeholder="Enter Contact No." class="form-control" name="hospital_contact" formControlName="hospital_contact">
+                                            <input type="text" maxlength="14" placeholder="eg:- (999) 999-9999" class="form-control" name="hospital_contact" formControlName="hospital_contact">
                                             <!-- <div *ngIf="practiceConfigForm.controls['hospital_contact'].hasError('pattern')"style="color: red;">Enter 10 digit Contact No.</div> -->
                                             <div *ngIf="practiceFormControls.hospital_contact.touched && practiceFormControls.hospital_contact.invalid" style="color: red;">
                                                 <div *ngIf="practiceFormControls.hospital_contact.errors.required">
                                                     Practice contact is required.
                                                 </div>
                                                 <div *ngIf="practiceFormControls.hospital_contact.errors.pattern">
-                                                    Invalid contact no.
+                                                    Invalid contact number.
                                                 </div>
                                             </div>
                                         </div>
@@ -223,15 +223,12 @@
                                     <div class="col-12 col-md-4">
                                         <div class="form-group">
                                             <label>User Email<span class="red-text">*</span></label>
-                                            <input type="text" placeholder="User Email" class="form-control"
-                                                name="email" formControlName="email">
-                                            <div *ngIf="addProviderFormControls.email.touched && addProviderFormControls.email.invalid"
-                                                style="color: red;">
-                                                <div *ngIf="addProviderFormControls.email.errors.required">User Email is
-                                                    required.
+                                            <input type="text" placeholder="User Email" class="form-control" name="email" formControlName="email">
+                                            <div *ngIf="addProviderFormControls.email.touched && addProviderFormControls.email.invalid" style="color: red;">
+                                                <div *ngIf="addProviderFormControls.email.errors.required">User Email is required.
                                                 </div>
-                                                <div *ngIf="addProviderFormControls.email.errors.pattern">Invalid email
-                                                    address.</div>
+                                                <div *ngIf="addProviderFormControls.email.errors.pattern">Invalid email address.
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -245,7 +242,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                 </div>
+                                </div>
 
                                 <div class="row">
                                     <div class="col-12 col-md-6">
@@ -254,10 +251,8 @@
                                     <div class="col-12 col-md-6 text-right">
                                         <ul>
                                             <li><button type="submit" (click)="resetAddProviderForm()" class="cancelBtn">Reset</button></li>
-                                            <li><button type="submit" [disabled]="!addProviderForm.valid"
-                                                (click)="addProvider()" class="saveBtn">Save</button></li>&nbsp;&nbsp;
-                                            <li><button type="submit" [disabled]="!addProviderForm.valid"
-                                                (click)="editProvider()" class="saveBtn">Update</button></li>
+                                            <li><button type="submit" [disabled]="!addProviderForm.valid" (click)="addProvider()" class="saveBtn">Save</button></li>&nbsp;&nbsp;
+                                            <li><button type="submit" [disabled]="!addProviderForm.valid" (click)="editProvider()" class="saveBtn">Update</button></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -288,16 +283,14 @@
                                                                 <td>{{array.password}}</td>
                                                                 <td>
                                                                     <a (click)="edit(array)" href="javascript:;">
-                                                                        <svg fill="#000000" xmlns="http://www.w3.org/2000/svg"
-                                                                            viewBox="0 0 24 24" width="28px" height="28px">
+                                                                        <svg fill="#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28px" height="28px">
                                                                             <path
                                                                                 d="M14.5 5.5L3 17 3 21 7 21 18.5 9.5zM21.707 4.879l-2.586-2.586c-.391-.391-1.024-.391-1.414 0L16 4l4 4 1.707-1.707C22.098 5.902 22.098 5.269 21.707 4.879z" />
                                                                         </svg>
                                                                     </a>
                                                                     &nbsp;&nbsp;
                                                                     <a (click)="removeProvider(array.userName)" href="javascript:;">
-                                                                        <svg fill="#000000" xmlns="http://www.w3.org/2000/svg"
-                                                                            viewBox="0 0 24 24" width="28px" height="28px">
+                                                                        <svg fill="#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28px" height="28px">
                                                                             <path
                                                                                 d="M 10 2 L 9 3 L 4 3 L 4 5 L 20 5 L 20 3 L 15 3 L 14 2 L 10 2 z M 5 7 L 5 20 C 5 21.1 5.9 22 7 22 L 17 22 C 18.1 22 19 21.1 19 20 L 19 7 L 5 7 z M 8 9 L 10 9 L 10 20 L 8 20 L 8 9 z M 14 9 L 16 9 L 16 20 L 14 20 L 14 9 z" />
                                                                         </svg>

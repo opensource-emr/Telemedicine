@@ -163,7 +163,7 @@ export class AdminSettingComponent implements OnInit {
     this.practiceConfigForm = this.fb.group({
       hospital_name: ['', [Validators.required]],
       hospital_email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
-      hospital_contact: ['', [Validators.required, Validators.pattern("^\\+?[0-9]{3}[0-9]{0,9}$")]],
+      hospital_contact: ['', [Validators.required, Validators.pattern("^\\([0-9]{3}\\)\\s[0-9]{3}-[0-9]{4}$")]],
       hospital_logo: [''],
       hospital_description: new FormControl(" "),
       //addContent: new FormControl(" "),
