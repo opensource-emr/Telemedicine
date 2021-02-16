@@ -4,9 +4,10 @@ import { Global } from 'src/app/_helpers/common/global.model';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Practice, Provider } from 'src/app/_helpers/models/domain-model';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmedValidator, ValidateEmail, ValidateUserName } from 'src/app/_helpers/common/confirmed-validator';
 import { promise } from 'protractor';
+import { DataShareService } from 'src/app/_helpers/common/datashare.service';
+
 
 @Component({
   selector: 'app-register',
@@ -29,14 +30,18 @@ export class RegisterComponent implements OnInit {
   disableSubmitButton: boolean = false;
   showSetPasswordSection = false;
   showCountDown = true;
-
+  sendOtpMsg: boolean = false;
+  praExistMsg: boolean = false;  
+  wrongOtpMsg: boolean = false;
+  resendOtpMsg: boolean = false;
+  passwordErrorButton:boolean = false;
   constructor(public global: Global,
     private fb: FormBuilder,
-    public _snackBar: MatSnackBar,
     private httpClient: HttpClient,
     public cdr: ChangeDetectorRef,
     public routing: Router,
-  ) {
+    private dataShareService: DataShareService
+    ) { 
     this.initUserForm();
   }
 
@@ -52,6 +57,12 @@ export class RegisterComponent implements OnInit {
     }, {
       validator: ConfirmedValidator('password', 'confirm_password')
     })
+  }
+
+  passData(){
+    this.dataShareService.loginMsg =true;
+    //this.dataShareService.loginData = 'Your personalized website for your practice is - https://www.fewatele.com/{{ this.global.currentPractice}}.Administrators please use your username as admin';
+    window.location.assign(window.location.origin + "/" +  this.global.currentPractice + "/" + this.global.currentProvider + "/#/provider/login"); 
   }
 
   get loginFormControls() {
@@ -92,13 +103,20 @@ export class RegisterComponent implements OnInit {
   successObserver(res) {
     this.clicked = false;
     if (res) {
-      let message = "Your OTP is sent to your email address. It may take few minutes for the email delivery. Please check your promotions/spam folder as well. You may request another OTP after a minute by clicking Resend OTP."
-      this.popUpSnackBar(message, 25000);
+      // "Your OTP is sent to your email address. It may take few minutes for the email delivery. Please check your promotions/spam folder as well. You may request another OTP after a minute by clicking Resend OTP."
+      this.sendOtpMsg = true;
+        setTimeout(() => {
+          this.sendOtpMsg = false;
+        }, 10000);
       this.sendOtpSection = false;
       this.verifyOtpSection = true;
       this.countDown();
     } else {
-      alert("We already have this practice")
+     // Can not load configuration please talk with admin
+     this.praExistMsg = true;
+     setTimeout(() => {
+       this.praExistMsg = false;
+     }, 5000);
     }
   }
 
@@ -111,8 +129,11 @@ export class RegisterComponent implements OnInit {
       , this.practiceObj)
     observable.subscribe(res => this.successVerify(res),
     err => {
-      let message = "OTP entered is wrong! Please check again"
-      this.popUpSnackBar(message,5000);
+      //"OTP entered is wrong! Please check again"
+      this.wrongOtpMsg = true;
+      setTimeout(() => {
+        this.wrongOtpMsg = false;
+      }, 5000);
     });
   }
 
@@ -120,7 +141,6 @@ export class RegisterComponent implements OnInit {
     if (res) {
       this.sendOtpSection = false;
       this.verifyOtpSection = false;
-      this.popUpSnackBar(res.message, 10000)
       this.global.currentPractice = res.practice.url;
       this.global.currentProvider = res.provider.url;
       this.showSetPasswordSection = true;
@@ -145,7 +165,10 @@ export class RegisterComponent implements OnInit {
   successSetPassword(res) {
     if (res) {
       this.disableSubmitButton = false;
-      window.location.assign(window.location.origin + "/" +  this.global.currentPractice + "/" + this.global.currentProvider + "/#/provider/login");
+      this.passData();
+      //this.dataShareService.loginMsg =true;
+      //this.dataShareService.loginData = 'Your personalized website for your practice is - https://www.fewatele.com/ this.global.currentPractice.Administrators please use your username as admin';
+      //window.location.assign(window.location.origin + "/" +  this.global.currentPractice + "/" + this.global.currentProvider + "/#/provider/login");
     }
   }
 
@@ -154,28 +177,27 @@ export class RegisterComponent implements OnInit {
       alert(res.error.Message);
   }
 
-  popUpSnackBar(message: string, duration: number) {
-    this._snackBar.open(message, 'Dismiss', {
-      duration: duration,
-      verticalPosition: 'top'
-    });
-  }
-
   resendOTP() {
     var key = "73l3M3D"; //hardcoded
     this.resendOtpButton = true;
     var observable = this.httpClient.get("/Messenger/ResendRegistrationOTP?key=" + key)
     observable.subscribe(res => this.successResendOTP(res),
       err => {
-        let message = "OTP entered is wrong! Please check again"
-        this.popUpSnackBar(message,5000);
+        //"OTP entered is wrong! Please check again"
+        this.wrongOtpMsg = true;
+        setTimeout(() => {
+          this.wrongOtpMsg = false;
+        }, 5000);
       });
   }
 
   successResendOTP(res) {
     if (res) {
-      let message = "Your OTP is sent to your email address again. It may take few minutes for the email delivery. Please check your promotions/spam folder as well. You may request another OTP after a minute by clicking Resend OTP."
-      this.popUpSnackBar(message, 25000);
+      //"Your OTP is sent to your email address again. It may take few minutes for the email delivery. Please check your promotions/spam folder as well. You may request another OTP after a minute by clicking Resend OTP."
+      this.resendOtpMsg = true;
+      setTimeout(() => {
+        this.resendOtpMsg = false;
+      }, 10000);
       this.resendOtpButton = true;
       this.countDownTime = 60;
       this.countDown();

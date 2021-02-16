@@ -38,7 +38,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   public invitationFailure: boolean = false;
   isCamOn: boolean;
   position: TooltipPosition = "above";
-
+  disconnectPatient : boolean= false;
   constructor(private cdr: ChangeDetectorRef,
     private routing: Router,
     public global: Global,
@@ -63,10 +63,11 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       this.disconnectedPatient = m['name'];
     });
     if(this.disconnectedPatient!=undefined){
-    this._snackBar.open(this.disconnectedPatient.toUpperCase() +'  has disconnected ','Dismiss', {
-      duration: 10000,
-      verticalPosition: 'top'
-     });
+      //has disconnected 
+      this.disconnectPatient= true;
+      setTimeout(() => {
+        this.disconnectPatient = false;
+      }, 5000);
     }
   }
 

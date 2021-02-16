@@ -7,7 +7,6 @@ import { Global } from 'src/app/_helpers/common/global.model';
 import { FormGroup, Validators, FormBuilder, FormControl, FormArray } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NotificationService } from 'src/app/_helpers/common/notification.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-admin-setting',
@@ -32,6 +31,18 @@ export class AdminSettingComponent implements OnInit {
   public fileLimitExceeded: boolean = false;
   public showEditor: boolean = false;
   public showInvitationTemplate: boolean = false;
+  updateMsg: boolean = false;
+  addProviderMsg: boolean = false;
+  addProErrorMsg : boolean = false;
+  editProviderMsg: boolean = false;
+  removeProviderMsg: boolean = false;
+  removeAdminMsg: boolean = false;
+  fileFormatMsg: boolean = false;
+  fileSizeMsg: boolean = false;
+  templateMsg: boolean = false;
+  editProblemMsg: boolean = false;
+  addProblemMsg: boolean = false;
+
   adminForm: FormGroup = new FormGroup({});
   practiceConfigForm: FormGroup = new FormGroup({});
   addProviderForm: FormGroup = new FormGroup({});
@@ -45,7 +56,6 @@ export class AdminSettingComponent implements OnInit {
     public httpClient: HttpClient,
     private fb: FormBuilder,
     private changeDetection: ChangeDetectorRef,
-    private _snackBar: MatSnackBar,
     private sanitizer: DomSanitizer) {
     this.initPracticeForm();
     this.initAddProviderForm();
@@ -86,23 +96,29 @@ export class AdminSettingComponent implements OnInit {
       .subscribe
       (res => {
         if (res.message) {
-          alert(res.message)
+          //alert(res.message)
+          this.addProErrorMsg = true;
+          setTimeout(() => {
+            this.addProErrorMsg = false;
+          }, 10000);
         }
         else {
-          let message = "Successfully added a provider " + this.addProviderObj.userName + ". User can now login using their assigned username and password at your practice website - https://www.fewatele.com/" + this.addProviderObj.practice + "/  or the user’s personal website https://www.fewatele.com/" + this.addProviderObj.practice + "/" + this.addProviderObj.userName
-          this.addProviderSnackBar(message, 25000);
+          //"Successfully added a provider " + this.addProviderObj.userName + ". User can now login using their assigned username and password at your practice website - https://www.fewatele.com/" + this.addProviderObj.practice + "/  or the user’s personal website https://www.fewatele.com/" + this.addProviderObj.practice + "/" + this.addProviderObj.userName
+          this.addProviderMsg = true;
+          setTimeout(() => {
+            this.addProviderMsg = false;
+          }, 10000);
           this.displayProviderList();
         }
       },
-        err => { alert("There is a problem") });
+        err => {
+          //There is a problem
+          this.addProblemMsg = true;
+          setTimeout(() => {
+            this.addProblemMsg = false;
+          }, 5000);
+        });
     this.resetAddProviderForm();
-  }
-
-  addProviderSnackBar(message: string, duration: number) {
-    this._snackBar.open(message, 'Dismiss', {
-      duration: duration,
-      verticalPosition: 'top'
-    });
   }
 
   editProvider() {
@@ -113,39 +129,44 @@ export class AdminSettingComponent implements OnInit {
       (res => {
         if (res.message) { alert(res.message) }
         else {
-          let message = "Successfully updated a provider. User can now login using their assigned username and password at your practice website - https://www.fewatele.com/" + this.addProviderObj.practice + "/  or the user’s personal website https://www.fewatele.com/" + this.addProviderObj.practice + "/" + this.addProviderObj.userName
-          this.editProviderSnackBar(message, 25000);                                                                                                                                                                                                                       
+          // "Successfully updated a provider. User can now login using their assigned username and password at your practice website - https://www.fewatele.com/" + this.addProviderObj.practice + "/  or the user’s personal website https://www.fewatele.com/" + this.addProviderObj.practice + "/" + this.addProviderObj.userName
+          this.editProviderMsg = true;
+          setTimeout(() => {
+            this.editProviderMsg = false;
+          }, 10000);
           this.displayProviderList();
         }
       },
-        err => { alert("There is a problem") });
+        err => { 
+          //There is a problem 
+          this.editProblemMsg = true;
+          setTimeout(() => {
+            this.editProblemMsg = false;
+          }, 5000);
+        });
     this.resetAddProviderForm();
   }
 
-  editProviderSnackBar(message: string, duration: number) {
-    this._snackBar.open(message, 'Dismiss', {
-      duration: duration,
-      verticalPosition: 'top'
-    });
-  }
-
   public removeProvider(username: string): void {
+    if( username == 'admin'){
+      this.removeAdminMsg = true;
+          setTimeout(() => {
+            this.removeAdminMsg = false;
+          }, 5000);
+          return;
+    }
     this.httpClient.get<any>(this.global.practiceUrl + 'DeleteProvider?practice=' + this.global.currentPractice + "&" + "username=" + username)
       .subscribe
       (res => {
         if (res) {
-          let message = "Successfully deleted a provider " + username + "."
-          this.removeProviderSnackBar(message, 25000);
+          // "Successfully deleted a provider " + username + "."
+          this.removeProviderMsg = true;
+          setTimeout(() => {
+            this.removeProviderMsg = false;
+          }, 10000);
           this.displayProviderList();
         }
       });
-  }
-
-  removeProviderSnackBar(message: string, duration: number) {
-    this._snackBar.open(message, 'Dismiss', {
-      duration: duration,
-      verticalPosition: 'top'
-    });
   }
 
   public edit(provider: Provider) {
@@ -164,7 +185,7 @@ export class AdminSettingComponent implements OnInit {
       hospital_name: ['', [Validators.required]],
       hospital_email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
       hospital_contact: ['', [Validators.required, Validators.pattern("^\\([0-9]{3}\\)\\s[0-9]{3}-[0-9]{4}$")]],
-      hospital_logo: [''],
+      hospital_logo: ['', [Validators.nullValidator]],
       hospital_description: new FormControl(" "),
       //addContent: new FormControl(" "),
     })
@@ -199,7 +220,7 @@ export class AdminSettingComponent implements OnInit {
     this.practiceObj.email = v.hospital_email;
     this.practiceObj.contactNumber = v.hospital_contact;
     this.practiceObj.description = v.hospital_description;
-    //this.practiceObj.logoPath = v.hospital_logo;
+    this.practiceObj.logo = this.selectedFile;
   }
 
   getPracticeEmailFormValue() {
@@ -243,13 +264,21 @@ export class AdminSettingComponent implements OnInit {
     this.selectedFile = <File>event.target.files[0];
     let ext = this.selectedFile.name.split('.').pop();
     if (ext != "jpg" && ext != "png" && ext != "jpeg") {
-      alert("upload only image, file format not allowed");
+      //"upload only image, file format not allowed"
+      this.fileFormatMsg = true;
+      setTimeout(() => {
+        this.fileFormatMsg = false;
+      }, 5000);
       this.adminForm.get('profile_image')?.reset();
       this.selectedFile = undefined;
       return;
     }
     if (this.selectedFile.size > 2000000) {
-      alert("Please upload file less than 2MB");
+      //"Please upload file less than 2MB"
+      this.fileSizeMsg = true;
+      setTimeout(() => {
+        this.fileSizeMsg = false;
+      }, 5000);
       this.adminForm.get('profile_image').reset();
       this.selectedFile = undefined;
       return;
@@ -280,53 +309,33 @@ export class AdminSettingComponent implements OnInit {
       return;
     }
     this.getPracticeFormValue();
-    this.httpClient.
-      post<any>(this.global.practiceUrl + "UpdatePracticeConfiguration", this.practiceObj)
-      .subscribe(res => {
-        this.practiceObj = res;
-        this.global.practiceObj = res;
-        alert("Practice Configuration updated");
-      },
-        err => {
-          //  console.log(err);
-        });
+      const formData: any = new FormData();
+      Object.keys(this.practiceObj).forEach(k => {
+  if (k == "logo" && this.selectedFile) {
+          formData.append(k, this.selectedFile, this.selectedFile.name)
+        } else {
+          formData.append(k, this.practiceObj[k]);
   }
-
-  updatePracticeLogo(file: FileList) {
-    this.logoToUpload = file.item(0);
-
-    //show image preview
-    var reader = new FileReader();
-    reader.onload = (event: any) => {
-      this.hospitalLogo = event.target.result;
+      })
+      this.httpClient.
+        post(this.global.practiceUrl + "UploadPracticeLogo", formData, { reportProgress: true, observe: 'events', responseType: 'text' })
+        .subscribe(event => {
+          if (event.type === HttpEventType.UploadProgress)
+            this.logoProgress = Math.round(100 * event.loaded / event.total);
+          else if (event.type === HttpEventType.Response) {
+            this.practiceObj = JSON.parse(event.body);
+            this.global.practiceObj = this.practiceObj;
+             //"profile updated"
+            this.updateMsg = true;
+            setTimeout(() => {
+              this.updateMsg = false;
+            }, 10000);   
+          }
+        },
+          err => {
+            // console.log(err);
+          });
     }
-    reader.readAsDataURL(this.logoToUpload);
-    //upload image
-    let ext = this.logoToUpload.name.split('.').pop();
-    if (ext != "jpg" && ext != "png" && ext != "jpeg") {
-      alert("upload only logo, file format not allowed");
-      this.practiceConfigForm.get('hospital_logo')?.reset();
-      this.logoToUpload = undefined;
-      return;
-    }
-    const formData = new FormData();
-    formData.append('image', this.logoToUpload, this.logoToUpload.name.replace(/\s/g, ""));
-
-    //call to server
-    this.httpClient.post(this.global.practiceUrl + "UploadPracticeLogo", formData, { reportProgress: true, observe: 'events', responseType: 'text' })
-      .subscribe(event => {
-        if (event.type === HttpEventType.UploadProgress)
-          this.logoProgress = Math.round(100 * event.loaded / event.total);
-        else if (event.type === HttpEventType.Response) {
-          this.receivedPracticeImageData = event;
-          this.logoMessage = 'Upload Success.';
-          this.practiceObj.logoPath = this.receivedPracticeImageData.body;
-        }
-        else {
-          this.message = 'Upload Failed.';
-        }
-      });
-  }
 
   updatePracticeEmailConfiguration() {
     if (this.PracticeEmailForm.invalid) {
@@ -338,7 +347,11 @@ export class AdminSettingComponent implements OnInit {
       .subscribe(res => {
         this.practiceObj = res;
         this.global.practiceObj = res;
-        alert("Invitation email template updated");
+        //Invitation email template updated
+        this.templateMsg = true;
+        setTimeout(() => {
+          this.templateMsg = false;
+        }, 10000);
       },
         err => {
           //  console.log(err); 

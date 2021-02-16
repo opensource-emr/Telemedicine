@@ -116,6 +116,8 @@
                                                 <div *ngIf="disableButton == true">
                                                     Sending....
                                                 </div>
+                                                <div class="message" *ngIf="this.sendEmailMsg">Report has been sent to your email</div>  
+                                                <div class="errorMessage" *ngIf="this.emailFailMsg">Unable to send try again!</div>  
                                             </div>
                                             <button class="btn submitBtn" [disabled]="this.disableButton"
                                                 (click)="sendReport()">Send</button>

@@ -6,7 +6,6 @@ import { Provider, Practice, ProviderAdvice } from 'src/app/_helpers/models/doma
 import { Global } from 'src/app/_helpers/common/global.model';
 import { FormGroup, Validators, FormBuilder, FormControl, FormArray } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-user-setting',
@@ -35,12 +34,16 @@ export class UserSettingComponent implements OnInit {
   hospitalLogo: string = "";
   htmlBody: string = "";
   adviceForm: FormGroup = new FormGroup({});
-
+  updateMsg: boolean = false;
+  removeRecordMsg: boolean = false;
+  addAdviceMsg: boolean = false;
+  adviceLimitMsg: boolean = false;
+  fileFormatMsg: boolean = false;
+  fileSizeMsg: boolean = false;
   constructor(private routing: Router,
     public global: Global,
     public httpClient: HttpClient,
     private fb: FormBuilder,
-     private _snackBar: MatSnackBar,
     private sanitizer: DomSanitizer) {
     this.initUserForm();
     this.initAdviceForm();
@@ -86,27 +89,33 @@ export class UserSettingComponent implements OnInit {
   }
 
   addRow() {
-    if((this.adviceArray.length) >= 10){
-      this._snackBar.open('You can add only 10 advices', 'Dismiss', {
-        duration: 10000,
-        verticalPosition: 'top'
-      });
+    if ((this.adviceArray.length) >= 10) {
+      // You can add only 10 advices
+      this.adviceLimitMsg = true;
+      setTimeout(() => {
+        this.adviceLimitMsg = false;
+      }, 5000);
     }
-    else{
-    const control = this.adviceForm.get('adviceArray') as FormArray;
-    control.push(this.addAdvice());
+    else {
+      const control = this.adviceForm.get('adviceArray') as FormArray;
+      control.push(this.addAdvice());
     }
   }
 
   public removeRow(index: number): void {
     const control = this.adviceForm.get('adviceArray') as FormArray;
-    if (confirm("Are you sure you want to delete this ?")) {
+    //if (confirm("Are you sure you want to delete this ?")) 
+    {
       if (this.adviceArray.getRawValue()[index].id) {
         var id = this.adviceArray.getRawValue()[index].id;
         control.removeAt(index);
         this.providerAdvice.splice(index, 1);
         this.httpClient.delete<number>(this.global.practiceUrl + "DeleteAdvice/" + id).subscribe(() => {
-          console.info("Record Deleted Successfully");
+          //console.info("Record Deleted Successfully");
+      this.removeRecordMsg = true;
+      setTimeout(() => {
+        this.removeRecordMsg = false;
+      }, 10000);
         });
       }
       else {
@@ -150,7 +159,11 @@ export class UserSettingComponent implements OnInit {
       post<any>(this.global.practiceUrl + "SaveAdvice", this.providerAdvice)
       .subscribe(res => {
         this.practiceObj = res;
-        alert("Provider Advice is Saved Successfully.");
+       //Provider Advice is Saved Successfully.
+       this.addAdviceMsg = true;
+       setTimeout(() => {
+         this.addAdviceMsg = false;
+       }, 5000);
       },
         err => {
           //  console.log(err); 
@@ -224,18 +237,26 @@ export class UserSettingComponent implements OnInit {
     this.selectedFile = <File>event.target.files[0];
     let ext = this.selectedFile.name.split('.').pop();
     if (ext != "jpg" && ext != "png" && ext != "jpeg") {
-      alert("upload only image, file format not allowed");
+     //upload only image, file format not allowed"
+     this.fileFormatMsg = true;
+     setTimeout(() => {
+       this.fileFormatMsg = false;
+     }, 5000);
       this.userForm.get('profile_image')?.reset();
       this.selectedFile = undefined;
       return;
     }
     if (this.selectedFile.size > 2000000) {
-      alert("Please upload file less than 2MB");
+      //"Please upload file less than 2MB"
+      this.fileSizeMsg = true;
+      setTimeout(() => {
+        this.fileSizeMsg = false;
+      }, 5000);
       this.userForm.get('profile_image').reset();
       this.selectedFile = undefined;
       return;
     }
- }
+  }
 
   resetUserForm() {
     this.progress = 0;
@@ -271,7 +292,11 @@ export class UserSettingComponent implements OnInit {
           var roomname = this.providerObj.roomName.replace("name", this.providerObj.userName);
           this.providerObj.roomName = roomname;
           this.global.providerObj = this.providerObj;
-          alert("profile updated");
+         // profile updated
+         this.updateMsg = true;
+         setTimeout(() => {
+           this.updateMsg = false;
+         }, 10000);
         }
       },
         err => {

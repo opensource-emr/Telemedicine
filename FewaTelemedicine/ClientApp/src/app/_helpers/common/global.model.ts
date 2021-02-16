@@ -8,6 +8,7 @@ export class Global {
     practiceObj: Practice = null;
     isProvider: boolean = false;
     isPatient: boolean = false;
+    resetPassMsg : boolean = false;
     apiUrl: string = "/api/";
     practiceUrl: string = "/Practice/";
     config: any = null;

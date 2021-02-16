@@ -38,6 +38,9 @@ namespace FewaTelemedicine.Domain.Models
         public List<Provider> providers { get; set; }
         [NotMapped]
         public string otp { get; set; }
+        [NotMapped]
+        public IFormFile logo { get; set; }
+
     }
     public class Provider
     {

@@ -51,7 +51,8 @@
                 <div class="tab-content" id="v-pills-tabContent">
                     <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
                         <div class="fewa-title">
-                            <h1>Update Profile</h1>
+                            <h4 style="width: 300px;">Update Profile</h4>
+                            <div class="message" *ngIf="this.updateMsg">Your profile has been successfully updated</div>
                         </div>
                         <div class="tab-forms" style="max-height:546px;">
                             <form [formGroup]="userForm">
@@ -148,6 +149,8 @@
                                                 </div>
                                             </div>
                                             <label *ngIf="selectedFile"> {{selectedFile.name}}</label>
+                                            <div class="errorMessage" *ngIf="this.fileFormatMsg">Upload only image, file format not allowed</div>
+                                            <div class="errorMessage" *ngIf="this.fileSizeMsg">Please upload file less than 2MB</div>                                          
                                         </div>
                                     </div>
                                 </div>
@@ -227,6 +230,9 @@
                                 </table>
                                 <div class="row" style="margin-top:3% !important;">
                                     <div class="col-12 col-md-6">
+                                        <div class="message" *ngIf="this.addAdviceMsg">Provider advice is saved successfully</div>
+                                        <div class="errorMessage" *ngIf="this.adviceLimitMsg" style="text-align: center;">You can not add more than 10 advices</div>
+                                        <div class="message" *ngIf="this.removeRecordMsg">Record deleted successfully</div>
                                     </div>
                                     <div class="col-12 col-md-6 text-right">
                                         <ul>

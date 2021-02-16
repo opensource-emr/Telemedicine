@@ -86,7 +86,11 @@
             </form>
             <div>Your personalized website:- <br>
                 <span style="text-decoration: underline;">{{urlLink}}</span>
-            </div>
+            </div><br>
+            <div class="message" *ngIf="this.sendOtpMsg">Your OTP is sent to your email address. It may take few minutes for the email delivery. Please check your promotions/spam folder as well. You may request another OTP after a minute by clicking Resend OTP.</div>
+            <div class="errorMessage" *ngIf="this.praExistMsg">Can not load configuration please talk with admin</div>
+            <div class="errorMessage" *ngIf="this.wrongOtpMsg">OTP entered is wrong! Please check again</div>
+            <div class="message" *ngIf="this.resendOtpMsg">Your OTP is sent to your email address again. It may take few minutes for the email delivery. Please check your promotions/spam folder as well. You may request another OTP after a minute by clicking Resend OTP.</div>
         </div>
     </div>
     <div class="intro-about">

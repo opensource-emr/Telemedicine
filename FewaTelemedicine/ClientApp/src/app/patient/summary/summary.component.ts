@@ -15,6 +15,8 @@ export class SummaryComponent implements OnInit {
   emailForm: FormGroup;
   disableButton: boolean = false;
   public providerAdvice: Array<ProviderAdvice> = [];
+  sendEmailMsg: boolean = false;
+  emailFailMsg: boolean = false;
 
   constructor(
     private notificationService: NotificationService,
@@ -73,10 +75,21 @@ export class SummaryComponent implements OnInit {
   emailReportSuccess(res) {
     this.disableButton = false;
     this.emailForm.reset();
-    if (res)
-      alert("Report has been sent to your email");
-    else
-      alert("Unable to send try again!")
+    if (res){
+     //Report has been sent to your email
+    this.sendEmailMsg = true;
+    setTimeout(() => {
+      this.sendEmailMsg = false;
+    }, 10000);
+     
+    }
+    else{
+      //Unable to send try again!
+      this.emailFailMsg = true;
+    setTimeout(() => {
+      this.emailFailMsg = false;
+    }, 10000);
+    }          
   }
   error(res) {
     this.disableButton = false;

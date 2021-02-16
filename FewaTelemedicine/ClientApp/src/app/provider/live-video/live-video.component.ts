@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, NavigationExtras } from '@angular/router';
 import { Observable, Subscriber } from 'rxjs';
 import { Global } from 'src/app/_helpers/common/global.model';
@@ -29,7 +28,9 @@ export class LiveVideoComponent implements OnInit, OnDestroy {
   myFile:Observable<any>;
   fileBinaryFromClient:any;
   fileHeaderFromClient:any;
-
+  followupMsg :boolean = false;
+  fileFormatMsg : boolean = false;
+  fileSizeMsg : boolean = false;
   constructor(public httpClient: HttpClient,
     public router: Router,
     private formBuilder: FormBuilder,
@@ -37,8 +38,7 @@ export class LiveVideoComponent implements OnInit, OnDestroy {
     public global: Global,
     private cdr: ChangeDetectorRef,
     public service: UploadDownloadService,
-    public http: HttpClient,
-    public _snackBar:MatSnackBar) {
+    public http: HttpClient) {
     this.patient = this.global.patientObj;
     this.initVideoConference();
     this.initForm();
@@ -139,18 +139,21 @@ export class LiveVideoComponent implements OnInit, OnDestroy {
     this.selectedFile = <File>event.target.files[0];
     let ext = this.selectedFile.name.split('.').pop().toLowerCase();
     if (ext != "jpg" && ext != "png" && ext != "jpeg" && ext != "pdf") {
-      this._snackBar.open('upload only image or pdf file, other format not allowed', 'Dismiss', {
-        duration: 5000,
-        verticalPosition: 'top'
-      });
+
+      //upload only image or pdf file, other format not allowed
+        this.fileFormatMsg = true;
+        setTimeout(() => {
+          this.fileFormatMsg = false;
+        }, 5000);
       this.selectedFile = undefined;
       return;
     }
     if (this.selectedFile.size > 2000000) {
-      this._snackBar.open('Please upload file less than 2MB', 'Dismiss', {
-        duration: 5000,
-        verticalPosition: 'top'
-      });
+      //Please upload file less than 2MB
+        this.fileSizeMsg = true;
+        setTimeout(() => {
+          this.fileSizeMsg = false;
+        }, 5000);
       alert("Please upload file less than 2MB");
       return;
     }
@@ -226,10 +229,11 @@ export class LiveVideoComponent implements OnInit, OnDestroy {
 
   completeVisit() {
     if(!this.reportForm.value.followUpNumber) {
-        this._snackBar.open('Please enter follow up number','Dismiss', {
-          duration: 10000,
-          verticalPosition: 'top'
-         });
+        // Please enter follow up number
+        this.followupMsg = true;
+        setTimeout(() => {
+          this.followupMsg = false;
+        }, 5000);
        return;
     }
     this.isMeetStart = false;

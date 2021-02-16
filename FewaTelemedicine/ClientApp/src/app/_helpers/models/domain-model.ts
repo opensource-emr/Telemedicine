@@ -9,7 +9,8 @@ export class Practice {
     email: string = "";
     logoPath: any;
     otp:string="";
-
+    logo: any ="";
+    
     // email configration 
     emailApiKey: any = "";
     emailApiName: string = "";

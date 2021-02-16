@@ -117,6 +117,8 @@
                                 </div>
                             </li>
                         </ul>
+                        <div class="errorMessage" *ngIf="this.fileFormatMsg">Upload only image or pdf file, other format not allowed.</div>
+                        <div class="errorMessage" *ngIf="this.fileSizeMsg">Please upload file less than 2MB.</div>
                     </div>
                     <div class="writeChat">
                         <div class="display-flex">

@@ -362,23 +362,14 @@ namespace FewaTelemedicine.Controllers
             var files = Request.Form.Files;
             if (files.Count > 0)
             {
-                using (var memoryStream = new MemoryStream())
+                string folderName = "img";
+                string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, folderName);
+                //logoPath = Path.Combine(folderName, file.FileName);
+                obj.image = '/' + folderName + '/' + files[0].FileName;
+                string filePath = Path.Combine(uploadsFolder, files[0].FileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
-                    files[0].CopyTo(memoryStream);
-
-                    // Upload the file if less than 2 MB
-                    if (memoryStream.Length < 2097152)
-                    {
-                        var arr = memoryStream.ToArray();
-                        obj.image = "data:image/"
-                            + Path.GetExtension(files[0].FileName).Replace(".", "")
-                            + ";base64,"
-                            + Convert.ToBase64String(arr);
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("File", "The file is too large.");
-                    }
+                    files[0].CopyTo(fileStream);
                 }
             }
             var provider = _providerRepository.getProviderByUserName(obj.practice,obj.userName,obj.email);
@@ -413,24 +404,43 @@ namespace FewaTelemedicine.Controllers
             FewaDbContext.SaveChanges();
             return Ok(obj);
         }
-        public IActionResult UploadPracticeLogo()
+        public IActionResult UploadPracticeLogo([FromForm] Practice obj)
         {
-            string logoPath = null;
-            var file = Request.Form.Files[0];
-            if (file != null)
+            if (obj is null)
+            {
+                return StatusCode(500);
+            }
+            var files = Request.Form.Files;
+            if (files.Count > 0)
             {
                 string folderName = "img";
                 string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, folderName);
                 //logoPath = Path.Combine(folderName, file.FileName);
-                logoPath = '/' + folderName + '/' + file.FileName;
-                string filePath = Path.Combine(uploadsFolder, file.FileName);
+                obj.logoPath = '/' + folderName + '/' + files[0].FileName;
+                string filePath = Path.Combine(uploadsFolder, files[0].FileName);
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
-                    file.CopyTo(fileStream);
+                    files[0].CopyTo(fileStream);
                 }
             }
-            return Ok(logoPath);
+            Practice practice = FewaDbContext.practices.Where(a => a.practiceId == obj.practiceId).FirstOrDefault();
+            if (practice == null)
+            {
+                return Unauthorized(new { Message = "practice not found" });
+            }
+            else
+            {
+                practice.name = obj.name;
+                practice.email = obj.email;
+                practice.contactNumber = obj.contactNumber;
+                practice.logoPath = obj.logoPath;
+                practice.description = obj.description;
+            }
+            FewaDbContext.practices.Update(practice);
+            FewaDbContext.SaveChanges();
+            return Ok(practice);
         }
+
         public IActionResult PreviewEmailTemplate([FromBody] Practice list)
         {
             if (ModelState.IsValid)
