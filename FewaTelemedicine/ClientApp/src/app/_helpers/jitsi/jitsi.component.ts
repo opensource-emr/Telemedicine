@@ -1,6 +1,6 @@
 import { AfterContentChecked, AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 declare var JitsiMeetExternalAPI: any;
-import { MatSnackBar } from '@angular/material/snack-bar';
+//import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -18,8 +18,9 @@ export class JitsiComponent implements OnInit, OnDestroy {
   @Input('remoteUserDisplayName') remoteUserDisplayName = "Fewa User";
   @Input('localUserDisplayName') localUserDisplayName = "";
 
-  constructor(public _snackBar: MatSnackBar){
-   
+  constructor( )
+  {
+    //public _snackBar: MatSnackBar
   }
 
   private api: any;
@@ -95,19 +96,19 @@ export class JitsiComponent implements OnInit, OnDestroy {
     this.api.addEventListener('readyToClose', function () {
       console.warn('readyToClose');
     });
-    this.api.addEventListener('cameraError', (e) => {
-      this._snackBar.open('Camera was not found, Please allow access to your camera', 'Dismiss', {
-        duration: 5000,
-        verticalPosition: 'top'
-       });
-    });
+    // this.api.addEventListener('cameraError', (e) => {
+    //   this._snackBar.open('Camera was not found, Please allow access to your camera', 'Dismiss', {
+    //      duration: 5000,
+    //      verticalPosition: 'top'
+    //     });
+    // });
 
-    this.api.addEventListener('micError', (e) => {
-      this._snackBar.open('Mic was not found, Please allow access to your mic', 'Dismiss', {
-        duration: 5000,
-        verticalPosition: 'top'
-       });
-    });
+    // this.api.addEventListener('micError', (e) => {
+    //    this._snackBar.open('Mic was not found, Please allow access to your mic', 'Dismiss', {
+    //      duration: 5000,
+    //     verticalPosition: 'top'
+    //   });
+    // });
 
 
     this.api.addEventListener('participantJoined', function (e) {

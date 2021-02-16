@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Practice, Provider } from 'src/app/_helpers/models/domain-model';
 import { Global } from '../../_helpers/common/global.model';
 import { NotificationService } from '../../_helpers/common/notification.service';
+import { DataShareService } from 'src/app/_helpers/common/datashare.service';
 
 @Component({
   selector: 'app-login',
@@ -18,25 +18,24 @@ export class LoginComponent implements OnInit {
   practiceObj: Practice = new Practice();
   providerForm: FormGroup;
   clicked: boolean = false;
-
+  loadPracticeMsg: boolean = false; 
+  connectErrorMsg: boolean= false;
+  adminVar : boolean;
   constructor(private httpClient: HttpClient,
     private routing: Router,
     public global: Global,
-    private formBuilder: FormBuilder,
-    public _snackBar: MatSnackBar) {
+    private dataShareService: DataShareService,
+    private formBuilder: FormBuilder) {
+    this.adminVar =  this.dataShareService.loginMsg;
+    setTimeout(() => {
+       this.adminVar= false;
+       }, 10000);
     this.initForm();
   }
 
   ngOnInit(): void {
     this.getPractice();
     this.global.previousChats = [];
-  }
-
-  popUpSnackBar(message: string,duration:number) {
-    this._snackBar.open(message, 'Dismiss', {
-      duration: duration,
-      verticalPosition: 'top'
-    });
   }
 
   private getPractice() {
@@ -49,7 +48,11 @@ export class LoginComponent implements OnInit {
         }
         this.practiceObj = this.global.practiceObj;
       }, err => {
-        alert('Can not load configuration please talk with admin.');
+         //Can not load configuration please talk with admin.
+        this.loadPracticeMsg = true;
+        setTimeout(() => {
+          this.loadPracticeMsg = false;
+        }, 5000);
       });
   }
 
@@ -93,7 +96,11 @@ export class LoginComponent implements OnInit {
         res => {
           this.global.providerObj = new Provider();
           this.clicked = false;
-          alert('Can not connect please talk with admin.')
+          //Can not connect please talk with admin.
+          this.connectErrorMsg = true;
+        setTimeout(() => {
+          this.connectErrorMsg = false;
+        }, 5000);
         });
   }
   getSignUpLink(){

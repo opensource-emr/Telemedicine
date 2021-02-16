@@ -3,6 +3,7 @@
         <div class="col-12 col-md-6">
             <div class="pageTitle">
                 <h1>dashboard</h1>
+                <div class="errorMessage" *ngIf="this.disconnectPatient">{{this.global.patientObj.name}} has disconnected </div>
             </div>
         </div>
         <div class="col-12 col-md-6 text-right">

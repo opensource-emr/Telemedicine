@@ -91,6 +91,17 @@
 .red-text {
     color: red;
 }
+
+.message{
+    color: blue;
+    text-align: center;
+    padding: 5px;
+}
+.errorMessage{
+    color: red;
+    text-align: center;
+    padding: 5px;
+}
 .tableFixHead          { overflow-y: auto; height:280px; }
 .tableFixHead thead th { position: sticky; top: 0; }
 

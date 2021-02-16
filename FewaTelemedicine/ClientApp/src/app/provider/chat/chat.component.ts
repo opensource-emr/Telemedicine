@@ -38,7 +38,8 @@ export class ChatComponent implements OnInit, AfterViewInit {
   myFile:Observable<any>;
   fileBinaryFromClient:any;
   fileHeaderFromClient:any;
-
+  fileFormatMsg: boolean = false;
+  fileSizeMsg: boolean = false;
   constructor(private notificationService: NotificationService,
     private fb: FormBuilder,
     private cdr: ChangeDetectorRef,
@@ -169,18 +170,20 @@ export class ChatComponent implements OnInit, AfterViewInit {
     this.selectedFile = <File>event.target.files[0];
     let ext = this.selectedFile.name.split('.').pop().toLowerCase();
     if (ext != "jpg" && ext != "png" && ext != "jpeg" && ext != "pdf") {
-      this._snackBar.open('upload only image or pdf file, other format not allowed', 'Dismiss', {
-        duration: 5000,
-        verticalPosition: 'top'
-      });
+      //upload only image or pdf file, other format not allowed
+      this.fileFormatMsg = true;
+      setTimeout(() => {
+        this.fileFormatMsg = false;
+      }, 5000);
       this.selectedFile = undefined;
       return;
     }
     if (this.selectedFile.size > 2000000) {
-      this._snackBar.open('Please upload file less than 2MB', 'Dismiss', {
-        duration: 5000,
-        verticalPosition: 'top'
-      });
+      //Please upload file less than 2MB
+      this.fileSizeMsg = true;
+      setTimeout(() => {
+        this.fileSizeMsg = false;
+      }, 5000);
       return;
     }
      this.convertToBase64(this.selectedFile,ext);

@@ -27,6 +27,8 @@
                                     <button type="submit" [disabled]="!disableCheckInBtn" class="submitBtn"
                                         (click)="loginPatient()" href="javascript:;">Submit</button>
                                 </div>
+                                <div class="errorMessage" *ngIf="this.loadConfigMsg">Can not load configuration please talk with admin</div>
+                                <div class="errorMessage" *ngIf="this.userLoggedMsg">User already logged in</div>
                             </form>
                         </div>                       
                     </div>

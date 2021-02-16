@@ -18,7 +18,8 @@ export class IntroComponent implements OnInit {
   practiceObj: Practice = new Practice();
   patRegForm: FormGroup;
   disableCheckInBtn = true;
-
+  loadConfigMsg : boolean = false;
+  userLoggedMsg : boolean = false;
   constructor(public httpClient: HttpClient,
     public routing: Router,
     public global: Global,
@@ -53,7 +54,11 @@ export class IntroComponent implements OnInit {
         }
         this.practiceObj = this.global.practiceObj;
       }, err => {
-        alert('Can not load configuration please talk with admin.');
+        //'Can not load configuration please talk with admin.
+        this.loadConfigMsg = true;
+        setTimeout(() => {
+          this.loadConfigMsg = false;
+        }, 5000);
       });
   }
   
@@ -87,7 +92,11 @@ export class IntroComponent implements OnInit {
         this.routing.navigateByUrl('/patient/live');
       },
         res => {
-          alert('User already logged in');
+          //alert('User already logged in');
+          this.userLoggedMsg = true;
+        setTimeout(() => {
+          this.userLoggedMsg = false;
+        }, 5000);
     });
   }
 }

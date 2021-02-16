@@ -52,7 +52,8 @@
                 <div class="tab-content" id="v-pills-tabContent">
                     <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                         <div class="fewa-title">
-                            <h1>Update Practice Configuration</h1>
+                            <h4>Update Practice Configuration</h4>
+                            <div class="message" *ngIf="this.updateMsg">Your profile has been successfully updated</div>
                         </div>
                         <div class="tab-forms">
                             <form [formGroup]="practiceConfigForm">
@@ -99,14 +100,17 @@
                                         <div class="form-group">
                                             <label>Practice Logo</label>
                                         </div>
-                                        <input id="file-upload1" type="file" formControlName="hospital_logo" (change)="updatePracticeLogo($event.target.files)" accept=".png,.jpg,.jpeg" />
-                                        <label *ngIf="logoToUpload">{{logoToUpload.name}}</label>
-                                        <span class="upload" *ngIf="logoProgress > 0">
+                                        <input id="file-upload1" type="file" formControlName="hospital_logo" (change)="onFileChanged($event)" accept=".png,.jpg,.jpeg" />
+                                        <!-- <label *ngIf="logoToUpload">{{logoToUpload.name}}</label> -->
+                                        <!-- <span class="upload" *ngIf="logoProgress > 0">
                                             {{logoProgress}}%
                                         </span>
                                         <span class="upload" *ngIf="logoMessage">
                                             {{logoMessage}}
-                                        </span>
+                                        </span> -->
+                                        <label *ngIf="selectedFile"> {{selectedFile.name}}</label>
+                                        <div class="errorMessage" *ngIf="this.fileFormatMsg" style="text-align: left;">Upload only image, file format not allowed</div>
+                                        <div class="errorMessage" *ngIf="this.fileSizeMsg" style="text-align: left;">Please upload file less than 2MB</div>
                                     </div>
 
                                     <div class="col-12 col-md-6">
@@ -186,6 +190,7 @@
                                 <br>
                                 <div class="row">
                                     <div class="col-12 col-md-6">
+                                        <div class="message" *ngIf="this.templateMsg">Your invitation email template has been successfully updated</div>
                                     </div>
                                     <div class="col-12 col-md-6 text-right">
                                         <ul>
@@ -246,7 +251,13 @@
 
                                 <div class="row">
                                     <div class="col-12 col-md-6">
-
+                                        <div class="message" *ngIf="this.addProviderMsg">Successfully added a provider {{this.addProviderObj.userName}}. User can now login using their assigned username and password at your practice website - https://www.fewatele.com/{{this.addProviderObj.practice}}/ or the user’s personal website https://www.fewatele.com/{{this.addProviderObj.practice}}/{{this.addProviderObj.userName}}</div>
+                                        <div class="errorMessage" *ngIf="this.addProblemMsg">There is a problem</div>  
+                                        <div class="message" *ngIf="this.editProviderMsg">Successfully updated a provider. User can now login using their assigned username and password at your practice website - https://www.fewatele.com/{{this.addProviderObj.practice}}/ or the user’s personal website https://www.fewatele.com/{{this.addProviderObj.practice}}/{{this.addProviderObj.userName}}</div>
+                                        <div class="errorMessage" *ngIf="this.editProblemMsg">There is a problem</div>  
+                                        <div class="message" *ngIf="this.removeProviderMsg">Successfully deleted a provider {{this.addProviderObj.userName}}</div>  
+                                        <div class="errorMessage" *ngIf="this.removeAdminMsg">You can not delete Admin</div>
+                                        <div class="errorMessage" *ngIf="this.addProErrorMsg">Provider already exists</div>
                                     </div>
                                     <div class="col-12 col-md-6 text-right">
                                         <ul>

@@ -8,7 +8,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageModel, ChatModel } from 'src/app/_helpers/models/chat.model';
 import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-live-video',
@@ -29,15 +28,15 @@ export class LiveVideoComponent implements OnInit, AfterViewInit {
   fileHeaderFromClient: any;
   selectedFile: File;
   myFile: Observable<any>;
-
+  fileFormatMsg : boolean = false; 
+  fileSizeMsg : boolean = false;
   constructor(public httpClient: HttpClient,
     private notificationService: NotificationService,
     public global: Global,
     private fb: FormBuilder,
     private cdr: ChangeDetectorRef,
     private router: Router,
-    public sanitizer: DomSanitizer,
-    public _snackBar:MatSnackBar) {
+    public sanitizer: DomSanitizer ) {
     this.initialize();
     this.initForm();
   }
@@ -111,18 +110,20 @@ export class LiveVideoComponent implements OnInit, AfterViewInit {
     this.selectedFile = <File>event.target.files[0];
     let ext = this.selectedFile.name.split('.').pop().toLowerCase();
     if (ext != "jpg" && ext != "png" && ext != "jpeg" && ext != "pdf") {
-      this._snackBar.open('upload only image or pdf file, other format not allowed', 'Dismiss', {
-        duration: 5000,
-        verticalPosition: 'top'
-      });
+      //upload only image or pdf file, other format not allowed
+      this.fileFormatMsg = true;
+      setTimeout(() => {
+        this.fileFormatMsg = false;
+      }, 5000);
       this.selectedFile = undefined;
       return;
     }
     if (this.selectedFile.size > 2000000) {
-      this._snackBar.open('Please upload file less than 2MB', 'Dismiss', {
-        duration: 5000,
-        verticalPosition: 'top'
-      });
+      //Please upload file less than 2MB
+      this.fileSizeMsg = true;
+      setTimeout(() => {
+        this.fileSizeMsg = false;
+      }, 5000);
       return;
     }
     this.convertToBase64(this.selectedFile,ext);

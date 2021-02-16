@@ -5,7 +5,6 @@ import { Global } from 'src/app/_helpers/common/global.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Provider, Practice } from '../../_helpers/models/domain-model';
 import { ConfirmedValidator } from 'src/app/_helpers/common/confirmed-validator';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-forgot-password',
@@ -24,10 +23,13 @@ export class ForgotPasswordComponent implements OnInit {
   countDownTime: number = 60;
   form: FormGroup = new FormGroup({});
   showCountDown = true;
+  sendOtpMsg: boolean = false;
+  resendOtpMsg: boolean = false;
+  getPracticeMsg: boolean = false;
+  invalidOtpMsg: boolean = false;
   constructor(public httpClient: HttpClient,
     public routing: Router,
     public global: Global,
-    public _snackBar: MatSnackBar,
     public fb: FormBuilder,
     public router: Router) {
     this.initForm();
@@ -40,7 +42,7 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   private getPractice() {
-    var key="73l3M3D"; //hardcoded
+    var key = "73l3M3D"; //hardcoded
     this.httpClient.get<any>(this.global.practiceUrl + 'GetPracticeConfiguration?practice=' + this.global.currentPractice + "&" + "key=" + key)
       .subscribe(res => {
         this.global.practiceObj = res;
@@ -49,7 +51,11 @@ export class ForgotPasswordComponent implements OnInit {
         }
         this.practiceObj = this.global.practiceObj;
       }, err => {
-        alert('Can not load configuration please talk with admin.');
+        //Can not load configuration please talk with admin.
+        this.getPracticeMsg = true;
+          setTimeout(() => {
+            this.getPracticeMsg = false;
+          }, 5000);
       });
   }
   private initForm() {
@@ -64,7 +70,7 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   countDown(): void {
-    this.showCountDown=true;
+    this.showCountDown = true;
     var countDown = setInterval(() => {
       this.countDownTime--;
       if (document.getElementById('countdown')) {
@@ -72,7 +78,7 @@ export class ForgotPasswordComponent implements OnInit {
         if (this.countDownTime === 0) {
           this.disableResendButton = false;
           clearInterval(countDown);
-          this.showCountDown=false;
+          this.showCountDown = false;
         }
       } else {
         clearInterval(countDown);
@@ -84,27 +90,20 @@ export class ForgotPasswordComponent implements OnInit {
     if (this.form.get("email_username").invalid) {
       return;
     }
-    var key="73l3M3D"; //hardcoded
+    var key = "73l3M3D"; //hardcoded
     this.providerObj.email = this.form.value.email_username;
-    if(this.providerObj.email.search("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")){
-      this.providerObj.userName=this.providerObj.email;
+    if (this.providerObj.email.search("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")) {
+      this.providerObj.userName = this.providerObj.email;
     }
-    this.providerObj.practice=this.global.currentPractice;
+    this.providerObj.practice = this.global.currentPractice;
     this.disableSubmitButton = true;
     this.httpClient.post("/Messenger/SendOTP?key=" + key, this.providerObj)
       .subscribe(res => this.successOTP(res),
         res => this.error(res));
   }
 
-  popUpSnackBar(message: string,duration:number) {
-    this._snackBar.open(message, 'Dismiss', {
-      duration: duration,
-      verticalPosition: 'top'
-    });
-  }
-
   resendOTP() {
-    var key="73l3M3D"; //hardcoded
+    var key = "73l3M3D"; //hardcoded
     this.disableResendButton = true;
     this.httpClient.get("/Messenger/ResendOTP?key=" + key)
       .subscribe(res => this.successResendOTP(res),
@@ -118,8 +117,13 @@ export class ForgotPasswordComponent implements OnInit {
     this.providerObj.otp = this.form.value.otp;
     this.httpClient.post(this.global.apiUrl + "Security/VerifyOTP", this.providerObj)
       .subscribe(res => this.successVerify(res),
-        res => this.error(res));
-    
+        // res => this.error(res));
+        err => {
+          this.invalidOtpMsg = true;
+          setTimeout(() => {
+            this.invalidOtpMsg = false;
+          }, 5000);
+        });
   }
 
   resetPassword() {
@@ -138,22 +142,28 @@ export class ForgotPasswordComponent implements OnInit {
 
   successOTP(res) {
     if (res) {
-      let message = "Your OTP is sent to your email address. It may take few minutes for the email delivery. Please check your promotions/spam folder as well. You may request another OTP after a minute by clicking Resend OTP."
-      this.popUpSnackBar(message,25000);
+      //"Your OTP is sent to your email address. It may take few minutes for the email delivery. Please check your promotions/spam folder as well. You may request another OTP after a minute by clicking Resend OTP."
+      this.sendOtpMsg = true;
+          setTimeout(() => {
+            this.sendOtpMsg = false;
+          }, 10000);
       this.showOtpSection = false;
       this.showOtpVerifySection = true;
       this.disableSubmitButton = false;
       this.countDown();
     }
     else
-      alert(res);
+      //alert(res);
     this.disableSubmitButton = false;
   }
 
   successResendOTP(res) {
     if (res) {
-      let message = "Your OTP is sent to your email address again. It may take few minutes for the email delivery. Please check your promotions/spam folder as well. You may request another OTP after a minute by clicking Resend OTP."
-      this.popUpSnackBar(message,25000);
+      //"Your OTP is sent to your email address again. It may take few minutes for the email delivery. Please check your promotions/spam folder as well. You may request another OTP after a minute by clicking Resend OTP."
+      this.resendOtpMsg = true;
+      setTimeout(() => {
+        this.resendOtpMsg = false;
+      }, 10000);
       this.disableResendButton = true;
       // this.showResetPasswordSection=true;
       // this.disableResendButton=false;
@@ -172,8 +182,7 @@ export class ForgotPasswordComponent implements OnInit {
       this.showOtpVerifySection = false;
       this.showResetPasswordSection = true;
       this.disableSubmitButton = false;
-      let message = "OTP is verified! Please reset your password"
-      this.popUpSnackBar(message,6000);
+      // OTP is verified! Please reset your password
     }
     else
       alert(res);
@@ -184,11 +193,15 @@ export class ForgotPasswordComponent implements OnInit {
     if (res) {
       this.disableSubmitButton = false;
       this.router.navigate(['/provider/login']).then((navigated: boolean) => {
-        if(navigated) {
-          let message = "Your new password is set successfully! Please login with your username and new password"
-          this.popUpSnackBar(message , 7000)
+        if (navigated) {
+          // Your new password is set successfully! Please login with your username and new password
+          this.global.resetPassMsg = true;
+          setTimeout(() => {
+            this.global.resetPassMsg = false;
+          }, 10000);
+          this.disableResendButton = true;
         }
-    });
+      });
     }
     else
       alert(res);
