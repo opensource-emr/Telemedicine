@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { Practice, Provider } from 'src/app/_helpers/models/domain-model';
 import { Global } from '../../_helpers/common/global.model';
 import { NotificationService } from '../../_helpers/common/notification.service';
-import { DataShareService } from 'src/app/_helpers/common/datashare.service';
+import { AnySoaRecord } from 'dns';
 
 @Component({
   selector: 'app-login',
@@ -20,16 +20,11 @@ export class LoginComponent implements OnInit {
   clicked: boolean = false;
   loadPracticeMsg: boolean = false; 
   connectErrorMsg: boolean= false;
-  adminVar : boolean;
+  adminVar : any;
   constructor(private httpClient: HttpClient,
     private routing: Router,
     public global: Global,
-    private dataShareService: DataShareService,
     private formBuilder: FormBuilder) {
-    this.adminVar =  this.dataShareService.loginMsg;
-    setTimeout(() => {
-       this.adminVar= false;
-       }, 10000);
     this.initForm();
   }
 

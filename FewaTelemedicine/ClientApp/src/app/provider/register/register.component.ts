@@ -2,11 +2,9 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { NgForm, Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
 import { Global } from 'src/app/_helpers/common/global.model';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient} from '@angular/common/http';
 import { Practice, Provider } from 'src/app/_helpers/models/domain-model';
 import { ConfirmedValidator, ValidateEmail, ValidateUserName } from 'src/app/_helpers/common/confirmed-validator';
-import { promise } from 'protractor';
-import { DataShareService } from 'src/app/_helpers/common/datashare.service';
 
 
 @Component({
@@ -35,12 +33,13 @@ export class RegisterComponent implements OnInit {
   wrongOtpMsg: boolean = false;
   resendOtpMsg: boolean = false;
   passwordErrorButton:boolean = false;
+  public size: number;  
+  public square: number; 
   constructor(public global: Global,
     private fb: FormBuilder,
     private httpClient: HttpClient,
     public cdr: ChangeDetectorRef,
     public routing: Router,
-    private dataShareService: DataShareService
     ) { 
     this.initUserForm();
   }
@@ -57,12 +56,6 @@ export class RegisterComponent implements OnInit {
     }, {
       validator: ConfirmedValidator('password', 'confirm_password')
     })
-  }
-
-  passData(){
-    this.dataShareService.loginMsg =true;
-    //this.dataShareService.loginData = 'Your personalized website for your practice is - https://www.fewatele.com/{{ this.global.currentPractice}}.Administrators please use your username as admin';
-    window.location.assign(window.location.origin + "/" +  this.global.currentPractice + "/" + this.global.currentProvider + "/#/provider/login"); 
   }
 
   get loginFormControls() {
@@ -161,14 +154,14 @@ export class RegisterComponent implements OnInit {
       .subscribe(res => this.successSetPassword(res),
         res => this.error(res));
   }
-
   successSetPassword(res) {
     if (res) {
       this.disableSubmitButton = false;
-      this.passData();
+     var msg= "Your personalized website for your practice is - https://www.fewatele.com/"+ this.global.currentPractice+". Administrators please use your username as admin"
+      alert(msg);
       //this.dataShareService.loginMsg =true;
       //this.dataShareService.loginData = 'Your personalized website for your practice is - https://www.fewatele.com/ this.global.currentPractice.Administrators please use your username as admin';
-      //window.location.assign(window.location.origin + "/" +  this.global.currentPractice + "/" + this.global.currentProvider + "/#/provider/login");
+       window.location.assign(window.location.origin + "/" +  this.global.currentPractice + "/" + this.global.currentProvider + "/#/provider/login");
     }
   }
 

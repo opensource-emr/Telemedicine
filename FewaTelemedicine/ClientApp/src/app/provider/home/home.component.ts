@@ -18,6 +18,7 @@ contactUsflag:boolean;
 buttonflag:boolean;
 sendingFailed:boolean;
 showViewMoreInfo = false;
+buttonName:string;
   constructor(private global: Global,
               private fb: FormBuilder,
               private httpClient:HttpClient) {
@@ -26,6 +27,7 @@ showViewMoreInfo = false;
     this.contactUsflag=false;
     this.buttonflag=false;
     this.sendingFailed=false;
+    this.buttonName="View more"
     this.form= new FormGroup({});
     this.contactUsObj=new ContactUs();
     this.initContactUsForm()
@@ -43,7 +45,8 @@ showViewMoreInfo = false;
     }
   }
   showViewMoreText(){
-    this.showViewMoreInfo = true;
+    this.showViewMoreInfo = !this.showViewMoreInfo;
+    if(this.showViewMoreInfo)this.buttonName='View less'; else this.buttonName='View more'
     }
   //=>^\([0-9]{3}\)[0-9]{3}-[0-9]{4}$
   //=>^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$
