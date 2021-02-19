@@ -510,47 +510,70 @@ namespace FewaTelemedicine.Controllers
                 return Ok("Error In Retrieving Records" + ex.Message);
             }
         }
-        public IActionResult SaveAdvice([FromBody] List<ProviderAdvice> adviceList)
+        public IActionResult AddAdvice([FromBody] ProviderAdvice obj)
         {
-                try
+            try
+            {
+                if (obj is null)
                 {
-                    if (adviceList == null)
-                    {
-                        return BadRequest();
-                    }
-                    foreach (var i in adviceList)
-                    {
-                        var advice = FewaDbContext.advices.Where(a => a.adviceId == i.adviceId).AsQueryable().FirstOrDefault();
-                        if (advice != null)
-                        {
-                          FewaDbContext.Entry(advice).State = EntityState.Detached;
-                          FewaDbContext.Entry(i).State = EntityState.Modified;
-                        }
-                        else
-                        {
-                            i.adviceId = FewaDbContext.advices.Max(a => a.adviceId) + 1;
-                            FewaDbContext.advices.Add(i);
-                        }
-                        FewaDbContext.SaveChanges();
-                    }
-                    return Ok();
+                    return StatusCode(500);
                 }
-                catch (Exception ex)
+                Provider provider = FewaDbContext.providers.Where(a => a.providerId == obj.providerId && a.practiceId == obj.practiceId).FirstOrDefault();
+                if (provider == null)
                 {
-                    return Ok("Error Adding New Advice: " + ex.Message);
+                    return Ok(new { message = "Provider doesn't exists" });
                 }
-          
+                ProviderAdvice newAdvice = new ProviderAdvice();
+                obj.adviceId = FewaDbContext.advices.Max(a => a.adviceId) + 1;    
+                newAdvice.adviceId = obj.adviceId;
+                newAdvice.advice = obj.advice;
+                newAdvice.practiceId = obj.practiceId;
+                newAdvice.providerId = obj.providerId;
+                FewaDbContext.advices.Add(newAdvice);
+                FewaDbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+            return Ok(FewaDbContext.advices.Where(a => a.providerId == obj.providerId).ToList());
         }
-        public IActionResult DeleteAdvice(int id)
+
+        public IActionResult EditAdvice([FromBody] ProviderAdvice obj)
         {
+            try
+            {
+                if (obj is null)
+                {
+                    return StatusCode(500);
+                }
+                ProviderAdvice providerAdvice = FewaDbContext.advices.Where(a => a.adviceId == obj.adviceId && a.providerId == obj.providerId).FirstOrDefault();
+                if (providerAdvice == null)
+                {
+                    return Ok(new { message = "Provider doesn't exists" });
+                }
+                providerAdvice.advice = obj.advice;
+                FewaDbContext.advices.Update(providerAdvice);
+                FewaDbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+            return Ok(FewaDbContext.advices.Where(a => a.providerId == obj.providerId).ToList());
+        }
+
+        public IActionResult DeleteAdvice( int id)
+        {
+
             ProviderAdvice removeAdvice = FewaDbContext.advices.Find(id);
             if (removeAdvice == null)
             {
                 return NotFound();
-            }
+            } 
             FewaDbContext.advices.Remove(removeAdvice);
             FewaDbContext.SaveChanges();
-            return Ok(removeAdvice);
+            return Ok(FewaDbContext.advices.Where(a => a.providerId == removeAdvice.providerId).ToList());
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -15,7 +15,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class UserSettingComponent implements OnInit {
   htmlContent = '';
   providerObj: Provider = new Provider();
-  addProviderObj: Provider = new Provider();
+  adviceObj :ProviderAdvice = new ProviderAdvice();
   retrieveResponse: any;
   receivedImageData: any;
   receivedPracticeImageData: any;
@@ -28,9 +28,10 @@ export class UserSettingComponent implements OnInit {
   public fileLimitExceeded: boolean = false;
   public showEditor: boolean = false;
   public showInvitationTemplate: boolean = false;
+  public adviceId: number;
   userForm: FormGroup = new FormGroup({});
   practiceObj: Practice = new Practice();
-  public providerAdvice: Array<ProviderAdvice> = [];
+  providerAdvice: Array<ProviderAdvice> = new Array<ProviderAdvice>();
   hospitalLogo: string = "";
   htmlBody: string = "";
   adviceForm: FormGroup = new FormGroup({});
@@ -40,6 +41,7 @@ export class UserSettingComponent implements OnInit {
   adviceLimitMsg: boolean = false;
   fileFormatMsg: boolean = false;
   fileSizeMsg: boolean = false;
+  updateRecordMsg: boolean = false;
   constructor(private routing: Router,
     public global: Global,
     public httpClient: HttpClient,
@@ -47,6 +49,7 @@ export class UserSettingComponent implements OnInit {
     private sanitizer: DomSanitizer) {
     this.initUserForm();
     this.initAdviceForm();
+    this.displayAdviceList();
   }
 
   ngOnInit() {
@@ -55,119 +58,102 @@ export class UserSettingComponent implements OnInit {
     this.setUserFormValue(this.providerObj);
   }
 
-  loadAdvice() {
-    this.httpClient.post<any>(this.global.practiceUrl + "GetAllAdvice", this.global.providerObj)
+ displayAdviceList() {
+  this.httpClient.post<any>(this.global.practiceUrl + "GetAllAdvice", this.global.providerObj)
       .subscribe(res => {
-        if (res) {
-          this.providerAdvice = res;
-          for (let temp of res) {
-            var tempForm = this.fb.group({
-              advice: new FormControl({ value: temp.advice, disabled: true }, [Validators.required]),
-              id: new FormControl(temp.adviceId)
-            });
-            this.adviceArray.push(tempForm);
-          }
-        }
-        else {
-          this.adviceArray.push(this.addAdvice());
-        }
+        this.providerAdvice = res;
       });
   }
 
   private initAdviceForm() {
     this.adviceForm = this.fb.group({
-      adviceArray: this.fb.array([]),
+      advice: ['', Validators.required],  
     });
-    this.loadAdvice();
+    this.displayAdviceList();
   }
 
-  private addAdvice() {
-    const form = this.fb.group({
-      advice: new FormControl({ value: '', disabled: true }, Validators.required),
-    });
-    return form;
-  }
-
-  addRow() {
-    if ((this.adviceArray.length) >= 10) {
+  addAdvice() {
+    if ((this.providerAdvice.length) >= 10) {
       // You can add only 10 advices
       this.adviceLimitMsg = true;
       setTimeout(() => {
         this.adviceLimitMsg = false;
       }, 5000);
+      this.resetAdviceForm();
     }
-    else {
-      const control = this.adviceForm.get('adviceArray') as FormArray;
-      control.push(this.addAdvice());
-    }
+    else{
+      this.getadviceFormValue();
+    this.httpClient.post<any>(this.global.practiceUrl + "AddAdvice", this.adviceObj)
+      .subscribe
+      (res => {
+        if (res) {
+          this.addAdviceMsg = true;
+          setTimeout(() => {
+            this.addAdviceMsg = false;
+          }, 10000);
+          this.displayAdviceList();
+        }
+      });
+     this.resetAdviceForm();
+    }  
   }
 
-  public removeRow(index: number): void {
-    const control = this.adviceForm.get('adviceArray') as FormArray;
-    //if (confirm("Are you sure you want to delete this ?")) 
-    {
-      if (this.adviceArray.getRawValue()[index].id) {
-        var id = this.adviceArray.getRawValue()[index].id;
-        control.removeAt(index);
-        this.providerAdvice.splice(index, 1);
-        this.httpClient.delete<number>(this.global.practiceUrl + "DeleteAdvice/" + id).subscribe(() => {
-          //console.info("Record Deleted Successfully");
-      this.removeRecordMsg = true;
+  editAdvice() {
+    this.getadviceFormValue();
+    this.adviceObj.adviceId = this.adviceId;
+    this.httpClient.post<any>(this.global.practiceUrl + "EditAdvice", this.adviceObj)
+      .subscribe
+      (res => {
+        if (res.message) { alert(res.message) }
+        else {
+          // "Successfully updated a advice. 
+          this.updateRecordMsg = true;
+          setTimeout(() => {
+            this.updateRecordMsg = false;
+          }, 10000);
+          this.displayAdviceList();
+        }
+      },
+        err => { 
+          //There is a problem 
+        });
+    this.resetAdviceForm();
+  }
+
+  public removeAdvice(adviceId: number): void {
+    this.httpClient.get<any>(this.global.practiceUrl + 'DeleteAdvice?id=' + adviceId)
+      .subscribe
+      (res => {
+        if (res) {
+        //Successfully deleted a advice
+        this.removeRecordMsg = true;
       setTimeout(() => {
         this.removeRecordMsg = false;
       }, 10000);
-        });
-      }
-      else {
-        control.removeAt(index);
-      }
-    }
-  }
-
-  public editRow(index: number) {
-    const control = this.adviceForm.get('adviceArray') as FormArray;
-    control.at(index).enable();
-  }
-
-  get adviceArray(): FormArray {
-    return this.adviceForm.get("adviceArray") as FormArray;
-  }
-
-  saveAdvice() {
-    if (this.adviceForm.invalid) {
-      return;
-    }
-    for (let i = 0; i < this.adviceArray.length; i++) {
-      if (this.providerAdvice.length > 0 && this.providerAdvice[i]) {
-        for (let temp of this.providerAdvice) {
-          if (temp.adviceId === this.adviceArray.getRawValue()[i].id) {
-            temp.advice = this.adviceArray.getRawValue()[i].advice;
-          }
+          this.displayAdviceList();
         }
-      }
-      else {
-        var advice = new ProviderAdvice();
-        advice.advice = this.adviceArray.getRawValue()[i].advice;
-        if (this.global.providerObj.providerId > 0)
-          advice.providerId = this.global.providerObj.providerId;
-        advice.practiceId = this.global.practiceObj.practiceId;
-        this.providerAdvice.push(advice);
-      }
-    }
+      });
+  }
 
-    this.httpClient.
-      post<any>(this.global.practiceUrl + "SaveAdvice", this.providerAdvice)
-      .subscribe(res => {
-        this.practiceObj = res;
-       //Provider Advice is Saved Successfully.
-       this.addAdviceMsg = true;
-       setTimeout(() => {
-         this.addAdviceMsg = false;
-       }, 5000);
-      },
-        err => {
-          //  console.log(err); 
-        });
+  public edit(providerAdvice: ProviderAdvice) {
+    this.adviceId = providerAdvice.adviceId;
+    this.adviceForm.patchValue({
+      advice: providerAdvice.advice,
+      adviceId: providerAdvice.adviceId,
+      practiceId: providerAdvice.practiceId,
+      providerId: providerAdvice.providerId,
+    })
+  }
+
+  get adviceFormControls() {
+    return this.adviceForm.controls;
+  }
+  
+  getadviceFormValue() {
+    var v = this.adviceForm.getRawValue();
+    this.adviceObj.advice = v.advice;
+    this.adviceObj.providerId =this.global.providerObj.providerId
+    this.adviceObj.practiceId =this.global.providerObj.practiceId; 
   }
 
   private initUserForm() {

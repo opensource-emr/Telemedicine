@@ -209,6 +209,13 @@
                     <div class="tab-pane fade" id="v-pills-addProvider" role="tabpanel" aria-labelledby="v-pills-addProvider-tab">
                         <div class="fewa-title">
                             <h1>Add Provider</h1>
+                            <div class="message" *ngIf="this.addProviderMsg">Successfully added a provider {{this.addProviderObj.userName}}. User can now login using their assigned username and password at your practice website - https://www.fewatele.com/{{this.addProviderObj.practice}}/ or the user’s personal website https://www.fewatele.com/{{this.addProviderObj.practice}}/{{this.addProviderObj.userName}}</div>
+                            <div class="errorMessage" *ngIf="this.addProblemMsg">There is a problem</div>  
+                            <div class="message" *ngIf="this.editProviderMsg">Successfully updated a provider. User can now login using their assigned username and password at your practice website - https://www.fewatele.com/{{this.addProviderObj.practice}}/ or the user’s personal website https://www.fewatele.com/{{this.addProviderObj.practice}}/{{this.addProviderObj.userName}}</div>
+                            <div class="errorMessage" *ngIf="this.addProblemMsg">There is a problem</div>  
+                            <div class="message" *ngIf="this.removeProviderMsg">Successfully deleted a provider {{this.addProviderObj.userName}}</div>  
+                            <div class="errorMessage" *ngIf="this.removeAdminMsg">You can not delete Admin</div>
+                            <div class="errorMessage" *ngIf="this.addProErrorMsg">Provider already exists</div>
                         </div>
                         <div class="tab-forms" style="max-height:546px;">
                             <form [formGroup]="addProviderForm">
@@ -219,6 +226,8 @@
                                             <input type="text" placeholder="User Name (without space)" class="form-control" name="userName" formControlName="userName">
                                             <div *ngIf="addProviderFormControls.userName.touched && addProviderFormControls.userName.invalid" style="color: red;">
                                                 <div *ngIf="addProviderFormControls.userName.errors.required">User Name is required.
+                                                </div>
+                                                <div *ngIf="addProviderFormControls.userName.errors.validUserName">This username is already taken!
                                                 </div>
                                                 <!-- <div *ngIf="userFormControls.userName.errors.pattern">Invalid mobile
                                                     number.</div> -->
@@ -233,6 +242,8 @@
                                                 <div *ngIf="addProviderFormControls.email.errors.required">User Email is required.
                                                 </div>
                                                 <div *ngIf="addProviderFormControls.email.errors.pattern">Invalid email address.
+                                                </div>
+                                                <div *ngIf="addProviderFormControls.email.errors.validEmail">This email is already taken!
                                                 </div>
                                             </div>
                                         </div>
@@ -250,16 +261,7 @@
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-12 col-md-6">
-                                        <div class="message" *ngIf="this.addProviderMsg">Successfully added a provider {{this.addProviderObj.userName}}. User can now login using their assigned username and password at your practice website - https://www.fewatele.com/{{this.addProviderObj.practice}}/ or the user’s personal website https://www.fewatele.com/{{this.addProviderObj.practice}}/{{this.addProviderObj.userName}}</div>
-                                        <div class="errorMessage" *ngIf="this.addProblemMsg">There is a problem</div>  
-                                        <div class="message" *ngIf="this.editProviderMsg">Successfully updated a provider. User can now login using their assigned username and password at your practice website - https://www.fewatele.com/{{this.addProviderObj.practice}}/ or the user’s personal website https://www.fewatele.com/{{this.addProviderObj.practice}}/{{this.addProviderObj.userName}}</div>
-                                        <div class="errorMessage" *ngIf="this.editProblemMsg">There is a problem</div>  
-                                        <div class="message" *ngIf="this.removeProviderMsg">Successfully deleted a provider {{this.addProviderObj.userName}}</div>  
-                                        <div class="errorMessage" *ngIf="this.removeAdminMsg">You can not delete Admin</div>
-                                        <div class="errorMessage" *ngIf="this.addProErrorMsg">Provider already exists</div>
-                                    </div>
-                                    <div class="col-12 col-md-6 text-right">
+                                    <div class="col-12 text-right">
                                         <ul>
                                             <li><button type="submit" (click)="resetAddProviderForm()" class="cancelBtn">Reset</button></li>
                                             <li><button type="submit" [disabled]="!addProviderForm.valid" (click)="addProvider()" class="saveBtn">Save</button></li>&nbsp;&nbsp;

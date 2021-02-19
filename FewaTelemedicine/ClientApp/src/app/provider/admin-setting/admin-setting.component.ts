@@ -4,7 +4,7 @@ import { HttpClient, HttpParams, HttpEventType, HttpHeaders } from '@angular/com
 import { Router } from '@angular/router';
 import { Provider, Practice } from 'src/app/_helpers/models/domain-model';
 import { Global } from 'src/app/_helpers/common/global.model';
-import { FormGroup, Validators, FormBuilder, FormControl, FormArray } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder, FormControl, FormArray, AbstractControl } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NotificationService } from 'src/app/_helpers/common/notification.service';
 
@@ -40,9 +40,7 @@ export class AdminSettingComponent implements OnInit {
   fileFormatMsg: boolean = false;
   fileSizeMsg: boolean = false;
   templateMsg: boolean = false;
-  editProblemMsg: boolean = false;
   addProblemMsg: boolean = false;
-
   adminForm: FormGroup = new FormGroup({});
   practiceConfigForm: FormGroup = new FormGroup({});
   addProviderForm: FormGroup = new FormGroup({});
@@ -82,9 +80,9 @@ export class AdminSettingComponent implements OnInit {
 
   private initAddProviderForm() {
     this.addProviderForm = this.fb.group({
-      userName: ['', Validators.required],
+      userName: ['', [Validators.required, ValidateUserName.bind(this)]],
       password: ['', Validators.required],
-      email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
+      email: ['',[Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$"), ValidateEmail.bind(this)]],
     });
     this.displayProviderList();
   }
@@ -127,7 +125,13 @@ export class AdminSettingComponent implements OnInit {
     this.httpClient.post<any>(this.global.apiUrl + "Security/EditProvider", this.addProviderObj)
       .subscribe
       (res => {
-        if (res.message) { alert(res.message) }
+        if (res.message) { 
+         // alert(res.message) 
+         this.addProblemMsg = true;
+         setTimeout(() => {
+           this.addProblemMsg = false;
+         }, 10000);
+        }
         else {
           // "Successfully updated a provider. User can now login using their assigned username and password at your practice website - https://www.fewatele.com/" + this.addProviderObj.practice + "/  or the user’s personal website https://www.fewatele.com/" + this.addProviderObj.practice + "/" + this.addProviderObj.userName
           this.editProviderMsg = true;
@@ -139,10 +143,6 @@ export class AdminSettingComponent implements OnInit {
       },
         err => { 
           //There is a problem 
-          this.editProblemMsg = true;
-          setTimeout(() => {
-            this.editProblemMsg = false;
-          }, 5000);
         });
     this.resetAddProviderForm();
   }
@@ -412,4 +412,17 @@ export class AdminSettingComponent implements OnInit {
   editTemplate() {
     this.showEditor = true;
   }
+}
+
+export function ValidateUserName(control: AbstractControl) {
+  if (this.providerList.find(a => a.userName == control.value)) {
+    return { validUserName: true };
+  }
+  return null;
+}
+export function ValidateEmail(control: AbstractControl) {
+  if (this.providerList.find(a => a.email == control.value)) {
+    return { validEmail: true };
+  }
+  return null;
 }
