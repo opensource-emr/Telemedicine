@@ -172,79 +172,82 @@
                         </div>
                     </div>
 
-                    <!-- Advice -->
-                    <div class="tab-pane fade" id="v-pills-advice" role="tabpanel" aria-labelledby="v-pills-advice-tab">
-                        <div class="fewa-title">
-                            <h1>Update Advice</h1>
-                        </div>
-                        <div class="tab-forms">
-                            <form [formGroup]="adviceForm">
-                                <table class="table table-bordered" style="width:100%;text-align:center;">
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                Sr. No
-                                            </th>
-                                            <th>
-                                                Advice
-                                            </th>
-                                            <th>
-                                                Action
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody formArrayName="adviceArray">
-                                        <tr *ngFor="let array of adviceArray.controls.slice(0, 10); let i=index" [formGroupName]="i">
-                                            <td>
-                                                {{i+1}}
-                                            </td>
-                                            <td>
-                                                <input type="text" class="form-control disable" name="advice" formControlName="advice" />
-                                            </td>
-                                            <td>
-                                                <a (click)="editRow(i)" href="javascript:;">
-                                                    <svg fill="#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28px" height="28px">
-                                                        <path
-                                                            d="M14.5 5.5L3 17 3 21 7 21 18.5 9.5zM21.707 4.879l-2.586-2.586c-.391-.391-1.024-.391-1.414 0L16 4l4 4 1.707-1.707C22.098 5.902 22.098 5.269 21.707 4.879z" />
-                                                    </svg>
-                                                </a>
-                                                &nbsp;&nbsp;
-                                                <a (click)="removeRow(i)" href="javascript:;">
-                                                    <svg fill="#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28px" height="28px">
-                                                        <path
-                                                            d="M 10 2 L 9 3 L 4 3 L 4 5 L 20 5 L 20 3 L 15 3 L 14 2 L 10 2 z M 5 7 L 5 20 C 5 21.1 5.9 22 7 22 L 17 22 C 18.1 22 19 21.1 19 20 L 19 7 L 5 7 z M 8 9 L 10 9 L 10 20 L 8 20 L 8 9 z M 14 9 L 16 9 L 16 20 L 14 20 L 14 9 z" />
-                                                    </svg>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                    <tbody>
-                                        <tr>
-                                            <td colspan="3">
-                                                <button type="button" class="button-theme" style="width:100%;" (click)="addRow()">
-                                                    Add New Advice
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <div class="row" style="margin-top:3% !important;">
-                                    <div class="col-12 col-md-6">
-                                        <div class="message" *ngIf="this.addAdviceMsg">Provider advice is saved successfully</div>
-                                        <div class="errorMessage" *ngIf="this.adviceLimitMsg" style="text-align: center;">You can not add more than 10 advices</div>
-                                        <div class="message" *ngIf="this.removeRecordMsg">Record deleted successfully</div>
-                                    </div>
-                                    <div class="col-12 col-md-6 text-right">
-                                        <ul>
-                                            <li><button class="cancelBtn" (click)="resetAdviceForm()">Cancel</button>
-                                            </li>
-                                            <li><button class="saveBtn" [disabled]="!adviceForm.valid || adviceArray.length == 0" (click)="saveAdvice()">Save</button>
-                                            </li>
-                                        </ul>
+                   <!-- Advice -->
+                   <div class="tab-pane fade" id="v-pills-advice" role="tabpanel" aria-labelledby="v-pills-advice-tab">
+                    <div class="fewa-title">
+                        <h1>Update Advice</h1>
+                        <div class="message" *ngIf="this.addAdviceMsg">Provider advice is saved successfully</div>
+                        <div class="message" *ngIf="this.removeRecordMsg">Advice deleted successfully</div>
+                        <div class="message" *ngIf="this.updateRecordMsg">Advice updated successfully</div>
+                         <div class="errorMessage" *ngIf="this.adviceLimitMsg" style="text-align: center;">You can not add more than 10 advices</div>
+                    </div>
+                    <div class="tab-forms" style="max-height:546px;">
+                        <form [formGroup]="adviceForm">
+                            <div class="row">
+                                <div class="col-12" style="height: 60px;">
+                                    <div class="form-group">
+                                        <label>Advice Name<span class="red-text">*</span></label>
+                                        <input type="text" placeholder="Advice Name" class="form-control" name="advice" formControlName="advice">
+                                        <div *ngIf="adviceFormControls.advice.touched && adviceFormControls.advice.invalid" style="color: red;">
+                                            <div *ngIf="adviceFormControls.advice.errors.required">Advice Name is required.
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </form>
-                        </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 text-right" style="height: 65px;">
+                                    <ul>
+                                        <li><button type="submit" (click)="resetAdviceForm()" class="cancelBtn">Reset</button></li>
+                                        <li><button type="submit" [disabled]="!adviceForm.valid" (click)="addAdvice()" class="saveBtn">Save</button></li>&nbsp;&nbsp;
+                                        <li><button type="submit" [disabled]="!adviceForm.valid" (click)="editAdvice()" class="saveBtn">Update</button></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card" style="box-shadow: none;">
+                                        <div class="card-body" style="padding: unset;">
+                                            <div class="fewa-title">
+                                                <h1 style="text-align: left; display: inline;">Advice List</h1>
+                                            </div><br>
+                                            <div class="table-responsive tableFixHead">
+                                                <table class="table table-bordered" style="width:100%;text-align:center;">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Sr. No</th>
+                                                            <th>Advice</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr *ngFor="let array of providerAdvice.slice(0, 10); let i=index">
+                                                            <td>{{i+1}}</td>
+                                                            <td>{{array.advice}}</td>
+                                                            <td>
+                                                                <a (click)="edit(array)" href="javascript:;">
+                                                                    <svg fill="#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28px" height="28px">
+                                                                        <path
+                                                                            d="M14.5 5.5L3 17 3 21 7 21 18.5 9.5zM21.707 4.879l-2.586-2.586c-.391-.391-1.024-.391-1.414 0L16 4l4 4 1.707-1.707C22.098 5.902 22.098 5.269 21.707 4.879z" />
+                                                                    </svg>
+                                                                </a>
+                                                                &nbsp;&nbsp;
+                                                                <a (click)="removeAdvice(array.adviceId)" href="javascript:;">
+                                                                    <svg fill="#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28px" height="28px">
+                                                                        <path
+                                                                            d="M 10 2 L 9 3 L 4 3 L 4 5 L 20 5 L 20 3 L 15 3 L 14 2 L 10 2 z M 5 7 L 5 20 C 5 21.1 5.9 22 7 22 L 17 22 C 18.1 22 19 21.1 19 20 L 19 7 L 5 7 z M 8 9 L 10 9 L 10 20 L 8 20 L 8 9 z M 14 9 L 16 9 L 16 20 L 14 20 L 14 9 z" />
+                                                                    </svg>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
