@@ -42,6 +42,7 @@ export class UserSettingComponent implements OnInit {
   fileFormatMsg: boolean = false;
   fileSizeMsg: boolean = false;
   updateRecordMsg: boolean = false;
+  updateButton : boolean = false;
   constructor(private routing: Router,
     public global: Global,
     public httpClient: HttpClient,
@@ -101,6 +102,7 @@ export class UserSettingComponent implements OnInit {
   editAdvice() {
     this.getadviceFormValue();
     this.adviceObj.adviceId = this.adviceId;
+    this.updateButton = true;
     this.httpClient.post<any>(this.global.practiceUrl + "EditAdvice", this.adviceObj)
       .subscribe
       (res => {
@@ -117,6 +119,7 @@ export class UserSettingComponent implements OnInit {
         err => { 
           //There is a problem 
         });
+        this.updateButton = false;
     this.resetAdviceForm();
   }
 
@@ -137,6 +140,7 @@ export class UserSettingComponent implements OnInit {
 
   public edit(providerAdvice: ProviderAdvice) {
     this.adviceId = providerAdvice.adviceId;
+    this.updateButton = true;
     this.adviceForm.patchValue({
       advice: providerAdvice.advice,
       adviceId: providerAdvice.adviceId,

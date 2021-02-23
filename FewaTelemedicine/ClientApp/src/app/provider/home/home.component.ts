@@ -19,6 +19,7 @@ buttonflag:boolean;
 sendingFailed:boolean;
 showViewMoreInfo = false;
 buttonName:string;
+contactMsg : boolean;
   constructor(private global: Global,
               private fb: FormBuilder,
               private httpClient:HttpClient) {
@@ -27,6 +28,7 @@ buttonName:string;
     this.contactUsflag=false;
     this.buttonflag=false;
     this.sendingFailed=false;
+    this.contactMsg = false;
     this.buttonName="View more"
     this.form= new FormGroup({});
     this.contactUsObj=new ContactUs();
@@ -71,6 +73,10 @@ buttonName:string;
   }
   contactUs(){
     if(this.form.invalid){
+      this.contactMsg = true;
+      setTimeout(() => {
+        this.contactMsg=false
+      }, 10000);
       return;
     }
     this.loadFormValues();

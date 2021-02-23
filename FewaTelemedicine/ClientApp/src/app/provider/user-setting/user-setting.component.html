@@ -51,10 +51,10 @@
                 <div class="tab-content" id="v-pills-tabContent">
                     <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
                         <div class="fewa-title">
-                            <h4 style="width: 300px;">Update Profile</h4>
+                            <h1 style="width: 300px;">Update Profile</h1>
                             <div class="message" *ngIf="this.updateMsg">Your profile has been successfully updated</div>
                         </div>
-                        <div class="tab-forms" style="max-height:546px;">
+                        <div class="tab-forms"> 
                             <form [formGroup]="userForm">
                                 <div class="row">
                                     <div class="col-12 col-md-6">
@@ -158,11 +158,11 @@
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
                                             <label>Reset Password</label>
-                                            <input type="password" placeholder="Enter Reset Password" class="form-control" name="password" formControlName="new_password">
+                                            <input type="password" placeholder="Enter Reset Password" class="form-control"name="password" formControlName="new_password">
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-6 text-right">
-                                        <ul>
+                                        <ul style="margin: 28px;">
                                             <li><button type="submit" (click)="resetUserForm()" class="cancelBtn">Cancel</button></li>
                                             <li><button type="submit" [disabled]="!userForm.valid || this.fileLimitExceeded" (click)="updateProfile()" class="saveBtn">Save</button></li>
                                         </ul>
@@ -199,8 +199,8 @@
                                 <div class="col-12 text-right" style="height: 65px;">
                                     <ul>
                                         <li><button type="submit" (click)="resetAdviceForm()" class="cancelBtn">Reset</button></li>
-                                        <li><button type="submit" [disabled]="!adviceForm.valid" (click)="addAdvice()" class="saveBtn">Save</button></li>&nbsp;&nbsp;
-                                        <li><button type="submit" [disabled]="!adviceForm.valid" (click)="editAdvice()" class="saveBtn">Update</button></li>
+                                        <li><button type="submit" [disabled]="!adviceForm.valid || updateButton" (click)="addAdvice()" class="saveBtn">Save</button></li>&nbsp;&nbsp;
+                                        <li><button type="submit" [disabled]="!adviceForm.valid || !updateButton" (click)="editAdvice()" class="saveBtn">Update</button></li>
                                     </ul>
                                 </div>
                             </div>
