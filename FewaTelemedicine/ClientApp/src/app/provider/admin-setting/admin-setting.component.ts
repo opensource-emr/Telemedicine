@@ -47,6 +47,7 @@ export class AdminSettingComponent implements OnInit {
   practiceObj: Practice = new Practice();
   hospitalLogo: string = "";
   htmlBody: string = "";
+  updateButton : boolean = false;
   PracticeEmailForm: FormGroup = new FormGroup({});
   constructor(private routing: Router,
     private notificationService: NotificationService,
@@ -122,6 +123,7 @@ export class AdminSettingComponent implements OnInit {
   editProvider() {
     this.getProviderFormvalue();
     this.addProviderObj.providerId = this.providerId;
+    this.updateButton = true;
     this.httpClient.post<any>(this.global.apiUrl + "Security/EditProvider", this.addProviderObj)
       .subscribe
       (res => {
@@ -144,6 +146,7 @@ export class AdminSettingComponent implements OnInit {
         err => { 
           //There is a problem 
         });
+        this.updateButton = false;
     this.resetAddProviderForm();
   }
 
@@ -170,8 +173,8 @@ export class AdminSettingComponent implements OnInit {
   }
 
   public edit(provider: Provider) {
-    console.log(provider)
     this.providerId = provider.providerId;
+    this.updateButton = true;
     this.addProviderForm.patchValue({
       userName: provider.userName,
       password: provider.password,

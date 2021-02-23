@@ -52,8 +52,8 @@
                 <div class="tab-content" id="v-pills-tabContent">
                     <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                         <div class="fewa-title">
-                            <h4>Update Practice Configuration</h4>
-                            <div class="message" *ngIf="this.updateMsg">Your profile has been successfully updated</div>
+                            <h1>Update Practice Configuration</h1>
+                            <div class="message" *ngIf="this.updateMsg">Your configuration has been successfully updated</div>
                         </div>
                         <div class="tab-forms">
                             <form [formGroup]="practiceConfigForm">
@@ -259,13 +259,12 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="row">
                                     <div class="col-12 text-right">
                                         <ul>
                                             <li><button type="submit" (click)="resetAddProviderForm()" class="cancelBtn">Reset</button></li>
-                                            <li><button type="submit" [disabled]="!addProviderForm.valid" (click)="addProvider()" class="saveBtn">Save</button></li>&nbsp;&nbsp;
-                                            <li><button type="submit" [disabled]="!addProviderForm.valid" (click)="editProvider()" class="saveBtn">Update</button></li>
+                                            <li><button type="submit" [disabled]="!addProviderForm.valid || updateButton" (click)="addProvider()" class="saveBtn">Save</button></li>&nbsp;&nbsp;
+                                            <li><button type="submit" [disabled]="!addProviderForm.valid || !updateButton" (click)="editProvider()" class="saveBtn">Update</button></li>
                                         </ul>
                                     </div>
                                 </div>
