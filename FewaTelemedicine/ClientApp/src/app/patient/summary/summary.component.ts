@@ -55,7 +55,7 @@ export class SummaryComponent implements OnInit {
   }
   private initForm() {
     this.emailForm = this.fb.group({
-      email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]]
+      email: ['', [Validators.required, Validators.pattern("^([\\s]+|[^\\s]+)[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}([\\s]+|[^\\s]+)$")]]
     });
   }
   get emailFormControls() {
@@ -67,7 +67,7 @@ export class SummaryComponent implements OnInit {
     }
     var key="73l3M3D"; //hardcoded
     this.disableButton = true;
-    this.patient.email = this.emailForm.value.email;
+    this.patient.email = this.emailForm.value.email.trim();
     this.httpClient.post("/Messenger/EmailPatientReport?key=" + key, this.patient)
       .subscribe(res => this.emailReportSuccess(res), err => this.error(err));
   }

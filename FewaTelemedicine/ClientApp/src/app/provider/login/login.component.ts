@@ -20,6 +20,7 @@ export class LoginComponent implements OnInit {
   clicked: boolean = false;
   loadPracticeMsg: boolean = false; 
   connectErrorMsg: boolean= false;
+  public errorMsg = '';
   adminVar : any;
   constructor(private httpClient: HttpClient,
     private routing: Router,
@@ -88,14 +89,14 @@ export class LoginComponent implements OnInit {
         this.global.config.videourl = url;
         this.routing.navigateByUrl('/provider/dashboard', { state: this.global });
       },
-        res => {
+        err => {
           this.global.providerObj = new Provider();
           this.clicked = false;
-          //Can not connect please talk with admin.
+          this.errorMsg = err.error;
           this.connectErrorMsg = true;
         setTimeout(() => {
           this.connectErrorMsg = false;
-        }, 5000);
+        }, 7000);
         });
   }
   getSignUpLink(){

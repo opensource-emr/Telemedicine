@@ -123,6 +123,7 @@ export class NotificationService {
       if (e) {
         if (e.name == "Error") {
           if (e.message.includes("WebSocket closed")) {
+            alert(JSON.stringify(e.message));
             alert("Session timeout, please log in again!");
             //this.disconnects(e);
           } else {

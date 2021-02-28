@@ -162,7 +162,7 @@ export class UserSettingComponent implements OnInit {
 
   private initUserForm() {
     this.userForm = this.fb.group({
-      email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
+      email: ['', [Validators.required, Validators.pattern("^([\\s]+|[^\\s]+)[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}([\\s]+|[^\\s]+)$")]],
       phone: ['', [Validators.required, Validators.pattern("^\\([0-9]{3}\\)\\s[0-9]{3}-[0-9]{4}$")]],
       name: ['', [Validators.required, Validators.pattern("^[a-zA-Z]+$")]],
       designation: ['', [Validators.required, Validators.pattern("^[a-zA-Z.]+$")]],
@@ -176,7 +176,7 @@ export class UserSettingComponent implements OnInit {
 
   setUserFormValue(provider: Provider) {
     this.userForm.patchValue({
-      email: provider.email,
+      email: provider.email.trim(),
       phone: provider.mobileNumber,
       name: provider.name,
       designation: provider.designation,
@@ -190,7 +190,7 @@ export class UserSettingComponent implements OnInit {
 
   getUserFormValue() {
     var v = this.userForm.getRawValue();
-    this.providerObj.email = v.email;
+    this.providerObj.email = v.email.trim();
     this.providerObj.mobileNumber = v.phone;
     this.providerObj.name = v.name;
     this.providerObj.designation = v.designation;

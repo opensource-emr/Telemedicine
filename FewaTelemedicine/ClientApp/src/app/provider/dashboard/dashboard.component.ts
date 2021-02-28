@@ -111,7 +111,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   private initForm() {
     this.form = this.fb.group({
-      email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
+      email: ['', [Validators.required, Validators.pattern("^([\\s]+|[^\\s]+)[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}([\\s]+|[^\\s]+)$")]],
       mobile_number: ['', [Validators.pattern("^\\+?[0-9]{3}[0-9]{0,9}$")]],
     })
   }
@@ -131,7 +131,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     }
     var key="73l3M3D"; //hardcoded
     this.invitationButton = true;
-    this.patientObj.email = this.form.value.email
+    this.patientObj.email = this.form.value.email.trim();
     this.patientObj.mobileNumber = this.form.value.mobile_number;
     this.patientObj.providerNameAttending = this.providerObj.userName;
     this.httpClient.post("/Messenger/SendEmail?key=" + key, this.patientObj)

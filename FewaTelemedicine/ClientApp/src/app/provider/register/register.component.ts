@@ -48,11 +48,11 @@ export class RegisterComponent implements OnInit {
   private initUserForm() {
     this.form = this.fb.group({
       name: ['', [Validators.required, Validators.pattern("^[a-zA-Z0-9_ ]+$"), ValidateUserName.bind(this),]],
-      email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$"), ValidateEmail.bind(this)]],
+      email: ['', [Validators.required, Validators.pattern("^([\\s]+|[^\\s]+)[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}([\\s]+|[^\\s]+)$"), ValidateEmail.bind(this)]],
       otp: ['', [Validators.required]],
       password: ['', [Validators.required]],
       confirm_password: ['', [Validators.required]],
-      adminEmail: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$"), ValidateEmail.bind(this)]],
+      adminEmail: ['', [Validators.required, Validators.pattern("^([\\s]+|[^\\s]+)[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}([\\s]+|[^\\s]+)$"), ValidateEmail.bind(this)]],
     }, {
       validator: ConfirmedValidator('password', 'confirm_password')
     })
@@ -85,7 +85,7 @@ export class RegisterComponent implements OnInit {
     }
     var key = "73l3M3D"; //hardcoded
     this.practiceObj.name = this.form.value.name.replace(/\s/g, "").toLowerCase();
-    this.practiceObj.email = this.form.value.email;
+    this.practiceObj.email = this.form.value.email.trim();
     this.clicked = true;
     var observable = this.httpClient.post("/Messenger/SendRegistrationOTP?key=" + key
       , this.practiceObj);
@@ -145,7 +145,7 @@ export class RegisterComponent implements OnInit {
       return;
     }
     this.disableSubmitButton = true;
-    this.providerObj.email = this.form.value.adminEmail;
+    this.providerObj.email = this.form.value.adminEmail.trim();
     this.providerObj.newPassword = this.form.value.password;
     this.providerObj.confirmedPassword = this.form.value.confirm_password;
     this.providerObj.userName = this.global.currentProvider; //admin

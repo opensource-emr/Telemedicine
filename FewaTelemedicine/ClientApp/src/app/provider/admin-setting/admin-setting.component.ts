@@ -83,7 +83,7 @@ export class AdminSettingComponent implements OnInit {
     this.addProviderForm = this.fb.group({
       userName: ['', [Validators.required, ValidateUserName.bind(this)]],
       password: ['', Validators.required],
-      email: ['',[Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$"), ValidateEmail.bind(this)]],
+      email: ['',[Validators.required, Validators.pattern("^([\\s]+|[^\\s]+)[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}([\\s]+|[^\\s]+)$"), ValidateEmail.bind(this)]],
     });
     this.displayProviderList();
   }
@@ -178,7 +178,7 @@ export class AdminSettingComponent implements OnInit {
     this.addProviderForm.patchValue({
       userName: provider.userName,
       password: provider.password,
-      email: provider.email,
+      email: provider.email.trim(),
       url: provider.userName,
     })
   }
@@ -186,7 +186,7 @@ export class AdminSettingComponent implements OnInit {
   private initPracticeForm() {
     this.practiceConfigForm = this.fb.group({
       hospital_name: ['', [Validators.required]],
-      hospital_email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
+      hospital_email: ['', [Validators.required, Validators.pattern("^([\\s]+|[^\\s]+)[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}([\\s]+|[^\\s]+)$")]],
       hospital_contact: ['', [Validators.required, Validators.pattern("^\\([0-9]{3}\\)\\s[0-9]{3}-[0-9]{4}$")]],
       hospital_logo: ['', [Validators.nullValidator]],
       hospital_description: new FormControl(" "),
@@ -203,7 +203,7 @@ export class AdminSettingComponent implements OnInit {
   setPracticeFormValue(practice: Practice) {
     this.practiceConfigForm.patchValue({
       hospital_name: practice.name.toUpperCase(),
-      hospital_email: practice.email,
+      hospital_email: practice.email.trim(),
       hospital_contact: practice.contactNumber,
       //hospital_logo: practice.logoPath,
       hospital_description: practice.description,
@@ -220,7 +220,7 @@ export class AdminSettingComponent implements OnInit {
   getPracticeFormValue() {
     var v = this.practiceConfigForm.getRawValue();
     this.practiceObj.name = v.hospital_name.replace(/\s/g, "").toLowerCase();
-    this.practiceObj.email = v.hospital_email;
+    this.practiceObj.email = v.hospital_email.trim();
     this.practiceObj.contactNumber = v.hospital_contact;
     this.practiceObj.description = v.hospital_description;
     this.practiceObj.logo = this.selectedFile;
@@ -235,7 +235,7 @@ export class AdminSettingComponent implements OnInit {
     var v = this.addProviderForm.getRawValue();
     this.addProviderObj.userName = v.userName.replace(/\s/g, "").toLowerCase();
     this.addProviderObj.password = v.password;
-    this.addProviderObj.email = v.email;
+    this.addProviderObj.email = v.email.trim();
     this.addProviderObj.url = this.addProviderObj.userName // url same as username
     this.addProviderObj.practice = this.global.currentPractice;
     this.addProviderObj.practiceId = this.global.providerObj.practiceId;

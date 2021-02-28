@@ -69,17 +69,17 @@ namespace FewaTelemedicine.Controllers
 
                 if (pro == null)
                 {
-                    return Unauthorized();
+                    return BadRequest("User name does not exist, please check");
                 }
                 if (pro.url != provider.url)
                 {
-                    return Unauthorized();
+                    return BadRequest("User name is invalid, please check");
                 }
                 pro.roomName = pro.roomName.Replace("name", provider.userName);
                 var providerPwd = Cipher.Decrypt(pro.password, provider.userName);
                 if (provider.password != providerPwd)
                 {
-                    return Unauthorized();
+                    return BadRequest("Password is invalid, please check"); 
                 }
                 if (providerPwd == provider.password)
                 {
@@ -96,7 +96,7 @@ namespace FewaTelemedicine.Controllers
                     };
                     return Ok(data);
                 }
-                return Unauthorized();
+                return BadRequest("Can not connect please talk with admin.");
             }
             catch (Exception ex)
             {
