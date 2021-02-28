@@ -63,7 +63,7 @@ export class ForgotPasswordComponent implements OnInit {
       password: ['', [Validators.required]],
       confirm_password: ['', [Validators.required]],
       otp: ['', Validators.required],
-      email_username: ['', Validators.required]
+      email_username: ['', [Validators.required, Validators.pattern("^([\\s]+|[^\\s]+)[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}([\\s]+|[^\\s]+)$")]]
     }, {
       validator: ConfirmedValidator('password', 'confirm_password')
     })
@@ -91,7 +91,7 @@ export class ForgotPasswordComponent implements OnInit {
       return;
     }
     var key = "73l3M3D"; //hardcoded
-    this.providerObj.email = this.form.value.email_username;
+    this.providerObj.email = this.form.value.email_username.trim();
     if (this.providerObj.email.search("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")) {
       this.providerObj.userName = this.providerObj.email;
     }
@@ -130,7 +130,6 @@ export class ForgotPasswordComponent implements OnInit {
     if (this.form.get("password").invalid || this.form.get("confirm_password").invalid) {
       return;
     }
-    this.disableSubmitButton = true;
     this.providerObj.newPassword = this.form.value.password;
     this.providerObj.confirmedPassword = this.form.value.confirm_password;
     this.disableSubmitButton = true;

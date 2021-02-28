@@ -32,7 +32,7 @@
                     <button type="submit" class="btn submitBtn" [disabled]="clicked" (click)="clicked = true; loginProvider();">Sign In</button>
                     <p>Don’t have an account? <a href="javascript:" (click)=getSignUpLink()>Sign Up</a></p><br>
                     <div class="errorMessage" *ngIf="this.loadPracticeMsg">Can not load configuration please talk with admin</div>
-                    <div class="errorMessage" *ngIf="this.connectErrorMsg">Can not connect please talk with admin.</div>
+                    <div class="errorMessage" *ngIf="this.connectErrorMsg">{{this.errorMsg}}</div>
                     <div class="message" *ngIf="this.global.resetPassMsg">Your new password is set successfully! Please login with your username and new password</div>
                     <!-- <h6 class="message" *ngIf="adminVar" style="color: blue;">Your personalized website for your practice is - https://www.fewatele.com/{{ this.global.currentPractice}}. Administrators please use your username as admin</h6> -->
                 </div>

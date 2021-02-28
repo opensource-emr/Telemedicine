@@ -56,7 +56,7 @@ contactMsg : boolean;
     this.form = this.fb.group({
       first_name: ['', [Validators.required]],
       last_name: ['', [Validators.nullValidator]],
-      email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
+      email: ['', [Validators.required, Validators.pattern("^([\\s]+|[^\\s]+)[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}([\\s]+|[^\\s]+)$")]],
       phone_number: ['', [Validators.required,Validators.pattern("^\\([0-9]{3}\\)\\s[0-9]{3}-[0-9]{4}$")]],
       message: ['', [Validators.required]]
     })
@@ -67,7 +67,7 @@ contactMsg : boolean;
   loadFormValues(){
     this.contactUsObj.firstName=this.form.value.first_name;
     this.contactUsObj.lastName=this.form.value.last_name;
-    this.contactUsObj.email=this.form.value.email;
+    this.contactUsObj.email=this.form.value.email.trim();
     this.contactUsObj.phoneNumber=this.form.value.phone_number;
     this.contactUsObj.message=this.form.value.message;
   }
