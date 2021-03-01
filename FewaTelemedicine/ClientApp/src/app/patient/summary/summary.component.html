@@ -89,8 +89,8 @@
                                         <p>{{patient.medication}}</p>
                                     </div>
                                     <div class="formDetails display-flex">
-                                        <label>Follow Up in</label>
-                                        <p>{{patient.followUpNumber}} / {{patient.followUpMeasure}}</p>
+                                        <label *ngIf="patient.followUpNumber">Follow Up in</label>
+                                        <p *ngIf="patient.followUpNumber">{{patient.followUpNumber}} / {{patient.followUpMeasure}}</p>
                                     </div>
                                 </div>
                             </div>

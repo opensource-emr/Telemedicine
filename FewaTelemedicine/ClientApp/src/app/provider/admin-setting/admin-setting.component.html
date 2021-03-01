@@ -237,7 +237,7 @@
                                     <div class="col-12 col-md-4">
                                         <div class="form-group">
                                             <label>User Email<span class="red-text">*</span></label>
-                                            <input type="text" placeholder="User Email" class="form-control" name="email" formControlName="email">
+                                            <input type="email" placeholder="User Email" class="form-control" name="email" formControlName="email">
                                             <div *ngIf="addProviderFormControls.email.touched && addProviderFormControls.email.invalid" style="color: red;">
                                                 <div *ngIf="addProviderFormControls.email.errors.required">User Email is required.
                                                 </div>

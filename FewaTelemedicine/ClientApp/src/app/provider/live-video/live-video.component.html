@@ -360,17 +360,6 @@
                                 <option *ngIf="followUpNum.value>1">Months</option>
                             </select>
                         </div>
-                        <div>
-                            <p *ngIf="reportForm.controls['followUpNumber'].touched && reportForm.controls['followUpNumber'].invalid"
-                                style="color:red;">
-                                <small *ngIf="reportForm.controls['followUpNumber'].hasError('pattern')">Value should be
-                                    number
-                                </small>
-                                <small *ngIf="reportForm.controls['followUpNumber'].hasError('required')">Follow up number required.
-                                </small>
-                            </p>
-                        </div>
-                        <div class="errorMessage" *ngIf="this.followupMsg">Please enter follow up number.</div>
                     </div>
                     <div class="submitButton">
                         <button class="visitBtn" (click)="completeVisit()" href="javascript:;">Complete Visit</button>
