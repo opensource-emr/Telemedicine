@@ -302,6 +302,7 @@ namespace FewaTelemedicine.Persistence.Repositories
         {
             var bResponse = false;
             var slash = "";
+            var followUpNum = "";
             try
             {
                 Provider provider = FewaDbContext.providers.Where(a => a.url.ToLower().Trim() == patient.url.ToLower().Trim() && a.practice == patient.practice.ToLower().Trim()).FirstOrDefault();
@@ -321,7 +322,11 @@ namespace FewaTelemedicine.Persistence.Repositories
                 }
                 var adviceList = "";
                 if (!string.IsNullOrEmpty(patient.followUpNumber))
+                {
                     slash = "/";
+                    followUpNum = "Follow Up in:";
+                }
+                    
                 Practice pra = FewaDbContext.practices.Where(a => a.url.ToLower().Trim() == "practice").FirstOrDefault();
                 if (pra == null)
                 {
@@ -523,7 +528,7 @@ namespace FewaTelemedicine.Persistence.Repositories
                                  "   					 <tr>  " +
                                  "                           <td align='left' valign='top'  " +
                                  "                               style='font-family:\"Open Sans\", Arial, sans-serif; font-size:14px; line-height:22px; color:#666;padding-bottom:12px;'>  " +
-                                 "                                <b style='color:#000;'>Follow Up in:</b>&nbsp;" + patient.followUpNumber + slash + patient.followUpMeasure + "</td>  " +
+                                 "                                <b style='color:#000;'>"+ followUpNum +"</b>&nbsp;" + patient.followUpNumber + slash + patient.followUpMeasure + "</td>  " +
                                  "                          </tr>  " +
                                  "                          <tr>  " +
                                  "                              <td height='15' class='em_h20' style='font-size:0px; line-height:0px; height:15px;'>&nbsp;</td>  " +

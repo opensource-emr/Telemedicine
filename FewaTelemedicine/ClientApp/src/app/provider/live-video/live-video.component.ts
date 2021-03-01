@@ -123,7 +123,7 @@ export class LiveVideoComponent implements OnInit, OnDestroy {
       // newPrescriptionsSentToYourPharmacy: new FormControl(true, Validators.nullValidator),
       // newPrescriptionsMailedToYou: new FormControl(true, Validators.nullValidator),
       medication: new FormControl('', Validators.nullValidator),
-      followUpNumber: new FormControl('', [Validators.required, Validators.pattern("^[0-9]{1,10}$")]),
+      followUpNumber: new FormControl('', [Validators.nullValidator, Validators.pattern("^[0-9]{1,10}$")]),
       followUpMeasure: new FormControl('', Validators.nullValidator),
     });
   }
@@ -228,13 +228,8 @@ export class LiveVideoComponent implements OnInit, OnDestroy {
   }
 
   completeVisit() {
-    if(!this.reportForm.value.followUpNumber) {
-        // Please enter follow up number
-        this.followupMsg = true;
-        setTimeout(() => {
-          this.followupMsg = false;
-        }, 5000);
-       return;
+    if(!this.reportForm.valid) {
+      return;
     }
     this.isMeetStart = false;
     this.patient.url = this.global.providerObj.url;
@@ -250,8 +245,13 @@ export class LiveVideoComponent implements OnInit, OnDestroy {
     this.patient.medication = v.medication;
     this.patient.followUpNumber = v.followUpNumber.toString();
     this.patient.followUpMeasure = v.followUpMeasure;
-    this.patient.followUpMeasure = v.followUpMeasure != "" ? v.followUpMeasure
+    if(this.patient.followUpNumber == ""){
+      this.patient.followUpMeasure == "";
+    }
+    else{
+      this.patient.followUpMeasure = v.followUpMeasure != "" ? v.followUpMeasure
       : (parseInt(v.followUpNumber) <= 1 ? "Day" : "Days");
+    }
     if (this.patient.mobileNumber) {
       this.patient.mobileNumber = this.patient.mobileNumber.toString();
     }
