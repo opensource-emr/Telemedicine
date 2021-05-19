@@ -223,7 +223,7 @@
                                     <div class="col-12 col-md-4">
                                         <div class="form-group">
                                             <label>User Name<span class="red-text">*</span></label>
-                                            <input type="text" placeholder="User Name (without space)" class="form-control" name="userName" formControlName="userName">
+                                            <input type="text" placeholder="User Name (without space)" class="form-control" name="userName" formControlName="userName" onkeypress="return event.charCode != 32">
                                             <div *ngIf="addProviderFormControls.userName.touched && addProviderFormControls.userName.invalid" style="color: red;">
                                                 <div *ngIf="addProviderFormControls.userName.errors.required">User Name is required.
                                                 </div>

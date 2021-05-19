@@ -303,6 +303,7 @@ namespace FewaTelemedicine.Persistence.Repositories
             var bResponse = false;
             var slash = "";
             var followUpNum = "";
+            var _medication = "";
             try
             {
                 Provider provider = FewaDbContext.providers.Where(a => a.url.ToLower().Trim() == patient.url.ToLower().Trim() && a.practice == patient.practice.ToLower().Trim()).FirstOrDefault();
@@ -326,7 +327,9 @@ namespace FewaTelemedicine.Persistence.Repositories
                     slash = "/";
                     followUpNum = "Follow Up in:";
                 }
-                    
+                if (!string.IsNullOrEmpty(patient.medication))
+                    _medication = "Advice:";
+
                 Practice pra = FewaDbContext.practices.Where(a => a.url.ToLower().Trim() == "practice").FirstOrDefault();
                 if (pra == null)
                 {
@@ -523,7 +526,7 @@ namespace FewaTelemedicine.Persistence.Repositories
                                  "   					 <tr>  " +
                                  "                           <td align='left' valign='top'  " +
                                  "                            style='font-family:\"Open Sans\", Arial, sans-serif; font-size:14px; line-height:22px; color:#666;padding-bottom:12px;'>  " +
-                                 "                                <b style='color:#000;'>Advice:</b>&nbsp;" + patient.medication + "</td>  " +
+                                 "                                <b style='color:#000;'>"+ _medication+"</b>&nbsp;" + patient.medication + "</td>  " +
                                  "                       </tr>  " +
                                  "   					 <tr>  " +
                                  "                           <td align='left' valign='top'  " +

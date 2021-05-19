@@ -1,0 +1,47 @@
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+<div class="patient-intro">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-xs-6">
+                <div class="previewVideo">
+                    <test-audio-video></test-audio-video>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-xs-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="welcomeNote">
+                            <h2>Welcome,</h2>
+                            <p>Please check in here to join your provider if you consent for
+                                this secure video visit.</p>
+                            <h6>Please check in below to let <b>{{global.currentProvider}}</b> know you are here</h6>
+                            <form action="" class="user" [formGroup]="patRegForm">
+                                <div class="form-group">
+                                    <input class="form-control post-invitation" name="name"
+                                        formControlName="patientName" type="text" placeholder="Enter your name">
+                                    <small style="color: red;" *ngIf="isControlHasError('patientName','required')">Enter
+                                        your name</small>
+                                </div>
+                                <div class="custom-control custom-checkbox ">
+                                    <input type="checkbox" id="customCheck" name="customCheck"
+                                        class="custom-control-input" style="z-index: 2;" formControlName="acceptTerms" />
+                                    <label class="custom-control-label" for="customRadioInline1">By clicking you will
+                                        accept our <a>Terms and Conditions</a></label>
+                                </div>
+                                <br>
+                                <div class="submitButton">
+                                    <button type="submit" [disabled]="!disableCheckInBtn" class="submitBtn"
+                                        (click)="loginPatient()" href="javascript:;">Submit</button>
+                                </div>
+                                <div class="errorMessage" *ngIf="this.loadConfigMsg">Can not load configuration please talk with admin</div>
+                                <div class="errorMessage" *ngIf="this.userLoggedMsg">User already logged in</div>
+                            </form>
+                        </div>                       
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

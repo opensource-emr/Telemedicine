@@ -6,7 +6,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-12 col-md-12">
+            <div class="col-12 col-xs-12">
                 <div class="card">
                     <div class="card-body">
                         <div class="summaryNote" *ngIf="global.providerObj">
@@ -99,7 +99,7 @@
                                 <p>Please wait, provider will provide report</p>
                             </div>
                             <div class="reportShare no-print" *ngIf="patient">
-                                <div style="padding-right: 100px;" class="reportMail">
+                                <div style="padding-right: 35px;" class="reportMail">
                                     <h3>Send your report to your email!.</h3>
                                     <form [formGroup]="emailForm">
                                         <div class="display-flex">
@@ -121,7 +121,7 @@
                                             </div>
                                             <button class="btn submitBtn" [disabled]="this.disableButton"
                                                 (click)="sendReport()">Send</button>
-                                            <p style="left:40px;top:10px;position: relative;">OR</p>
+                                            <p style="left:10px;top:10px;position: relative;">OR</p>
                                             <div class="printSection" (click)="printReport()">
                                                 <svg class="svg" version="1.1" id="Capa_1"
                                                     xmlns="http://www.w3.org/2000/svg"
