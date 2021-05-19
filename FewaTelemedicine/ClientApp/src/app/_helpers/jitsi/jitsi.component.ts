@@ -81,8 +81,8 @@ export class JitsiComponent implements OnInit, OnDestroy {
       REMOTE_THUMBNAIL_RATIO: 0, // 1:1
       LOCAL_THUMBNAIL_RATIO:  3/3 ,
       VIDEO_QUALITY_LABEL_DISABLED: true,
-      filmStripOnly: false,
-      TOOLBAR_BUTTONS: ['microphone', 'camera', 'videoquality', 'fullscreen']
+      //filmStripOnly: false,
+      TOOLBAR_BUTTONS: ['microphone', 'camera','videoquality', 'fullscreen']
     }
   }
 

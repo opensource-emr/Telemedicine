@@ -1,0 +1,226 @@
+@import "../../../global.scss";
+
+.patient-intro {
+    background: url(../../../assets/img/patient-bg.png) center right;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 100vh;
+    padding: 1% 0;
+    .fewaLogo {
+        font-size: 30px;
+        color: var(--primary);
+        margin-bottom: 20px;
+    }
+    .card {
+        border: none;
+        box-shadow: 0px 5px 20px 15px rgba($black, 0.05);
+        .card-body {
+            position: relative;
+            .printreport {
+                position: absolute;
+                top: 226px;
+                right: 50px;
+                width: 30px;
+                padding: 10px;
+                .printBtn {
+                    background: rgba(var(--primary), 0.1);
+                    display: inline-block;
+                    padding: 10px;
+                    text-align: center;
+                    border-radius: 5px;
+                    svg {
+                        fill: var(--primary);
+                        width: 20px;
+                        height: 20px;
+                    }
+                    label {
+                        font-size: 16px;
+                        color: var(--primary);
+                        text-align: center;
+                        margin-bottom: 0;
+                    }
+                }
+            }
+            .summaryNote {
+                h2 {
+                    font-size: 24px;
+                    text-align: center;
+                }
+                p {
+                    color: $gray;
+                    text-align: center;
+                }
+                .display-flex {
+                    justify-content: center;
+                    table {
+                        width: 80%;
+                        margin: 0 auto;
+                        thead {
+                            th {
+                                text-align: center;
+                                font-size: 18px;
+                            }
+                        }
+                    }
+                    .wdt-50 {
+                        justify-content: center;
+                        position: relative;
+                        h3 {
+                            text-align: center;
+                            font-size: 18px;
+                        }
+                        .formDetails {
+                            label {
+                                font-size: 15px;
+                                color: $black;
+                                margin-top: 10px;
+                            }
+                            p {
+                                text-align: left;
+                            }
+                            .custom-control {
+                                label {
+                                    font-size: 15px;
+                                    color: $gray;
+                                    margin-bottom: 0;
+                                    margin-top: 0;
+                                }
+                            }
+                            &.display-flex {
+                                justify-content: start;
+                                p {
+                                    margin: 10px 0 0 15px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+.reportShare {
+    .reportMail {
+        h3 {
+            color: $black;
+            font-size: 17px;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 0;
+        }
+        .submitBtn {
+            padding: 0 20px;
+            margin: 0 10px;
+            background: var(--primary);
+            color: $white;
+            font-size: 16px;
+            height: 46px;
+        }
+        .printSection {
+            left: 28px;
+            top: 0px;
+            position: relative;
+            cursor: pointer;
+            .svg {
+                fill: var(--primary);
+                width: 20px;
+                height: 20px;
+            }
+            .printLabel {
+                right: 6px;
+                position: relative;
+                top: 4px;
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .patient-intro {
+        .fewaLogo {
+            font-size: 25px;
+            margin-bottom: 20px;
+            margin-top: 10px;
+        }
+        .card {
+            margin-bottom: 20px;
+            .card-body {
+                padding: 10px;
+                .printreport {
+                    position: absolute;
+                    top: 10px;
+                    right: 50px;
+                    width: 30px;
+                    padding: 10px;
+                    .printBtn {
+                        background: rgba(var(--primary), 0.1);
+                        display: inline-block;
+                        padding: 10px;
+                        text-align: center;
+                        border-radius: 5px;
+                        svg {
+                            fill: var(--primary);
+                            width: 20px;
+                            height: 20px;
+                        }
+                        label {
+                            font-size: 16px;
+                            color: var(--primary);
+                            text-align: center;
+                            margin-bottom: 0;
+                        }
+                    }
+                }
+                .summaryNote {
+                    h2 {
+                        font-size: 19px;
+                        text-align: center;
+                    }
+                    .display-flex {
+                        justify-content: center;
+                        .wdt-50 {
+                            justify-content: center;
+                            width: 100%;
+                            border: 1px solid $light-color;
+                            border-radius: 5px;
+                            padding: 15px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .reportShare {
+        .reportMail {
+            h3 {
+                color: $black;
+                font-size: 17px;
+                text-align: center;
+            }
+            .form-group {
+                margin-bottom: 0;
+            }
+            .submitBtn {
+                padding: 0 20px;
+                margin: 0 10px;
+                background: var(--primary);
+                color: $white;
+                font-size: 16px;
+                height: 46px;
+            }
+        }
+    }
+}
+
+.message{
+    color: blue;
+    text-align: center;
+    padding: 5px;
+}
+.errorMessage{
+    color: red;
+    text-align: center;
+    padding: 5px;
+}
