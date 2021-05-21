@@ -1,18 +1,26 @@
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<div class="liveChatSection">
-    <div class="row">
-        <div class="col-12 col-xs-6">
-            <div class="position-relative">
-                <div class="videoLive">
-                    <jitsi-call *ngIf="isMeetStart" [roomName]="roomName" [remoteUserDisplayName]="remoteUserDisplayName"></jitsi-call>
 
-                    <test-audio-video *ngIf="isWaiting"></test-audio-video>
+    <jitsi-call *ngIf="isMeetStart" [roomName]="roomName" [remoteUserDisplayName]="remoteUserDisplayName" class="patient-intro"></jitsi-call>
+  
+    <div class="patient-live" *ngIf="!isMeetStart">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-md-12 col-lg-6">
+                    <div class="previewVideo">
+                        <test-audio-video *ngIf="isWaiting"></test-audio-video>
+                    </div>
                 </div>
-                <div class="VideoUserName">
-                        <h2 *ngIf="!isWaiting">{{global.currentProvider}}</h2>
-                        <h2 *ngIf="isWaiting">Please wait <strong>{{global.currentProvider}}</strong> will start this secure video visit.</h2>
+                <div class="col-12 col-md-12 col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="welcomeNote">
+                                <div class="VideoUserName">
+                                    <h2 *ngIf="!isWaiting">{{global.currentProvider}}</h2>
+                                    <h2 *ngIf="isWaiting">Please wait <strong>{{global.currentProvider}}</strong> will start this secure video visit.</h2>
+                                </div>
+                            </div>                       
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
