@@ -89,12 +89,7 @@ export class IntroMobileComponent implements OnInit {
         sessionStorage.setItem('PatientName', this.global.patientObj.name);
         var url: string = this.global.config.videourl.replace("PROVIDERNAME", this.global.currentProvider);
         this.global.config.videourl = url;
-        // if(this.global.isMobile = true){
-         this.routing.navigateByUrl('/patient/liveMobile');
-        // }
-        // else{
-         //this.routing.navigateByUrl('/patient/live');
-        // }
+        this.routing.navigateByUrl('/patient/live-mobile');
       },
         res => {
           //alert('User already logged in');

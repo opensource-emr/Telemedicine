@@ -1,6 +1,7 @@
 export class ChatModel {
     user: string;
     message: Array<MessageModel>;
+    isMobile: boolean;
     constructor() {
         this.user = "";
         this.message = new Array<MessageModel>();

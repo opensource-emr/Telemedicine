@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MobileLiveVideoComponent } from './mobilelive-video.component';
+import { MobileLiveVideoComponent } from './live-video-mobile.component';
 
 describe('MobileLiveVideoComponent ', () => {
   let component: MobileLiveVideoComponent ;

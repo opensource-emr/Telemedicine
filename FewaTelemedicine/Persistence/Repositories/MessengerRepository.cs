@@ -64,7 +64,7 @@ namespace FewaTelemedicine.Persistence.Repositories
                 var to = new EmailAddress(receiverEmail);
                 var htmlContent = practice.emailHtmlBody;
                 htmlContent = htmlContent.Replace("{imageUrl}", practice.serverName + practice.logoPath);
-                htmlContent = htmlContent.Replace("{join}", practice.serverName + "/" + provider.practice.ToLower().Trim() + "/" + provider.url.ToLower().Trim() + "/#/patient/intro");
+                htmlContent = htmlContent.Replace("{join}", practice.serverName + "/" + provider.practice.ToLower().Trim() + "/" + provider.url.ToLower().Trim() + "/#/patient");
                 htmlContent = htmlContent.Replace("providerNameTitle", provider.nameTitle);
                 if (string.IsNullOrEmpty(provider.name))
                     htmlContent = htmlContent.Replace("providerName", provider.userName);

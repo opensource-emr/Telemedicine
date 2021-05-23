@@ -145,7 +145,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     let protocol = window.location.protocol;
     let practiceUrl = this.global.currentPractice;
     let providerUrl = this.global.currentProvider;
-    return link = protocol + "//" + host + "/" + practiceUrl + "/" + providerUrl + "/#/patient/intro"
+    return link = protocol + "//" + host + "/" + practiceUrl + "/" + providerUrl + "/#/patient"
   }
 
   openSnackBar(message: string, action: string) {
@@ -205,6 +205,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.patientObj.practice = this.global.currentPractice;
     this.patientObj.providerId=this.global.providerObj.providerId;
     this.patientObj.practiceId=this.global.providerObj.practiceId;
+    this.global.isMobile=callPatient.isMobile;
     this.notificationService.CallPatient(callPatient);
 
     if (this.practiceObj.callingPlatform == this.tokbox) {

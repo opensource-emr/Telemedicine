@@ -233,6 +233,7 @@ export class NotificationService {
             if (t == undefined || t == null) {
               let n = new ChatModel();
               n.user = p.name;
+              n.isMobile = p.isMobile;
               this.global.chatData.push(n);
             }
           }

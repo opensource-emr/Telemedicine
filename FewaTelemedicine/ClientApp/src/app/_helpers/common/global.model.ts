@@ -18,7 +18,7 @@ export class Global {
     chatData: Array<ChatModel> = new Array<ChatModel>();
     public practiceArray: Array<Practice> = [];
     previousChats: Array<MessageModel> = [];
-    isMobile :boolean = false;
+    isMobile :boolean;
     // /iPhone|webOS|mobile|CriOS|iPad|iPod|BlackBerry|IEMobile|'Android' + 'Chrome'|Opera Mini|Android/i;
     constructor() {
         this.providerObj = new Provider();
