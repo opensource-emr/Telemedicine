@@ -10,9 +10,9 @@ import { SharedModule } from '../_helpers/shared.module';
 import { SecurityLogic } from '../_helpers/common/authguard';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpInterceptorService } from '../_helpers/common/http-interceptor.service';
-import { MobileLiveVideoComponent } from './live-mobilevideo/mobilelive-video.component';
 import { IntroMobileComponent } from './intro-mobile/intro-mobile.component';
 import { SummaryMobileComponent } from './summary-mobile/summary-mobile.component';
+import { MobileLiveVideoComponent } from './live-mobilevideo/live-video-mobile.component';
 
 @NgModule({
   declarations: [

@@ -76,6 +76,7 @@ export class Patient {
     advice: Array<ProviderAdvice> = [];
     providerId:number;
     practiceId:number;
+    isMobile : boolean;
 }
 export class ProviderCabin {
     public patient: Patient;

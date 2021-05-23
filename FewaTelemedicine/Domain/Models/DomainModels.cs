@@ -129,6 +129,12 @@ namespace FewaTelemedicine.Domain.Models
         public string practice { get; set; }
         public int providerId { get; set; }
         public int practiceId { get; set; }
+        [NotMapped]
+        public Boolean isMobile { get; set; }
+        public Patient()
+        {
+            this.isMobile = false;
+        }
     }
     public class WaitingRoom
     {

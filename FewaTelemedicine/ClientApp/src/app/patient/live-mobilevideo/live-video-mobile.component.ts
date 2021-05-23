@@ -9,8 +9,8 @@ import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
-  templateUrl: './mobilelive-video.component.html',
-  styleUrls: ['./mobilelive-video.component.scss']
+  templateUrl: './live-video-mobile.component.html',
+  styleUrls: ['./live-video-mobile.component.scss']
 })
 export class MobileLiveVideoComponent implements OnInit, AfterViewInit {
   isSubmitting: boolean = true;
@@ -95,6 +95,6 @@ export class MobileLiveVideoComponent implements OnInit, AfterViewInit {
 
   endMeet() {
     this.isMeetStart = false;
-    this.router.navigate(['patient/summaryMobile']);
+    this.router.navigate(['patient/summary-mobile']);
   }
 }

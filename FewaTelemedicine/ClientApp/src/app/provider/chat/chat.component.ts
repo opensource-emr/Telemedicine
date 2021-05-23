@@ -68,6 +68,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
           if (t == undefined || t == null) {
             var n = new ChatModel();
             n.user = p.name;
+            n.isMobile = p.isMobile;
             this.userChat.push(n);
           }
         }
@@ -123,10 +124,14 @@ export class ChatComponent implements OnInit, AfterViewInit {
   }
 
   onChatUserChange(currentUser) {
+    if(!currentUser.isMobile){
     this.hideChatSection = true;
     this.currentChatUser = currentUser;
     this.disableSendButton = false;
     this.scrollToBottom();
+    }
+    else
+    this.hideChatSection = false;
   }
 
   loadPatientsAttended() {
