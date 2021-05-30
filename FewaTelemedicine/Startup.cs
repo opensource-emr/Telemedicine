@@ -86,6 +86,12 @@ namespace FewaTelemedicine
                 options.KeepAliveInterval = TimeSpan.FromSeconds(30);
                 options.ClientTimeoutInterval = TimeSpan.FromMinutes(120);
             }));
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
             services.AddControllersWithViews();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -140,6 +146,7 @@ namespace FewaTelemedicine
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseCors("MyPolicy");
             app.UseAuthentication();
             app.UseAuthorization();
            

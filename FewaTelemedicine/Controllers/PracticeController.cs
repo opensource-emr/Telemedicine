@@ -31,6 +31,7 @@ using FewaTelemedicine.Domain.Repositories;
 using FewaTelemedicine.Domain.Services;
 using FewaTelemedicine.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -44,6 +45,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace FewaTelemedicine.Controllers
 {
+    [EnableCors("MyPolicy")]
     [Authorize]
     public class PracticeController : Controller
     {
