@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FewaTelemedicine", "FewaTelemedicine\FewaTelemedicine.csproj", "{50366276-AA44-4839-A1F9-8A6A3D11A390}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FewaTelemedicine", "FewaTelemedicine\FewaTelemedicine.csproj", "{50366276-AA44-4839-A1F9-8A6A3D11A390}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FewaDbCreation", "FewaDbCreation\FewaDbCreation.csproj", "{5153A016-580A-4608-83FA-B02B6452EA3C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{50366276-AA44-4839-A1F9-8A6A3D11A390}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50366276-AA44-4839-A1F9-8A6A3D11A390}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50366276-AA44-4839-A1F9-8A6A3D11A390}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5153A016-580A-4608-83FA-B02B6452EA3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5153A016-580A-4608-83FA-B02B6452EA3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5153A016-580A-4608-83FA-B02B6452EA3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5153A016-580A-4608-83FA-B02B6452EA3C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
