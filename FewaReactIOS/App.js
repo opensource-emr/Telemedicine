@@ -18,7 +18,7 @@ const Stack = createStackNavigator();
 
 const Auth = () => {
   useEffect(() => {
-    global.url='http://www.fewatele.com/'
+    global.url='https://www.fewatele.com/'
   }, []);
   // Stack Navigator for Login and Sign up Screen
   return (
