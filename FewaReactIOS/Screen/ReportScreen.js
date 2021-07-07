@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, Text, SafeAreaView, ImageBackground, Button, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, TextInput, Text, SafeAreaView, ImageBackground,
+Button, StyleSheet, TouchableOpacity, Image, ScrollView} from 'react-native';
 import { color } from 'react-native-reanimated';
 import global from './Components/Global';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
@@ -96,7 +97,7 @@ const ReportScreen = ({ navigation }) => {
         '<h2 style="text-align:center;font-size:30;font-weight:bold;">Visit Summary</h2><br>' +
         '<table style="width:100%">' +
         '<tr>' +
-        '<td style="font-size:25;padding:10px;">Follow Up in: ' + global.providerAdvice  + '</td>' +
+        '<td style="font-size:25;padding:10px;">What we did today? ' + global.providerAdvice  + '</td>' +
         '</tr>' +
         '<tr>' +
         '<td style="font-size:25;padding:10px;">Advice: ' + global.patient.medication + '</td>' +
@@ -137,20 +138,21 @@ const ReportScreen = ({ navigation }) => {
   // };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      {/* <View style={{flex: 1, padding: 16}}> */}
-      <View
-        style={{
+    <View style={styles.mainBody}>
+      <ScrollView
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={{
           flex: 1,
-          alignItems: 'center',
           justifyContent: 'center',
-        }}>
-        <ImageBackground
+          alignContent: 'center',
+      }}>
+          <ImageBackground
           source={require('../Image/patient-bg.png')}
           style={{
             flex: 1,
-            width: 385,
+            width: 420,
             height: 700,
+            resizeMode: 'contain',
             padding: 20
           }}>
           <View style={styles.registerTextStyle}>
@@ -168,7 +170,6 @@ const ReportScreen = ({ navigation }) => {
               borderColor: 'gray', padding: 5,
               borderWidth: 1.0
             }}>
-
               <View style={{
                 padding: 5, alignItems: 'center', justifyContent: 'center', fontSize: 30,
                 textAlign: 'center',
@@ -188,10 +189,10 @@ const ReportScreen = ({ navigation }) => {
               </View>
               <View style={styles.contentTextStyle}>
                 <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{advice ?(<Text> Advice :</Text> ): null}</Text>
-                <Text style={{ fontSize: 16, color: 'gray' }}>{advice ?(<Text> {global.patient.medication} :</Text> ): null}</Text>
+                <Text style={{ fontSize: 16, color: 'gray' }}>{advice ?(<Text> {global.patient.medication}</Text>): null}</Text>
               </View>
               <View style={styles.contentTextStyle}>
-                <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{followUpNo ?(<Text> Follow Up in :</Text> ): null}</Text>
+                <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{followUpNo ?(<Text> Follow Up in :</Text>): null}</Text>
                 <Text style={{ fontSize: 16, color: 'gray' }}> {
                 followUpNo ?(<Text> {global.patient.followUpNumber}{Slash}{global.patient.followUpMeasure}</Text> ): null}</Text>
               </View>
@@ -201,12 +202,9 @@ const ReportScreen = ({ navigation }) => {
               textAlign: 'center', fontWeight: 'bold',
               marginBottom: 20
             }}>
-              <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Send your report to your email!.</Text>
+            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Send your report to your email!.</Text>
             </View>
-            <View style={{
-              alignItems: 'flex-start', justifyContent: 'space-between', fontSize: 30, flexDirection: 'row',
-              // textAlign: 'center',
-            }}>
+            <View style={{alignItems: 'flex-start', justifyContent: 'space-between', fontSize: 30, flexDirection: 'row',}}>
               <View style={styles.SectionStyle}>
                 <TextInput
                   style={styles.emailStyle}
@@ -235,15 +233,10 @@ const ReportScreen = ({ navigation }) => {
                <TouchableOpacity onPress={createPDF}>
                   <Image
                   source={require('../Image/PrintSVG.png')}
-                    style={styles.image}
-        />
-      </TouchableOpacity>
-
+                    style={styles.image}/>
+                </TouchableOpacity>
               <Text style={{ fontWeight: 'bold' }}>Print</Text>
-
               </View>
-
-              {/* <Text style={styles.buttonTextStyle}>Print</Text> */}
             </View>
             {errortext != '' ? (
                 <Text style={styles.errorTextStyle}>
@@ -256,17 +249,20 @@ const ReportScreen = ({ navigation }) => {
                 </Text>
               ) : null}
           </View>
-
-        </ImageBackground >
-      </View>
-    </SafeAreaView>
+        </ImageBackground>
+    </ScrollView>
+  </View>
   );
 };
 
 export default ReportScreen;
 
 const styles = StyleSheet.create({
-
+  mainBody: {
+    flex: 1,
+    justifyContent: 'center',
+    alignContent: 'center',
+  },
   buttonTextStyle: {
     color: '#FFFFFF',
     paddingVertical: 10,
@@ -276,7 +272,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     textAlign: 'center',
     alignSelf: 'center',
-    padding: 15,
+    padding: 10,
   },
 
   contentTextStyle: {
@@ -309,7 +305,7 @@ const styles = StyleSheet.create({
     borderColor: '#7DE24E',
     height: 40,
     alignItems: 'center',
-    width: 60,
+    width: 70,
     marginLeft: 80,
   },
   buttonStyle1: {
