@@ -10,6 +10,8 @@ Below  is the basic flow of the project.
 5. Doctor and patients can also send chat messages to each other. 
 6. Patients can also share documents with doctor.
 
+
+
 Features :-
 
 Application supports Multi doctor and Multihospital.
@@ -27,3 +29,4 @@ Tracks time spent per call between doctor and patient.
 Its created using Angular as front end and .NET core as back end and postgre database. Any further technical clarification send me mail at shiv_koirala@yahoo.com.
 
 This complete initative is funded by https://danphehealth.com . 
+--
